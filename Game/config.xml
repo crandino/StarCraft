@@ -1,0 +1,26 @@
+<!-- Config file for the game -->
+
+<config>
+
+  <!-- App Configuration -->
+  <app framerate="0" />
+  
+  <!-- Each module has its own node. Separate configuration -->
+
+  <window>
+    <resolution width="800" height="600" scale="1"  />
+    <properties borderless='false'
+                fullscreen='false' 
+                resizable='false'
+                windowed='false' />
+    <name>StarCraft</name>
+  </window>
+
+  <render vsync='false'>
+  </render>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+  
+</config>
