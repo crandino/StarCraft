@@ -80,6 +80,9 @@
     <ClInclude Include="Motor2D\PugiXml\src\pugixml.hpp">
       <Filter>Tools\PugiXML</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Map.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor2D\p2Log.cpp">
@@ -120,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp">
       <Filter>Tools\PugiXML</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Map.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

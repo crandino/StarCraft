@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
+#include "Map.h"
 #include "Scene.h"
 
 Scene::Scene() : Module()
@@ -29,6 +30,7 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {
+	app->map->load("map_starcraft_32x32.tmx");
 	return true;
 }
 
@@ -41,7 +43,7 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
-	float cam_speed = 1.0f;
+	float cam_speed = 50.0f;
 
 	/*if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 		app->loadGame("save_game.xml");
@@ -66,6 +68,9 @@ bool Scene::update(float dt)
 
 	if (app->input->getKey(SDL_SCANCODE_KP_MINUS) == KEY_UP)
 		app->audio->volumeDown();
+
+	app->map->draw();
+
 
 	return true;
 }

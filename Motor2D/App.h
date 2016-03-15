@@ -15,6 +15,7 @@ class Textures;
 class Audio;
 class FileSystem;
 class Scene;
+class Map;
 
 class App
 {
@@ -85,6 +86,7 @@ public:
 	Audio*				audio;
 	Scene*				scene;
 	FileSystem*			fs;
+	Map*				map;
 
 private:
 

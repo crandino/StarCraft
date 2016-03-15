@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "FileSystem.h"
+#include "Map.h"
 #include "App.h"
 
 #include <iostream> 
@@ -25,6 +26,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	fs = new FileSystem();
+	map = new Map();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -33,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(win);
 	addModule(tex);
 	addModule(audio);
+	addModule(map);
 	
 	addModule(scene);
 
