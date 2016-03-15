@@ -80,6 +80,9 @@
     <ClInclude Include="Motor2D\PugiXml\src\pugixml.hpp">
       <Filter>Tools\PugiXML</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\MemLeaks.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor2D\p2Log.cpp">
