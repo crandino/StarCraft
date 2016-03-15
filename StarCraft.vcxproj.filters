@@ -1,26 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Tools">
-      <UniqueIdentifier>{76a4aef4-39e5-4b69-86eb-0f0147109405}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application">
-      <UniqueIdentifier>{36c78bb5-3db8-4be8-b7fe-ab357531073b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{8d2add14-660d-42d8-b704-92c909fb4e3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\PugiXML">
-      <UniqueIdentifier>{6fe548c7-c93c-47bd-a75a-5f05fce6c27f}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Motor2D\main.cpp" />
+    <ClCompile Include="Motor2D\Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\PerfTimer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\p2Log.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Audio.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\FileSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Input.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Map.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Render.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Scene.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Window.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Textures.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\App.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp">
+      <Filter>Tools\PugiXML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\DList.h">
@@ -29,26 +49,26 @@
     <ClInclude Include="Motor2D\DynArray.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\p2Defs.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\p2Log.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\p2SString.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\PerfTimer.h">
+    <ClInclude Include="Motor2D\Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Point2d.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Timer.h">
+    <ClInclude Include="Motor2D\PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\App.h">
-      <Filter>Application</Filter>
+    <ClInclude Include="Motor2D\p2SString.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\p2Log.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\p2Defs.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\MemLeaks.h">
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Audio.h">
       <Filter>Modules</Filter>
@@ -57,6 +77,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Input.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Map.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Module.h">
@@ -68,11 +91,14 @@
     <ClInclude Include="Motor2D\Scene.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Window.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="Motor2D\Textures.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Window.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="Motor2D\App.h">
+      <Filter>App</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\PugiXml\src\pugiconfig.hpp">
       <Filter>Tools\PugiXML</Filter>
@@ -80,59 +106,27 @@
     <ClInclude Include="Motor2D\PugiXml\src\pugixml.hpp">
       <Filter>Tools\PugiXML</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Map.h">
-      <Filter>Modules</Filter>
-    <ClInclude Include="Motor2D\MemLeaks.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Motor2D\p2Log.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\PerfTimer.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Timer.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\App.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Audio.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\FileSystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Input.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Render.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Scene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Textures.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Window.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp">
-      <Filter>Tools\PugiXML</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor2D\Map.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{162391ce-e139-4499-a6a9-c4f51ac1d065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{a242e14f-316b-4cd4-82e0-a6be435bda0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{bc3c27e1-c49a-4259-bd94-23434e8df708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\PugiXML">
+      <UniqueIdentifier>{9f58979d-e8f0-4a0a-8c96-55a88618295e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{ce12f7f0-26c4-4616-92f2-630ac32f3b2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Game\config.xml">
-      <Filter>Resource Files</Filter>
+      <Filter>Resources</Filter>
     </Xml>
   </ItemGroup>
 </Project>

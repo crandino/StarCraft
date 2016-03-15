@@ -1,9 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "MemLeaks.h"
+
+//#include <stdio.h>
+//#include <stdlib.h>
 
 #include "p2Log.h"
 #include "App.h"
-#include "MemLeaks.h"
+
 
 #pragma comment (lib, "Motor2D/SDL/libx86/SDL2.lib")
 
