@@ -82,6 +82,8 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Map.h">
       <Filter>Modules</Filter>
+    <ClInclude Include="Motor2D\MemLeaks.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -74,6 +74,7 @@
     <ClInclude Include="Motor2D\FileSystem.h" />
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
+    <ClInclude Include="Motor2D\MemLeaks.h" />
     <ClInclude Include="Motor2D\Module.h" />
     <ClInclude Include="Motor2D\p2Defs.h" />
     <ClInclude Include="Motor2D\p2Log.h" />

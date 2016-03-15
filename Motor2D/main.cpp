@@ -3,6 +3,7 @@
 
 #include "p2Log.h"
 #include "App.h"
+#include "MemLeaks.h"
 
 #pragma comment (lib, "Motor2D/SDL/libx86/SDL2.lib")
 
@@ -76,6 +77,8 @@ App *app = NULL;
 
 int main(int argc, char** argv)
 {
+	ReportMemoryLeaks();
+
 	LOG("======> Application initiating <=======");
 
 	MainStates state = CREATE;
