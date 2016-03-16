@@ -129,4 +129,9 @@
       <Filter>Resources</Filter>
     </Xml>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Game\maps\map_starcraft_32x32.tmx">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
 </Project>

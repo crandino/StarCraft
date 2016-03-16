@@ -23,7 +23,6 @@ bool Map::awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-
 	return ret;
 }
 
@@ -40,25 +39,30 @@ void Map::draw()
 
 		if(layer->properties.get("Nodraw") != 0)
 			continue;
-		//AQUI VAN LAS NUEVAS PROPIEDADES
-		for(int y = 0; y < data.height; ++y)
+
+		// Camera-culling: Render only blits what camera is showing.
+		iPoint initial_tile = app->map->worldToMap(-app->render->camera.x, -app->render->camera.y);
+		iPoint final_tile = app->map->worldToMap(-app->render->camera.x + app->render->camera.w, -app->render->camera.y + app->render->camera.h);
+
+		iPoint blit_position = initial_tile;
+
+		for (int y = initial_tile.y; y <= final_tile.y; ++y)
 		{
-			for(int x = 0; x < data.width; ++x)
+			blit_position.x = initial_tile.x;
+			for (int x = initial_tile.x; x <= final_tile.x; ++x)
 			{
 				int tile_id = layer->get(x, y);
 				if(tile_id > 0)
 				{
-					TileSet* tileset = getTilesetFromTileId(tile_id);
+					TileSet* tileset = getTilesetFromTileId(tile_id);   // Tileset for this tile_id
+					SDL_Rect r = tileset->getTileRect(tile_id);			// Section of the tile within the tileset
 
-					SDL_Rect r = tileset->getTileRect(tile_id);
-					iPoint pos = mapToWorld(x, y);
-					iPoint p = worldToMap(32, 0);
-
-					//HACER UN CHECK SI POS.X + 32 Y POS.Y + 32 ESTA DENTRO DEL RECUADRO DE CAMARA EMTONCES HACES BLIT
-					app->render->blit(tileset->texture, pos.x, pos.y, &r);
-					
+					iPoint pos = mapToWorld(blit_position.x, blit_position.y);
+					app->render->blit(tileset->texture, pos.x, pos.y, &r);						
 				}
+				blit_position.x++;
 			}
+			blit_position.y++;
 		}
 	}
 }
@@ -159,8 +163,17 @@ iPoint Map::worldToMap(int x, int y) const
 
 	if(data.type == MAPTYPE_ORTHOGONAL)
 	{
-		ret.x = x  / data.tile_width;
+		ret.x = x / data.tile_width;
+		if (ret.x < 0)
+			ret.x = 0;
+		else if (ret.x > data.width - 1)
+			ret.x = data.width - 1;
+
 		ret.y = y / data.tile_height;
+		if (ret.y < 0)
+			ret.y = 0;
+		else if (ret.y > data.height - 1)
+			ret.y = data.height - 1;
 	}
 	else if(data.type == MAPTYPE_ISOMETRIC)
 	{

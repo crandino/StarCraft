@@ -108,6 +108,9 @@
   <ItemGroup>
     <Xml Include="Game\config.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Game\maps\map_starcraft_32x32.tmx" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
