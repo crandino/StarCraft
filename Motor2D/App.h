@@ -6,6 +6,9 @@
 #include "Timer.h"
 #include "PerfTimer.h"
 #include "PugiXml\src\pugixml.hpp"
+#include <list> //RH
+
+using namespace std;
 
 // Modules
 class Window;
@@ -90,7 +93,8 @@ public:
 
 private:
 
-	DList<Module*>		modules;
+	list<Module*>		modules;  //RH
+	
 	int					argc;
 	char**				args;
 

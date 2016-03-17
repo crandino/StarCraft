@@ -47,12 +47,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 App::~App()
 {
 	// release modules
-	doubleNode<Module*>* item = modules.getLast();
+	list<Module*>::reverse_iterator item = modules.rbegin(); //RH
 
-	while(item != NULL)
+	while (item != modules.rend())
 	{
-		RELEASE(item->data);
-		item = item->previous;
+		RELEASE(*item);
+		++item;
 	}
 
 	modules.clear();
@@ -62,7 +62,7 @@ App::~App()
 void App::addModule(Module* module)
 {
 	module->init();
-	modules.add(module);
+	modules.push_back(module); //RH
 }
 
 pugi::xml_node App::loadConfig(pugi::xml_document& config_file) const
@@ -93,12 +93,12 @@ bool App::awake()
 
 	frame_rate = config_node.child("app").attribute("framerate").as_int(0);
 
-	doubleNode<Module*>* item = modules.getFirst();
+	list<Module*>::iterator item = modules.begin(); //RH
 
-	while(item != NULL && ret == true)
+	while(item != modules.end() && ret == true)
 	{
-		ret = item->data->awake(config_node.child(item->data->name.GetString()));
-		item = item->next;
+		ret = (*item)->awake(config_node.child((*item)->name.GetString()));
+		++item;
 	}
 
 	return ret;
@@ -119,13 +119,12 @@ bool App::start()
 	total_time.start();
 
 	bool ret = true;
-	doubleNode<Module*>* item;
-	item = modules.getFirst();
+	list<Module*>::iterator item = modules.begin(); //RH
 
-	while(item != NULL && ret == true)
+	while(item != modules.end() && ret == true)
 	{
-		ret = item->data->start();
-		item = item->next;
+		ret = (*item)->start();
+		++item;
 	}
 
 	return ret;
@@ -209,19 +208,14 @@ void App::finishUpdate()
 bool App::preUpdate()
 {
 	bool ret = true;
-	doubleNode<Module*>* item;
-	item = modules.getFirst();
-	Module* pModule = NULL;
+	list<Module*>::iterator item = modules.begin(); //RH
 
-	for(item = modules.getFirst(); item != NULL && ret == true; item = item->next)
+	while (item != modules.end() && ret == true)
 	{
-		pModule = item->data;
+		if ((*item)->active == false) continue;
 
-		if(pModule->active == false) {
-			continue;
-		}
-
-		ret = item->data->preUpdate();
+		ret = (*item)->preUpdate();
+		++item;
 	}
 
 	return ret;
@@ -231,19 +225,14 @@ bool App::preUpdate()
 bool App::doUpdate()
 {
 	bool ret = true;
-	doubleNode<Module*>* item;
-	item = modules.getFirst();
-	Module* pModule = NULL;
+	list<Module*>::iterator item = modules.begin(); //RH
 
-	for(item = modules.getFirst(); item != NULL && ret == true; item = item->next)
+	while (item != modules.end() && ret == true)
 	{
-		pModule = item->data;
+		if ((*item)->active == false) continue;
 
-		if(pModule->active == false) {
-			continue;
-		}
-
-		ret = item->data->update(dt);
+		ret = (*item)->update(dt);
+		++item;
 	}
 
 	return ret;
@@ -253,18 +242,14 @@ bool App::doUpdate()
 bool App::postUpdate()
 {
 	bool ret = true;
-	doubleNode<Module*>* item;
-	Module* pModule = NULL;
+	list<Module*>::iterator item = modules.begin(); //RH
 
-	for(item = modules.getFirst(); item != NULL && ret == true; item = item->next)
+	while (item != modules.end() && ret == true)
 	{
-		pModule = item->data;
+		if ((*item)->active == false) continue;
 
-		if(pModule->active == false) {
-			continue;
-		}
-
-		ret = item->data->postUpdate();
+		ret = (*item)->postUpdate();
+		++item;
 	}
 
 	return ret;
@@ -274,13 +259,12 @@ bool App::postUpdate()
 bool App::cleanUp()
 {
 	bool ret = true;
-	doubleNode<Module*>* item;
-	item = modules.getLast();
+	list<Module*>::reverse_iterator item = modules.rbegin(); //RH
 
-	while(item != NULL && ret == true)
+	while(item != modules.rend() && ret == true)
 	{
-		ret = item->data->cleanUp();
-		item = item->previous;
+		ret = (*item)->cleanUp();
+		++item;
 	}
 
 	return ret;
@@ -337,17 +321,18 @@ bool App::loadGameNow()
 			LOG("Loading new Game State from %s...", load_game.GetString());
 			root = data.child("game_state");
 
-			doubleNode<Module*> *item = modules.getFirst();
-			for (; item != NULL && ret != false; item = item->next)
+			list<Module*>::iterator item = modules.begin(); //RH
+			while (item != modules.end() && ret != false)
 			{
-				ret = item->data->load(root.child(item->data->name.GetString()));
+				ret = (*item)->load(root.child((*item)->name.GetString()));
+				++item;
 			}
-
+			
 			data.reset();
 			if (ret == true)
 				LOG("...finished loading");
 			else
-				LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+				LOG("...loading process interrupted with error on module %s", (item != modules.end()) ? (*item)->name.GetString() : "unknown"); //RH
 		}
 		else
 			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
@@ -371,10 +356,10 @@ bool App::saveGameNow() const
 
 	root = data.append_child("game_state");
 
-	doubleNode<Module*> *item = modules.getFirst();
-	for (; item != NULL && ret != false; item = item->next)
+	list<Module*>::const_iterator item = modules.begin(); //RH
+	while (item != modules.begin() && ret != false)
 	{
-		ret = item->data->save(root.append_child(item->data->name.GetString()));
+		ret = (*item)->save(root.append_child((*item)->name.GetString()));
 	}
 
 	if (ret != false)
@@ -386,7 +371,7 @@ bool App::saveGameNow() const
 		LOG("... finishing saving %s.", save_game.GetString());
 	}
 	else
-		LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+		LOG("Save process halted from an error in module %s", (item != modules.end()) ? (*item)->name.GetString() : "unknown"); //RH
 
 	data.reset();
 	want_to_save = false;
