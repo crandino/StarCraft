@@ -6,10 +6,11 @@
 #include "Textures.h"
 #include "Map.h"
 #include <math.h>
+#include <string>
 
 Map::Map() : Module(), map_loaded(false)
 {
-	name.create("map");
+	name.insert(0,"map");
 }
 
 // Destructor
@@ -22,7 +23,7 @@ bool Map::awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	bool ret = true;
 
-	folder.create(config.child("folder").child_value());
+	folder.insert(0,config.child("folder").child_value());
 	return ret;
 }
 
@@ -240,7 +241,7 @@ bool Map::cleanUp()
 bool Map::load(const char* file_name)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
+	p2SString tmp("%s%s", folder.data(), file_name);
 
 	char* buf;
 	int size = app->fs->load(tmp.GetString(), &buf);
@@ -302,7 +303,7 @@ bool Map::load(const char* file_name)
 		{
 			TileSet* s = item->data;
 			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+			LOG("name: %s firstgid: %d", s->name.data(), s->firstgid);
 			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
 			item = item->next;
@@ -313,7 +314,7 @@ bool Map::load(const char* file_name)
 		{
 			MapLayer* l = item_layer->data;
 			LOG("Layer ----");
-			LOG("name: %s", l->name.GetString());
+			LOG("name: %s", l->name.data());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
@@ -393,7 +394,7 @@ bool Map::loadMap()
 bool Map::loadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	set->name.create(tileset_node.attribute("name").as_string());
+	set->name.insert(0,tileset_node.attribute("name").as_string());
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
 	set->tile_width = tileset_node.attribute("tilewidth").as_int();
 	set->tile_height = tileset_node.attribute("tileheight").as_int();
@@ -427,7 +428,7 @@ bool Map::loadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = app->tex->loadTexture(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = app->tex->loadTexture(PATH(folder.data(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();

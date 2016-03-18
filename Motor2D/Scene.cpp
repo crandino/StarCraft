@@ -11,7 +11,7 @@
 
 Scene::Scene() : Module()
 {
-	name.create("scene");
+	name.insert(0,"scene");
 }
 
 // Destructor

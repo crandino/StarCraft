@@ -97,7 +97,7 @@ bool App::awake()
 
 	while(item != modules.end() && ret == true)
 	{
-		ret = (*item)->awake(config_node.child((*item)->name.GetString()));
+		ret = (*item)->awake(config_node.child((*item)->name.data()));
 		++item;
 	}
 
@@ -297,7 +297,7 @@ void App::saveGame(const char *file) const
 {
 	want_to_save = true;
 	//save_game.create("%s%s", fs->getSaveDirectory(), file);
-	save_game.create(file);
+	save_game.insert(0,file);
 }
 
 bool App::loadGameNow()
@@ -324,7 +324,7 @@ bool App::loadGameNow()
 			list<Module*>::iterator item = modules.begin(); //RH
 			while (item != modules.end() && ret != false)
 			{
-				ret = (*item)->load(root.child((*item)->name.GetString()));
+				ret = (*item)->load(root.child((*item)->name.data()));
 				++item;
 			}
 			
@@ -332,7 +332,7 @@ bool App::loadGameNow()
 			if (ret == true)
 				LOG("...finished loading");
 			else
-				LOG("...loading process interrupted with error on module %s", (item != modules.end()) ? (*item)->name.GetString() : "unknown"); //RH
+				LOG("...loading process interrupted with error on module %s", (item != modules.end()) ? (*item)->name.data() : "unknown"); //RH
 		}
 		else
 			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
@@ -348,7 +348,7 @@ bool App::saveGameNow() const
 {
 	bool ret = true;
 
-	LOG("Saving Game State on %s...", save_game.GetString());
+	LOG("Saving Game State on %s...", save_game.data());
 
 	// Necesary elements from PugiXML
 	pugi::xml_document data;
@@ -359,7 +359,7 @@ bool App::saveGameNow() const
 	list<Module*>::const_iterator item = modules.begin(); //RH
 	while (item != modules.begin() && ret != false)
 	{
-		ret = (*item)->save(root.append_child((*item)->name.GetString()));
+		ret = (*item)->save(root.append_child((*item)->name.data()));
 	}
 
 	if (ret != false)
@@ -367,11 +367,11 @@ bool App::saveGameNow() const
 		std::stringstream stream;
 		data.save(stream);
 
-		fs->save(save_game.GetString(), stream.str().c_str(), stream.str().length());
-		LOG("... finishing saving %s.", save_game.GetString());
+		fs->save(save_game.data(), stream.str().c_str(), stream.str().length());
+		LOG("... finishing saving %s.", save_game.data());
 	}
 	else
-		LOG("Save process halted from an error in module %s", (item != modules.end()) ? (*item)->name.GetString() : "unknown"); //RH
+		LOG("Save process halted from an error in module %s", (item != modules.end()) ? (*item)->name.data() : "unknown"); //RH
 
 	data.reset();
 	want_to_save = false;

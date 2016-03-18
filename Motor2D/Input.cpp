@@ -9,7 +9,7 @@
 
 Input::Input() : Module()
 {
-	name.create("input");
+	name.insert(0,"input");
 
 	keyboard = new KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);

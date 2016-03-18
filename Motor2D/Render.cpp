@@ -6,7 +6,7 @@
 
 Render::Render() : Module()
 {
-	name.create("renderer");
+	name.insert(0,"renderer");
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;

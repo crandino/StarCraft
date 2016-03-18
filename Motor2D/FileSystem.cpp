@@ -2,10 +2,11 @@
 #include "p2Log.h"
 #include "SDL\include\SDL.h"
 #include "PhysFS\include\physfs.h"
+#include "p2Defs.h"
 
 FileSystem::FileSystem()
 {
-	name.create("file_system");
+	name.insert(0,"file_system");
 
 	// PHYSFS must be initialized before other modules awake,
 	// because it will be used by them.
@@ -102,9 +103,9 @@ bool FileSystem::removePath(const char *path_or_zip)
 	return ret;
 }
 
-uint FileSystem::load(const char* file, char **buffer) const
+int FileSystem::load(const char* file, char **buffer) const
 {
-	uint ret = 0;
+	int ret = 0;
 
 	PHYSFS_file *file_handle = PHYSFS_openRead(file);
 	if (file_handle != NULL)
@@ -112,7 +113,7 @@ uint FileSystem::load(const char* file, char **buffer) const
 		PHYSFS_sint64 size = PHYSFS_fileLength(file_handle);
 		if (size > 0)
 		{
-			*buffer = new char[(uint)size];
+			*buffer = new char[(int)size];
 			PHYSFS_sint64 bytes_readed = PHYSFS_read(file_handle, *buffer, 1, size);
 			if (bytes_readed != size)
 			{
@@ -120,7 +121,7 @@ uint FileSystem::load(const char* file, char **buffer) const
 				RELEASE(buffer);
 			}
 			else
-				ret = (uint)size;
+				ret = (int)size;
 		}
 
 		if (PHYSFS_close(file_handle) == 0)
@@ -134,7 +135,7 @@ SDL_RWops *FileSystem::load(const char *file) const
 {
 	SDL_RWops *ret = NULL;
 	char *buffer;
-	uint size = load(file, &buffer);
+	int size = load(file, &buffer);
 
 	if (size > 0)
 	{
@@ -153,9 +154,9 @@ int close_sdl_rwops(SDL_RWops *rw)
 	return 0;
 }
 
-uint FileSystem::save(const char *file, const char *buffer, uint size) const
+int FileSystem::save(const char *file, const char *buffer, int size) const
 {
-	uint ret = 0;
+	int ret = 0;
 
 	PHYSFS_file *file_handle = PHYSFS_openWrite(file);
 	if (file_handle != NULL)
@@ -164,7 +165,7 @@ uint FileSystem::save(const char *file, const char *buffer, uint size) const
 		if (bytes_written != size)
 			LOG("Failure on writing %s. Error: %s", file, PHYSFS_getLastError());
 		else
-			ret = (uint)size;
+			ret = (int)size;
 
 		if (PHYSFS_close(file_handle) == 0)
 			LOG("File System can not close file %s. Error: %s", file, PHYSFS_getLastError());

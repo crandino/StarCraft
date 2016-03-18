@@ -6,8 +6,10 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#include "p2SString.h"
+#include <string>
+//#include "p2SString.h"
 #include "PugiXml\src\pugixml.hpp"
+
 
 class App;
 
@@ -75,7 +77,7 @@ public:
 
 public:
 
-	p2SString	name;
+	std::string	    name;
 	bool		active;
 
 };

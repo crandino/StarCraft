@@ -20,9 +20,9 @@ public:
 	bool addSearchPath(const char *path_or_zip, const char *mount_point = NULL);
 	bool removeAllSearchPaths();
 	bool removePath(const char *path_or_zip);
-	uint load(const char* file, char **buffer) const;
+	int load(const char* file, char **buffer) const;
 	SDL_RWops *load(const char* file) const;
-	uint save(const char *file, const char *buffer, uint size) const;
+	int save(const char *file, const char *buffer, int size) const;
 
 	const char *getSaveDirectory() const;
 	bool isDirectory(const char *dir) const;

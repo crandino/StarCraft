@@ -7,6 +7,8 @@
 #include "PerfTimer.h"
 #include "PugiXml\src\pugixml.hpp"
 #include <list> //RH
+#include <string>
+#include "p2SString.h"
 
 using namespace std;
 
@@ -50,7 +52,7 @@ public:
 
 	void loadGame(const char *file);
 	void saveGame(const char *file) const;
-	void *getSaveGames(DList<p2SString> &list_saved_games) const;
+	void *getSaveGames(DList<string> &list_saved_games) const;
 	uint getFrameRate() const;
 
 private:
@@ -101,7 +103,7 @@ private:
 	bool				want_to_load;
 	mutable bool		want_to_save;
 	p2SString			load_game;
-	mutable p2SString	save_game;
+	mutable string	save_game;
 
 	Timer					timer;
 	PerfTimer		   perf_timer;
