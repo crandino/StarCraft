@@ -69,6 +69,7 @@
   <ItemGroup>
     <ClInclude Include="Motor2D\App.h" />
     <ClInclude Include="Motor2D\Audio.h" />
+    <ClInclude Include="Motor2D\Brofiler.h" />
     <ClInclude Include="Motor2D\DList.h" />
     <ClInclude Include="Motor2D\DynArray.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />

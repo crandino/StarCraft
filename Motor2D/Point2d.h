@@ -48,6 +48,19 @@ public:
 		return tmp;
 	}
 
+	Point2d operator -(void) const
+	{
+		return (Point2D(-x, -y));
+	}
+
+	const Point2d& operator *=(TYPE t)
+	{
+		x *= t;
+		y *= t;
+		return (*this);
+	}
+
+
 	const Point2d& operator+= (const Point2d &p)
 	{
 		x += p.x;
