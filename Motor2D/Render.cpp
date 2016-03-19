@@ -66,6 +66,8 @@ bool Render::preUpdate()
 
 bool Render::update(float dt)
 {
+	if (transition_active == true)
+		transition_active = transitioning();
 	return true;
 }
 
@@ -251,4 +253,38 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	}
 
 	return ret;
+}
+
+void Render::start_transition(iPoint dest_pos)
+{
+	transition_active = true;
+	this->dest_pos.set(-(dest_pos.x + camera.w / 2), -(dest_pos.y + camera.y / 2)); // Origin on upper_left corner
+	middle_pos.set((dest_pos.x + camera.x) / 2, (dest_pos.y + camera.y) / 2);
+	lerp_value = 0.0f;
+}
+
+bool Render::transitioning()
+{
+	bool ret = true;
+	iPoint curr_pos = { camera.x, camera.y };
+	float incr = 0.00001;
+	
+	
+	/*if (lerp_value < 1.0f) lerp_value += 0.00001;
+	LOG("%f", lerp_value);*/
+
+	if (curr_pos == dest_pos)
+		ret = false;
+	else
+	{
+		if (curr_pos == middle_pos)
+			incr = -incr;
+		lerp_value += incr;
+		
+		camera.x = (dest_pos.x * lerp_value) + ((1 - lerp_value) * curr_pos.x);
+		camera.y = (dest_pos.y * lerp_value) + ((1 - lerp_value) * curr_pos.y);
+	}
+
+	return ret;
+
 }

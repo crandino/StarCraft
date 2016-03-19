@@ -69,6 +69,10 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_KP_MINUS) == KEY_UP)
 		app->audio->volumeDown();
 
+	// Transition experiments
+	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+		app->render->start_transition({ 2000, 2000 });
+
 	app->map->draw();
 
 
