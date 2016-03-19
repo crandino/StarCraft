@@ -4,6 +4,9 @@
 #include "PhysFS\include\physfs.h"
 #include "p2Defs.h"
 
+#pragma comment(lib, "Motor2D/PhysFS/libx86/physfs.lib")
+
+
 FileSystem::FileSystem()
 {
 	name.insert(0,"file_system");
