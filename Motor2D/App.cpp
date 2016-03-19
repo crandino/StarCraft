@@ -289,6 +289,10 @@ const char* App::gerArgv(int index) const
 void App::loadGame(const char *file)
 {
 	want_to_load = true;
+	/*if (load_game.length() > 0)
+		load_game.erase();*/
+
+
 	load_game.create("%s%s", fs->getSaveDirectory(), file);
 	
 }
@@ -297,6 +301,10 @@ void App::saveGame(const char *file) const
 {
 	want_to_save = true;
 	//save_game.create("%s%s", fs->getSaveDirectory(), file);
+	if (save_game.length() > 0)
+	save_game.erase();
+
+
 	save_game.insert(0,file);
 }
 
