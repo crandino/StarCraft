@@ -47,12 +47,20 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	//Camera
+	void cursorCamera(float dt);
+
 public:
 
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+	//For Camera
+	int cursor_off_X;
+	int cursor_off_Y;
+
+	float scroll_speed;
 
 	// For transitions
 	bool			transition_active;

@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Window.h"
 #include "Render.h"
+#include "Input.h"
 
 Render::Render() : Module()
 {
@@ -44,7 +45,9 @@ bool Render::awake(pugi::xml_node &node)
 		camera.x = 0;
 		camera.y = 0;
 	}
-
+	//for Camera
+	cursor_off_X = cursor_off_Y = 50;
+	scroll_speed = 1.0f;
 	return ret;
 }
 
@@ -68,6 +71,8 @@ bool Render::update(float dt)
 {
 	if (transition_active == true)
 		transition_active = transitioning();
+	else
+		cursorCamera(dt);
 	return true;
 }
 
@@ -76,6 +81,54 @@ bool Render::postUpdate()
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
+}
+
+#pragma region Camera
+
+void Render::cursorCamera(float dt)
+{
+	Point2d<int> mouse_position;
+	app->input->getMousePosition(mouse_position);
+
+	//X
+	if (mouse_position.x <= 0 + cursor_off_X / 2 && camera.x < 0)
+	{
+		camera.x += (scroll_speed * 2 * dt);
+	}
+	else if (mouse_position.x <= 0 + cursor_off_X  && camera.x < 0)
+	{
+		camera.x += (scroll_speed * dt);
+	}
+
+	if (mouse_position.x >= camera.w - cursor_off_X / 2 && camera.x > camera.w - 6144)
+	{
+		camera.x -= (scroll_speed * 2 * dt);
+	}
+	else if (mouse_position.x >= camera.w - cursor_off_X && camera.x > camera.w - 6144)
+	{
+		camera.x -= (scroll_speed * dt);
+	}
+
+	//Y
+	if (mouse_position.y <= 0 + cursor_off_Y / 2 && camera.y < 0)
+	{
+		camera.y += (scroll_speed * 2 * dt);
+	}
+	else if (mouse_position.y <= 0 + cursor_off_Y && camera.y < 0)
+	{
+		camera.y += (scroll_speed * dt);
+	}
+
+
+	if (mouse_position.y >= camera.h - cursor_off_Y / 2 && camera.y > camera.h - 6144)
+	{
+		camera.y -= (scroll_speed * 2 * dt);
+	}
+	else if (mouse_position.y >= camera.h - cursor_off_Y && camera.y > camera.h - 6144)
+	{
+		camera.y -= (scroll_speed * dt);
+	}
+
 }
 
 // Called before quitting
@@ -279,6 +332,7 @@ bool Render::transitioning()
 	{
 		if (curr_pos == middle_pos)
 			incr = -incr;
+
 		lerp_value += incr;
 		
 		camera.x = (dest_pos.x * lerp_value) + ((1 - lerp_value) * curr_pos.x);
