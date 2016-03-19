@@ -3,9 +3,12 @@
 
 #include "Module.h"
 #include "DList.h"
+#include <list>
 
 struct SDL_Texture;
 struct SDL_Surface;
+
+using namespace std;
 
 class Textures : public Module
 {
@@ -33,7 +36,7 @@ public:
 
 public:
 
-	DList<SDL_Texture*>	textures;
+	list<SDL_Texture*>	textures;
 };
 
 

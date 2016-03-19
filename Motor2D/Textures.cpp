@@ -47,11 +47,10 @@ bool Textures::start()
 bool Textures::cleanUp()
 {
 	LOG("Freeing textures and Image library");
-	doubleNode<SDL_Texture*>* item;
-
-	for(item = textures.getFirst(); item != NULL; item = item->next)
+	list<SDL_Texture*>::reverse_iterator item = textures.rbegin();
+	for(item; item != textures.rend(); item++)
 	{
-		SDL_DestroyTexture(item->data);
+		SDL_DestroyTexture(*item);
 	}
 
 	textures.clear();
@@ -81,14 +80,14 @@ SDL_Texture* const Textures::loadTexture(const char* path)
 // Unload texture
 bool Textures::unloadTexture(SDL_Texture* texture)
 {
-	doubleNode<SDL_Texture*>* item;
+	list<SDL_Texture*>::iterator item = textures.begin();
 
-	for(item = textures.getFirst(); item != NULL; item = item->next)
+	for(item; item != textures.end(); item++)
 	{
-		if(texture == item->data)
+		if(texture == (*item))
 		{
-			SDL_DestroyTexture(item->data);
-			textures.del(item);
+			SDL_DestroyTexture(*item);
+			textures.remove(*item);
 			return true;
 		}
 	}
@@ -107,7 +106,7 @@ SDL_Texture* const Textures::LoadSurface(SDL_Surface* surface)
 	}
 	else
 	{
-		textures.add(texture);
+		textures.push_back(texture);
 	}
 
 	return texture;
