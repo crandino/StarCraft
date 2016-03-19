@@ -14,6 +14,7 @@ public:
 	FileSystem();
 	~FileSystem();
 
+
 	bool awake(pugi::xml_node &node);
 	bool cleanUp();
 

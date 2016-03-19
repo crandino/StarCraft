@@ -86,6 +86,7 @@ bool FileSystem::removeAllSearchPaths()
 
 	PHYSFS_freeList(paths);
 
+
 	return ret;
 }
 

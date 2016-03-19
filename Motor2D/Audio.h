@@ -2,11 +2,14 @@
 #define __AUDIO_H__
 
 #include "Module.h"
+#include <list>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
 struct _Mix_Music;
 struct Mix_Chunk;
+
+using namespace std;
 
 class Audio : public Module
 {
@@ -43,7 +46,7 @@ public:
 private:
 
 	_Mix_Music*			music;
-	DList<Mix_Chunk*>	fx;
+	list<Mix_Chunk*>	fx;
 };
 
 #endif // __AUDIO_H__

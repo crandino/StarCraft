@@ -52,7 +52,7 @@ public:
 
 	void loadGame(const char *file);
 	void saveGame(const char *file) const;
-	void *getSaveGames(DList<string> &list_saved_games) const;
+	void *getSaveGames(list<string> &list_saved_games) const;
 	uint getFrameRate() const;
 
 private:

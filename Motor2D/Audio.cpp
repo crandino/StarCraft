@@ -68,9 +68,10 @@ bool Audio::cleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	doubleNode<Mix_Chunk*>* item;
-	for(item = fx.getFirst(); item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
+	list<Mix_Chunk*>::iterator item = fx.begin();
+
+	for(item; item != fx.end(); item++)
+		Mix_FreeChunk((*item));
 
 	fx.clear();
 
@@ -153,8 +154,8 @@ unsigned int Audio::loadFx(const char* path)
 	}
 	else
 	{
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;
@@ -168,9 +169,9 @@ bool Audio::playFx(unsigned int id, int repeat)
 	if(!active)
 		return false;
 
-	if(id > 0 && id <= fx.count())
+	if(id > 0 && id <= fx.size())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		//Mix_PlayChannel(-1, fx[id - 1], repeat); //Error a resoldre
 	}
 
 	return ret;
