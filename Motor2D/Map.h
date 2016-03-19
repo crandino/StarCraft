@@ -2,10 +2,12 @@
 #define __MAP_H__
 
 #include "PugiXml/src/pugixml.hpp"
-#include "DList.h"
 #include "Point2D.h"
 #include "Module.h"
 #include <string>
+#include <list>
+
+using namespace std;
 
 // ----------------------------------------------------
 struct Properties
@@ -18,16 +20,15 @@ struct Properties
 
 	~Properties()
 	{
-		doubleNode<Property*>* item;
-		item = list.getFirst();
+		list<Property*>::reverse_iterator item = listProperties.rbegin();
 
-		while(item != NULL)
+		while(item != listProperties.rend())
 		{
-			RELEASE(item->data);
-			item = item->next;
+			RELEASE(*item);
+			item++;
 		}
 
-		list.clear();
+		listProperties.clear();
 	}
 
 	int get(const char* name, int default_value = 0) const;
@@ -35,7 +36,7 @@ struct Properties
 	bool getPropertyValue(const char* name, int default_value);
 
 
-	DList<Property*>	list;
+	list<Property*>	listProperties;
 };
 
 // ----------------------------------------------------
@@ -97,8 +98,8 @@ struct MapData
 	int					tile_height;
 	SDL_Color			background_color;
 	MapTypes			type;
-	DList<TileSet*>	tilesets;
-	DList<MapLayer*>	layers;
+	list<TileSet*>	tilesets;
+	list<MapLayer*>	layers;
 };
 
 // ----------------------------------------------------

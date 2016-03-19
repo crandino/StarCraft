@@ -2,7 +2,6 @@
 #define __TEXTURES_H__
 
 #include "Module.h"
-#include "DList.h"
 #include <list>
 
 struct SDL_Texture;

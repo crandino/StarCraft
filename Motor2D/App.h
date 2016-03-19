@@ -1,7 +1,6 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-#include "DList.h"
 #include "Module.h"
 #include "Timer.h"
 #include "PerfTimer.h"

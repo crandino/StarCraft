@@ -31,12 +31,11 @@ void Map::draw()
 {
 	if(map_loaded == false)
 		return;
+	list<MapLayer*>::iterator item = data.layers.begin();
 
-	doubleNode<MapLayer*>* item = data.layers.getFirst();
-
-	for(; item != NULL; item = item->next)
+	for(; item != data.layers.end(); item++)
 	{
-		MapLayer* layer = item->data;
+		MapLayer* layer = (*item);
 
 		if(layer->properties.get("Nodraw") != 0)
 			continue;
@@ -70,13 +69,13 @@ void Map::draw()
 
 int Properties::get(const char* value, int default_value) const
 {
-	doubleNode<Property*>* item = list.getFirst();
-
-	while(item)
+	list<Property*>::const_iterator item = listProperties.begin();
+	
+	while(item != listProperties.end())
 	{
-		if(item->data->name == value)
-			return item->data->value;
-		item = item->next;
+		if((*item)->name == value)
+			return (*item)->value;
+		item++;
 	}
 
 	return default_value;
@@ -84,17 +83,17 @@ int Properties::get(const char* value, int default_value) const
 
 bool Properties::setPropertyValue(const char* name, int default_value)
 {
-	doubleNode<Property*>* item = list.getFirst();
+	list<Property*>::iterator item = listProperties.begin();
 
-	while (item)
+	while (item != listProperties.end())
 	{
-		if (item->data->name == name)
+		if ((*item)->name == name)
 		{
-			item->data->value = default_value;
+			(*item)->value = default_value;
 			return true;
 		}
 
-		item = item->next;
+		item++;
 	}
 
 	return false;
@@ -102,13 +101,13 @@ bool Properties::setPropertyValue(const char* name, int default_value)
 
 bool Map::setLayerProperty( char* name_layer, const char* name_property, int value)
 {
-	doubleNode<MapLayer*>* layer = data.layers.getFirst();
+	list<MapLayer*>::iterator layer = data.layers.begin();
 
-	for (layer; layer != NULL; layer = layer->next)
+	for (layer; layer != data.layers.end(); layer++)
 	{
-		if (layer->data->name == name_layer)
+		if ((*layer)->name == name_layer)
 		{
-			layer->data->properties.setPropertyValue(name_property, value);
+			(*layer)->properties.setPropertyValue(name_property, value);
 			return true;
 		}
 	}
@@ -118,18 +117,18 @@ bool Map::setLayerProperty( char* name_layer, const char* name_property, int val
 
 TileSet* Map::getTilesetFromTileId(int id) const
 {
-	doubleNode<TileSet*>* item = data.tilesets.getFirst();
-	TileSet* set = item->data;
+	list<TileSet>::pointer item = data.tilesets.front();
+	TileSet* set = (item);
 
-	while(item)
+	while(item != data.tilesets.back())
 	{
-		if(id < item->data->firstgid)
+		if(id < (item)->firstgid)
 		{
-			set = item->previous->data;
+			set = (item); // no estic segur, aqui feia un node->previous->data
 			break;
 		}
-		set = item->data;
-		item = item->next;
+		set = (item);
+		item++;
 	}
 
 	return set;
@@ -210,24 +209,23 @@ bool Map::cleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	doubleNode<TileSet*>* item;
-	item = data.tilesets.getFirst();
+	list<TileSet*>::iterator item = data.tilesets.begin();
 
-	while(item != NULL)
+	while(item != data.tilesets.end())
 	{
-		RELEASE(item->data);
-		item = item->next;
+		RELEASE(*item);
+		item++;
 	}
 	data.tilesets.clear();
 
 	// Remove all layers
-	doubleNode<MapLayer*>* item2;
-	item2 = data.layers.getFirst();
 
-	while(item2 != NULL)
+	list<MapLayer*>::iterator item2 = data.layers.begin();
+
+	while(item2 != data.layers.end())
 	{
-		RELEASE(item2->data);
-		item2 = item2->next;
+		RELEASE(*item2);
+		item2++;
 	}
 	data.layers.clear();
 
@@ -277,7 +275,7 @@ bool Map::load(const char* file_name)
 			ret = loadTilesetImage(tileset, set);
 		}
 
-		data.tilesets.add(set);
+		data.tilesets.push_back(set);
 	}
 
 	// Load layer info ----------------------------------------------
@@ -289,7 +287,7 @@ bool Map::load(const char* file_name)
 		ret = loadLayer(layer, lay);
 
 		if(ret == true)
-			data.layers.add(lay);
+			data.layers.push_back(lay);
 	}
 
 	if(ret == true)
@@ -298,25 +296,26 @@ bool Map::load(const char* file_name)
 		LOG("width: %d height: %d", data.width, data.height);
 		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
 
-		doubleNode<TileSet*>* item = data.tilesets.getFirst();
-		while(item != NULL)
+		list<TileSet*>::iterator item = data.tilesets.begin();
+		
+		while(item != data.tilesets.end())
 		{
-			TileSet* s = item->data;
+			TileSet* s = (*item);
 			LOG("Tileset ----");
 			LOG("name: %s firstgid: %d", s->name.data(), s->firstgid);
 			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
-			item = item->next;
+			item++;
 		}
 
-		doubleNode<MapLayer*>* item_layer = data.layers.getFirst();
-		while(item_layer != NULL)
+		list<MapLayer*>::iterator item_layer = data.layers.begin();
+		while(item_layer != data.layers.end())
 		{
-			MapLayer* l = item_layer->data;
+			MapLayer* l = (*item_layer);
 			LOG("Layer ----");
 			LOG("name: %s", l->name.data());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
-			item_layer = item_layer->next;
+			item_layer++;
 		}
 	}
 
@@ -501,7 +500,7 @@ bool Map::loadProperties(pugi::xml_node& node, Properties& properties)
 			p->name = prop.attribute("name").as_string();
 			p->value = prop.attribute("value").as_int();
 
-			properties.list.add(p);
+			properties.listProperties.push_back(p);
 		}
 	}
 
@@ -511,12 +510,12 @@ bool Map::loadProperties(pugi::xml_node& node, Properties& properties)
 bool Map::createWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;
-	doubleNode<MapLayer*>* item;
-	item = data.layers.getFirst();
+	
+	list<MapLayer*>::const_iterator item = data.layers.begin();
 
-	for(item = data.layers.getFirst(); item != NULL; item = item->next)
+	for(item; item != data.layers.end(); item++)
 	{
-		MapLayer* layer = item->data;
+		MapLayer* layer = (*item);
 
 		if(layer->properties.get("Navigation", 0) == 0)
 			continue;
