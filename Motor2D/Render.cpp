@@ -46,7 +46,7 @@ bool Render::awake(pugi::xml_node &node)
 		camera.y = 0;
 	}
 	//for Camera
-	cursor_off_X = cursor_off_Y = 50;
+	cursor_off_X = cursor_off_Y = 100;
 	scroll_speed = 1.0f;
 	return ret;
 }
@@ -91,40 +91,40 @@ void Render::cursorCamera(float dt)
 	app->input->getMousePosition(mouse_position);
 
 	//X
-	if (mouse_position.x <= 0 + cursor_off_X / 2 && camera.x < 0)
+	if (mouse_position.x <= 0 + cursor_off_X/2 && camera.x < -1)
 	{
 		camera.x += (scroll_speed * 2 * dt);
 	}
-	else if (mouse_position.x <= 0 + cursor_off_X  && camera.x < 0)
+	else if (mouse_position.x <= 0 + cursor_off_X  && camera.x < -1)
 	{
 		camera.x += (scroll_speed * dt);
 	}
 
-	if (mouse_position.x >= camera.w - cursor_off_X / 2 && camera.x > camera.w - 6144)
+	if (mouse_position.x >= camera.w - cursor_off_X/2 && camera.x > camera.w - 6143)
 	{
 		camera.x -= (scroll_speed * 2 * dt);
 	}
-	else if (mouse_position.x >= camera.w - cursor_off_X && camera.x > camera.w - 6144)
+	else if (mouse_position.x >= camera.w - cursor_off_X && camera.x > camera.w - 6143)
 	{
 		camera.x -= (scroll_speed * dt);
 	}
 
 	//Y
-	if (mouse_position.y <= 0 + cursor_off_Y / 2 && camera.y < 0)
+	if (mouse_position.y <= 0 + cursor_off_Y/2 && camera.y < -1)
 	{
 		camera.y += (scroll_speed * 2 * dt);
 	}
-	else if (mouse_position.y <= 0 + cursor_off_Y && camera.y < 0)
+	else if (mouse_position.y <= 0 + cursor_off_Y && camera.y < -1)
 	{
 		camera.y += (scroll_speed * dt);
 	}
 
 
-	if (mouse_position.y >= camera.h - cursor_off_Y / 2 && camera.y > camera.h - 6144)
+	if (mouse_position.y >= camera.h - cursor_off_Y/2 && camera.y > camera.h - 6143)
 	{
 		camera.y -= (scroll_speed * 2 * dt);
 	}
-	else if (mouse_position.y >= camera.h - cursor_off_Y && camera.y > camera.h - 6144)
+	else if (mouse_position.y >= camera.h - cursor_off_Y && camera.y > camera.h - 6143)
 	{
 		camera.y -= (scroll_speed * dt);
 	}

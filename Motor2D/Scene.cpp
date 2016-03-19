@@ -51,7 +51,7 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_K) == KEY_DOWN)
 		app->saveGame("save_game.xml");*/
 
-	if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	/* (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += cam_speed;
 
 	if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -61,7 +61,7 @@ bool Scene::update(float dt)
 		app->render->camera.x += cam_speed;
 
 	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= cam_speed;
+		app->render->camera.x -= cam_speed;*/
 
 	if (app->input->getKey(SDL_SCANCODE_KP_PLUS) == KEY_UP)
 		app->audio->volumeUp();
