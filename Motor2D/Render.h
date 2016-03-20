@@ -48,7 +48,7 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 	//Camera
-	void cursorCamera(float dt);
+	void moveCamera(float dt);
 
 public:
 
@@ -57,8 +57,9 @@ public:
 	SDL_Rect		viewport;
 	SDL_Color		background;
 	//For Camera
-	int cursor_off_X;
-	int cursor_off_Y;
+	
+	iPoint cursor_offset;
+	iPoint map_limits;
 
 	float scroll_speed;
 
