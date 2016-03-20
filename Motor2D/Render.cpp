@@ -47,11 +47,6 @@ bool Render::awake(pugi::xml_node &node)
 		camera.y = 0;
 	}
 
-	// Camera offset movement activation
-	uint w, h; app->win->getWindowSize(w, h);
-	cursor_offset.x = (w * 0.1f) + 2; // 10% of map width plus 2 pixel
-	cursor_offset.y = (h * 0.1f) + 2; // 10% of map height plus 2 pixel
-	scroll_speed = 1.0f;
 	return ret;
 }
 
@@ -62,8 +57,14 @@ bool Render::start()
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 
+	// Camera offset movement activation
+	uint w, h; app->win->getWindowSize(w, h);
+	cursor_offset.x = (w * 0.1f); // 10% of map width
+	cursor_offset.y = (h * 0.1f); // 10% of map height
+	scroll_speed = 1.0f;
+
 	map_limits = { app->map->data.width * app->map->data.tile_width,
-				   app->map->data.height * app->map->data.tile_height };
+				   app->map->data.height * app->map->data.tile_height};
 
 	return true;
 }
@@ -92,6 +93,7 @@ bool Render::postUpdate()
 	return true;
 }
 
+// MoveCamera check where the mouse is and acts accordingly, moving the map on that direction.
 void Render::moveCamera(float dt)
 {
 	iPoint mouse_position;
@@ -99,33 +101,34 @@ void Render::moveCamera(float dt)
 
 	// Two zones are implemented. The inner one, near the center, has a specific velocity.
 	// The outer one, near the window frame, has double velocity than the previous one.
+	int map_displacement = scroll_speed * dt;
 
 	// Checking displacement for X axis.
-	if (mouse_position.x < cursor_offset.x && camera.x < 0)
+	if (mouse_position.x < cursor_offset.x) // Left
 	{
-		camera.x += scroll_speed * dt;
+		camera.x += (camera.x + map_displacement <= 0 ? map_displacement : 0);
 		if (mouse_position.x < cursor_offset.x / 2)
-			camera.x += scroll_speed * dt;
+			camera.x += (camera.x + map_displacement <= 0 ? map_displacement : 0);
 	}
-	else if (mouse_position.x >(camera.w - cursor_offset.x) && camera.x > camera.w - map_limits.x)
+	else if (mouse_position.x > (camera.w - cursor_offset.x)) // Right
 	{
-		camera.x -= scroll_speed * dt;
-		if (mouse_position.x >(camera.w - cursor_offset.x / 2))
-			camera.x -= scroll_speed * dt;
+		camera.x -= (camera.x - map_displacement >= camera.w - map_limits.x ? map_displacement : 0);
+		if (mouse_position.x > (camera.w - cursor_offset.x / 2))
+			camera.x -= (camera.x - map_displacement >= camera.w - map_limits.x ? map_displacement : 0);
 	}
 
 	// Checking displacement for Y axis.
-	if (mouse_position.y < cursor_offset.y && camera.y < 0)
+	if (mouse_position.y < cursor_offset.y) // Up
 	{
-		camera.y += scroll_speed * dt;
+		camera.y += (camera.y + map_displacement <= 0 ? map_displacement : 0);
 		if (mouse_position.y < cursor_offset.y / 2)
-			camera.y += 2 * scroll_speed * dt;
+			camera.y += (camera.y + map_displacement <= 0 ? map_displacement : 0);
 	}
-	else if (mouse_position.y > (camera.h - cursor_offset.y) && camera.y > camera.h - map_limits.y)
+	else if (mouse_position.y > (camera.h - cursor_offset.y)) // Down
 	{
-		camera.y -= scroll_speed * dt;
-		if (mouse_position.y >(camera.h - cursor_offset.y / 2))
-			camera.y -= 2 * scroll_speed * dt;
+		camera.y -= (camera.y - map_displacement >= camera.h - map_limits.y ? map_displacement : 0);
+		if (mouse_position.y > (camera.h - cursor_offset.y / 2))
+			camera.y -= (camera.y - map_displacement >= camera.h - map_limits.y ? map_displacement : 0);
 	}
 }
 
