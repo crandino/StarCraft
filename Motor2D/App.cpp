@@ -47,7 +47,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 App::~App()
 {
 	// release modules
-	list<Module*>::reverse_iterator item = modules.rbegin(); //RH
+	list<Module*>::reverse_iterator item = modules.rbegin(); 
 
 	while (item != modules.rend())
 	{
@@ -62,7 +62,7 @@ App::~App()
 void App::addModule(Module* module)
 {
 	module->init();
-	modules.push_back(module); //RH
+	modules.push_back(module); 
 }
 
 pugi::xml_node App::loadConfig(pugi::xml_document& config_file) const
@@ -93,7 +93,7 @@ bool App::awake()
 
 	frame_rate = config_node.child("app").attribute("framerate").as_int(0);
 
-	list<Module*>::iterator item = modules.begin(); //RH
+	list<Module*>::iterator item = modules.begin(); 
 
 	while(item != modules.end() && ret == true)
 	{
@@ -119,7 +119,7 @@ bool App::start()
 	total_time.start();
 
 	bool ret = true;
-	list<Module*>::iterator item = modules.begin(); //RH
+	list<Module*>::iterator item = modules.begin(); 
 
 	while(item != modules.end() && ret == true)
 	{
@@ -208,7 +208,7 @@ void App::finishUpdate()
 bool App::preUpdate()
 {
 	bool ret = true;
-	list<Module*>::iterator item = modules.begin(); //RH
+	list<Module*>::iterator item = modules.begin(); 
 
 	while (item != modules.end() && ret == true)
 	{
@@ -225,7 +225,7 @@ bool App::preUpdate()
 bool App::doUpdate()
 {
 	bool ret = true;
-	list<Module*>::iterator item = modules.begin(); //RH
+	list<Module*>::iterator item = modules.begin(); 
 
 	while (item != modules.end() && ret == true)
 	{
@@ -242,7 +242,7 @@ bool App::doUpdate()
 bool App::postUpdate()
 {
 	bool ret = true;
-	list<Module*>::iterator item = modules.begin(); //RH
+	list<Module*>::iterator item = modules.begin(); 
 
 	while (item != modules.end() && ret == true)
 	{
@@ -259,7 +259,7 @@ bool App::postUpdate()
 bool App::cleanUp()
 {
 	bool ret = true;
-	list<Module*>::reverse_iterator item = modules.rbegin(); //RH
+	list<Module*>::reverse_iterator item = modules.rbegin(); 
 
 	while(item != modules.rend() && ret == true)
 	{
@@ -292,9 +292,9 @@ void App::loadGame(const char *file)
 	/*if (load_game.length() > 0)
 		load_game.erase();*/
 
-
-	load_game.create("%s%s", fs->getSaveDirectory(), file);
-	
+	char dir[512]; 
+	sprintf_s(dir, "%s%s", fs->getSaveDirectory(), file);
+	load_game.assign(dir);
 }
 
 void App::saveGame(const char *file) const
@@ -313,7 +313,7 @@ bool App::loadGameNow()
 	bool ret = true;
 
 	char *buffer;
-	uint size = fs->load(load_game.GetString(), &buffer);
+	uint size = fs->load(load_game.data(), &buffer);
 
 	if (size > 0)
 	{
@@ -326,10 +326,10 @@ bool App::loadGameNow()
 
 		if (result != NULL)
 		{
-			LOG("Loading new Game State from %s...", load_game.GetString());
+			LOG("Loading new Game State from %s...", load_game.data());
 			root = data.child("game_state");
 
-			list<Module*>::iterator item = modules.begin(); //RH
+			list<Module*>::iterator item = modules.begin(); 
 			while (item != modules.end() && ret != false)
 			{
 				ret = (*item)->load(root.child((*item)->name.data()));
@@ -340,13 +340,13 @@ bool App::loadGameNow()
 			if (ret == true)
 				LOG("...finished loading");
 			else
-				LOG("...loading process interrupted with error on module %s", (item != modules.end()) ? (*item)->name.data() : "unknown"); //RH
+				LOG("...loading process interrupted with error on module %s", (item != modules.end()) ? (*item)->name.data() : "unknown"); 
 		}
 		else
-			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
+			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.data(), result.description());
 	}
 	else
-		LOG("Could not load game state xml file %s", load_game.GetString());
+		LOG("Could not load game state xml file %s", load_game.data());
 
 	want_to_load = false;
 	return ret;
@@ -364,7 +364,7 @@ bool App::saveGameNow() const
 
 	root = data.append_child("game_state");
 
-	list<Module*>::const_iterator item = modules.begin(); //RH
+	list<Module*>::const_iterator item = modules.begin(); 
 	while (item != modules.begin() && ret != false)
 	{
 		ret = (*item)->save(root.append_child((*item)->name.data()));
@@ -379,7 +379,7 @@ bool App::saveGameNow() const
 		LOG("... finishing saving %s.", save_game.data());
 	}
 	else
-		LOG("Save process halted from an error in module %s", (item != modules.end()) ? (*item)->name.data() : "unknown"); //RH
+		LOG("Save process halted from an error in module %s", (item != modules.end()) ? (*item)->name.data() : "unknown"); 
 
 	data.reset();
 	want_to_save = false;

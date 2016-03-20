@@ -5,9 +5,8 @@
 #include "Timer.h"
 #include "PerfTimer.h"
 #include "PugiXml\src\pugixml.hpp"
-#include <list> //RH
+#include <list> 
 #include <string>
-#include "p2SString.h"
 
 using namespace std;
 
@@ -94,15 +93,15 @@ public:
 
 private:
 
-	list<Module*>		modules;  //RH
+	list<Module*>		modules;  
 	
 	int					argc;
 	char**				args;
 
 	bool				want_to_load;
 	mutable bool		want_to_save;
-	p2SString			load_game;
-	mutable string	save_game;
+	string				load_game;
+	mutable string		save_game;
 
 	Timer					timer;
 	PerfTimer		   perf_timer;

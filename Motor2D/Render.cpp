@@ -320,8 +320,7 @@ bool Render::transitioning()
 {
 	bool ret = true;
 	iPoint curr_pos = { camera.x, camera.y };
-	float incr = 0.00001;
-	
+	float incr = 0.00001;	
 	
 	/*if (lerp_value < 1.0f) lerp_value += 0.00001;
 	LOG("%f", lerp_value);*/

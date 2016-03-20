@@ -43,12 +43,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Motor2D\DList.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\DynArray.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Motor2D\Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -56,9 +50,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\PerfTimer.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\p2SString.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\p2Log.h">

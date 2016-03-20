@@ -45,11 +45,11 @@ bool Scene::update(float dt)
 {
 	float cam_speed = 1.0f;
 
-	/*if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 		app->loadGame("save_game.xml");
 
 	if (app->input->getKey(SDL_SCANCODE_K) == KEY_DOWN)
-		app->saveGame("save_game.xml");*/
+		app->saveGame("save_game.xml");
 
 	/* (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += cam_speed;

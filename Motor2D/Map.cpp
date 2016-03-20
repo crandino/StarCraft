@@ -239,10 +239,12 @@ bool Map::cleanUp()
 bool Map::load(const char* file_name)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.data(), file_name);
+	char c[512];
+	sprintf_s(c, "%s%s", folder.data(), file_name);
+	string tmp; tmp.assign(c);
 
 	char* buf;
-	int size = app->fs->load(tmp.GetString(), &buf);
+	int size = app->fs->load(tmp.data(), &buf);
 	pugi::xml_parse_result result = map_file.load_buffer(buf, size);
 
 	RELEASE(buf);
@@ -341,33 +343,33 @@ bool Map::loadMap()
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		string bg_color(map.attribute("backgroundcolor").as_string());
 
 		data.background_color.r = 0;
 		data.background_color.g = 0;
 		data.background_color.b = 0;
 		data.background_color.a = 0;
 
-		if(bg_color.Length() > 0)
+		if(bg_color.length() > 0)
 		{
-			p2SString red, green, blue;
-			bg_color.SubString(1, 2, red);
-			bg_color.SubString(3, 4, green);
-			bg_color.SubString(5, 6, blue);
-
+			string red, green, blue;
+			red = bg_color.substr(1, 2);
+			green = bg_color.substr(3, 4);
+			blue = bg_color.substr(5, 6);
+			
 			int v = 0;
 
-			sscanf_s(red.GetString(), "%x", &v);
+			sscanf_s(red.data(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.r = v;
 
-			sscanf_s(green.GetString(), "%x", &v);
+			sscanf_s(green.data(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.g = v;
 
-			sscanf_s(blue.GetString(), "%x", &v);
+			sscanf_s(blue.data(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
 
-		p2SString orientation(map.attribute("orientation").as_string());
+		string orientation(map.attribute("orientation").as_string());
 
 		if(orientation == "orthogonal")
 		{

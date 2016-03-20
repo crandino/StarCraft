@@ -70,8 +70,6 @@
     <ClInclude Include="Motor2D\App.h" />
     <ClInclude Include="Motor2D\Audio.h" />
     <ClInclude Include="Motor2D\Brofiler.h" />
-    <ClInclude Include="Motor2D\DList.h" />
-    <ClInclude Include="Motor2D\DynArray.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
@@ -79,7 +77,6 @@
     <ClInclude Include="Motor2D\Module.h" />
     <ClInclude Include="Motor2D\p2Defs.h" />
     <ClInclude Include="Motor2D\p2Log.h" />
-    <ClInclude Include="Motor2D\p2SString.h" />
     <ClInclude Include="Motor2D\PerfTimer.h" />
     <ClInclude Include="Motor2D\Point2d.h" />
     <ClInclude Include="Motor2D\PugiXml\src\pugiconfig.hpp" />
