@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="left-down" width="64" height="96" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" name="TEST_Map" tilewidth="32" tileheight="32" tilecount="6144">
+ <tileset firstgid="1" name="TEST_Map" tilewidth="32" tileheight="32" tilecount="6144" columns="64">
   <image source="TEST_Map.png" width="2048" height="3072"/>
  </tileset>
  <layer name="Map_Layer" width="64" height="96">

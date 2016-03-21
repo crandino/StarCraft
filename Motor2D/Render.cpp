@@ -63,8 +63,8 @@ bool Render::start()
 	cursor_offset.y = (h * 0.1f); // 10% of map height
 	scroll_speed = 1.0f;
 
-	map_limits = { app->map->data.width * app->map->data.tile_width,
-				   app->map->data.height * app->map->data.tile_height};
+	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
+		app->map->data.front().height * app->map->data.front().tile_height };
 
 	return true;
 }

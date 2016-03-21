@@ -31,40 +31,48 @@ void Map::draw()
 {
 	if(map_loaded == false)
 		return;
-
-	list<MapLayer*>::iterator item = data.layers.begin();
-	for(; item != data.layers.end(); item++)
+	
+	// Maps to draw
+	list<MapData>::iterator map_to_draw = data.begin();
+	while (map_to_draw != data.end())
 	{
-		MapLayer* layer = *item;
-
-		if(layer->properties.get("NoDraw") != 0)
-			continue;
-
-		// Camera-culling: Render only blits what camera is showing.
-		iPoint initial_tile = app->map->worldToMap(-app->render->camera.x, -app->render->camera.y);
-		iPoint final_tile = app->map->worldToMap(-app->render->camera.x + app->render->camera.w, -app->render->camera.y + app->render->camera.h);
-
-		iPoint blit_position = initial_tile;
-
-		for (int y = initial_tile.y; y <= final_tile.y; ++y)
+		// For each map, we iterate each layer of this map
+		list<MapLayer*>::iterator item = map_to_draw->layers.begin();
+		for (; item != map_to_draw->layers.end(); item++)
 		{
-			blit_position.x = initial_tile.x;
-			for (int x = initial_tile.x; x <= final_tile.x; ++x)
-			{
-				int tile_id = layer->get(x, y);
-				if(tile_id > 0)
-				{
-					TileSet* tileset = getTilesetFromTileId(tile_id);   // Tileset for this tile_id
-					SDL_Rect r = tileset->getTileRect(tile_id);			// Section of the tile within the tileset
+			MapLayer* layer = *item;
+			if (layer->properties.get("NoDraw") != 0)
+				continue;
 
-					iPoint pos = mapToWorld(blit_position.x, blit_position.y);
-					app->render->blit(tileset->texture, pos.x, pos.y, &r);						
+			// Camera-culling: Render only blits what camera is showing.
+			iPoint initial_tile = app->map->worldToMap(*map_to_draw ,- app->render->camera.x, -app->render->camera.y);
+			iPoint final_tile = app->map->worldToMap(*map_to_draw ,- app->render->camera.x + app->render->camera.w, -app->render->camera.y + app->render->camera.h);
+
+			iPoint blit_position = initial_tile;
+
+			for (int y = initial_tile.y; y <= final_tile.y; ++y)
+			{
+				blit_position.x = initial_tile.x;
+				for (int x = initial_tile.x; x <= final_tile.x; ++x)
+				{
+					int tile_id = layer->get(x, y);
+					if (tile_id > 0)
+					{
+						TileSet* tileset = getTilesetFromTileId(*map_to_draw, tile_id);   // Tileset for this tile_id
+						SDL_Rect r = tileset->getTileRect(tile_id);		// Section of the tile within the tileset
+
+						iPoint pos = mapToWorld(*map_to_draw, blit_position.x, blit_position.y);
+						app->render->blit(tileset->texture, pos.x, pos.y, &r);
+					}
+					blit_position.x++;
 				}
-				blit_position.x++;
+				blit_position.y++;
 			}
-			blit_position.y++;
 		}
+		++map_to_draw;
 	}
+
+	
 }
 
 int Properties::get(const char* value, int default_value) const
@@ -85,7 +93,6 @@ bool Properties::setPropertyValue(const char* name, int default_value)
 {
 	list<Property*>::iterator item = listProperties.begin();
 
-	
 	for (item; item != listProperties.end(); item++)
 	{
 		if ((*item)->name == name)
@@ -98,28 +105,36 @@ bool Properties::setPropertyValue(const char* name, int default_value)
 	return false;
 }
 
-bool Map::setLayerProperty( char* name_layer, const char* name_property, int value)
+bool Map::setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value)
 {
-	list<MapLayer*>::iterator layer = data.layers.begin();
-
-	for (layer; layer != data.layers.end(); layer++)
+	list<MapData>::iterator map = data.begin();
+	while (map != data.end())
 	{
-		if ((*layer)->name == name_layer)
+		if (map->name == map_name)
 		{
-			(*layer)->properties.setPropertyValue(name_property, value);
-			return true;
+			list<MapLayer*>::iterator layer = map->layers.begin();
+			while (layer != map->layers.end())
+			{
+				if ((*layer)->name == layer_name)
+				{
+					(*layer)->properties.setPropertyValue(property_name, value);
+					return true;
+				}
+				++layer;
+			}
 		}
+		++map;
 	}
 
 	return false;
 }
 
-TileSet* Map::getTilesetFromTileId(int id) const
+TileSet* Map::getTilesetFromTileId(MapData &map, int id) const
 {
-	list<TileSet>::pointer item = data.tilesets.front();
+	list<TileSet>::pointer item = map.tilesets.front();
 	TileSet* set = (item);
 
-	while(item != data.tilesets.back())
+	while(item != map.tilesets.back())
 	{
 		if(id < (item)->firstgid)
 		{
@@ -134,19 +149,19 @@ TileSet* Map::getTilesetFromTileId(int id) const
 	return set;
 }
 
-iPoint Map::mapToWorld(int x, int y) const
+iPoint Map::mapToWorld(MapData &map, int x, int y) const
 {
 	iPoint ret;
 
-	if(data.type == MAPTYPE_ORTHOGONAL)
+	if(map.type == MAPTYPE_ORTHOGONAL)
 	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
+		ret.x = x * map.tile_width;
+		ret.y = y * map.tile_height;
 	}
-	else if(data.type == MAPTYPE_ISOMETRIC)
+	else if(map.type == MAPTYPE_ISOMETRIC)
 	{
-		ret.x = (x - y) * (data.tile_width * 0.5f);
-		ret.y = (x + y) * (data.tile_height * 0.5f);
+		ret.x = (x - y) * (map.tile_width * 0.5f);
+		ret.y = (x + y) * (map.tile_height * 0.5f);
 	}
 	else
 	{
@@ -157,29 +172,29 @@ iPoint Map::mapToWorld(int x, int y) const
 	return ret;
 }
 
-iPoint Map::worldToMap(int x, int y) const
+iPoint Map::worldToMap(MapData &map, int x, int y) const
 {
 	iPoint ret(0,0);
 
-	if(data.type == MAPTYPE_ORTHOGONAL)
+	if (map.type == MAPTYPE_ORTHOGONAL)
 	{
-		ret.x = x / data.tile_width;
+		ret.x = x / map.tile_width;
 		if (ret.x < 0)
 			ret.x = 0;
-		else if (ret.x > data.width - 1)
-			ret.x = data.width - 1;
+		else if (ret.x > map.width - 1)
+			ret.x = map.width - 1;
 
-		ret.y = y / data.tile_height;
+		ret.y = y / map.tile_height;
 		if (ret.y < 0)
 			ret.y = 0;
-		else if (ret.y > data.height - 1)
-			ret.y = data.height - 1;
+		else if (ret.y > map.height - 1)
+			ret.y = map.height - 1;
 	}
-	else if(data.type == MAPTYPE_ISOMETRIC)
+	else if (map.type == MAPTYPE_ISOMETRIC)
 	{
 		
-		float half_width = data.tile_width * 0.5f;
-		float half_height = data.tile_height * 0.5f;
+		float half_width = map.tile_width * 0.5f;
+		float half_height = map.tile_height * 0.5f;
 		ret.x = int( (x / half_width + y / half_height) / 2) - 1;
 		ret.y = int( (y / half_height - (x / half_width)) / 2);
 	}
@@ -208,26 +223,32 @@ bool Map::cleanUp()
 {
 	LOG("Unloading map");
 
-	// Remove all tilesets
-	list<TileSet*>::iterator item = data.tilesets.begin();
-
-	while(item != data.tilesets.end())
+	list<MapData>::iterator item_map = data.begin();
+	while (item_map != data.end())
 	{
-		RELEASE(*item);
-		item++;
-	}
-	data.tilesets.clear();
+		// Remove all tilesets
+		list<TileSet*>::iterator item = item_map->tilesets.begin();
 
-	// Remove all layers
+		while (item != item_map->tilesets.end())
+		{
+			RELEASE(*item);
+			item++;
+		}
+		item_map->tilesets.clear();
 
-	list<MapLayer*>::iterator item2 = data.layers.begin();
+		// Remove all layers
 
-	while(item2 != data.layers.end())
-	{
-		RELEASE(*item2);
-		item2++;
-	}
-	data.layers.clear();
+		list<MapLayer*>::iterator item2 = item_map->layers.begin();
+
+		while (item2 != item_map->layers.end())
+		{
+			RELEASE(*item2);
+			item2++;
+		}
+		item_map->layers.clear();
+		
+		++item_map;
+	}	
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -258,7 +279,7 @@ bool Map::load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if(ret == true)
 	{
-		ret = loadMap();
+		ret = loadMap(file_name);
 	}
 
 	// Load all tilesets info ----------------------------------------------
@@ -277,7 +298,7 @@ bool Map::load(const char* file_name)
 			ret = loadTilesetImage(tileset, set);
 		}
 
-		data.tilesets.push_back(set);
+		data.back().tilesets.push_back(set);
 	}
 
 	// Load layer info ----------------------------------------------
@@ -289,18 +310,18 @@ bool Map::load(const char* file_name)
 		ret = loadLayer(layer, lay);
 
 		if(ret == true)
-			data.layers.push_back(lay);
+			data.back().layers.push_back(lay);
 	}
 
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
-		LOG("width: %d height: %d", data.width, data.height);
-		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
+		LOG("width: %d height: %d", data.back().width, data.back().height);
+		LOG("tile_width: %d tile_height: %d", data.back().tile_width, data.back().tile_height);
 
-		list<TileSet*>::iterator item = data.tilesets.begin();
+		list<TileSet*>::iterator item = data.back().tilesets.begin();
 		
-		while(item != data.tilesets.end())
+		while (item != data.back().tilesets.end())
 		{
 			TileSet* s = (*item);
 			LOG("Tileset ----");
@@ -310,8 +331,8 @@ bool Map::load(const char* file_name)
 			item++;
 		}
 
-		list<MapLayer*>::iterator item_layer = data.layers.begin();
-		while(item_layer != data.layers.end())
+		list<MapLayer*>::iterator item_layer = data.back().layers.begin();
+		while (item_layer != data.back().layers.end())
 		{
 			MapLayer* l = (*item_layer);
 			LOG("Layer ----");
@@ -327,7 +348,7 @@ bool Map::load(const char* file_name)
 }
 
 // Load map general properties
-bool Map::loadMap()
+bool Map::loadMap(const char *map_name)
 {
 	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
@@ -339,16 +360,18 @@ bool Map::loadMap()
 	}
 	else
 	{
-		data.width = map.attribute("width").as_int();
-		data.height = map.attribute("height").as_int();
-		data.tile_width = map.attribute("tilewidth").as_int();
-		data.tile_height = map.attribute("tileheight").as_int();
+		MapData map_info;
+		map_info.name.assign(map_name);
+		map_info.width = map.attribute("width").as_int();
+		map_info.height = map.attribute("height").as_int();
+		map_info.tile_width = map.attribute("tilewidth").as_int();
+		map_info.tile_height = map.attribute("tileheight").as_int();
 		string bg_color(map.attribute("backgroundcolor").as_string());
 
-		data.background_color.r = 0;
-		data.background_color.g = 0;
-		data.background_color.b = 0;
-		data.background_color.a = 0;
+		map_info.background_color.r = 0;
+		map_info.background_color.g = 0;
+		map_info.background_color.b = 0;
+		map_info.background_color.a = 0;
 
 		if(bg_color.length() > 0)
 		{
@@ -360,33 +383,35 @@ bool Map::loadMap()
 			int v = 0;
 
 			sscanf_s(red.data(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.r = v;
+			if (v >= 0 && v <= 255) map_info.background_color.r = v;
 
 			sscanf_s(green.data(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.g = v;
+			if (v >= 0 && v <= 255) map_info.background_color.g = v;
 
 			sscanf_s(blue.data(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.b = v;
+			if (v >= 0 && v <= 255) map_info.background_color.b = v;
 		}
 
 		string orientation(map.attribute("orientation").as_string());
 
 		if(orientation == "orthogonal")
 		{
-			data.type = MAPTYPE_ORTHOGONAL;
+			map_info.type = MAPTYPE_ORTHOGONAL;
 		}
 		else if(orientation == "isometric")
 		{
-			data.type = MAPTYPE_ISOMETRIC;
+			map_info.type = MAPTYPE_ISOMETRIC;
 		}
 		else if(orientation == "staggered")
 		{
-			data.type = MAPTYPE_STAGGERED;
+			map_info.type = MAPTYPE_STAGGERED;
 		}
 		else
 		{
-			data.type = MAPTYPE_UNKNOWN;
+			map_info.type = MAPTYPE_UNKNOWN;
 		}
+
+		data.push_back(map_info);
 	}
 
 	return ret;
@@ -512,47 +537,47 @@ bool Map::loadProperties(pugi::xml_node& node, Properties& properties)
 bool Map::createWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;
-	
-	list<MapLayer*>::const_iterator item = data.layers.begin();
+	//
+	//list<MapLayer*>::const_iterator item = data.layers.begin();
 
-	for(item; item != data.layers.end(); item++)
-	{
-		MapLayer* layer = (*item);
+	//for(item; item != data.layers.end(); item++)
+	//{
+	//	MapLayer* layer = (*item);
 
-		if(layer->properties.get("Navigation", 0) == 0)
-			continue;
+	//	if(layer->properties.get("Navigation", 0) == 0)
+	//		continue;
 
-		uchar* map = new uchar[layer->width*layer->height];
-		memset(map, 1, layer->width*layer->height);
+	//	uchar* map = new uchar[layer->width*layer->height];
+	//	memset(map, 1, layer->width*layer->height);
 
-		for(int y = 0; y < data.height; ++y)
-		{
-			for(int x = 0; x < data.width; ++x)
-			{
-				int i = (y*layer->width) + x;
+	//	for(int y = 0; y < data.height; ++y)
+	//	{
+	//		for(int x = 0; x < data.width; ++x)
+	//		{
+	//			int i = (y*layer->width) + x;
 
-				int tile_id = layer->get(x, y);
-				TileSet* tileset = (tile_id > 0) ? getTilesetFromTileId(tile_id) : NULL;
-				
-				if(tileset != NULL)
-				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
-					/*TileType* ts = tileset->GetTileType(tile_id);
-					if(ts != NULL)
-					{
-						map[i] = ts->properties.Get("walkable", 1);
-					}*/
-				}
-			}
-		}
+	//			int tile_id = layer->get(x, y);
+	//			TileSet* tileset = (tile_id > 0) ? getTilesetFromTileId(tile_id) : NULL;
+	//			
+	//			if(tileset != NULL)
+	//			{
+	//				map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+	//				/*TileType* ts = tileset->GetTileType(tile_id);
+	//				if(ts != NULL)
+	//				{
+	//					map[i] = ts->properties.Get("walkable", 1);
+	//				}*/
+	//			}
+	//		}
+	//	}
 
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		ret = true;
+	//	*buffer = map;
+	//	width = data.width;
+	//	height = data.height;
+	//	ret = true;
 
-		break;
-	}
+	//	break;
+	//}
 
 	return ret;
 }

@@ -32,7 +32,7 @@ bool Scene::awake(pugi::xml_node &node)
 bool Scene::start()
 {
 	app->map->load("TEST_MAP.tmx");
-    //app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
+    app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	return true;
 }
 
@@ -73,10 +73,10 @@ bool Scene::update(float dt)
 
 	// Paint Layers -- Draw or undraw the map
 	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
-		app->map->setLayerProperty("Logic_Layer", "NoDraw", 0);
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
 
 	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
-		app->map->setLayerProperty("Logic_Layer", "NoDraw", 1);
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
 
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
