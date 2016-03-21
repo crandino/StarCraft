@@ -37,7 +37,7 @@ void Map::draw()
 	{
 		MapLayer* layer = (*item);
 
-		if(layer->properties.get("Nodraw") != 0)
+		if(layer->properties.get("NoDraw") != 0)
 			continue;
 
 		// Camera-culling: Render only blits what camera is showing.
@@ -85,15 +85,14 @@ bool Properties::setPropertyValue(const char* name, int default_value)
 {
 	list<Property*>::iterator item = listProperties.begin();
 
-	while (item != listProperties.end())
+	
+	for (item; item != listProperties.end(); item++)
 	{
 		if ((*item)->name == name)
 		{
 			(*item)->value = default_value;
 			return true;
 		}
-
-		item++;
 	}
 
 	return false;
@@ -124,6 +123,7 @@ TileSet* Map::getTilesetFromTileId(int id) const
 	{
 		if(id < (item)->firstgid)
 		{
+			item--;
 			set = (item); // no estic segur, aqui feia un node->previous->data
 			break;
 		}

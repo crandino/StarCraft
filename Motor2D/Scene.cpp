@@ -31,7 +31,8 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {
-	app->map->load("map_starcraft_32x32.tmx");
+	app->map->load("TEST_MAP.tmx");
+	//app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	return true;
 }
 
@@ -71,6 +72,13 @@ bool Scene::update(float dt)
 
 	if (app->input->getKey(SDL_SCANCODE_KP_MINUS) == KEY_UP)
 		app->audio->volumeDown();
+
+	// Paint Layers -- Draw or undraw the map
+	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
+		app->map->setLayerProperty("Logic_Layer", "NoDraw", 0);
+
+	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
+		app->map->setLayerProperty("Logic_Layer", "NoDraw", 1);
 
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
