@@ -58,7 +58,7 @@ void Map::draw()
 					int tile_id = layer->get(x, y);
 					if (tile_id > 0)
 					{
-						TileSet* tileset = getTilesetFromTileId(*map_to_draw, tile_id);   // Tileset for this tile_id
+						TileSet* tileset = map_to_draw->getTilesetFromTileId(tile_id);   // Tileset for this tile_id
 						SDL_Rect r = tileset->getTileRect(tile_id);		// Section of the tile within the tileset
 
 						iPoint pos = mapToWorld(*map_to_draw, blit_position.x, blit_position.y);
@@ -129,24 +129,20 @@ bool Map::setLayerProperty(const char* map_name, const char* layer_name, const c
 	return false;
 }
 
-TileSet* Map::getTilesetFromTileId(MapData &map, int id) const
+TileSet* MapData::getTilesetFromTileId(int id) const
 {
-	list<TileSet>::pointer item = map.tilesets.front();
-	TileSet* set = (item);
+	// Pick the right Tileset based on a tile id
+	list<TileSet*>::const_iterator set_item = tilesets.begin();
+	TileSet *tileset = *set_item;
 
-	while(item != map.tilesets.back())
+	while (set_item != tilesets.end())
 	{
-		if(id < (item)->firstgid)
-		{
-			item--;
-			set = (item); // no estic segur, aqui feia un node->previous->data
-			break;
-		}
-		set = (item);
-		item++;
+		if (id >= (*set_item)->firstgid)
+			tileset = (*set_item);
+		++set_item;
 	}
 
-	return set;
+	return tileset;
 }
 
 iPoint Map::mapToWorld(MapData &map, int x, int y) const
@@ -361,7 +357,7 @@ bool Map::loadMap(const char *map_name)
 	else
 	{
 		MapData map_info;
-		map_info.name.assign(map_name);
+		map_info.name = map_name;
 		map_info.width = map.attribute("width").as_int();
 		map_info.height = map.attribute("height").as_int();
 		map_info.tile_width = map.attribute("tilewidth").as_int();

@@ -6,7 +6,6 @@
 #include "Module.h"
 #include "p2Defs.h"
 #include <string>
-#include <list>
 
 using namespace std;
 
@@ -43,7 +42,7 @@ struct Properties
 // ----------------------------------------------------
 struct MapLayer
 {
-	std::string	    name;
+	string	    name;
 	int			width;
 	int			height;
 	uint*		data;
@@ -68,7 +67,7 @@ struct TileSet
 {
 	SDL_Rect getTileRect(int id) const;
 
-	std::string			    name;
+	string			    name;
 	int					firstgid;
 	int					margin;
 	int					spacing;
@@ -102,6 +101,8 @@ struct MapData
 	MapTypes			type;
 	list<TileSet*>		tilesets;
 	list<MapLayer*>		layers;
+
+	TileSet* getTilesetFromTileId(int id) const;
 };
 
 // ----------------------------------------------------
@@ -129,7 +130,7 @@ public:
 	iPoint mapToWorld(MapData &map, int x, int y) const;
 	iPoint worldToMap(MapData &map, int x, int y) const;
 	bool createWalkabilityMap(int& width, int& height, uchar** buffer) const;
-	bool Map::setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value);
+	bool setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value);
 
 private:
 
@@ -139,12 +140,10 @@ private:
 	bool loadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool loadProperties(pugi::xml_node& node, Properties& properties);
 
-	TileSet* getTilesetFromTileId(MapData &map, int id) const;
-
 public:
 
 	list<MapData> data;
-
+	
 private:
 
 	pugi::xml_document	map_file;
