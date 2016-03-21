@@ -23,7 +23,7 @@ bool Map::awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	bool ret = true;
 
-	folder.insert(0,config.child("folder").child_value());
+	folder.assign(config.child("folder").child_value());
 	return ret;
 }
 
@@ -31,11 +31,11 @@ void Map::draw()
 {
 	if(map_loaded == false)
 		return;
-	list<MapLayer*>::iterator item = data.layers.begin();
 
+	list<MapLayer*>::iterator item = data.layers.begin();
 	for(; item != data.layers.end(); item++)
 	{
-		MapLayer* layer = (*item);
+		MapLayer* layer = *item;
 
 		if(layer->properties.get("NoDraw") != 0)
 			continue;

@@ -32,7 +32,7 @@ bool Scene::awake(pugi::xml_node &node)
 bool Scene::start()
 {
 	app->map->load("TEST_MAP.tmx");
-	//app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
+    //app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	return true;
 }
 

@@ -311,7 +311,7 @@ void App::saveGame(const char *file) const
 	save_game.erase();
 
 
-	save_game.insert(0,file);
+	save_game.assign(file);
 }
 
 bool App::loadGameNow()
