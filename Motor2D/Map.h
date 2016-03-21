@@ -4,6 +4,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "Point2D.h"
 #include "Module.h"
+#include "p2Defs.h"
 #include <string>
 #include <list>
 

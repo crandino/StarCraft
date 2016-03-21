@@ -10,7 +10,7 @@
 
 Map::Map() : Module(), map_loaded(false)
 {
-	name.insert(0,"map");
+	name.assign("map");
 }
 
 // Destructor
@@ -395,7 +395,7 @@ bool Map::loadMap()
 bool Map::loadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	set->name.insert(0,tileset_node.attribute("name").as_string());
+	set->name.assign(tileset_node.attribute("name").as_string());
 	set->firstgid = tileset_node.attribute("firstgid").as_int();
 	set->tile_width = tileset_node.attribute("tilewidth").as_int();
 	set->tile_height = tileset_node.attribute("tileheight").as_int();

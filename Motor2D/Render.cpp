@@ -8,7 +8,7 @@
 
 Render::Render() : Module()
 {
-	name.insert(0,"renderer");
+	name.assign("renderer");
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;

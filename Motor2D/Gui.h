@@ -52,14 +52,14 @@ public:
 
 //-----------------------------------------------------------------------
 //CLASS GUI
-class SCGui : public Module
+class Gui : public Module
 {
 public:
 
-	SCGui();
+	Gui();
 
 	// Destructor
-	virtual ~SCGui();
+	virtual ~Gui();
 
 	// Called when before render is available
 	bool awake(pugi::xml_node&);

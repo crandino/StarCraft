@@ -12,7 +12,7 @@
 Audio::Audio() : Module()
 {
 	music = NULL;
-	name.insert(0,"audio");
+	name.assign("audio");
 }
 
 // Destructor

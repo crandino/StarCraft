@@ -19,7 +19,8 @@ class Audio;
 class FileSystem;
 class Scene;
 class Map;
-class SCGui;
+class PathFinding;
+class Gui;
 
 class App
 {
@@ -91,7 +92,8 @@ public:
 	Scene*				scene;
 	FileSystem*			fs;
 	Map*				map;
-	SCGui*				scgui;
+	PathFinding*		path;
+	Gui*				gui;
 
 private:
 

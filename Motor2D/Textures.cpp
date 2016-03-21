@@ -10,7 +10,7 @@
 
 Textures::Textures() : Module()
 {
-	name.insert(0,"textures");
+	name.assign("textures");
 }
 
 // Destructor

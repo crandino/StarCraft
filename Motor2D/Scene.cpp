@@ -8,11 +8,11 @@
 #include "Window.h"
 #include "Map.h"
 #include "Scene.h"
-#include "SCGui.h"
+#include "Gui.h"
 
 Scene::Scene() : Module()
 {
-	name.insert(0,"scene");
+	name.assign("scene");
 }
 
 // Destructor
@@ -45,15 +45,13 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
-	//SDL_ShowCursor(SDL_DISABLE); //Aixo amaga el cursor de windows
-
 	float cam_speed = 1.0f;
 
-	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
+	/*if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 		app->loadGame("save_game.xml");
 
 	if (app->input->getKey(SDL_SCANCODE_K) == KEY_DOWN)
-		app->saveGame("save_game.xml");
+		app->saveGame("save_game.xml");*/
 
 	/* (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += cam_speed;
@@ -86,8 +84,8 @@ bool Scene::update(float dt)
 
 	app->map->draw();
 
-	app->scgui->mouse->updatePosition();
-	app->scgui->mouse->draw();
+	app->gui->mouse->updatePosition();
+	app->gui->mouse->draw();
 	return true;
 }
 

@@ -41,7 +41,10 @@
     <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp">
       <Filter>Tools\PugiXML</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\SCGui.cpp">
+    <ClCompile Include="Motor2D\PathFinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Gui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -103,7 +106,10 @@
     <ClInclude Include="Motor2D\Brofiler.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\SCGui.h">
+    <ClInclude Include="Motor2D\PathFinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Gui.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

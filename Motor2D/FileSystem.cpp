@@ -9,7 +9,7 @@
 
 FileSystem::FileSystem()
 {
-	name.insert(0,"file_system");
+	name.assign("file_system");
 
 	// PHYSFS must be initialized before other modules awake,
 	// because it will be used by them.

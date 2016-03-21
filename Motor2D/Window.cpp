@@ -10,7 +10,7 @@ Window::Window() : Module()
 {
 	window = NULL;
 	screen_surface = NULL;
-	name.insert(0,"window");
+	name.assign("window");
 }
 
 // Destructor

@@ -7,10 +7,11 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "PathFinding.h"
 #include "FileSystem.h"
 #include "Map.h"
 #include "App.h"
-#include "SCGui.h"
+#include "Gui.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -27,8 +28,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	fs = new FileSystem();
+	path = new PathFinding();
 	map = new Map();
-	scgui = new SCGui();
+	gui = new Gui();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -38,8 +40,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(tex);
 	addModule(audio);
 	addModule(map);
-
-	addModule(scgui);
+	addModule(path);
+	addModule(gui);
 
 	addModule(scene);
 
