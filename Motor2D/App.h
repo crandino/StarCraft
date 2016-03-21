@@ -19,6 +19,7 @@ class Audio;
 class FileSystem;
 class Scene;
 class Map;
+class SCGui;
 
 class App
 {
@@ -90,6 +91,7 @@ public:
 	Scene*				scene;
 	FileSystem*			fs;
 	Map*				map;
+	SCGui*				scgui;
 
 private:
 

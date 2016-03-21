@@ -41,6 +41,9 @@
     <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp">
       <Filter>Tools\PugiXML</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\SCGui.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -99,6 +102,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Brofiler.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\SCGui.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

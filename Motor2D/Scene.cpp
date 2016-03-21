@@ -8,6 +8,7 @@
 #include "Window.h"
 #include "Map.h"
 #include "Scene.h"
+#include "SCGui.h"
 
 Scene::Scene() : Module()
 {
@@ -43,6 +44,8 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
+	//SDL_ShowCursor(SDL_DISABLE); //Aixo amaga el cursor de windows
+
 	float cam_speed = 1.0f;
 
 	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
@@ -75,7 +78,8 @@ bool Scene::update(float dt)
 
 	app->map->draw();
 
-
+	app->scgui->mouse->updatePosition();
+	app->scgui->mouse->draw();
 	return true;
 }
 

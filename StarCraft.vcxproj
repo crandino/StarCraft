@@ -83,6 +83,7 @@
     <ClInclude Include="Motor2D\PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Motor2D\Render.h" />
     <ClInclude Include="Motor2D\Scene.h" />
+    <ClInclude Include="Motor2D\SCGui.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
     <ClInclude Include="Motor2D\Window.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Motor2D\Render.cpp" />
     <ClCompile Include="Motor2D\Scene.cpp" />
+    <ClCompile Include="Motor2D\SCGui.cpp" />
     <ClCompile Include="Motor2D\Textures.cpp" />
     <ClCompile Include="Motor2D\Timer.cpp" />
     <ClCompile Include="Motor2D\Window.cpp" />

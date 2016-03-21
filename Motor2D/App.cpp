@@ -10,6 +10,7 @@
 #include "FileSystem.h"
 #include "Map.h"
 #include "App.h"
+#include "SCGui.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -27,6 +28,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	fs = new FileSystem();
 	map = new Map();
+	scgui = new SCGui();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -36,7 +38,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(tex);
 	addModule(audio);
 	addModule(map);
-	
+
+	addModule(scgui);
+
 	addModule(scene);
 
 	// render last to swap buffer
