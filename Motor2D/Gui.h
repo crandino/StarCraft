@@ -1,57 +1,111 @@
+#ifndef __GUI_H__
+#define __GUI_H__
+
 #include "App.h"
 #include "Module.h"
 #include "Render.h"
-
+#include "Point2d.h"
+#include "p2Defs.h"
 #include <string>
 #include <list>
 
 #define CURSOR_WIDTH 2
+using namespace std;
 
-enum MouseEvents{
-	MouseEnter,
-	MouseOut,
-	MouseRightClick,
-	MouseLeftClick,
+enum GuiEvents
+{
+	listening_ends,
+	mouse_enters,
+	mouse_leaves,
+	mouse_lclick_down,
+	mouse_lclick_up,
+	mouse_rclick_down,
+	mouse_rclick_up,
+	gain_focus,
+	lost_focus,
+	input_changed,
+	input_submit,
+	value_changed,
+	save_pos_thumb,
+	load_pos_thumb,
 };
 
-enum ElementType{
-	cursor,
+enum GuiTypes
+{
+	unknown,
+	image,
+	label,
+	button,
+	hscrollbar,
+	hscrollbarvertical
 };
 
-class UI_Element{
+// ---------------------------------------------------
+class Gui_Elements
+{
+public:
+	Gui_Elements();
+	virtual ~Gui_Elements()
+	{}
+
+	virtual void Draw() const
+	{}
+	virtual void DebugDraw() const;
+	virtual void Update(const Gui_Elements* mouse_hover, const Gui_Elements* focus)
+	{}
+	void CheckInput(const Gui_Elements* mouse_hover, const Gui_Elements* focus);
+	void SetLocalPos(int x, int y);
+	void Center();
+	rectangle GetScreenRect() const;
+	rectangle GetLocalRect() const;
+	iPoint GetScreenPos() const;
+	iPoint GetLocalPos() const;
+	void SetListener(Module* module);
+	GuiTypes Get_Type()const;
+	Module* Get_Listener()const;
+
+protected:
+	void SetSize(int w, int h);
 
 public:
-	UI_Element(){};
-	~UI_Element(){};
-public:
-
-	ElementType type;
-	SDL_Rect* box;
-	SDL_Texture*  texture;
-	iPoint position;
-
-	bool listener = false;
-	bool focused = false;
-
-	virtual void draw();
-	virtual void interact(MouseEvents events);
-	virtual void drag();
-	void debug(bool focus);
+	bool draggable = false;
+	bool interactive = false;
+	bool cut_childs = false;
+	bool can_focus = false;
+	bool draw = true;
+	Gui_Elements* parent = nullptr;
+protected:
+	GuiTypes type = GuiTypes::unknown;
+	Module* listener = nullptr;
+	bool have_focus = false;
+private:
+	bool mouse_inside = false;
+	rectangle rect;
 };
 
-class Cursor : public UI_Element{
+// ---------------------------------------------------
+class GuiImage : public Gui_Elements
+{
 public:
+	GuiImage(const SDL_Texture* texture);
+	GuiImage(const SDL_Texture* texture, const rectangle& section);
+	~GuiImage();
 
-	Cursor(SDL_Texture* texture);
-	~Cursor(){};
+	void SetSection(const rectangle& section);
+	void Draw() const;
 
-	void setPosition(iPoint coords);
-	void updatePosition();
-	void draw();
+private:
+
+	rectangle section;
+	const SDL_Texture* texture = nullptr;
 };
 
 //-----------------------------------------------------------------------
 //CLASS GUI
+
+struct SDL_Texture;
+
+// ---------------------------------------------------
 class Gui : public Module
 {
 public:
@@ -62,34 +116,37 @@ public:
 	virtual ~Gui();
 
 	// Called when before render is available
-	bool awake(pugi::xml_node&);
+	bool Awake(pugi::xml_node&);
 
 	// Call before first frame
-	bool start();
+	bool Start();
 
 	// Called before all Updates
-	bool preUpdate();
+	bool PreUpdate();
 
 	// Called after all Updates
-	bool postUpdate();
+	bool PostUpdate();
 
 	// Called before quitting
-	bool cleanUp();
+	bool CleanUp();
 
-	bool checkMousePosition(iPoint mousePosition, UI_Element* tmp);
+	// Gui creation functions
+	GuiImage* CreateImage(const char* filename);
+	GuiImage* CreateImage(const rectangle& atlas_section);
+	/*GuiLabel* CreateLabel(const char* text);
+	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
+	GuiHScrollBarVertical* CreateHScrollBarVertical(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/
 
-	bool guiEvents(UI_Element* trigger, MouseEvents events);
+	const Gui_Elements* FindMouseHover();
+	const SDL_Texture* GetAtlas() const;
 
 private:
 
 	bool debug = false;
-
-public:
-
-	list<UI_Element*> elements;
-	list<UI_Element*> inputs;
-
-	//Cursor
-	Cursor* mouse;
-	SDL_Texture* mouse_texture;
+	list<Gui_Elements*> elements;
+	const Gui_Elements* focus = nullptr;
+	SDL_Texture* atlas = nullptr;
+	string atlas_file_name;
 };
+
+#endif

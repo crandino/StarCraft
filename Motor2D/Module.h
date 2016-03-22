@@ -10,8 +10,10 @@
 //#include "p2SString.h"
 #include "PugiXml\src\pugixml.hpp"
 
-
 class App;
+class Gui_Elements;
+enum GuiEvents;
+
 
 class Module
 {
@@ -74,6 +76,9 @@ public:
 	{
 		return true;
 	}
+
+	virtual void OnGui(Gui_Elements* ui, GuiEvents event)
+	{}
 
 public:
 

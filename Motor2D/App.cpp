@@ -104,7 +104,8 @@ bool App::awake()
 	while(item != modules.end() && ret == true)
 	{
 		ret = (*item)->awake(config_node.child((*item)->name.data()));
-		++item;
+		item++;
+		
 	}
 
 	return ret;

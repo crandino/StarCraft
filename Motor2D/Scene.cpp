@@ -31,8 +31,16 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {
-	app->map->load("TEST_MAP.tmx");
+    app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
+
+	button = app->gui->CreateImage({ 642, 169, 229, 69 });
+	button->Center();
+	button->interactive = true;
+	button->SetListener(this);
+	button->can_focus = true;
+	
+
 	return true;
 }
 
@@ -81,11 +89,11 @@ bool Scene::update(float dt)
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 		app->render->start_transition({ 2000, 2000 });
-
+    
 	app->map->draw();
-
-	app->gui->mouse->updatePosition();
-	app->gui->mouse->draw();
+	
+	//app->gui->mouse->updatePosition();
+	//app->gui->mouse->draw();
 	return true;
 }
 

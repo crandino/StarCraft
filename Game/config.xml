@@ -27,6 +27,9 @@
     <folder>maps/</folder>
   </map>
 
+ <gui>
+    <atlas file="gui/atlas.png"/>
+ </gui>
   
   
 </config>

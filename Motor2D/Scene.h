@@ -4,6 +4,8 @@
 #include "Module.h"
 
 struct SDL_Texture;
+class GuiImage;
+
 
 class Scene : public Module
 {
@@ -33,6 +35,8 @@ public:
 	bool cleanUp();
 
 private:
+
+	GuiImage* button;
 
 };
 
