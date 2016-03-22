@@ -11,8 +11,6 @@
 
 using namespace std;
 
-
-
 // class Gui ---------------------------------------------------
 Gui_Elements::Gui_Elements() : rect({ 0, 0, 0, 0 })
 {
@@ -218,12 +216,19 @@ bool Gui::Start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
 
+	//Cursor
+	mouse_texture = app->tex->loadTexture("cursor.png");
+	mouse = CreateCursor(mouse_texture);
+	
+	SDL_ShowCursor(SDL_DISABLE);
+
 	return true;
 }
 
 // Update all guis
 bool Gui::PreUpdate()
 {
+
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -234,7 +239,6 @@ bool Gui::PreUpdate()
 		focus = mouse_hover;
 
 	
-
 	// if TAB find the next item and give it the focus
 	if (app->input->getKey(SDL_SCANCODE_TAB) == KeyState::KEY_DOWN)
 	{   list<Gui_Elements*>* item = NULL;
@@ -311,8 +315,8 @@ bool Gui::PreUpdate()
 		Gui_Elements* gui_test = *node;
 		gui_test->Update(mouse_hover, focus);
 	}
-		
 
+	
 	return true;
 }
 
@@ -357,6 +361,7 @@ bool Gui::PostUpdate()
 			gui->DebugDraw();
 	}
 
+	
 	return true;
 }
 
@@ -401,12 +406,45 @@ GuiImage* Gui::CreateImage(const rectangle& section)
 	return ret;
 }
 
+//Create cursor
+GuiCursor* Gui::CreateCursor(const SDL_Texture* texture){
 
+	GuiCursor* ret = NULL;
+	ret = new GuiCursor(mouse_texture);
+	elements.push_back(ret);
+	
+	return ret;
+}
 
 // const getter for atlas
 const SDL_Texture* Gui::GetAtlas() const
 {
 	return atlas;
+}
+
+//Cursor---------------------------+//Cursor
+GuiCursor::GuiCursor(const SDL_Texture* texture){
+	this->texture = texture;
+	position.x = 0;
+	position.y = 0;
+}
+
+GuiCursor::~GuiCursor(){
+
+}
+
+void GuiCursor::SetPosition(iPoint coords){
+	position.x = coords.x;
+	position.y = coords.y;
+}
+void GuiCursor::UpdatePosition(){
+	iPoint mouse;
+	app->input->getMousePosition(mouse);
+	SetPosition(mouse);
+}
+void GuiCursor::Draw(){
+	UpdatePosition();
+	app->render->blit(texture, position.x, position.y, false);
 }
 
 

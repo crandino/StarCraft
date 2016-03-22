@@ -100,6 +100,24 @@ private:
 	const SDL_Texture* texture = nullptr;
 };
 
+// ---------------------------------------------------
+class GuiCursor : public Gui_Elements
+{
+public:
+	GuiCursor(const SDL_Texture* texture);
+	~GuiCursor();
+
+	void SetPosition(iPoint coords);
+	void UpdatePosition();
+	void Draw();
+
+private:
+
+	const SDL_Texture* texture = nullptr;
+	iPoint position;
+};
+	
+
 //-----------------------------------------------------------------------
 //CLASS GUI
 
@@ -133,6 +151,7 @@ public:
 	// Gui creation functions
 	GuiImage* CreateImage(const char* filename);
 	GuiImage* CreateImage(const rectangle& atlas_section);
+	GuiCursor* CreateCursor(const SDL_Texture* texture);
 	/*GuiLabel* CreateLabel(const char* text);
 	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
 	GuiHScrollBarVertical* CreateHScrollBarVertical(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/
@@ -147,6 +166,10 @@ private:
 	const Gui_Elements* focus = nullptr;
 	SDL_Texture* atlas = nullptr;
 	string atlas_file_name;
+
+	//Cursor
+	GuiCursor* mouse = nullptr;
+	SDL_Texture* mouse_texture = nullptr;
 };
 
 #endif
