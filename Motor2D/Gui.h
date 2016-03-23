@@ -150,7 +150,7 @@ public:
 
 	// Gui creation functions
 	GuiImage* CreateImage(const char* filename);
-	GuiImage* CreateImage(const rectangle& atlas_section);
+	GuiImage* CreateImage(const SDL_Texture* texture, const rectangle& atlas_section);
 	GuiCursor* CreateCursor(const SDL_Texture* texture);
 	/*GuiLabel* CreateLabel(const char* text);
 	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });

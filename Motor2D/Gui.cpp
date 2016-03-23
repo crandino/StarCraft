@@ -217,9 +217,9 @@ bool Gui::Start()
 	atlas = app->tex->loadTexture(atlas_file_name.data());
 
 	//Cursor
-	mouse_texture = app->tex->loadTexture("cursor.png");
+	mouse_texture = app->tex->loadTexture("cursor2.png");
 	mouse = CreateCursor(mouse_texture);
-	
+
 	SDL_ShowCursor(SDL_DISABLE);
 
 	return true;
@@ -396,11 +396,11 @@ GuiImage* Gui::CreateImage(const char* filename)
 }
 
 // Create a simple image
-GuiImage* Gui::CreateImage(const rectangle& section)
+GuiImage* Gui::CreateImage(const SDL_Texture* texture, const rectangle& section)
 {
 	GuiImage* ret = NULL;
 
-	ret = new GuiImage(atlas, section);
+	ret = new GuiImage(texture, section);
 	elements.push_back(ret);
 
 	return ret;
@@ -410,6 +410,7 @@ GuiImage* Gui::CreateImage(const rectangle& section)
 GuiCursor* Gui::CreateCursor(const SDL_Texture* texture){
 
 	GuiCursor* ret = NULL;
+
 	ret = new GuiCursor(mouse_texture);
 	elements.push_back(ret);
 	
