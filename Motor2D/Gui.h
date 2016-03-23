@@ -14,30 +14,29 @@ using namespace std;
 
 enum GuiEvents
 {
-	listening_ends,
-	mouse_enters,
-	mouse_leaves,
-	mouse_lclick_down,
-	mouse_lclick_up,
-	mouse_rclick_down,
-	mouse_rclick_up,
-	gain_focus,
-	lost_focus,
-	input_changed,
-	input_submit,
-	value_changed,
-	save_pos_thumb,
-	load_pos_thumb,
+	LISTENING_ENDS,
+	MOUSE_ENTERS,
+	MOUSE_LEAVES,
+	MOUSE_LCLICK_DOWN,
+	MOUSE_LCLICK_UP,
+	MOUSE_RCLICK_DOWN,
+	MOUSE_RCLICK_UP,
+	GAIN_FOCUS,
+	LOST_FOCUS,
+    INPUT_CHANGED,
+	INPUT_SUBMIT,
+    VALUE_CHANGED,
+	SAVE_POS_THUMB,
+	LOAD_POS_THUMB
 };
 
 enum GuiTypes
 {
-	unknown,
-	image,
-	label,
-	button,
-	hscrollbar,
-	hscrollbarvertical
+	UNKNOWN,
+	IMAGE,
+	LABEL,
+	BUTTON,
+	HSCROLLBAR
 };
 
 // ---------------------------------------------------
@@ -48,34 +47,34 @@ public:
 	virtual ~Gui_Elements()
 	{}
 
-	virtual void Draw() const
+	virtual void draw() const
 	{}
-	virtual void DebugDraw() const;
-	virtual void Update(const Gui_Elements* mouse_hover, const Gui_Elements* focus)
+	virtual void debugDraw() const;
+	virtual void update(const Gui_Elements* mouse_hover, const Gui_Elements* focus)
 	{}
-	void CheckInput(const Gui_Elements* mouse_hover, const Gui_Elements* focus);
-	void SetLocalPos(int x, int y);
-	void Center();
-	rectangle GetScreenRect() const;
-	rectangle GetLocalRect() const;
-	iPoint GetScreenPos() const;
-	iPoint GetLocalPos() const;
-	void SetListener(Module* module);
-	GuiTypes Get_Type()const;
-	Module* Get_Listener()const;
+	void checkInput(const Gui_Elements* mouse_hover, const Gui_Elements* focus);
+	void setLocalPos(int x, int y);
+	void center();
+	rectangle getScreenRect() const;
+	rectangle getLocalRect() const;
+	iPoint getScreenPos() const;
+	iPoint getLocalPos() const;
+	void setListener(Module* module);
+	GuiTypes get_Type()const;
+	Module* get_Listener()const;
 
 protected:
-	void SetSize(int w, int h);
+	void setSize(int w, int h);
 
 public:
 	bool draggable = false;
 	bool interactive = false;
 	bool cut_childs = false;
 	bool can_focus = false;
-	bool draw = true;
+	bool draw_element = true;
 	Gui_Elements* parent = nullptr;
 protected:
-	GuiTypes type = GuiTypes::unknown;
+	GuiTypes type = GuiTypes::UNKNOWN;
 	Module* listener = nullptr;
 	bool have_focus = false;
 private:
@@ -91,8 +90,8 @@ public:
 	GuiImage(const SDL_Texture* texture, const rectangle& section);
 	~GuiImage();
 
-	void SetSection(const rectangle& section);
-	void Draw() const;
+	void setSection(const rectangle& section);
+	void draw() const;
 
 private:
 
@@ -107,9 +106,9 @@ public:
 	GuiCursor(const SDL_Texture* texture);
 	~GuiCursor();
 
-	void SetPosition(iPoint coords);
-	void UpdatePosition();
-	void Draw();
+	void setPosition(iPoint coords);
+	void updatePosition();
+	void draw();
 
 private:
 
@@ -134,30 +133,30 @@ public:
 	virtual ~Gui();
 
 	// Called when before render is available
-	bool Awake(pugi::xml_node&);
+	bool awake(pugi::xml_node&);
 
 	// Call before first frame
-	bool Start();
+	bool start();
 
 	// Called before all Updates
-	bool PreUpdate();
+	bool preUpdate();
 
 	// Called after all Updates
-	bool PostUpdate();
+	bool postUpdate();
 
 	// Called before quitting
-	bool CleanUp();
+	bool cleanUp();
 
 	// Gui creation functions
-	GuiImage* CreateImage(const char* filename);
-	GuiImage* CreateImage(const SDL_Texture* texture, const rectangle& atlas_section);
-	GuiCursor* CreateCursor(const SDL_Texture* texture);
+	GuiImage* createImage(const char* filename);
+	GuiImage* createImage(const SDL_Texture* texture, const rectangle& atlas_section);
+	GuiCursor* createCursor(const SDL_Texture* texture);
 	/*GuiLabel* CreateLabel(const char* text);
 	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
 	GuiHScrollBarVertical* CreateHScrollBarVertical(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/
 
-	const Gui_Elements* FindMouseHover();
-	const SDL_Texture* GetAtlas() const;
+	const Gui_Elements* findMouseHover();
+	const SDL_Texture* getAtlas() const;
 
 private:
 

@@ -33,13 +33,13 @@ bool Scene::start()
 {
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
-	/*
-	button = app->gui->CreateImage({ 642, 169, 229, 69 });
-	button->Center();
+	
+	button = app->gui->createImage(NULL, { 0, 365, 800, 235 });
+	button->setLocalPos(0,365);
 	button->interactive = true;
-	button->SetListener(this);
+	button->setListener(this);
 	button->can_focus = true;
-	*/
+	
 
 	return true;
 }
