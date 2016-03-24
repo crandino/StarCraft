@@ -101,6 +101,9 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 				listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
 
+			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+				listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN_REPEAT);
+
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 				listener->onGui(this, GuiEvents::MOUSE_LCLICK_UP);
 
@@ -201,8 +204,8 @@ GuiCursor::~GuiCursor(){
 }
 
 void GuiCursor::setPosition(iPoint coords){
-	position.x = coords.x;
-	position.y = coords.y;
+	position.x = coords.x + getScreenRect().w;
+	position.y = coords.y + getScreenRect().h;
 }
 void GuiCursor::updatePosition(){
 	iPoint mouse;
@@ -242,12 +245,6 @@ bool Gui::awake(pugi::xml_node& conf)
 bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
-
-	//Cursor
-	mouse_texture = app->tex->loadTexture("cursor2.png");
-	mouse = createCursor(mouse_texture);
-
-	SDL_ShowCursor(SDL_DISABLE);
 
 	return true;
 }
@@ -417,10 +414,19 @@ GuiCursor* Gui::createCursor(const SDL_Texture* texture){
 
 	GuiCursor* ret = NULL;
 
-	ret = new GuiCursor(mouse_texture);
+	ret = new GuiCursor(texture);
 	elements.push_back(ret);
 	
 	return ret;
+}
+
+//
+void Gui::mouseQuad(iPoint init_mouse)
+{
+	iPoint current_mouse;
+	app->input->getMousePosition(current_mouse);
+	app->render->DrawQuad({ init_mouse.x, init_mouse.y, current_mouse.x - init_mouse.x, current_mouse.y - init_mouse.y }, 65, 105, 225, 100, true, false);
+
 }
 
 // Called after all Updates

@@ -18,6 +18,7 @@ enum GuiEvents
 	MOUSE_ENTERS,
 	MOUSE_LEAVES,
 	MOUSE_LCLICK_DOWN,
+	MOUSE_LCLICK_DOWN_REPEAT,
 	MOUSE_LCLICK_UP,
 	MOUSE_RCLICK_DOWN,
 	MOUSE_RCLICK_UP,
@@ -158,6 +159,8 @@ public:
 	const Gui_Elements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
 
+	void mouseQuad(iPoint init_mouse);
+
 private:
 
 	bool debug = false;
@@ -165,10 +168,6 @@ private:
 	const Gui_Elements* focus = nullptr;
 	SDL_Texture* atlas = nullptr;
 	string atlas_file_name;
-
-	//Cursor
-	GuiCursor* mouse = nullptr;
-	SDL_Texture* mouse_texture = nullptr;
 };
 
 #endif

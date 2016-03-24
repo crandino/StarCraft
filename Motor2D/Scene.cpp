@@ -34,6 +34,11 @@ bool Scene::start()
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	
+	//Cursor
+	mouse_texture = app->tex->loadTexture("cursor.png");
+	mouse = app->gui->createCursor(mouse_texture);
+	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
+
 	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
 	ui_terran->setLocalPos(0, 365);
 	ui_terran->interactive = true;
@@ -53,6 +58,7 @@ bool Scene::start()
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
 
+	//SDL_ShowCursor(SDL_DISABLE);
 
 	return true;
 }
@@ -96,16 +102,30 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
 		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
 
-	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
-		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
-
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 		app->render->start_transition({ 2000, 2000 });
     
 	app->map->draw();
-	//app->gui->mouse->updatePosition();
-	//app->gui->mouse->draw();
+
+	//Provisional--------------------------------------------------------------
+	//MouseQuad
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	{
+		if (quad_counter == 0)
+			app->input->getMousePosition(init_mouse);
+		
+		app->gui->mouseQuad(init_mouse);
+		quad_counter++;
+	}
+
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP){
+		quad_counter = 0;
+	}
+	//--------------------------------------------------------------------------
+
+	mouse->updatePosition();
+	mouse->draw();
 	return true;
 }
 
@@ -139,7 +159,8 @@ void Scene::onGui(Gui_Elements* ui, GuiEvents event)
 			rectangle rect_map_camera_parent = rectangle_map_camera->parent->getScreenRect();
 			if (pos_rect.x - rect_map_camera_parent.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
 				&& pos_rect.y - rect_map_camera_parent.y + rectangle_map_camera->getScreenRect().h <= rect_map_camera_parent.y + rect_map_camera_parent.h)
-			rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
 		}
 	}
+	
 }

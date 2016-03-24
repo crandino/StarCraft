@@ -5,7 +5,7 @@
 
 struct SDL_Texture;
 class GuiImage;
-
+class GuiCursor;
 
 class Scene : public Module
 {
@@ -38,10 +38,21 @@ public:
 
 private:
 
-	GuiImage* ui_terran;
-	GuiImage* rectangle_map_camera;
-	GuiImage* rectangle_map;
+	//HUD UI
+	GuiImage* ui_terran = nullptr;
+	GuiImage* rectangle_map_camera = nullptr;
+	GuiImage* rectangle_map = nullptr;
 
+	//MOUSE UI
+	GuiCursor* mouse = nullptr;
+	SDL_Texture* mouse_texture = nullptr;
+
+public:
+	//Provisional------------------------------
+	//Mouse quad stuff
+	int quad_counter = 0;
+	iPoint init_mouse;
+	//-----------------------------------------
 };
 
 #endif // __SCENE_H__
