@@ -73,7 +73,7 @@ void Gui_Elements::debugDraw() const
 void Gui_Elements::setListener(Module* module)
 {
 	if (listener != nullptr)
-		listener->OnGui(this, GuiEvents::LISTENING_ENDS);
+		listener->onGui(this, GuiEvents::LISTENING_ENDS);
 
 	listener = module;
 }
@@ -91,7 +91,7 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 	{
 		mouse_inside = inside;
 		if (listener != nullptr)
-			listener->OnGui(this, (inside) ? GuiEvents::MOUSE_ENTERS : GuiEvents::MOUSE_LEAVES);
+			listener->onGui(this, (inside) ? GuiEvents::MOUSE_ENTERS : GuiEvents::MOUSE_LEAVES);
 	}
 
 	if (inside == true)
@@ -99,16 +99,16 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 		if (listener != nullptr)
 		{
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-				listener->OnGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
+				listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-				listener->OnGui(this, GuiEvents::MOUSE_LCLICK_UP);
+				listener->onGui(this, GuiEvents::MOUSE_LCLICK_UP);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-				listener->OnGui(this, GuiEvents::MOUSE_RCLICK_DOWN);
+				listener->onGui(this, GuiEvents::MOUSE_RCLICK_DOWN);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_UP)
-				listener->OnGui(this, GuiEvents::MOUSE_RCLICK_UP);
+				listener->onGui(this, GuiEvents::MOUSE_RCLICK_UP);
 		}
 
 		if (draggable == true && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
@@ -125,9 +125,9 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 		if (listener != nullptr)
 		{
 			if (focus == this)
-				listener->OnGui(this, GuiEvents::GAIN_FOCUS);
+				listener->onGui(this, GuiEvents::GAIN_FOCUS);
 			else
-				listener->OnGui(this, GuiEvents::LOST_FOCUS);
+				listener->onGui(this, GuiEvents::LOST_FOCUS);
 		}
 		have_focus = (focus == this);
 	}
@@ -135,10 +135,10 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 	if (have_focus == true && listener != nullptr)
 	{
 		if (app->input->getKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
-			listener->OnGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
+			listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
 
 		if (app->input->getKey(SDL_SCANCODE_RETURN) == KeyState::KEY_UP)
-			listener->OnGui(this, GuiEvents::MOUSE_LCLICK_UP);
+			listener->onGui(this, GuiEvents::MOUSE_LCLICK_UP);
 	}
 }
 

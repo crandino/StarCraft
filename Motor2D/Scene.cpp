@@ -34,12 +34,25 @@ bool Scene::start()
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	
-	button = app->gui->createImage(NULL, { 0, 365, 800, 235 });
-	button->setLocalPos(0,365);
-	button->interactive = true;
-	button->setListener(this);
-	button->can_focus = true;
-	
+	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
+	ui_terran->setLocalPos(0, 365);
+	ui_terran->interactive = true;
+	ui_terran->setListener(this);
+	ui_terran->can_focus = true;
+
+	rectangle_map = app->gui->createImage(NULL, { 0, 0, 168, 164 });
+	rectangle_map->setLocalPos(4, 433);
+	rectangle_map->interactive = true;
+	rectangle_map->setListener(this);
+	rectangle_map->can_focus = true;
+
+	rectangle_map_camera = app->gui->createImage(NULL, { 67, 298, 26, 18 });
+	rectangle_map_camera->parent = rectangle_map;
+	rectangle_map_camera->setLocalPos(3, 3);
+	rectangle_map_camera->interactive = true;
+	rectangle_map_camera->setListener(this);
+	rectangle_map_camera->can_focus = true;
+
 
 	return true;
 }
@@ -112,4 +125,21 @@ bool Scene::cleanUp()
 {
 	LOG("Freeing scene");
 	return true;
+}
+
+//GUI
+void Scene::onGui(Gui_Elements* ui, GuiEvents event)
+{
+	if (ui == rectangle_map)
+	{
+		if (event == GuiEvents::MOUSE_LCLICK_DOWN)
+		{
+			iPoint pos_rect;
+			app->input->getMousePosition(pos_rect);
+			rectangle rect_map_camera_parent = rectangle_map_camera->parent->getScreenRect();
+			if (pos_rect.x - rect_map_camera_parent.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y - rect_map_camera_parent.y + rectangle_map_camera->getScreenRect().h <= rect_map_camera_parent.y + rect_map_camera_parent.h)
+			rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
+		}
+	}
 }

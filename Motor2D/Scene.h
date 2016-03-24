@@ -33,10 +33,14 @@ public:
 
 	// Called before quitting
 	bool cleanUp();
+	//GUI
+	void onGui(Gui_Elements* ui, GuiEvents event);
 
 private:
 
-	GuiImage* button;
+	GuiImage* ui_terran;
+	GuiImage* rectangle_map_camera;
+	GuiImage* rectangle_map;
 
 };
 

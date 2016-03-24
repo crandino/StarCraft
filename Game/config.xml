@@ -28,7 +28,7 @@
   </map>
 
  <gui>
-    <atlas file="gui/UI_Terran_Starcraft.png"/>
+    <atlas file="gui/UI_Terran_Starcraft_2.png"/>
  </gui>
   
   

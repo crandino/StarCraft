@@ -77,7 +77,7 @@ public:
 		return true;
 	}
 
-	virtual void OnGui(Gui_Elements* ui, GuiEvents event)
+	virtual void onGui(Gui_Elements* ui, GuiEvents event)
 	{}
 
 public:
