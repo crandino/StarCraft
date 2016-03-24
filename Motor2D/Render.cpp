@@ -8,7 +8,7 @@
 
 Render::Render() : Module()
 {
-	name.insert(0,"renderer");
+	name.assign("renderer");
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;
@@ -63,8 +63,8 @@ bool Render::start()
 	cursor_offset.y = (h * 0.1f); // 10% of map height
 	scroll_speed = 1.0f;
 
-	map_limits = { app->map->data.width * app->map->data.tile_width,
-				   app->map->data.height * app->map->data.tile_height};
+	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
+		app->map->data.front().height * app->map->data.front().tile_height };
 
 	return true;
 }
@@ -186,7 +186,7 @@ bool Render::save(pugi::xml_node &node) const
 }
 
 // Blit to screen
-bool Render::blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
+bool Render::blit(const SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	uint scale = app->win->getScale();
@@ -202,7 +202,7 @@ bool Render::blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, f
 	}
 	else
 	{
-		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+		SDL_QueryTexture((SDL_Texture*)texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
 	rect.w *= scale;
@@ -218,7 +218,7 @@ bool Render::blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, f
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	if (SDL_RenderCopyEx(renderer, (SDL_Texture*)texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;

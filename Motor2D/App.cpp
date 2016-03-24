@@ -7,10 +7,11 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "PathFinding.h"
 #include "FileSystem.h"
 #include "Map.h"
 #include "App.h"
-#include "SCGui.h"
+#include "Gui.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -27,19 +28,21 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	fs = new FileSystem();
+	path = new PathFinding();
 	map = new Map();
-	scgui = new SCGui();
+	gui = new Gui();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
 	addModule(fs);
 	addModule(input);
 	addModule(win);
+	addModule(gui);
 	addModule(tex);
 	addModule(audio);
 	addModule(map);
-
-	addModule(scgui);
+	addModule(path);
+	
 
 	addModule(scene);
 
@@ -102,7 +105,8 @@ bool App::awake()
 	while(item != modules.end() && ret == true)
 	{
 		ret = (*item)->awake(config_node.child((*item)->name.data()));
-		++item;
+		item++;
+		
 	}
 
 	return ret;
@@ -309,7 +313,7 @@ void App::saveGame(const char *file) const
 	save_game.erase();
 
 
-	save_game.insert(0,file);
+	save_game.assign(file);
 }
 
 bool App::loadGameNow()

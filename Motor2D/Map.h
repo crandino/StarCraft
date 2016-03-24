@@ -4,8 +4,8 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "Point2D.h"
 #include "Module.h"
+#include "p2Defs.h"
 #include <string>
-#include <list>
 
 using namespace std;
 
@@ -42,7 +42,7 @@ struct Properties
 // ----------------------------------------------------
 struct MapLayer
 {
-	std::string	    name;
+	string	    name;
 	int			width;
 	int			height;
 	uint*		data;
@@ -67,7 +67,7 @@ struct TileSet
 {
 	SDL_Rect getTileRect(int id) const;
 
-	std::string			    name;
+	string			    name;
 	int					firstgid;
 	int					margin;
 	int					spacing;
@@ -92,14 +92,17 @@ enum MapTypes
 // ----------------------------------------------------
 struct MapData
 {
+	string				name;
 	int					width;
 	int					height;
 	int					tile_width;
 	int					tile_height;
 	SDL_Color			background_color;
 	MapTypes			type;
-	list<TileSet*>	tilesets;
-	list<MapLayer*>	layers;
+	list<TileSet*>		tilesets;
+	list<MapLayer*>		layers;
+
+	TileSet* getTilesetFromTileId(int id) const;
 };
 
 // ----------------------------------------------------
@@ -124,25 +127,23 @@ public:
 	// Load new map
 	bool load(const char* path);
 
-	iPoint mapToWorld(int x, int y) const;
-	iPoint worldToMap(int x, int y) const;
+	iPoint mapToWorld(MapData &map, int x, int y) const;
+	iPoint worldToMap(MapData &map, int x, int y) const;
 	bool createWalkabilityMap(int& width, int& height, uchar** buffer) const;
-	bool setLayerProperty( char* name_layer, const char* name_property, int value);
+	bool setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value);
 
 private:
 
-	bool loadMap();
+	bool loadMap(const char *map_name);
 	bool loadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool loadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool loadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool loadProperties(pugi::xml_node& node, Properties& properties);
 
-	TileSet* getTilesetFromTileId(int id) const;
-
 public:
 
-	MapData data;
-
+	list<MapData> data;
+	
 private:
 
 	pugi::xml_document	map_file;

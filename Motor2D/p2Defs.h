@@ -64,4 +64,16 @@ inline const char* const PATH(const char* folder, const char* file)
 #define ORGANIZATION "My Awesome Studio"
 #define APPNAME "My cool game"
 
+//Rectangle
+struct rectangle
+{
+	int x, y, w, h;
+
+	bool Contains(int x, int y) const
+	{
+		return ((x >= this->x) && (x < (this->x + w)) &&
+			(y >= this->y) && (y < (this->y + h)));
+	}
+};
+
 #endif

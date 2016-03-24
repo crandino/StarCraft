@@ -8,11 +8,11 @@
 #include "Window.h"
 #include "Map.h"
 #include "Scene.h"
-#include "SCGui.h"
+#include "Gui.h"
 
 Scene::Scene() : Module()
 {
-	name.insert(0,"scene");
+	name.assign("scene");
 }
 
 // Destructor
@@ -31,7 +31,16 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {
-	app->map->load("map_starcraft_32x32.tmx");
+    app->map->load("TEST_MAP.tmx");
+    app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
+	
+	button = app->gui->createImage(NULL, { 0, 365, 800, 235 });
+	button->setLocalPos(0,365);
+	button->interactive = true;
+	button->setListener(this);
+	button->can_focus = true;
+	
+
 	return true;
 }
 
@@ -44,15 +53,13 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
-	//SDL_ShowCursor(SDL_DISABLE); //Aixo amaga el cursor de windows
-
 	float cam_speed = 1.0f;
 
-	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
+	/*if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 		app->loadGame("save_game.xml");
 
 	if (app->input->getKey(SDL_SCANCODE_K) == KEY_DOWN)
-		app->saveGame("save_game.xml");
+		app->saveGame("save_game.xml");*/
 
 	/* (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += cam_speed;
@@ -72,14 +79,20 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_KP_MINUS) == KEY_UP)
 		app->audio->volumeDown();
 
+	// Paint Layers -- Draw or undraw the map
+	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
+
+	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 		app->render->start_transition({ 2000, 2000 });
-
+    
 	app->map->draw();
-
-	app->scgui->mouse->updatePosition();
-	app->scgui->mouse->draw();
+	//app->gui->mouse->updatePosition();
+	//app->gui->mouse->draw();
 	return true;
 }
 
