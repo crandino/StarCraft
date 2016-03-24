@@ -70,6 +70,8 @@
     <ClInclude Include="Motor2D\App.h" />
     <ClInclude Include="Motor2D\Audio.h" />
     <ClInclude Include="Motor2D\Brofiler.h" />
+    <ClInclude Include="Motor2D\Entity.h" />
+    <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
@@ -91,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="Motor2D\App.cpp" />
     <ClCompile Include="Motor2D\Audio.cpp" />
+    <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
     <ClCompile Include="Motor2D\Input.cpp" />
     <ClCompile Include="Motor2D\main.cpp" />

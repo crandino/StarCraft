@@ -44,6 +44,7 @@
     <ClCompile Include="Motor2D\SCGui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\EntityManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -106,6 +107,8 @@
     <ClInclude Include="Motor2D\SCGui.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Entity.h" />
+    <ClInclude Include="Motor2D\EntityManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">
