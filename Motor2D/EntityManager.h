@@ -12,6 +12,7 @@ class UNITS;
 enum FACTION;
 class BUILDING_TYPE;
 class UNIT_TYPE;
+class GROUND_UNIT_TYPE;
 
 class Entity;
 using namespace std;
@@ -41,11 +42,14 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	Entity *add(iPoint &pos, ENTITY_TYPE type);
+	Entity* addGroundUnit(iPoint &pos, GROUND_UNIT_TYPE type);
 	bool remove(uint id);
 	Entity* getEntity(uint id);
+	Entity* whichEntityOnMouse();
 
-	Entity *whichEntityOnMouse();
+	Entity* const createMarine(iPoint &pos);
+	Entity* const createZergling(iPoint &pos);
+
 
 private:
 
@@ -66,7 +70,6 @@ private:
 	void selectAvailableEntities(uchar filter);
 	void calculateSelector();
 	void sortEntities();
-
 };
 
 #endif // __EntityManager_H__

@@ -1,6 +1,6 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-
+#include "EntityManager.h"
 #include "Window.h"
 #include "Input.h"
 #include "Render.h"

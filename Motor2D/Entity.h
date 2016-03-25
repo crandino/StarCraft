@@ -12,7 +12,7 @@ class Entity
 public:
 
 	SDL_Rect		dim;
-	int		type;
+	int				type;
 	SDL_Texture		*tex;
 	uint			ID;
 	iPoint			tile_pos;
@@ -123,13 +123,19 @@ class Marine : public Unit
 public:
 	int utype;
 	FACTION faction;
-	
+	SDL_Rect coordSpriteSheet;
 public:
 
 	Marine(iPoint &p, uint id, FACTION faction, int utype = 11) : Unit(p, id, faction)
 	{
-		tex; //Sprites/Animations etc..
-		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
+		tex = app->tex->loadTexture("temporaryTextures/marineCool.png"); //Sprites/Animations etc..
+		
+		coordSpriteSheet.x = 0;
+		coordSpriteSheet.y = 0;
+		coordSpriteSheet.h = 26;
+		coordSpriteSheet.w = 19;
+
+		SDL_QueryTexture(tex, NULL, NULL, &coordSpriteSheet.w, &coordSpriteSheet.h);
 		//AI = 2;
 		this->faction = faction;
 		this->utype = utype;

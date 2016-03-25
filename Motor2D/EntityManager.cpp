@@ -31,6 +31,15 @@ bool EntityManager::start()
 	return true;
 }
 
+Entity* const EntityManager::createMarine(iPoint &pos)
+{
+	LOG("Creating Marine");
+	GROUND_UNIT_TYPE type;
+	Entity* marine = addGroundUnit(pos, type);
+
+	return marine;
+}
+ 
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
@@ -40,6 +49,15 @@ bool EntityManager::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_3)) filter = 3;
 	if (app->input->getKey(SDL_SCANCODE_4)) filter = 4;
 
+	//Marine Creation
+	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		iPoint p; app->input->getMousePosition(p);
+		Entity* marine = createMarine(p);
+		active_entities.insert(pair<uint, Entity*>(next_ID, marine));
+		//if (e != NULL) remove(e->id);		
+	}
+	
 	// Clicking middle button, eliminates an entity
 	if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
 	{
@@ -138,7 +156,7 @@ bool EntityManager::cleanUp()
 }
 
 // Add method
-Entity *EntityManager::add(iPoint &pos, ENTITY_TYPE type)
+Entity *EntityManager::addGroundUnit(iPoint &pos, GROUND_UNIT_TYPE type)
 {
 	Entity *unit = NULL;
 	iPoint tile_pos = app->map->worldToMap(app->map->data.front(), pos.x, pos.y);
@@ -155,12 +173,12 @@ Entity *EntityManager::add(iPoint &pos, ENTITY_TYPE type)
 	switch (type.UNIT)
 	{
 	case (type.UNIT == 21)://MARINE
-		unit = new Marine(pos, ++next_ID, TERRAN, 21);
+		unit = new Marine(pos, ++next_ID, TERRAN, type.MARINE);
 			break;
 			
 			/*
 	case(type.UNIT == 22) ://ZERGLING
-			unit = new Zergling();
+		unit = new Zergling(pos, ++next_ID, TERRAN, type.ZERGLING);
 			break;
 			*/
 	
