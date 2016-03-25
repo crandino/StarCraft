@@ -21,7 +21,6 @@ class Scene;
 class Map;
 class PathFinding;
 class Gui;
-class EntityManager;
 
 class App
 {
@@ -95,7 +94,6 @@ public:
 	Map*				map;
 	PathFinding*		path;
 	Gui*				gui;
-	EntityManager*		entityManager;
 
 private:
 

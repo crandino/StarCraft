@@ -31,7 +31,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	path = new PathFinding();
 	map = new Map();
 	gui = new Gui();
-	entityManager = new EntityManager();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -43,7 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(audio);
 	addModule(map);
 	addModule(path);
-	addModule(entityManager);
+	
 
 	addModule(scene);
 
