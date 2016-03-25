@@ -36,6 +36,7 @@ enum GUI_TYPES
 	UNKNOWN,
 	IMAGE,
 	LABEL,
+	CURSOR,
 	BUTTON,
 	HSCROLLBAR
 };
@@ -109,11 +110,12 @@ public:
 
 	void setPosition(iPoint coords);
 	void updatePosition();
-	void draw();
+	void draw()const;
 
 private:
 
 	const SDL_Texture* texture = nullptr;
+	rectangle section;
 	iPoint position;
 };
 	

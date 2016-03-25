@@ -33,11 +33,8 @@ bool Scene::start()
 {
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
-	
-	//Cursor
 	mouse_texture = app->tex->loadTexture("cursor.png");
-	mouse = app->gui->createCursor(mouse_texture);
-	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
+	
 
 	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
 	ui_terran->setLocalPos(0, 365);
@@ -58,8 +55,13 @@ bool Scene::start()
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
 
-	//SDL_ShowCursor(SDL_DISABLE);
-
+	
+	//Cursor
+	mouse = app->gui->createCursor(mouse_texture);
+	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
+    
+	SDL_ShowCursor(SDL_DISABLE);
+	
 	return true;
 }
 
@@ -107,6 +109,7 @@ bool Scene::update(float dt)
 		app->render->start_transition({ 2000, 2000 });
     
 	app->map->draw();
+	mouse->updatePosition();
 
 	//Provisional--------------------------------------------------------------
 	//MouseQuad
@@ -124,8 +127,7 @@ bool Scene::update(float dt)
 	}
 	//--------------------------------------------------------------------------
 
-	mouse->updatePosition();
-	mouse->draw();
+
 	return true;
 }
 

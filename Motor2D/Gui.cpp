@@ -193,10 +193,13 @@ void GuiImage::draw() const
 }
 
 //CURSOR------------------------------------------------+//Cursor
-GuiCursor::GuiCursor(const SDL_Texture* texture){
-	this->texture = texture;
-	position.x = 0;
-	position.y = 0;
+GuiCursor::GuiCursor(const SDL_Texture* texture) : GuiElements(), texture(texture)
+{
+	section.x = section.y = 0;
+	app->tex->GetSize(texture, (unsigned int&)section.w, (unsigned int&)section.h);
+
+	setSize(section.w, section.h);
+	type = CURSOR;
 }
 
 GuiCursor::~GuiCursor(){
@@ -205,8 +208,8 @@ GuiCursor::~GuiCursor(){
 
 void GuiCursor::setPosition(iPoint coords)
 {
-	position.x = coords.x + getScreenRect().w;
-	position.y = coords.y + getScreenRect().h;
+	position.x = coords.x;
+	position.y = coords.y;
 }
 void GuiCursor::updatePosition()
 {
@@ -214,10 +217,10 @@ void GuiCursor::updatePosition()
 	app->input->getMousePosition(mouse);
 	setPosition(mouse);
 }
-void GuiCursor::draw()
+void GuiCursor::draw()const
 {
-	updatePosition();
-	app->render->blit(texture, position.x, position.y, false);
+	//iPoint pos = getScreenPos();
+	app->render->blit(texture, position.x, position.y, (SDL_Rect*)&section, 0.0f);
 }
 
 //---------------------------------------
