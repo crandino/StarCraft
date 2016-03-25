@@ -9,7 +9,7 @@
 
 EntityManager::EntityManager() : Module()
 {
-	name.insert(0,"EntityManager");
+	name.assign("EntityManager");
 }
 
 // Destructor
