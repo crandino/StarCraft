@@ -7,12 +7,11 @@
 #define __MODULE_H__
 
 #include <string>
-//#include "p2SString.h"
 #include "PugiXml\src\pugixml.hpp"
 
 class App;
-class Gui_Elements;
-enum GuiEvents;
+class GuiElements;
+enum GUI_EVENTS;
 
 
 class Module
@@ -77,7 +76,7 @@ public:
 		return true;
 	}
 
-	virtual void onGui(Gui_Elements* ui, GuiEvents event)
+	virtual void onGui(GuiElements* ui, GUI_EVENTS event)
 	{}
 
 public:

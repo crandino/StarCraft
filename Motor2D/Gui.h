@@ -12,7 +12,7 @@
 #define CURSOR_WIDTH 2
 using namespace std;
 
-enum GuiEvents
+enum GUI_EVENTS
 {
 	LISTENING_ENDS,
 	MOUSE_ENTERS,
@@ -31,7 +31,7 @@ enum GuiEvents
 	LOAD_POS_THUMB
 };
 
-enum GuiTypes
+enum GUI_TYPES
 {
 	UNKNOWN,
 	IMAGE,
@@ -41,19 +41,19 @@ enum GuiTypes
 };
 
 // ---------------------------------------------------
-class Gui_Elements
+class GuiElements
 {
 public:
-	Gui_Elements();
-	virtual ~Gui_Elements()
+	GuiElements();
+	virtual ~GuiElements()
 	{}
 
 	virtual void draw() const
 	{}
 	virtual void debugDraw() const;
-	virtual void update(const Gui_Elements* mouse_hover, const Gui_Elements* focus)
+	virtual void update(const GuiElements* mouse_hover, const GuiElements* focus)
 	{}
-	void checkInput(const Gui_Elements* mouse_hover, const Gui_Elements* focus);
+	void checkInput(const GuiElements* mouse_hover, const GuiElements* focus);
 	void setLocalPos(int x, int y);
 	void center();
 	rectangle getScreenRect() const;
@@ -61,8 +61,8 @@ public:
 	iPoint getScreenPos() const;
 	iPoint getLocalPos() const;
 	void setListener(Module* module);
-	GuiTypes get_Type()const;
-	Module* get_Listener()const;
+	GUI_TYPES getType()const;
+	Module* getListener()const;
 
 protected:
 	void setSize(int w, int h);
@@ -73,9 +73,9 @@ public:
 	bool cut_childs = false;
 	bool can_focus = false;
 	bool draw_element = true;
-	Gui_Elements* parent = nullptr;
+	GuiElements* parent = nullptr;
 protected:
-	GuiTypes type = GuiTypes::UNKNOWN;
+	GUI_TYPES type = UNKNOWN;
 	Module* listener = nullptr;
 	bool have_focus = false;
 private:
@@ -84,7 +84,7 @@ private:
 };
 
 // ---------------------------------------------------
-class GuiImage : public Gui_Elements
+class GuiImage : public GuiElements
 {
 public:
 	GuiImage(const SDL_Texture* texture);
@@ -101,7 +101,7 @@ private:
 };
 
 // ---------------------------------------------------
-class GuiCursor : public Gui_Elements
+class GuiCursor : public GuiElements
 {
 public:
 	GuiCursor(const SDL_Texture* texture);
@@ -156,7 +156,7 @@ public:
 	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
 	GuiHScrollBarVertical* CreateHScrollBarVertical(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/
 
-	const Gui_Elements* findMouseHover();
+	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
 
 	void mouseQuad(iPoint init_mouse);
@@ -164,8 +164,8 @@ public:
 private:
 
 	bool debug = false;
-	list<Gui_Elements*> elements;
-	const Gui_Elements* focus = nullptr;
+	list<GuiElements*> elements;
+	const GuiElements* focus = nullptr;
 	SDL_Texture* atlas = nullptr;
 	string atlas_file_name;
 };

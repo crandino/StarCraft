@@ -34,7 +34,7 @@ public:
 	// Called before quitting
 	bool cleanUp();
 	//GUI
-	void onGui(Gui_Elements* ui, GuiEvents event);
+	void onGui(GuiElements* ui, GUI_EVENTS event);
 
 private:
 

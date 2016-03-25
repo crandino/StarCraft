@@ -12,17 +12,17 @@
 using namespace std;
 
 // class Gui ---------------------------------------------------
-Gui_Elements::Gui_Elements() : rect({ 0, 0, 0, 0 })
+GuiElements::GuiElements() : rect({ 0, 0, 0, 0 })
 {
 }
 
-void Gui_Elements::setLocalPos(int x, int y)
+void GuiElements::setLocalPos(int x, int y)
 {
 	rect.x = x;
 	rect.y = y;
 }
 
-void Gui_Elements::center()
+void GuiElements::center()
 {
 	int frame_w = (parent) ? parent->getLocalRect().w : app->render->camera.w;
 	int frame_h = (parent) ? parent->getLocalRect().h : app->render->camera.h;
@@ -30,18 +30,18 @@ void Gui_Elements::center()
 	setLocalPos(frame_w / 2 - rect.w / 2, frame_h / 2 - rect.h / 2);
 }
 
-void Gui_Elements::setSize(int w, int h)
+void GuiElements::setSize(int w, int h)
 {
 	rect.w = w;
 	rect.h = h;
 }
 
-rectangle Gui_Elements::getLocalRect() const
+rectangle GuiElements::getLocalRect() const
 {
 	return rect;
 }
 
-rectangle Gui_Elements::getScreenRect() const
+rectangle GuiElements::getScreenRect() const
 {
 	if (parent != nullptr)
 	{
@@ -51,7 +51,7 @@ rectangle Gui_Elements::getScreenRect() const
 	return rect;
 }
 
-iPoint Gui_Elements::getScreenPos() const
+iPoint GuiElements::getScreenPos() const
 {
 	if (parent != nullptr)
 		return parent->getScreenPos() + iPoint(rect.x, rect.y);
@@ -59,31 +59,31 @@ iPoint Gui_Elements::getScreenPos() const
 		return iPoint(rect.x, rect.y);
 }
 
-iPoint Gui_Elements::getLocalPos() const
+iPoint GuiElements::getLocalPos() const
 {
 	return iPoint(rect.x, rect.y);
 }
 
-void Gui_Elements::debugDraw() const
+void GuiElements::debugDraw() const
 {
 	rectangle r = getScreenRect();
 	app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);
 }
 
-void Gui_Elements::setListener(Module* module)
+void GuiElements::setListener(Module* module)
 {
 	if (listener != nullptr)
-		listener->onGui(this, GuiEvents::LISTENING_ENDS);
+		listener->onGui(this, LISTENING_ENDS);
 
 	listener = module;
 }
 
-Module* Gui_Elements::get_Listener()const
+Module* GuiElements::getListener()const
 {
 	return listener;
 }
 
-void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Elements* focus)
+void GuiElements::checkInput(const GuiElements* mouse_hover, const GuiElements* focus)
 {
 	bool inside = (mouse_hover == this);
 
@@ -91,7 +91,7 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 	{
 		mouse_inside = inside;
 		if (listener != nullptr)
-			listener->onGui(this, (inside) ? GuiEvents::MOUSE_ENTERS : GuiEvents::MOUSE_LEAVES);
+			listener->onGui(this, (inside) ? MOUSE_ENTERS : MOUSE_LEAVES);
 	}
 
 	if (inside == true)
@@ -99,19 +99,19 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 		if (listener != nullptr)
 		{
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-				listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
+				listener->onGui(this, MOUSE_LCLICK_DOWN);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-				listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN_REPEAT);
+				listener->onGui(this, MOUSE_LCLICK_DOWN_REPEAT);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-				listener->onGui(this, GuiEvents::MOUSE_LCLICK_UP);
+				listener->onGui(this, MOUSE_LCLICK_UP);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN)
-				listener->onGui(this, GuiEvents::MOUSE_RCLICK_DOWN);
+				listener->onGui(this, MOUSE_RCLICK_DOWN);
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_UP)
-				listener->onGui(this, GuiEvents::MOUSE_RCLICK_UP);
+				listener->onGui(this, MOUSE_RCLICK_UP);
 		}
 
 		if (draggable == true && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
@@ -128,9 +128,9 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 		if (listener != nullptr)
 		{
 			if (focus == this)
-				listener->onGui(this, GuiEvents::GAIN_FOCUS);
+				listener->onGui(this, GAIN_FOCUS);
 			else
-				listener->onGui(this, GuiEvents::LOST_FOCUS);
+				listener->onGui(this, LOST_FOCUS);
 		}
 		have_focus = (focus == this);
 	}
@@ -138,30 +138,30 @@ void Gui_Elements::checkInput(const Gui_Elements* mouse_hover, const Gui_Element
 	if (have_focus == true && listener != nullptr)
 	{
 		if (app->input->getKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
-			listener->onGui(this, GuiEvents::MOUSE_LCLICK_DOWN);
+			listener->onGui(this, MOUSE_LCLICK_DOWN);
 
 		if (app->input->getKey(SDL_SCANCODE_RETURN) == KeyState::KEY_UP)
-			listener->onGui(this, GuiEvents::MOUSE_LCLICK_UP);
+			listener->onGui(this, MOUSE_LCLICK_UP);
 	}
 }
 
-GuiTypes Gui_Elements::get_Type()const
+GUI_TYPES GuiElements::getType()const
 {
 	return type;
 }
 
 // CLASS GuiImage ---------------------------------------------------
-GuiImage::GuiImage(const SDL_Texture* texture) : Gui_Elements(), texture(texture)
+GuiImage::GuiImage(const SDL_Texture* texture) : GuiElements(), texture(texture)
 {
 	section.x = section.y = 0;
 	app->tex->GetSize(texture, (unsigned int&)section.w, (unsigned int&)section.h);
 
 	setSize(section.w, section.h);
-	type = GuiTypes::IMAGE;
+	type = IMAGE;
 }
 
 // --------------------------
-GuiImage::GuiImage(const SDL_Texture* texture, const rectangle& section) : Gui_Elements(), texture(texture), section(section)
+GuiImage::GuiImage(const SDL_Texture* texture, const rectangle& section) : GuiElements(), texture(texture), section(section)
 {
 	setSize(section.w, section.h);
 }
@@ -203,16 +203,19 @@ GuiCursor::~GuiCursor(){
 
 }
 
-void GuiCursor::setPosition(iPoint coords){
+void GuiCursor::setPosition(iPoint coords)
+{
 	position.x = coords.x + getScreenRect().w;
 	position.y = coords.y + getScreenRect().h;
 }
-void GuiCursor::updatePosition(){
+void GuiCursor::updatePosition()
+{
 	iPoint mouse;
 	app->input->getMousePosition(mouse);
 	setPosition(mouse);
 }
-void GuiCursor::draw(){
+void GuiCursor::draw()
+{
 	updatePosition();
 	app->render->blit(texture, position.x, position.y, false);
 }
@@ -256,7 +259,7 @@ bool Gui::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	const Gui_Elements* mouse_hover = findMouseHover();
+	const GuiElements* mouse_hover = findMouseHover();
 	if (mouse_hover &&
 		mouse_hover->can_focus == true &&
 		app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
@@ -265,10 +268,10 @@ bool Gui::preUpdate()
 	
 	// if TAB find the next item and give it the focus
 	/*if (app->input->getKey(SDL_SCANCODE_TAB) == KeyState::KEY_DOWN)
-	{   list<Gui_Elements*>* item = NULL;
-		//int pos = elements.find((Gui_Elements*)focus);
+	{   list<GuiElements*>* item = NULL;
+		//int pos = elements.find((GuiElements*)focus);
 		int pos = 0;
-		for (list<Gui_Elements*>::iterator node = elements.begin(); *node && *node != (Gui_Elements*)focus; node++)
+		for (list<GuiElements*>::iterator node = elements.begin(); *node && *node != (GuiElements*)focus; node++)
 		{
 			pos++;
 		}
@@ -278,19 +281,19 @@ bool Gui::preUpdate()
 			focus = nullptr;
 			//item = elements.At(pos);
 			int i = 0;
-			for (list<Gui_Elements*>::iterator node = elements.begin(); *node && i <= pos; node++, i++)
+			for (list<GuiElements*>::iterator node = elements.begin(); *node && i <= pos; node++, i++)
 			{
 				if (i == pos)
 				{
 					i = 0;
-					Gui_Elements* gui_test = *node;
+					GuiElements* gui_test = *node;
 					item->push_back(gui_test);
 				}
 			}
 
 			if (item)
 			{
-				for (list<Gui_Elements*>::iterator node = item->begin(); *node; node++, i++)
+				for (list<GuiElements*>::iterator node = item->begin(); *node; node++, i++)
 				{
 					if (i == pos)
 					{
@@ -300,9 +303,9 @@ bool Gui::preUpdate()
 				}
 			}
 
-			for (list<Gui_Elements*>::iterator node = item->begin(); *node; node++)
+			for (list<GuiElements*>::iterator node = item->begin(); *node; node++)
 			{
-				Gui_Elements* gui_test = *node;
+				GuiElements* gui_test = *node;
 				if (gui_test->can_focus == true)
 				{
 					focus = gui_test;
@@ -313,9 +316,9 @@ bool Gui::preUpdate()
 		}
 		if (focus == nullptr)
 		{
-			for (list<Gui_Elements*>::iterator node = elements.begin(); *node; node++)
+			for (list<GuiElements*>::iterator node = elements.begin(); *node; node++)
 			{
-				Gui_Elements* gui_test = *node;
+				GuiElements* gui_test = *node;
 				if (gui_test->can_focus == true)
 				{
 					focus = gui_test;
@@ -326,17 +329,17 @@ bool Gui::preUpdate()
 	}*/
 
 	// Now the iteration for input and update
-	for (list<Gui_Elements*>::iterator node = elements.begin(); node != elements.end(); node++)
+	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)
 	{
-		Gui_Elements* gui_test = *node;
+		GuiElements* gui_test = *node;
 		if (gui_test->interactive == true)
 		    gui_test->checkInput(mouse_hover, focus);
 	}
 		
 
-	for (list<Gui_Elements*>::iterator node = elements.begin(); node != elements.end(); node++)
+	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)
 	{
-		Gui_Elements* gui_test = *node;
+		GuiElements* gui_test = *node;
 		gui_test->update(mouse_hover, focus);
 	}
 
@@ -349,11 +352,11 @@ bool Gui::preUpdate()
 // Called after all Updates
 bool Gui::postUpdate()
 {
-	list<Gui_Elements*>::iterator item;
+	list<GuiElements*>::iterator item;
 
 	for (item = elements.begin(); item != elements.end(); item++)
 	{
-		Gui_Elements* gui = *item;
+		GuiElements* gui = *item;
 		if (gui->draw_element == true)
 			gui->draw();
 
@@ -370,7 +373,7 @@ bool Gui::cleanUp()
 {
 	LOG("Freeing GUI");
 
-	list<Gui_Elements*>::iterator item;
+	list<GuiElements*>::iterator item;
 
 	for (item = elements.begin(); item != elements.end(); item++)
 		RELEASE(*item);
@@ -430,16 +433,16 @@ void Gui::mouseQuad(iPoint init_mouse)
 }
 
 // Called after all Updates
-const Gui_Elements* Gui::findMouseHover()
+const GuiElements* Gui::findMouseHover()
 {
 	iPoint mouse;
 	app->input->getMousePosition(mouse);
 
 	elements.reverse();
 
-	for (list<Gui_Elements*>::iterator item = elements.begin(); item != elements.end(); item++)
+	for (list<GuiElements*>::iterator item = elements.begin(); item != elements.end(); item++)
 	{
-		Gui_Elements* gui_test = *item;
+		GuiElements* gui_test = *item;
 		if (gui_test->interactive == true)
 		{
 			if (gui_test->getScreenRect().Contains(mouse.x, mouse.y))

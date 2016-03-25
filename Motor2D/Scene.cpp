@@ -148,11 +148,11 @@ bool Scene::cleanUp()
 }
 
 //GUI
-void Scene::onGui(Gui_Elements* ui, GuiEvents event)
+void Scene::onGui(GuiElements* ui, GUI_EVENTS event)
 {
 	if (ui == rectangle_map)
 	{
-		if (event == GuiEvents::MOUSE_LCLICK_DOWN)
+		if (event == GUI_EVENTS::MOUSE_LCLICK_DOWN)
 		{
 			iPoint pos_rect;
 			app->input->getMousePosition(pos_rect);
