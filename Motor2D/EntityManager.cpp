@@ -174,17 +174,19 @@ Entity *EntityManager::addGroundUnit(iPoint &pos, GROUND_UNIT_TYPE type)
 	{
 	case (type.UNIT == 21)://MARINE
 		unit = new Marine(pos, ++next_ID, TERRAN, type.MARINE);
+		active_entities.insert(pair<uint, Entity*>(next_ID, unit));
 			break;
 			
 			/*
 	case(type.UNIT == 22) ://ZERGLING
 		unit = new Zergling(pos, ++next_ID, TERRAN, type.ZERGLING);
+		active_entities.insert(pair<uint, Entity*>(next_ID, unit));
 			break;
 			*/
 	
 		
 		// We add the new entity to the map of active entities. 
-		active_entities.insert(pair<uint, Entity*>(next_ID, unit));
+		
 	}		
 	
 	return unit;
