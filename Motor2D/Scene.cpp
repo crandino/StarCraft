@@ -104,6 +104,10 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
 		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
 
+	// Paint Layers -- Draw or undraw the map
+	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 		app->render->start_transition({ 2000, 2000 });

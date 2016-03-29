@@ -1,9 +1,7 @@
 #include "App.h"
 #include "EntityManager.h"
 #include "Input.h"
-//#include "PathFinding.h"
 #include "Window.h"
-#include "Entity.h"
 #include "p2Log.h"
 #include <algorithm>
 
@@ -31,13 +29,25 @@ bool EntityManager::start()
 	return true;
 }
 
-Entity* const EntityManager::createMarine(iPoint &pos)
+Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 {
-	LOG("Creating Marine");
-	GROUND_UNIT_TYPE type;
-	Entity* marine = addGroundUnit(pos, type);
+	Entity *e = NULL;
 
-	return marine;
+	switch (type)
+	{
+	case(MARINE) :
+		LOG("Creating Marine");
+		e = new Marine(pos);
+		break;
+	}
+
+	if (e != NULL)
+	{
+		e->id = ++next_ID;
+		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+	}
+
+	return e;
 }
  
 // Called each loop iteration
@@ -53,8 +63,7 @@ bool EntityManager::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		iPoint p; app->input->getMousePosition(p);
-		Entity* marine = createMarine(p);
-		active_entities.insert(pair<uint, Entity*>(next_ID, marine));
+		addEntity(p, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
 	
@@ -102,7 +111,7 @@ bool EntityManager::postUpdate()
 	static char title[256];
 	sprintf_s(title, 256, "Active bricks: %d  Inactive bricks: %d",
 	active_entities.size(), inactive_entities.size());
-	app->win->setTitle(title);
+	//app->win->setTitle(title);
 
 	// Entities drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
@@ -155,43 +164,6 @@ bool EntityManager::cleanUp()
 	return true;
 }
 
-// Add method
-Entity *EntityManager::addGroundUnit(iPoint &pos, GROUND_UNIT_TYPE type)
-{
-	Entity *unit = NULL;
-	iPoint tile_pos = app->map->worldToMap(app->map->data.front(), pos.x, pos.y);
-
-	// Checking for another bricks already on the map_tile specified by argument pos.
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); it++)
-	{
-		if (it->second->tile_pos == tile_pos)
-			return unit; // No entity is created!
-	}
-	
-
-	switch (type.UNIT)
-	{
-	case (type.UNIT == 21)://MARINE
-		unit = new Marine(pos, ++next_ID, TERRAN, type.MARINE);
-		active_entities.insert(pair<uint, Entity*>(next_ID, unit));
-			break;
-			
-			/*
-	case(type.UNIT == 22) ://ZERGLING
-		unit = new Zergling(pos, ++next_ID, TERRAN, type.ZERGLING);
-		active_entities.insert(pair<uint, Entity*>(next_ID, unit));
-			break;
-			*/
-	
-		
-		// We add the new entity to the map of active entities. 
-		
-	}		
-	
-	return unit;
-}
-
 // Remove an entity using its ID
 bool EntityManager::remove(uint id)
 {
@@ -233,7 +205,7 @@ Entity *EntityManager::whichEntityOnMouse()
 
 void EntityManager::selectAll(uchar filter)
 {
-	iPoint left_top, right_bottom;
+	/*iPoint left_top, right_bottom;
 	left_top = app->map->worldToMap(app->map->data.front(), selector.x, selector.y);
 	right_bottom = app->map->worldToMap(app->map->data.front(), selector.x + selector.w, selector.y + selector.h);
 
@@ -253,7 +225,7 @@ void EntityManager::selectAll(uchar filter)
 				}
 			}
 		}
-	}
+	}*/
 }
 
 void EntityManager::selectAvailableEntities(uchar filter)

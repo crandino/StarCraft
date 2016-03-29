@@ -4,15 +4,9 @@
 #include "Module.h"
 #include "Point2d.h"
 #include "SDL\include\SDL_rect.h"
+#include "Entity.h"
 #include <map>
 #include <vector>
-
-class ENTITY_TYPE;
-class UNITS;
-enum FACTION;
-class BUILDING_TYPE;
-class UNIT_TYPE;
-class GROUND_UNIT_TYPE;
 
 class Entity;
 using namespace std;
@@ -42,7 +36,7 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	Entity* addGroundUnit(iPoint &pos, GROUND_UNIT_TYPE type);
+	Entity* const addEntity(iPoint &pos, ENTITY_TYPE type);
 	bool remove(uint id);
 	Entity* getEntity(uint id);
 	Entity* whichEntityOnMouse();
