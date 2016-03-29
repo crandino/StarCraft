@@ -121,7 +121,7 @@ bool Scene::update(float dt)
 
 	//Provisional--------------------------------------------------------------
 	//MouseQuad
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	/*if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 	{
 		if (quad_counter == 0)
 			app->input->getMousePosition(init_mouse);
@@ -132,7 +132,7 @@ bool Scene::update(float dt)
 
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP){
 		quad_counter = 0;
-	}
+	}*/
 	//--------------------------------------------------------------------------
 
 

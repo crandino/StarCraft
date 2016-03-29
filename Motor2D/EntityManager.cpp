@@ -62,7 +62,8 @@ bool EntityManager::preUpdate()
 	//Marine Creation
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
-		iPoint p; app->input->getMousePosition(p);
+		iPoint p; 
+		app->input->getMousePosition(p);
 		addEntity(p, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
@@ -89,11 +90,20 @@ bool EntityManager::preUpdate()
 	{
 		app->input->getMousePosition(final_selector_pos);
 		calculateSelector();
+
+	    map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
+			if (it->second->dim.x <= selector.x + selector.w &&  it->second->dim.x >= selector.x
+				&& it->second->dim.y <= selector.y + selector.h &&  it->second->dim.y >= selector.y)
+				selection.insert(pair<uint, Entity*>(it->first, it->second));  
+
 	}		
 
 	// Once released right button, the selection is computed
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
 	{
+		
+
 		selector_init = false;
 		if (app->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			selectAvailableEntities(filter);
@@ -119,11 +129,11 @@ bool EntityManager::postUpdate()
 		it->second->draw();
 
 	// Basic selection. Entities surrounded by black rectangles.
-	it = selection.begin();
-	for (; it != selection.end(); ++it)
-		app->render->DrawQuad(it->second->dim, 0, 0, 0, 255, false);
+	map<uint, Entity*>::iterator it2 = selection.begin();
+	for (; it2 != selection.end(); ++it2)
+		app->render->DrawCircle(it2->second->dim.x + 32, it2->second->dim.y + 32, it2->second->dim.h/5, 35, 114, 48, 255, false);
 
-	// Drawing gradient color (red close to selection, blue for further entities) for ordered selection.
+	/*// Drawing gradient color (red close to selection, blue for further entities) for ordered selection.
 	multimap<float, Entity*>::iterator ito = selection_ordered.begin();
 	ito = selection_ordered.begin();
 	if (selection_ordered.size() != 0)
@@ -137,10 +147,10 @@ bool EntityManager::postUpdate()
 			red = 255 - blue;
 			app->render->DrawQuad(ito->second->dim, red, 0, blue, 255, true);
 		}
-	}
+	}*/
 
 	// Drawing selector (white rectangle)
-	if (selector_init) app->render->DrawQuad(selector, 255, 255, 255, 255, false);
+	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false);
 
 	return true;
 }

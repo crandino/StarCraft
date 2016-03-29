@@ -62,8 +62,8 @@ public:
 	{
 		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
 		spritesheet_section = { 0, 0, 64, 64 };
-		dim.w = section.w;
-		dim.h = section.h;
+		dim.w = spritesheet_section.w;
+		dim.h = spritesheet_section.h;
 		type = MARINE;
 		faction = PLAYER;
 	}
