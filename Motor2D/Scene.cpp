@@ -167,8 +167,8 @@ void Scene::onGui(GuiElements* ui, GUI_EVENTS event)
 			iPoint pos_rect;
 			app->input->getMousePosition(pos_rect);
 			rectangle rect_map_camera_parent = rectangle_map_camera->parent->getScreenRect();
-			if (pos_rect.x - rect_map_camera_parent.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
-				&& pos_rect.y - rect_map_camera_parent.y + rectangle_map_camera->getScreenRect().h <= rect_map_camera_parent.y + rect_map_camera_parent.h)
+			if (pos_rect.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + rectangle_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
 				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
 		}
 	}
