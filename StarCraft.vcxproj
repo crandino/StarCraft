@@ -68,6 +68,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Motor2D\Animation.h" />
     <ClInclude Include="Motor2D\App.h" />
     <ClInclude Include="Motor2D\Audio.h" />
     <ClInclude Include="Motor2D\Brofiler.h" />

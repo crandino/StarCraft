@@ -2,6 +2,9 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Animation.h"
+#include <vector>
+using namespace std;
 
 struct SDL_Texture;
 class GuiImage;
@@ -53,6 +56,9 @@ public:
 	int quad_counter = 0;
 	iPoint init_mouse;
 	//-----------------------------------------
+
+	Animation* idle;
+	vector<Animation*> animation_set;
 };
 
 #endif // __SCENE_H__

@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Scene.h"
 #include "Gui.h"
+#include "Animation.h"
 
 Scene::Scene() : Module()
 {
@@ -24,7 +25,6 @@ bool Scene::awake(pugi::xml_node &node)
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
 	return ret;
 }
 
@@ -35,6 +35,11 @@ bool Scene::start()
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	mouse_texture = app->tex->loadTexture("cursor.png");
 	
+	//--TEST FOR ANIMATIONS--
+	//idle->frames.push_back({ 0, 0, 0, 0 });
+	//idle->speed = 0.1f;
+	//idle->loop = false;
+	//animation_set.push_back(idle);
 
 	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
 	ui_terran->setLocalPos(0, 365);
