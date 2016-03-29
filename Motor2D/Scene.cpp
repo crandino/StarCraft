@@ -34,7 +34,6 @@ bool Scene::start()
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	mouse_texture = app->tex->loadTexture("cursor.png");
-	
 	//--TEST FOR ANIMATIONS--
 	//idle->frames.push_back({ 0, 0, 0, 0 });
 	//idle->speed = 0.1f;
@@ -127,7 +126,7 @@ bool Scene::update(float dt)
 		if (quad_counter == 0)
 			app->input->getMousePosition(init_mouse);
 		
-		app->gui->mouseQuad(init_mouse);
+		selection = app->gui->mouseQuad(init_mouse);
 		quad_counter++;
 	}
 
