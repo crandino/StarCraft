@@ -5,6 +5,8 @@
 #include "p2Log.h"
 #include <algorithm>
 
+#include "PathFinding.h"
+
 EntityManager::EntityManager() : Module()
 {
 	name.assign("EntityManager");
@@ -26,6 +28,17 @@ bool EntityManager::awake(pugi::xml_node &node)
 // Called before the first frame
 bool EntityManager::start()
 {
+	int w, h;
+	uchar* data = NULL;
+	if (app->map->createWalkabilityMap(w, h, &data))
+		app->path->setMap(w, h, data);
+
+	RELEASE_ARRAY(data);
+
+	//TEST
+	start_path = false;
+	//---------------
+
 	return true;
 }
 
@@ -110,9 +123,38 @@ bool EntityManager::preUpdate()
 		else
 			selectAll(filter);
 	}
-			
+		
+
+	//TEST
+	if (app->input->getKey(SDL_SCANCODE_S) == KEY_UP)
+	{
+		app->input->getMousePosition(tile_start_path);
+		start_path = true;
+	}
+	//------------------------------
+
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && start_path)
+	{
+
+		iPoint tmp_mouse_position;
+		app->input->getMousePosition(tmp_mouse_position);
+		map<uint, Entity*>::iterator it = selection.begin();
+		for (; it != selection.end(); ++it); 
+		{
+			//app->path->createPath(it->second->tile_pos, tmp_mouse_position);
+			app->path->createPath(tile_start_path, tmp_mouse_position);
+		}
+	}
+
+	vector<iPoint> tmp_path = app->path->getLastPath();
+	for (uint i = 0; i < app->path->getLastPath().capacity(); i++)
+	{
+		iPoint pos(tmp_path.at(i).x, tmp_path.at(i).y);
+		app->render->DrawQuad({ tmp_path.at(i).x, tmp_path.at(i).y, 8, 8 }, 0, 0, 255);
+	}
+
 	return true;
-}
+} 
 
 // Called each loop iteration
 bool EntityManager::postUpdate()

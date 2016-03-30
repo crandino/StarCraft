@@ -64,6 +64,11 @@ private:
 	void selectAvailableEntities(uchar filter);
 	void calculateSelector();
 	void sortEntities();
+
+	//TEST
+	iPoint tile_start_path;
+	bool start_path;
+	//------------------
 };
 
 #endif // __EntityManager_H__
