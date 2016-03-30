@@ -427,12 +427,13 @@ GuiCursor* Gui::createCursor(const SDL_Texture* texture){
 }
 
 //
-void Gui::mouseQuad(iPoint init_mouse)
+SDL_Rect Gui::mouseQuad(iPoint init_mouse)
 {
 	iPoint current_mouse;
 	app->input->getMousePosition(current_mouse);
-	app->render->DrawQuad({ init_mouse.x, init_mouse.y, current_mouse.x - init_mouse.x, current_mouse.y - init_mouse.y }, 65, 105, 225, 100, true, false);
-
+	SDL_Rect rect = { init_mouse.x, init_mouse.y, current_mouse.x - init_mouse.x, current_mouse.y - init_mouse.y };
+	app->render->DrawQuad(rect, 65, 105, 225, 100, true, false);
+	return rect;
 }
 
 // Called after all Updates

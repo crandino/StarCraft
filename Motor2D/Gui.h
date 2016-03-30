@@ -161,7 +161,7 @@ public:
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
 
-	void mouseQuad(iPoint init_mouse);
+	SDL_Rect mouseQuad(iPoint init_mouse);
 
 private:
 

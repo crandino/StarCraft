@@ -2,6 +2,9 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Animation.h"
+#include <vector>
+using namespace std;
 
 struct SDL_Texture;
 class GuiImage;
@@ -52,7 +55,11 @@ public:
 	//Mouse quad stuff
 	int quad_counter = 0;
 	iPoint init_mouse;
+	SDL_Rect selection;
 	//-----------------------------------------
+
+	Animation* idle;
+	vector<Animation*> animation_set;
 };
 
 #endif // __SCENE_H__

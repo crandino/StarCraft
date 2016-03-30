@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Scene.h"
 #include "Gui.h"
+#include "Animation.h"
 
 Scene::Scene() : Module()
 {
@@ -24,7 +25,6 @@ bool Scene::awake(pugi::xml_node &node)
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
 	return ret;
 }
 
@@ -34,7 +34,11 @@ bool Scene::start()
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 	mouse_texture = app->tex->loadTexture("cursor.png");
-	
+	//--TEST FOR ANIMATIONS--
+	//idle->frames.push_back({ 0, 0, 0, 0 });
+	//idle->speed = 0.1f;
+	//idle->loop = false;
+	//animation_set.push_back(idle);
 
 	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
 	ui_terran->setLocalPos(0, 365);
@@ -104,6 +108,10 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
 		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
 
+	// Paint Layers -- Draw or undraw the map
+	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+
 	// Transition experiments
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 		app->render->start_transition({ 2000, 2000 });
@@ -113,18 +121,18 @@ bool Scene::update(float dt)
 
 	//Provisional--------------------------------------------------------------
 	//MouseQuad
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	/*if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 	{
 		if (quad_counter == 0)
 			app->input->getMousePosition(init_mouse);
 		
-		app->gui->mouseQuad(init_mouse);
+		selection = app->gui->mouseQuad(init_mouse);
 		quad_counter++;
 	}
 
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP){
 		quad_counter = 0;
-	}
+	}*/
 	//--------------------------------------------------------------------------
 
 
@@ -159,8 +167,8 @@ void Scene::onGui(GuiElements* ui, GUI_EVENTS event)
 			iPoint pos_rect;
 			app->input->getMousePosition(pos_rect);
 			rectangle rect_map_camera_parent = rectangle_map_camera->parent->getScreenRect();
-			if (pos_rect.x - rect_map_camera_parent.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
-				&& pos_rect.y - rect_map_camera_parent.y + rectangle_map_camera->getScreenRect().h <= rect_map_camera_parent.y + rect_map_camera_parent.h)
+			if (pos_rect.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + rectangle_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
 				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
 		}
 	}
