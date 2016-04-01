@@ -71,8 +71,6 @@ void Map::draw()
 		}
 		++map_to_draw;
 	}
-
-	
 }
 
 int Properties::get(const char* value, int default_value) const
@@ -233,7 +231,6 @@ bool Map::cleanUp()
 		item_map->tilesets.clear();
 
 		// Remove all layers
-
 		list<MapLayer*>::iterator item2 = item_map->layers.begin();
 
 		while (item2 != item_map->layers.end())
@@ -533,47 +530,45 @@ bool Map::loadProperties(pugi::xml_node& node, Properties& properties)
 bool Map::createWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	bool ret = false;
-	//
-	//list<MapLayer*>::const_iterator item = data.layers.begin();
+	const MapData *logic_map = &(data.back());
+	
+	list<MapLayer*>::const_iterator layers = logic_map->layers.begin();
 
-	//for(item; item != data.layers.end(); item++)
-	//{
-	//	MapLayer* layer = (*item);
+	for (layers; layers != logic_map->layers.end(); ++layers)
+	{
+		MapLayer *layer = *layers;
 
-	//	if(layer->properties.get("Navigation", 0) == 0)
-	//		continue;
+		if(layer->properties.get("Navigation", 0) == 0)
+			continue;
 
-	//	uchar* map = new uchar[layer->width*layer->height];
-	//	memset(map, 1, layer->width*layer->height);
+		uchar* map = new uchar[layer->width*layer->height];
+		memset(map, 1, layer->width*layer->height);
 
-	//	for(int y = 0; y < data.height; ++y)
-	//	{
-	//		for(int x = 0; x < data.width; ++x)
-	//		{
-	//			int i = (y*layer->width) + x;
+		for (int y = 0; y < logic_map->height; ++y)
+		{
+			for (int x = 0; x < logic_map->width; ++x)
+			{
+				int i = (y*layer->width) + x;
 
-	//			int tile_id = layer->get(x, y);
-	//			TileSet* tileset = (tile_id > 0) ? getTilesetFromTileId(tile_id) : NULL;
-	//			
-	//			if(tileset != NULL)
-	//			{
-	//				map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
-	//				/*TileType* ts = tileset->GetTileType(tile_id);
-	//				if(ts != NULL)
-	//				{
-	//					map[i] = ts->properties.Get("walkable", 1);
-	//				}*/
-	//			}
-	//		}
-	//	}
+				int tile_id = layer->get(x, y);
+				TileSet* tileset = (tile_id > 0) ? logic_map->getTilesetFromTileId(tile_id) : NULL;
+				
+				if(tileset != NULL)
+				{
+					// This code only works for our Tile ID configuration present on Path_tiles.png
+					//map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+					map[i] = tile_id;
+				}
+			}
+		}
 
-	//	*buffer = map;
-	//	width = data.width;
-	//	height = data.height;
-	//	ret = true;
+		*buffer = map;
+		width = logic_map->width;
+		height = logic_map->height;
+		ret = true;
 
-	//	break;
-	//}
+		break;
+	}
 
 	return ret;
 }

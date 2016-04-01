@@ -23,14 +23,12 @@ Collision::Collision() : Module()
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_ATTACK] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_BOMB] = true;
 
-
 	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_ATTACK] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_ATTACK] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_BOMB] = false;
-
 
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_WALL] = false;
 	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_PLAYER] = false;
@@ -52,7 +50,6 @@ Collision::Collision() : Module()
 	matrix[COLLIDER_BOMB][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_BOMB][COLLIDER_ENEMY_ATTACK] = false;
 	matrix[COLLIDER_BOMB][COLLIDER_BOMB] = false;
-
 }
 
 Collision::~Collision()
@@ -71,32 +68,18 @@ bool Collision::start()
 
 bool Collision::preUpdate()
 {
-	// IPL: I don't know if that's correct, I let you how it was. 
-
-	// Remove all colliders scheduled for deletion
-	//doubleNode<Collider*> *tmp = colliders.getFirst();
-	//doubleNode<Collider*> *tmp2;
-
-	//while (tmp != NULL)
-	//{
-	//	tmp2 = tmp->next;
-	//	if (tmp->data->to_delete == true)
-	//	{
-	//		delete tmp->data;
-	//		colliders.del(tmp);
-	//	}
-	//	tmp = tmp2;
-	//}
-
-	list<Collider*>::iterator item = colliders.begin();
-	while (item != colliders.end())
+	//Remove all colliders scheduled for deletion
+	list<Collider*>::iterator tmp = colliders.begin();
+	
+	while (tmp != colliders.end())
 	{
-		if ((*item)->to_delete == true)
+		if ((*tmp)->to_delete == true)
 		{
-			RELEASE(*item);
-			colliders.pop_back();
-		}
-		++item;
+			RELEASE(*tmp);
+			colliders.erase(tmp);
+		}			
+		else
+			++tmp;
 	}
 
 	return true;
@@ -104,43 +87,41 @@ bool Collision::preUpdate()
 
 bool Collision::update(float dt)
 {
+	// Debug ---
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	list<Collider*>::iterator tmp = colliders.begin();
+	list<Collider*>::iterator it1 = colliders.begin();
+	list<Collider*>::iterator it2;
 
-	Collider* c1;
-	Collider* c2;
+	Collider *c1;
+	Collider *c2;
 
+	while (it1 != colliders.end())
+	{
+		c1 = (*it1);
 
-	//IPL: I don't know how implement this in STL, I have problems in the second doubleNode<Collider*>*tmp2 = tmp->next
+		// Debug ---
+		if (debug)
+			drawDebug(c1);
 
-	//while (tmp != colliders.end())
-	//{
-	//	c1 = (*tmp);
-	//	++tmp;
-	//	// Debug ---
-	//	if (debug)
-	//		drawDebug(c1);
+		it2 = next(it1);	 // avoid checking collisions already checked
+		while (it2 != colliders.end())
+		{
+			c2 = (*it2);
 
-	//	list<Collider*> tmp2; // avoid checking collisions already checked
-	//	(*tmp) = (tmp2);
-	//	while (tmp2 != NULL)
-	//	{
-	//		c2 = tmp2->data;
+			if (c1->checkCollision(c2->rect) == true)
+			{
+				if (matrix[c1->type][c2->type] && c1->callback)
+					c1->callback->onCollision(c1, c2);
 
-	//		if (c1->checkCollision(c2->rect) == true)
-	//		{
-	//			if (matrix[c1->type][c2->type] && c1->callback)
-	//				c1->callback->onCollision(c1, c2);
-
-	//			if (matrix[c2->type][c1->type] && c2->callback)
-	//				c2->callback->onCollision(c2, c1);
-	//		}
-	//		tmp2 = tmp2->next;
-	//	}
-	//	tmp = tmp->next;
-	//}
+				if (matrix[c2->type][c1->type] && c2->callback)
+					c2->callback->onCollision(c2, c1);
+			}
+			++it2;
+		}
+		++it1;
+	}
 
 	return true;
 }
@@ -179,13 +160,11 @@ bool Collision::cleanUp()
 {
 	LOG("Freeing all colliders");
 	list<Collider*>::reverse_iterator item = colliders.rbegin(); 
-	//IPL: there was a doubleNode<Collider*>*item = colliders.getLast(), I dont know if this is ok 
-	//CRZ: Yes, it is!
 
 	while (item != colliders.rend())
 	{
 		RELEASE(*item);
-		item++;
+		++item;
 	}
 
 	colliders.clear();
@@ -199,7 +178,7 @@ Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, Module *call
 	return ret;
 }
 
-bool Collider::checkCollision(SDL_Rect r) const
+bool Collider::checkCollision(SDL_Rect &r) const
 {
 	return SDL_HasIntersection(&rect, &r);
 	/*return (rect.x < r.x + r.w &&

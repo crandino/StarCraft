@@ -47,8 +47,10 @@
     <ClCompile Include="Motor2D\Gui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\Collision.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\EntityManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,12 +118,16 @@
     <ClInclude Include="Motor2D\Gui.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Entity.h" />
-    <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\Animation.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Collision.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Entity.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\EntityManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

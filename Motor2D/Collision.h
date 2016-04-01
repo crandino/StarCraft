@@ -39,7 +39,7 @@ struct Collider
 		rect.y = y;
 	}
 
-	bool checkCollision(SDL_Rect r) const;
+	bool checkCollision(SDL_Rect &r) const;
 };
 
 class Collision : public Module

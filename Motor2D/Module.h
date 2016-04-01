@@ -11,6 +11,7 @@
 
 class App;
 class GuiElements;
+struct Collider;
 enum GUI_EVENTS;
 
 
@@ -77,6 +78,9 @@ public:
 	}
 
 	virtual void onGui(GuiElements* ui, GUI_EVENTS event)
+	{}
+
+	virtual void onCollision(Collider* c1, Collider* c2)
 	{}
 
 public:

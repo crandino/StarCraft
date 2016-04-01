@@ -3,7 +3,6 @@
 #define __ANIMATION_H__
 
 #include <vector>
-#include "SDL\include\SDL.h"
 
 using namespace std;
 
@@ -19,7 +18,6 @@ public:
 	bool loop;
 	float speed;
 	vector<SDL_Rect> frames;
-
 
 	Animation() : frames(5), speed(1.0f), current_frame(0), loop(true), loops(0)
 	{ }

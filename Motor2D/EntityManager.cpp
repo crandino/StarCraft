@@ -14,10 +14,7 @@ EntityManager::EntityManager() : Module()
 
 // Destructor
 EntityManager::~EntityManager()
-{
-	next_ID = 0;
-	filter = 0;
-}
+{ }
 
 // Called before render is available
 bool EntityManager::awake(pugi::xml_node &node)
@@ -28,16 +25,8 @@ bool EntityManager::awake(pugi::xml_node &node)
 // Called before the first frame
 bool EntityManager::start()
 {
-	int w, h;
-	uchar* data = NULL;
-	if (app->map->createWalkabilityMap(w, h, &data))
-		app->path->setMap(w, h, data);
-
-	RELEASE_ARRAY(data);
-
-	//TEST
-	start_path = false;
-	//---------------
+	next_ID = 0;
+	filter = 0;
 
 	return true;
 }

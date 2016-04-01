@@ -7,6 +7,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Map.h"
+#include "PathFinding.h"
 #include "Scene.h"
 #include "Gui.h"
 #include "Animation.h"
@@ -33,8 +34,13 @@ bool Scene::start()
 {
     app->map->load("TEST_MAP.tmx");
     app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
-	mouse_texture = app->tex->loadTexture("cursor.png");
 
+	int w, h;
+	uchar *buffer = NULL;
+	if(app->map->createWalkabilityMap(w, h, &buffer))
+		app->path->setMap(w, h, buffer);
+
+	mouse_texture = app->tex->loadTexture("cursor.png");
 
 	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
 	ui_terran->setLocalPos(0, 365);
