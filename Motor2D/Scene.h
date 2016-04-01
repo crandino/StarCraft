@@ -58,8 +58,6 @@ public:
 	SDL_Rect selection;
 	//-----------------------------------------
 
-	Animation* idle;
-	vector<Animation*> animation_set;
 };
 
 #endif // __SCENE_H__

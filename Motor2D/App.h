@@ -22,6 +22,7 @@ class Map;
 class PathFinding;
 class Gui;
 class EntityManager;
+class Collision;
 
 class App
 {
@@ -96,6 +97,7 @@ public:
 	PathFinding*		path;
 	Gui*				gui;
 	EntityManager*		entityManager;
+	Collision*			collision;
 
 private:
 

@@ -48,6 +48,9 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Motor2D\EntityManager.cpp" />
+    <ClCompile Include="Motor2D\Collision.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -116,6 +119,9 @@
     <ClInclude Include="Motor2D\Entity.h" />
     <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\Animation.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Collision.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

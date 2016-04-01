@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "App.h"
+#include "Animation.h"
 
 enum ENTITY_TYPE
 {
@@ -24,7 +25,8 @@ public:
 	SDL_Rect		dim;
 	SDL_Rect		spritesheet_section;
 	ENTITY_TYPE		type;
-	SDL_Texture		*tex;
+	SDL_Texture		*tex;   
+	Animation*		current_animation;
 	uint			id;
 	iPoint			tile_pos;
 
@@ -46,7 +48,7 @@ public:
 
 	void draw()
 	{
-		app->render->blit(tex, dim.x, dim.y, &spritesheet_section);
+		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
 	}
 
 };
@@ -54,16 +56,27 @@ public:
 class Marine : public Entity
 {
 public:
-
+	
+	Animation idle;
 	SDL_Rect section;
 	FACTION faction;
 
 	Marine(iPoint &p) : Entity(p)
 	{
+		
 		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
-		spritesheet_section = { 0, 0, 64, 64 };
-		dim.w = spritesheet_section.w;
-		dim.h = spritesheet_section.h;
+		//--TEST TO TRY THE ANIMATION MODULE----
+		idle.frames.push_back({ 0, 0, 64, 64 });
+		idle.frames.push_back({ 192, 0, 64, 64 });
+		idle.frames.push_back({ 256, 0, 64, 64 });
+		idle.frames.push_back({ 192, 0, 64, 64 });
+		idle.frames.push_back({ 0, 0, 64, 64 });
+		idle.speed = 0.04f;
+		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+		current_animation = &idle;
+		//-------------------------------------
+		dim.w = current_animation->getCurrentFrame().w;
+		dim.h = current_animation->getCurrentFrame().h;
 		type = MARINE;
 		faction = PLAYER;
 	}

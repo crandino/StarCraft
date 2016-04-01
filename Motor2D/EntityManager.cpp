@@ -75,7 +75,7 @@ bool EntityManager::preUpdate()
 	//Marine Creation
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
-		iPoint p; 
+		iPoint p;
 		app->input->getMousePosition(p);
 		addEntity(p, MARINE);
 		//if (e != NULL) remove(e->id);		
@@ -156,9 +156,12 @@ bool EntityManager::preUpdate()
 	return true;
 } 
 
+
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {
+
+
 	// Info about the bricks
 	static char title[256];
 	sprintf_s(title, 256, "Active bricks: %d  Inactive bricks: %d",

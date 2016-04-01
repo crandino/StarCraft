@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "App.h"
 #include "Gui.h"
+#include "Collision.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -32,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	gui = new Gui();
 	entityManager = new EntityManager();
+	collision = new Collision();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(map);
 	addModule(path);
 	addModule(entityManager);
+	addModule(collision);
 
 	addModule(scene);
 
