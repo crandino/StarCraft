@@ -4,8 +4,6 @@
 #include "Render.h"
 #include "p2Log.h"
 
-#define SCALE_FACTOR 100
-
 Collision::Collision() : Module()
 {
 	name.assign("collision");
@@ -180,7 +178,9 @@ void Collision::drawDebug(Collider *col)
 bool Collision::cleanUp()
 {
 	LOG("Freeing all colliders");
-	list<Collider*>::reverse_iterator item = colliders.rbegin(); //IPL: there was a doubleNode<Collider*>*item = colliders.getLast(), I dont know if this is ok 
+	list<Collider*>::reverse_iterator item = colliders.rbegin(); 
+	//IPL: there was a doubleNode<Collider*>*item = colliders.getLast(), I dont know if this is ok 
+	//CRZ: Yes, it is!
 
 	while (item != colliders.rend())
 	{
@@ -192,18 +192,8 @@ bool Collision::cleanUp()
 	return true;
 }
 
-Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, bool positions_scaled, Module *callback)
+Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, Module *callback)
 {
-
-	if (positions_scaled == false)
-	{
-		rect.x *= SCALE_FACTOR;
-		rect.y *= SCALE_FACTOR;
-	}
-
-	rect.w *= SCALE_FACTOR;
-	rect.h *= SCALE_FACTOR;
-
 	Collider* ret = new Collider(rect, type, callback);
 	colliders.push_back(ret); //put the collider at the end of the list
 	return ret;
@@ -211,8 +201,9 @@ Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, bool positio
 
 bool Collider::checkCollision(SDL_Rect r) const
 {
-	return (rect.x < r.x + r.w &&
+	return SDL_HasIntersection(&rect, &r);
+	/*return (rect.x < r.x + r.w &&
 		rect.x + rect.w > r.x &&
 		rect.y < r.y + r.h &&
-		rect.h + rect.y > r.y);
+		rect.h + rect.y > r.y);*/
 }

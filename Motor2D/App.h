@@ -96,7 +96,7 @@ public:
 	Map*				map;
 	PathFinding*		path;
 	Gui*				gui;
-	EntityManager*		entityManager;
+	EntityManager*		entity_manager;
 	Collision*			collision;
 
 private:

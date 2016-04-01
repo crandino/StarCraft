@@ -74,7 +74,7 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	Collider* addCollider(SDL_Rect rect, COLLIDER_TYPE type, bool positions_scaled = true, Module *callback = NULL);
+	Collider* addCollider(SDL_Rect rect, COLLIDER_TYPE type, Module *callback = NULL);
 	void drawDebug(Collider *col);
 };
 

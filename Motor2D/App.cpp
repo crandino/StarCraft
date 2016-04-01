@@ -32,7 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	path = new PathFinding();
 	map = new Map();
 	gui = new Gui();
-	entityManager = new EntityManager();
+	entity_manager = new EntityManager();
 	collision = new Collision();
 
 	// Ordered for awake / start / update
@@ -45,7 +45,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(audio);
 	addModule(map);
 	addModule(path);
-	addModule(entityManager);
+	addModule(entity_manager);
 	addModule(collision);
 
 	addModule(scene);
