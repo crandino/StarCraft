@@ -29,15 +29,17 @@ public:
 	Animation*		current_animation;
 	uint			id;
 	iPoint			tile_pos;
+	unsigned int    life;
 
 	// Constructors
-	Entity(const iPoint &p)
+	Entity(const iPoint &p, unsigned int lifes)
 	{
 		iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
 		tile_pos = tmp;
 		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
 		dim.x = tmp.x;
 		dim.y = tmp.y;
+		life = lifes;
 	};
 
 	// Destructor
@@ -51,6 +53,8 @@ public:
 		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
 	}
 
+	
+
 };
 
 class Marine : public Entity
@@ -60,8 +64,9 @@ public:
 	Animation idle;
 	SDL_Rect section;
 	FACTION faction;
+	unsigned int lifes = 10;
 
-	Marine(iPoint &p) : Entity(p)
+	Marine(iPoint &p) : Entity(p, lifes)
 	{
 		
 		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
@@ -79,6 +84,7 @@ public:
 		dim.h = current_animation->getCurrentFrame().h;
 		type = MARINE;
 		faction = PLAYER;
+		life = 10;
 	}
 };
 

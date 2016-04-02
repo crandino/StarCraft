@@ -19,6 +19,8 @@ EntityManager::~EntityManager()
 // Called before render is available
 bool EntityManager::awake(pugi::xml_node &node)
 {
+	
+
 	return true;
 }
 
@@ -27,6 +29,7 @@ bool EntityManager::start()
 {
 	next_ID = 0;
 	filter = 0;
+    circle_characters = app->tex->loadTexture("StarCraftCursors.png");
 
 	return true;
 }
@@ -112,7 +115,43 @@ bool EntityManager::preUpdate()
 		else
 			selectAll(filter);
 	}
-		
+
+	//Selection
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		selector_init = true;
+		selection.clear();
+		selection_ordered.clear();
+		app->input->getMousePosition(initial_selector_pos);
+	}
+
+	// Holding right button, updates selector dimensions
+	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+		app->input->getMousePosition(final_selector_pos);
+		calculateSelector();
+
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->dim.x + 32  <= selector.x + selector.w &&  it->second->dim.x + 32 >= selector.x
+				&& it->second->dim.y + 32 <= selector.y + selector.h &&  it->second->dim.y + 32 >= selector.y)
+				selection.insert(pair<uint, Entity*>(it->first, it->second));
+		}
+
+	}
+
+	// Once released right button, the selection is computed
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+	{
+
+
+		selector_init = false;
+		if (app->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			selectAvailableEntities(filter);
+		else
+			selectAll(filter);
+	}
 
 	//TEST
 	if (app->input->getKey(SDL_SCANCODE_S) == KEY_UP)
@@ -157,15 +196,37 @@ bool EntityManager::postUpdate()
 	active_entities.size(), inactive_entities.size());
 	//app->win->setTitle(title);
 
+	
+
+	// Basic selection. Entities surrounded by black rectangles.
+	map<uint, Entity*>::iterator it2 = selection.begin();
+	for (; it2 != selection.end(); ++it2)
+	{
+		rectangle section_circle = { 52, 56, 27, 17 };
+		app->render->blit(circle_characters, it2->second->dim.x + 19, it2->second->dim.y + 32, (SDL_Rect*)&section_circle, 1.0f);
+	}
+	
+	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
+	{
+		//app->render->DrawQuad({ it2->second->dim.x, it2->second->dim.y, 64, 64 }, 35, 114, 48, 255, false, true);
+		rectangle section_life = { 46, 79, 41, 8 };
+		app->render->blit(circle_characters, it2->second->dim.x + 14, it2->second->dim.y + 10, (SDL_Rect*)&section_life, 1.0f);
+		for (int i = 0, a = 0; i < 10; i++)
+		{
+			rectangle greenquadlife = { 225, 32, 3, 4 };
+			app->render->blit(circle_characters, it2->second->dim.x + 15 + a, it2->second->dim.y + 12, (SDL_Rect*)&greenquadlife, 1.0f);
+			greenquadlife.x += 4;
+			a += 4;
+		}
+
+		//app->render->DrawCircle(it2->second->dim.x + 32, it2->second->dim.y + 32, it2->second->dim.h/5, 35, 114, 48, 255, false);
+	}
+	
 	// Entities drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 		it->second->draw();
 
-	// Basic selection. Entities surrounded by black rectangles.
-	map<uint, Entity*>::iterator it2 = selection.begin();
-	for (; it2 != selection.end(); ++it2)
-		app->render->DrawCircle(it2->second->dim.x + 32, it2->second->dim.y + 32, it2->second->dim.h/5, 35, 114, 48, 255, false);
 
 	/*// Drawing gradient color (red close to selection, blue for further entities) for ordered selection.
 	multimap<float, Entity*>::iterator ito = selection_ordered.begin();
@@ -184,7 +245,7 @@ bool EntityManager::postUpdate()
 	}*/
 
 	// Drawing selector (white rectangle)
-	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false);
+	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false, false);
 
 	return true;
 }
