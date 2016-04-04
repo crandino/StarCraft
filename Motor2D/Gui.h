@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Point2d.h"
 #include "p2Defs.h"
+#include "Animation.h"
 #include <string>
 #include <list>
 
@@ -105,7 +106,8 @@ private:
 class GuiCursor : public GuiElements
 {
 public:
-	GuiCursor(const SDL_Texture* texture);
+	GuiCursor(const SDL_Texture* texture, Animation* animation);
+
 	~GuiCursor();
 
 	void setPosition(iPoint coords);
@@ -115,6 +117,7 @@ public:
 private:
 
 	const SDL_Texture* texture = nullptr;
+	Animation* cursor_anim;
 	rectangle section;
 	iPoint position;
 };
@@ -153,7 +156,7 @@ public:
 	// Gui creation functions
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const rectangle& atlas_section);
-	GuiCursor* createCursor(const SDL_Texture* texture);
+	GuiCursor* createCursor(const SDL_Texture* texture, Animation* animation);
 	/*GuiLabel* CreateLabel(const char* text);
 	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
 	GuiHScrollBarVertical* CreateHScrollBarVertical(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/

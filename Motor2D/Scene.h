@@ -49,6 +49,7 @@ private:
 	//MOUSE UI
 	GuiCursor* mouse = nullptr;
 	SDL_Texture* mouse_texture = nullptr;
+	Animation cursor_animation;
 
 public:
 	//Provisional------------------------------

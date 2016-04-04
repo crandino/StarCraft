@@ -64,13 +64,14 @@ bool Scene::start()
 	
 	//Cursor
 	cursor_animation.frames.push_back({ 2, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 46, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 90, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 134, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 178, 2, 40, 42 });
-	cursor_animation.speed = 0.03f;
-	cursor_animation.loop = false; // Anim doesn't work
-	mouse = app->gui->createCursor(mouse_texture, &cursor_animation);
+	cursor_animation.frames.push_back({ 1, 1, 42, 44 });
+	cursor_animation.frames.push_back({ 1, 1, 42, 44 });
+	cursor_animation.frames.push_back({ 1, 1, 42, 44 });
+	cursor_animation.frames.push_back({ 1, 1, 42, 44 });
+	cursor_animation.speed = 0.05f;
+	cursor_animation.loop = true;
+	mouse = app->gui->createCursor(mouse_texture, cursor_animation);
+	
 	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
     
 	SDL_ShowCursor(SDL_DISABLE);
