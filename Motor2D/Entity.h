@@ -91,8 +91,10 @@ public:
 		idle.frames.push_back({ 896, 0, 64, 64 });
 		idle.frames.push_back({ 960, 0, 64, 64 });
 		idle.frames.push_back({ 0, 0, 64, 64 });
+
 		idle.speed = 0.05f;
 		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+
 		current_animation = &idle;
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
