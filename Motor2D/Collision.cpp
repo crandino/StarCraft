@@ -88,7 +88,7 @@ bool Collision::preUpdate()
 bool Collision::update(float dt)
 {
 	// Debug ---
-	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->getKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		debug = !debug;
 
 	list<Collider*>::iterator it1 = colliders.begin();
@@ -175,7 +175,7 @@ Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, Module *call
 {
 	Collider* ret = new Collider(rect, type, callback);
 	colliders.push_back(ret); //put the collider at the end of the list
-	return ret;
+	return ret; 
 }
 
 bool Collider::checkCollision(SDL_Rect &r) const

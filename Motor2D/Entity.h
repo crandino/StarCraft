@@ -5,6 +5,7 @@
 #include "App.h"
 #include "Vector2D.h"
 #include "Animation.h"
+#include "Collision.h"
 
 enum ENTITY_TYPE
 {
@@ -37,16 +38,22 @@ public:
 	Vector2D<int> direction;
 
 	unsigned int    hp;
+
+	Collider*        coll;
+
 	vector<iPoint>  path;
+
 
 	// Constructors
 	Entity(const iPoint &p)
 	{
+
 		//iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
 		tile_pos = p;
 		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
 		dim.x = p.x;
 		dim.y = p.y;
+		coll = app->collision->addCollider(dim, COLLIDER_BOMB);
 
 	};
 
