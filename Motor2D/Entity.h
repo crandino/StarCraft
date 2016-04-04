@@ -3,12 +3,17 @@
 #include "Render.h"
 #include "Map.h"
 #include "App.h"
+#include "Vector2D.h"
 #include "Animation.h"
+#include "Collision.h"
 
 enum ENTITY_TYPE
 {
+	//Units
 	MARINE,
-	ZERGLING
+	ZERGLING,
+	//Buildings
+	COMMANDCENTER
 };
 
 enum FACTION
@@ -29,17 +34,27 @@ public:
 	Animation*		current_animation;
 	uint			id;
 	iPoint			tile_pos;
-	unsigned int    life;
+
+	Vector2D<int> direction;
+
+	unsigned int    hp;
+
+	Collider*        coll;
+
+	vector<iPoint>  path;
+
 
 	// Constructors
-	Entity(const iPoint &p, unsigned int lifes)
+	Entity(const iPoint &p,unsigned int hp2)
 	{
-		iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
-		tile_pos = tmp;
-		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
-		dim.x = tmp.x;
-		dim.y = tmp.y;
-		life = lifes;
+
+		//iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
+		tile_pos = p;
+		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
+		dim.x = p.x;
+		dim.y = p.y;
+		coll = app->collision->addCollider(dim, COLLIDER_BOMB);
+		hp = hp2;
 	};
 
 	// Destructor
@@ -48,7 +63,7 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
-	void draw()
+	virtual void draw()
 	{
 		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
 	}
@@ -65,48 +80,103 @@ public:
 	SDL_Rect section;
 	FACTION faction;
 
-	Marine(iPoint &p) : Entity(p, 6)
+
+
+	Marine(iPoint &p) : Entity(p,6)
 	{
 		
-		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
+		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
+		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
+		/*idle.frames.push_back({ 64, 0, 64, 64 });
+		idle.frames.push_back({ 128, 0, 64, 64 });
 		idle.frames.push_back({ 192, 0, 64, 64 });
 		idle.frames.push_back({ 256, 0, 64, 64 });
-		idle.frames.push_back({ 192, 0, 64, 64 });
-		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.speed = 0.04f;
-		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+		idle.frames.push_back({ 320, 0, 64, 64 });
+		idle.frames.push_back({ 384, 0, 64, 64 });
+		idle.frames.push_back({ 448, 0, 64, 64 });
+		idle.frames.push_back({ 512, 0, 64, 64 });
+		idle.frames.push_back({ 576, 0, 64, 64 });
+		idle.frames.push_back({ 640, 0, 64, 64 });
+		idle.frames.push_back({ 704, 0, 64, 64 });
+		idle.frames.push_back({ 768, 0, 64, 64 });
+		idle.frames.push_back({ 832, 0, 64, 64 });
+		idle.frames.push_back({ 896, 0, 64, 64 });
+		idle.frames.push_back({ 960, 0, 64, 64 });*/
+		idle.speed = 0.0f;
+		idle.loop = true; // IPL: if you put this true, the animation doesn't work well, try it!
+
+
 		current_animation = &idle;
+
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
 		dim.h = current_animation->getCurrentFrame().h;
 		type = MARINE;
 		faction = PLAYER;
+
+
+
+
+		direction.create(1, 1, p.x, p.y);
+		direction.setAngle(0.f);
 	}
+
+	void checkAngle()
+	{
+		float angle = direction.getAngle();
+
+		if (angle >= 18)
+		{
+			idle.frames.push_back({ 64, 0, 64, 64 });
+		}
+
+	}
+
+	void draw()
+	{
+		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
+	}
+
 };
 
-/*
 
-class Building : public Entity
+
+class CommandCenter : public Entity
 {
 public:
-	BUILDING_TYPE btype;
+	FACTION faction;
+	Animation idle;
+	SDL_Rect section;
+	unsigned int hp = 1000;
 
 public:
 
 
-	Building(iPoint &p, uint id, int btype = 0 ) : Entity(p, id, 0)
+	CommandCenter(iPoint &p) : Entity(p,1000)
 	{
-		tex = app->tex->loadTexture("textures/lego_1x1_yellow.png");
+		
 		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
-		behaviour = 2;
+		
+		tex = app->tex->loadTexture("temporaryTextures/commandCenter.png"); //Sprites/Animations etc..
+		//--TEST TO TRY THE ANIMATION MODULE----
+		idle.frames.push_back({ 0, 27, 128, 100});
+		
+		idle.speed = 1.0f;
+		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+		current_animation = &idle;
+		//-------------------------------------
+		dim.w = current_animation->getCurrentFrame().w;
+		dim.h = current_animation->getCurrentFrame().h;
+		
+		type = COMMANDCENTER;
 
-		this->btype = btype;
+		faction = PLAYER;
 	}
 
 };
-*/
+
 
 /*
 class Item : public Entity

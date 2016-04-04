@@ -68,6 +68,9 @@ public:
 	iPoint			dest_pos;
 	iPoint			middle_pos;
 	float			lerp_value;
+
+	//Cursor anim
+	int curs_anim = 0;
 };
 
 #endif // __RENDER_H__

@@ -61,7 +61,7 @@ int pathNode::score() const
 int pathNode::calculateF(const iPoint& destination)
 {
 	g = parent->g + 1;
-	h = abs(destination.x - pos.x) + abs(destination.y - pos.y); // pos.distanceTo(destination);
+	h = pos.distanceNoSqrt(destination);
 	return g + h;
 }
 
@@ -86,7 +86,10 @@ list<pathNode>::iterator pathList::getNodeLowestScore()
 	while (it != list_of_nodes.end())
 	{
 		if (it->score() < score)
+		{
 			lowest_score = it;
+			score = it->score();
+		}			
 		++it;
 	}
 
@@ -149,13 +152,12 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 
 		if (items_added > 0)
 		{
-			list<pathNode>::iterator item = candidate_nodes.list_of_nodes.end();
-			--item;
-			while (item != candidate_nodes.list_of_nodes.begin())
+			list<pathNode>::iterator item = candidate_nodes.list_of_nodes.begin();
+			while (item != candidate_nodes.list_of_nodes.end())
 			{
 				if (close_list.find(item->pos) != close_list.list_of_nodes.end())
 				{
-					--item;
+					++item;
 					continue;
 				}
 				else if (open_list.find(item->pos) != open_list.list_of_nodes.end())
@@ -172,23 +174,26 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 					item->calculateF(destination);
 					open_list.list_of_nodes.push_back(*item);
 				}
-				--item;
+				++item;
 			}
 		}
 	}
 
 
-	const pathNode *item = &close_list.list_of_nodes.back();
+	const pathNode *final_path = &close_list.list_of_nodes.back();
 	vector<iPoint> tmp;
-	while (item != NULL)
+	while (final_path != NULL)
 	{
-		tmp.push_back(item->pos);
-		item = item->parent;
+		tmp.push_back(final_path->pos);
+		final_path = final_path->parent;
 	}
 	
-	// Reversing path, from origin to destination
-	for (uint i = tmp.size() - 1; i >= 0; --i)
-		path_found.push_back(tmp[i]);
+	for (vector<iPoint>::reverse_iterator rit = tmp.rbegin(); rit != tmp.rend(); ++rit)
+		path_found.push_back(*rit);
+
+	//// Reversing path, from origin to destination
+	//for (uint i = tmp.size() - 1; i >= 0; --i)
+	//	path_found.push_back(tmp[i]);
 
 	return path_found.size();
 }
@@ -210,7 +215,7 @@ bool PathFinding::checkBoundaries(const iPoint& pos) const
 
 bool PathFinding::isWalkable(const iPoint& pos) const
 {
-	if (checkBoundaries(pos) && map_data[pos.y * width + pos.x] != 0)
+	if (checkBoundaries(pos) && map_data[pos.y * width + pos.x] != 2)
 		return true;
 	return false;
 }

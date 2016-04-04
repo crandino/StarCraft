@@ -4,7 +4,6 @@
 #include "Window.h"
 #include "p2Log.h"
 #include <algorithm>
-
 #include "PathFinding.h"
 
 EntityManager::EntityManager() : Module()
@@ -19,8 +18,6 @@ EntityManager::~EntityManager()
 // Called before render is available
 bool EntityManager::awake(pugi::xml_node &node)
 {
-	
-
 	return true;
 }
 
@@ -44,6 +41,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 		LOG("Creating Marine");
 		e = new Marine(pos);
 		break;
+	case(COMMANDCENTER) :
+		LOG("Creating Command Center");
+		e = new CommandCenter(pos);
+		break;
 	}
 
 	if (e != NULL)
@@ -58,19 +59,39 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
-	if (app->input->getKey(SDL_SCANCODE_0)) filter = 0;
-	if (app->input->getKey(SDL_SCANCODE_1)) filter = 1;
-	if (app->input->getKey(SDL_SCANCODE_2)) filter = 2;
-	if (app->input->getKey(SDL_SCANCODE_3)) filter = 3;
-	if (app->input->getKey(SDL_SCANCODE_4)) filter = 4;
-
 	//Marine Creation
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		iPoint p;
 		app->input->getMousePosition(p);
+
 		p = app->render->screenToWorld(p.x, p.y);
 		addEntity(p, MARINE);
+
+		marine = addEntity(p, MARINE);
+		//if (e != NULL) remove(e->id);		
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		angle = marine->direction.getAngle();
+		angle += 18.f;
+		marine->direction.setAngle(angle);
+
+		LOG("Marine angle: %f", marine->direction.getAngle());
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	{
+
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		iPoint p;
+		app->input->getMousePosition(p);
+		addEntity(p, COMMANDCENTER);
+
 		//if (e != NULL) remove(e->id);		
 	}
 	
@@ -108,8 +129,6 @@ bool EntityManager::preUpdate()
 	// Once released right button, the selection is computed
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
 	{
-		
-
 		selector_init = false;
 		if (app->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			selectAvailableEntities(filter);
@@ -158,50 +177,45 @@ bool EntityManager::preUpdate()
 			selectAll(filter);
 	}
 
-	//TEST
-	if (app->input->getKey(SDL_SCANCODE_S) == KEY_UP)
-	{
-		app->input->getMousePosition(tile_start_path);
-		start_path = true;
-	}
+	////TEST
+	//if (app->input->getKey(SDL_SCANCODE_S) == KEY_UP)
+	//{
+	//	app->input->getMousePosition(tile_start_path);
+	//	start_path = true;
+	//}
 	//------------------------------
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && start_path)
-	{
+	//if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && start_path)
+	//{
 
-		iPoint tmp_mouse_position;
-		app->input->getMousePosition(tmp_mouse_position);
-		map<uint, Entity*>::iterator it = selection.begin();
-		for (; it != selection.end(); ++it); 
-		{
-			//app->path->createPath(it->second->tile_pos, tmp_mouse_position);
-			app->path->createPath(tile_start_path, tmp_mouse_position);
-		}
-	}
+	//	iPoint tmp_mouse_position;
+	//	app->input->getMousePosition(tmp_mouse_position);
+	//	map<uint, Entity*>::iterator it = selection.begin();
+	//	for (; it != selection.end(); ++it); 
+	//	{
+	//		//app->path->createPath(it->second->tile_pos, tmp_mouse_position);
+	//		app->path->createPath(tile_start_path, tmp_mouse_position);
+	//	}
+	//}
 
-	vector<iPoint> tmp_path = app->path->getLastPath();
-	for (uint i = 0; i < app->path->getLastPath().capacity(); i++)
-	{
-		iPoint pos(tmp_path.at(i).x, tmp_path.at(i).y);
-		app->render->DrawQuad({ tmp_path.at(i).x, tmp_path.at(i).y, 8, 8 }, 0, 0, 255);
-	}
+	//vector<iPoint> tmp_path = app->path->getLastPath();
+	//for (uint i = 0; i < app->path->getLastPath().capacity(); i++)
+	//{
+	//	iPoint pos(tmp_path.at(i).x, tmp_path.at(i).y);
+	//	app->render->DrawQuad({ tmp_path.at(i).x, tmp_path.at(i).y, 8, 8 }, 0, 0, 255);
+	//}
 
 	return true;
 } 
 
-
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {
-
-
 	// Info about the bricks
 	static char title[256];
 	sprintf_s(title, 256, "Active bricks: %d  Inactive bricks: %d",
 	active_entities.size(), inactive_entities.size());
-	//app->win->setTitle(title);
-
-	
+	//app->win->setTitle(title);	
 
 	// Basic selection. Entities surrounded by black rectangles.
 	map<uint, Entity*>::iterator it2 = selection.begin();
@@ -216,7 +230,7 @@ bool EntityManager::postUpdate()
 		//app->render->DrawQuad({ it2->second->dim.x, it2->second->dim.y, 64, 64 }, 35, 114, 48, 255, false, true);
 		rectangle section_life = { 46, 79, 26, 8 };
 		app->render->blit(circle_characters, it2->second->dim.x + 20.5, it2->second->dim.y + 48, (SDL_Rect*)&section_life, 1.0f);
-		for (int i = 0, a = 0; i < it2->second->life; i++)
+		for (int i = 0, a = 0; i < it2->second->hp; i++)
 		{
 			rectangle greenquadlife = { 225, 32, 3, 4 };
 			app->render->blit(circle_characters, it2->second->dim.x + 22 + a, it2->second->dim.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
@@ -231,7 +245,6 @@ bool EntityManager::postUpdate()
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 		it->second->draw();
-
 
 	/*// Drawing gradient color (red close to selection, blue for further entities) for ordered selection.
 	multimap<float, Entity*>::iterator ito = selection_ordered.begin();

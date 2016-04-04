@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Point2d.h"
+#include "Vector2D.h"
 #include "SDL\include\SDL_rect.h"
 #include "Entity.h"
 #include <map>
@@ -44,7 +45,6 @@ public:
 	Entity* const createMarine(iPoint &pos);
 	Entity* const createZergling(iPoint &pos);
 
-
 private:
 
 	map<uint, Entity*>               active_entities;
@@ -53,6 +53,10 @@ private:
 	multimap<float, Entity*>       selection_ordered;
 	uint next_ID;
 	uchar filter;
+
+	//ROF
+	Entity* marine;
+	float angle;
 
 	SDL_Rect			 selector;
 	bool			selector_init;
