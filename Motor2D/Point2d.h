@@ -102,6 +102,14 @@ public:
 		return sqrt(dx*dx + dy*dy);
 	}
 
+	TYPE distanceNoSqrt(const Point2d& v) const
+	{
+		TYPE fx = x - v.x;
+		TYPE fy = y - v.y;
+
+		return (fx*fx) + (fy*fy);
+	}
+
 	bool isClosedTo(const Point2d &p, float delta) const
 	{
 		return (abs(p.x - x) <= delta && abs(p.y - y) <= delta);

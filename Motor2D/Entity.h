@@ -34,17 +34,23 @@ public:
 	uint			id;
 	iPoint			tile_pos;
 	unsigned int    hp;
+
 	Collider*        coll;
+
+	vector<iPoint>  path;
+
 
 	// Constructors
 	Entity(const iPoint &p)
 	{
-		iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
-		tile_pos = tmp;
-		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
-		dim.x = tmp.x;
-		dim.y = tmp.y;
-		coll = app->collision->addCollider({ 32, 14 }, COLLIDER_BOMB);
+
+		//iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
+		tile_pos = p;
+		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
+		dim.x = p.x;
+		dim.y = p.y;
+		coll = app->collision->addCollider(dim, COLLIDER_BOMB);
+
 	};
 
 	// Destructor
@@ -75,7 +81,7 @@ public:
 	{
 		
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
-
+		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
 		idle.frames.push_back({ 64, 0, 64, 64 });
@@ -94,8 +100,10 @@ public:
 		idle.frames.push_back({ 896, 0, 64, 64 });
 		idle.frames.push_back({ 960, 0, 64, 64 });
 		idle.frames.push_back({ 0, 0, 64, 64 });
+
 		idle.speed = 0.05f;
 		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+
 		current_animation = &idle;
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
@@ -135,7 +143,7 @@ public:
 		dim.w = current_animation->getCurrentFrame().w;
 		dim.h = current_animation->getCurrentFrame().h;
 		
-		type = MARINE;
+		type = COMMANDCENTER;
 
 		faction = PLAYER;
 	}
