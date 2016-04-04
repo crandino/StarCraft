@@ -45,11 +45,6 @@ public:
 	Entity* const createMarine(iPoint &pos);
 	Entity* const createZergling(iPoint &pos);
 
-	//Movement methods
-	bool rotate(float dt);
-	bool isAngleReached();
-	bool checkAngle(float dt);
-
 private:
 
 	map<uint, Entity*>               active_entities;
@@ -59,10 +54,9 @@ private:
 	uint next_ID;
 	uchar filter;
 
-	//Movement variables
-	float rotation_speed = 360.0f; //Used as angles / seconds
-	Vector2D<float> currentVelocity = { 0, 0 };
-	Vector2D<float> desiredVelocity = { 0, 0 };
+	//ROF
+	Entity* marine;
+	float angle;
 
 	SDL_Rect			 selector;
 	bool			selector_init;
