@@ -51,12 +51,11 @@ private:
 	SDL_Texture* mouse_texture = nullptr;
 
 public:
-	//Provisional------------------------------
-	//Mouse quad stuff
-	int quad_counter = 0;
-	iPoint init_mouse;
-	SDL_Rect selection;
-	//-----------------------------------------
+
+	// CRZ PathFinding tests
+	/*SDL_Texture *path_tile;
+	bool	     path_selected;
+	iPoint		 start_position, final_position;*/
 
 };
 

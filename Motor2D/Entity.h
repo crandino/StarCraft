@@ -68,7 +68,6 @@ public:
 
 	Marine(iPoint &p) : Entity(p, lifes)
 	{
-		
 		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
@@ -77,7 +76,7 @@ public:
 		idle.frames.push_back({ 192, 0, 64, 64 });
 		idle.frames.push_back({ 0, 0, 64, 64 });
 		idle.speed = 0.04f;
-		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+		idle.loop = true; // IPL: if you put this true, the animation doesn't work well, try it!
 		current_animation = &idle;
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
