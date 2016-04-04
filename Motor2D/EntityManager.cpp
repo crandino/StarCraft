@@ -44,6 +44,9 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 		LOG("Creating Marine");
 		e = new Marine(pos);
 		break;
+	case(COMMANDCENTER) :
+		LOG("Creating Command Center");
+		e = new CommandCenter(pos);
 	}
 
 	if (e != NULL)
@@ -70,6 +73,14 @@ bool EntityManager::preUpdate()
 		iPoint p;
 		app->input->getMousePosition(p);
 		addEntity(p, MARINE);
+		//if (e != NULL) remove(e->id);		
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		iPoint p;
+		app->input->getMousePosition(p);
+		addEntity(p, COMMANDCENTER);
 		//if (e != NULL) remove(e->id);		
 	}
 	
