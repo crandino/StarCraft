@@ -63,13 +63,39 @@ bool Scene::start()
 
 	
 	//Cursor
-	cursor_animation.frames.push_back({ 2, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 46, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 90, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 134, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 178, 2, 40, 42 });
-	cursor_animation.speed = 0.02f;
-	cursor_animation.loop = true; 
+	//IDLE
+	cursor_animation_idle.frames.push_back({ 2, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 46, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 90, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 134, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 178, 2, 40, 42 });
+	cursor_animation_idle.speed = 0.02f;
+	cursor_animation_idle.loop = true; 
+	
+	//LEFT
+	cursor_animation_left.frames.push_back({ 178, 232, 40, 42 });
+	cursor_animation_left.frames.push_back({ 222, 232, 40, 42 });
+	cursor_animation_left.speed = 0.02f;
+	cursor_animation_left.loop = true;
+	
+	//RIGHT
+	cursor_animation_right.frames.push_back({ 530, 232, 40, 42 });
+	cursor_animation_right.frames.push_back({ 574, 232, 40, 42 });
+	cursor_animation_right.speed = 0.02f;
+	cursor_animation_right.loop = true;
+	
+	//UP
+	cursor_animation_up.frames.push_back({ 354, 232, 40, 42 });
+	cursor_animation_up.frames.push_back({ 398, 232, 40, 42 });
+	cursor_animation_up.speed = 0.02f;
+	cursor_animation_up.loop = true;
+	
+	//DOWN
+	cursor_animation_down.frames.push_back({ 2, 232, 40, 42 });
+	cursor_animation_down.frames.push_back({ 46, 232, 40, 42 });
+	cursor_animation_down.speed = 0.02f;
+	cursor_animation_down.loop = true;
+	
 	mouse = app->gui->createCursor(mouse_texture, &cursor_animation);
 	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
     
@@ -144,6 +170,23 @@ bool Scene::update(float dt)
 	}*/
 	//--------------------------------------------------------------------------
 
+	switch (app->render->curs_anim)
+	{
+	case 1:
+		cursor_animation = cursor_animation_left;
+		break;
+	case 2:
+		cursor_animation = cursor_animation_right;
+		break;
+	case 3:
+		cursor_animation = cursor_animation_up;
+		break;
+	case 4:
+		cursor_animation = cursor_animation_down;
+		break;
+	default:
+		cursor_animation = cursor_animation_idle;
+	}
 
 	return true;
 }
