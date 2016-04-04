@@ -40,6 +40,11 @@ bool Scene::start()
 	if(app->map->createWalkabilityMap(w, h, &buffer))
 		app->path->setMap(w, h, buffer);
 
+	// CRZ -> PathFinding testing
+	/*path_tile = app->tex->loadTexture("temporaryTextures/path_tile.png");
+	start_position.setZero();
+	final_position.setZero();*/
+
 	mouse_texture = app->tex->loadTexture("StarCraftCursors.png");
 
 	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
@@ -63,13 +68,39 @@ bool Scene::start()
 
 	
 	//Cursor
-	cursor_animation.frames.push_back({ 2, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 46, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 90, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 134, 2, 40, 42 });
-	cursor_animation.frames.push_back({ 178, 2, 40, 42 });
-	cursor_animation.speed = 0.03f;
-	cursor_animation.loop = false; // Anim doesn't work
+	//IDLE
+	cursor_animation_idle.frames.push_back({ 2, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 46, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 90, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 134, 2, 40, 42 });
+	cursor_animation_idle.frames.push_back({ 178, 2, 40, 42 });
+	cursor_animation_idle.speed = 0.02f;
+	cursor_animation_idle.loop = true; 
+	
+	//LEFT
+	cursor_animation_left.frames.push_back({ 178, 232, 40, 42 });
+	cursor_animation_left.frames.push_back({ 222, 232, 40, 42 });
+	cursor_animation_left.speed = 0.02f;
+	cursor_animation_left.loop = true;
+	
+	//RIGHT
+	cursor_animation_right.frames.push_back({ 530, 232, 40, 42 });
+	cursor_animation_right.frames.push_back({ 574, 232, 40, 42 });
+	cursor_animation_right.speed = 0.02f;
+	cursor_animation_right.loop = true;
+	
+	//UP
+	cursor_animation_up.frames.push_back({ 354, 232, 40, 42 });
+	cursor_animation_up.frames.push_back({ 398, 232, 40, 42 });
+	cursor_animation_up.speed = 0.02f;
+	cursor_animation_up.loop = true;
+	
+	//DOWN
+	cursor_animation_down.frames.push_back({ 2, 232, 40, 42 });
+	cursor_animation_down.frames.push_back({ 46, 232, 40, 42 });
+	cursor_animation_down.speed = 0.02f;
+	cursor_animation_down.loop = true;
+	
 	mouse = app->gui->createCursor(mouse_texture, &cursor_animation);
 	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
     
@@ -128,21 +159,56 @@ bool Scene::update(float dt)
 	app->map->draw();
 	mouse->updatePosition();
 
-	//Provisional--------------------------------------------------------------
-	//MouseQuad
-	/*if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+	// CRZ -> Code to test PathFinding! Do not delete! Some variables must be uncommented 
+	// on the Header File
+	/*if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		if (quad_counter == 0)
-			app->input->getMousePosition(init_mouse);
-		
-		selection = app->gui->mouseQuad(init_mouse);
-		quad_counter++;
+		if (path_selected)
+		{
+			app->input->getMousePosition(final_position);
+			final_position = app->render->screenToWorld(final_position.x, final_position.y);
+			final_position = app->map->worldToMap(app->map->data.back(), final_position.x, final_position.y);
+			app->path->createPath(start_position, final_position);
+			path_selected = false;
+		}
+		else
+		{
+			app->input->getMousePosition(start_position);
+			start_position = app->render->screenToWorld(start_position.x, start_position.y);
+			start_position = app->map->worldToMap(app->map->data.back(), start_position.x, start_position.y);
+			path_selected = true;
+		}
 	}
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP){
-		quad_counter = 0;
+	iPoint start_pos = app->map->mapToWorld(app->map->data.back(), start_position.x, start_position.y);
+	iPoint final_pos = app->map->mapToWorld(app->map->data.back(), final_position.x, final_position.y);
+	app->render->blit(path_tile, start_pos.x, start_pos.y);
+	app->render->blit(path_tile, final_pos.x, final_pos.y);
+	vector<iPoint> path_found = app->path->getLastPath();
+	for (vector<iPoint>::iterator it = path_found.begin(); it != path_found.end(); ++it)
+	{
+		iPoint pos; pos = app->map->mapToWorld(app->map->data.back(), it->x, it->y);
+		app->render->blit(path_tile, pos.x, pos.y);
 	}*/
 	//--------------------------------------------------------------------------
+
+	switch (app->render->curs_anim)
+	{
+	case 1:
+		cursor_animation = cursor_animation_left;
+		break;
+	case 2:
+		cursor_animation = cursor_animation_right;
+		break;
+	case 3:
+		cursor_animation = cursor_animation_up;
+		break;
+	case 4:
+		cursor_animation = cursor_animation_down;
+		break;
+	default:
+		cursor_animation = cursor_animation_idle;
+	}
 
 
 	return true;

@@ -33,6 +33,7 @@ public:
 	uint			id;
 	iPoint			tile_pos;
 	unsigned int    hp;
+	vector<iPoint>  path;
 
 	// Constructors
 	Entity(const iPoint &p)
@@ -42,6 +43,7 @@ public:
 		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
 		dim.x = p.x;
 		dim.y = p.y;
+
 	};
 
 	// Destructor
@@ -91,8 +93,10 @@ public:
 		idle.frames.push_back({ 896, 0, 64, 64 });
 		idle.frames.push_back({ 960, 0, 64, 64 });
 		idle.frames.push_back({ 0, 0, 64, 64 });
+
 		idle.speed = 0.05f;
 		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+
 		current_animation = &idle;
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
