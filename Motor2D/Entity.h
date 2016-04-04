@@ -37,11 +37,11 @@ public:
 	// Constructors
 	Entity(const iPoint &p)
 	{
-		iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
-		tile_pos = tmp;
-		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
-		dim.x = tmp.x;
-		dim.y = tmp.y;
+		//iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
+		tile_pos = p;
+		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
+		dim.x = p.x;
+		dim.y = p.y;
 	};
 
 	// Destructor
@@ -72,7 +72,7 @@ public:
 	{
 		
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
-
+		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
 		idle.frames.push_back({ 64, 0, 64, 64 });
@@ -132,7 +132,7 @@ public:
 		dim.w = current_animation->getCurrentFrame().w;
 		dim.h = current_animation->getCurrentFrame().h;
 		
-		type = MARINE;
+		type = COMMANDCENTER;
 
 		faction = PLAYER;
 	}

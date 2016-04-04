@@ -47,6 +47,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
 		e = new CommandCenter(pos);
+		break;
 	}
 
 	if (e != NULL)
