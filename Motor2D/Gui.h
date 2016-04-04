@@ -54,6 +54,8 @@ public:
 	virtual void debugDraw() const;
 	virtual void update(const GuiElements* mouse_hover, const GuiElements* focus)
 	{}
+	virtual void updatePosition()
+	{}
 	void checkInput(const GuiElements* mouse_hover, const GuiElements* focus);
 	void setLocalPos(int x, int y);
 	void center();
@@ -111,6 +113,7 @@ public:
 	void setPosition(iPoint coords);
 	void updatePosition();
 	void draw()const;
+	void setTexture(SDL_Texture* tmp_texture);
 
 private:
 

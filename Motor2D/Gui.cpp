@@ -67,7 +67,11 @@ iPoint GuiElements::getLocalPos() const
 void GuiElements::debugDraw() const
 {
 	rectangle r = getScreenRect();
-	app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);
+	if (this->getType() == CURSOR)
+		app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, true);
+	else
+	    app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);
+	
 }
 
 void GuiElements::setListener(Module* module)
@@ -210,6 +214,8 @@ void GuiCursor::setPosition(iPoint coords)
 {
 	position.x = coords.x;
 	position.y = coords.y;
+	iPoint position_debug_draw = app->render->screenToWorld(position.x, position.y);
+	setLocalPos(position_debug_draw.x, position_debug_draw.y);
 }
 void GuiCursor::updatePosition()
 {
@@ -217,6 +223,12 @@ void GuiCursor::updatePosition()
 	app->input->getMousePosition(mouse);
 	setPosition(mouse);
 }
+
+void GuiCursor::setTexture(SDL_Texture* tmp_texture)
+{
+	texture = tmp_texture;
+}
+
 void GuiCursor::draw()const
 {
 	//iPoint pos = getScreenPos();
@@ -344,6 +356,10 @@ bool Gui::preUpdate()
 	{
 		GuiElements* gui_test = *node;
 		gui_test->update(mouse_hover, focus);
+		if (gui_test->getType() == CURSOR)
+		{
+			gui_test->updatePosition();
+		}
 	}
 
 	

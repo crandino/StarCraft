@@ -69,6 +69,7 @@ bool EntityManager::preUpdate()
 	{
 		iPoint p;
 		app->input->getMousePosition(p);
+		p = app->render->screenToWorld(p.x, p.y);
 		addEntity(p, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
@@ -123,13 +124,19 @@ bool EntityManager::preUpdate()
 		selection.clear();
 		selection_ordered.clear();
 		app->input->getMousePosition(initial_selector_pos);
+		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
 	}
 
 	// Holding right button, updates selector dimensions
 	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		app->input->getMousePosition(final_selector_pos);
+		final_selector_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
 		calculateSelector();
+		/*iPoint cursor_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
+		selector.x = cursor_pos.x;
+		selector.y = cursor_pos.y;*/
+
 
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		for (; it != active_entities.end(); ++it)
@@ -144,8 +151,6 @@ bool EntityManager::preUpdate()
 	// Once released right button, the selection is computed
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
 	{
-
-
 		selector_init = false;
 		if (app->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			selectAvailableEntities(filter);
@@ -209,12 +214,12 @@ bool EntityManager::postUpdate()
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
 	{
 		//app->render->DrawQuad({ it2->second->dim.x, it2->second->dim.y, 64, 64 }, 35, 114, 48, 255, false, true);
-		rectangle section_life = { 46, 79, 41, 8 };
-		app->render->blit(circle_characters, it2->second->dim.x + 14, it2->second->dim.y + 10, (SDL_Rect*)&section_life, 1.0f);
-		for (int i = 0, a = 0; i < 10; i++)
+		rectangle section_life = { 46, 79, 26, 8 };
+		app->render->blit(circle_characters, it2->second->dim.x + 20.5, it2->second->dim.y + 48, (SDL_Rect*)&section_life, 1.0f);
+		for (int i = 0, a = 0; i < it2->second->life; i++)
 		{
 			rectangle greenquadlife = { 225, 32, 3, 4 };
-			app->render->blit(circle_characters, it2->second->dim.x + 15 + a, it2->second->dim.y + 12, (SDL_Rect*)&greenquadlife, 1.0f);
+			app->render->blit(circle_characters, it2->second->dim.x + 22 + a, it2->second->dim.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
 			greenquadlife.x += 4;
 			a += 4;
 		}

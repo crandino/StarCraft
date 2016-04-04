@@ -42,25 +42,24 @@ bool Scene::start()
 
 	mouse_texture = app->tex->loadTexture("cursor.png");
 
-	ui_terran = app->gui->createImage(NULL, { 0, 365, 800, 235 });
-	ui_terran->setLocalPos(0, 365);
+	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
+	ui_terran->setLocalPos(0, 292);
 	ui_terran->interactive = true;
 	ui_terran->setListener(this);
 	ui_terran->can_focus = true;
 
-	rectangle_map = app->gui->createImage(NULL, { 0, 0, 168, 164 });
-	rectangle_map->setLocalPos(4, 433);
+	rectangle_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
+	rectangle_map->setLocalPos(4, 346);
 	rectangle_map->interactive = true;
 	rectangle_map->setListener(this);
 	rectangle_map->can_focus = true;
 
-	rectangle_map_camera = app->gui->createImage(NULL, { 67, 298, 26, 18 });
+	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
 	rectangle_map_camera->setLocalPos(3, 3);
 	rectangle_map_camera->interactive = true;
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
-
 	
 	//Cursor
 	mouse = app->gui->createCursor(mouse_texture);
@@ -119,7 +118,7 @@ bool Scene::update(float dt)
 		app->render->start_transition({ 2000, 2000 });
     
 	app->map->draw();
-	mouse->updatePosition();
+	
 
 	//Provisional--------------------------------------------------------------
 	//MouseQuad
@@ -172,6 +171,26 @@ void Scene::onGui(GuiElements* ui, GUI_EVENTS event)
 			if (pos_rect.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
 				&& pos_rect.y + rectangle_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
 				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
+
+			else if (pos_rect.x + rectangle_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w)
+			{
+				int i = (pos_rect.x + rectangle_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x - i, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
+			}
+			else if (pos_rect.y + rectangle_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
+			{
+				int i = (pos_rect.y + rectangle_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y - i);
+			}
+
+			else if (pos_rect.x + rectangle_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + rectangle_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
+			{
+				int i = (pos_rect.x + rectangle_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
+				int i2 = (pos_rect.y + rectangle_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x - i, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y - i2);
+			}
+
 		}
 	}
 	

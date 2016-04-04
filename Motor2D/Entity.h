@@ -64,9 +64,8 @@ public:
 	Animation idle;
 	SDL_Rect section;
 	FACTION faction;
-	unsigned int lifes = 10;
 
-	Marine(iPoint &p) : Entity(p, lifes)
+	Marine(iPoint &p) : Entity(p, 6)
 	{
 		
 		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
@@ -84,7 +83,6 @@ public:
 		dim.h = current_animation->getCurrentFrame().h;
 		type = MARINE;
 		faction = PLAYER;
-		life = 10;
 	}
 };
 

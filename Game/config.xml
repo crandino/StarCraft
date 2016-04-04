@@ -8,7 +8,7 @@
   <!-- Each module has its own node. Separate configuration -->
 
   <window>
-    <resolution width="800" height="600" scale="1"  />
+    <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
                 fullscreen='false' 
                 resizable='false'
@@ -28,7 +28,7 @@
   </map>
 
  <gui>
-    <atlas file="gui/UI_Terran_Starcraft_2.png"/>
+    <atlas file="gui/UI_Panel_Terran.png"/>
  </gui>
   
   
