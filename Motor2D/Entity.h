@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "App.h"
 #include "Animation.h"
+#include "Collision.h"
 
 enum ENTITY_TYPE
 {
@@ -33,6 +34,7 @@ public:
 	uint			id;
 	iPoint			tile_pos;
 	unsigned int    hp;
+	Collider*        coll;
 
 	// Constructors
 	Entity(const iPoint &p)
@@ -42,6 +44,7 @@ public:
 		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
 		dim.x = tmp.x;
 		dim.y = tmp.y;
+		coll = app->collision->addCollider({ 32, 14 }, COLLIDER_BOMB);
 	};
 
 	// Destructor
