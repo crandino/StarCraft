@@ -33,13 +33,14 @@ public:
 	uint			id;
 	iPoint			tile_pos;
 	unsigned int    hp;
+	vector<iPoint>  path;
 
 	// Constructors
 	Entity(const iPoint &p)
 	{
-		iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
+		iPoint tmp = app->map->worldToMap(app->map->data.back(), p.x, p.y);
 		tile_pos = tmp;
-		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
+		tmp = app->map->mapToWorld(app->map->data.back(), tmp.x, tmp.y);
 		dim.x = tmp.x;
 		dim.y = tmp.y;
 	};
