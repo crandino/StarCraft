@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "App.h"
+#include "Vector2D.h"
 #include "Animation.h"
 
 enum ENTITY_TYPE
@@ -29,6 +30,7 @@ public:
 	Animation*		current_animation;
 	uint			id;
 	iPoint			tile_pos;
+	Vector2D<int> direction;
 	unsigned int    life;
 
 	// Constructors
@@ -48,7 +50,7 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
-	void draw()
+	virtual void draw()
 	{
 		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
 	}
@@ -73,7 +75,7 @@ public:
 
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.frames.push_back({ 64, 0, 64, 64 });
+		/*idle.frames.push_back({ 64, 0, 64, 64 });
 		idle.frames.push_back({ 128, 0, 64, 64 });
 		idle.frames.push_back({ 192, 0, 64, 64 });
 		idle.frames.push_back({ 256, 0, 64, 64 });
@@ -88,17 +90,37 @@ public:
 		idle.frames.push_back({ 832, 0, 64, 64 });
 		idle.frames.push_back({ 896, 0, 64, 64 });
 		idle.frames.push_back({ 960, 0, 64, 64 });
-		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.speed = 0.05f;
-		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+		idle.frames.push_back({ 0, 0, 64, 64 });*/
+		idle.speed = 0.0f;
+		idle.loop = true; // IPL: if you put this true, the animation doesn't work well, try it!
 		current_animation = &idle;
+
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
 		dim.h = current_animation->getCurrentFrame().h;
 		type = MARINE;
 		faction = PLAYER;
 		life = 10;
+
+		direction.create(1, 1, p.x, p.y);
+		direction.setAngle(0.f);
 	}
+
+	void checkAngle()
+	{
+		float angle = direction.getAngle();
+
+		if (angle >= 18)
+		{
+			idle.frames.push_back({ 64, 0, 64, 64 });
+		}
+	}
+
+	void draw()
+	{
+		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
+	}
+
 };
 
 /*

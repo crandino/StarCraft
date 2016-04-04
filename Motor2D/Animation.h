@@ -19,7 +19,7 @@ public:
 	float speed;
 	vector<SDL_Rect> frames;
 
-	Animation() : frames(5), speed(1.0f), current_frame(0), loop(true), loops(0)
+	Animation() : speed(1.0f), current_frame(0), loop(true), loops(0)
 	{ }
 
 	Animation(const Animation& a) : frames(a.frames), speed(a.speed), current_frame(0), loop(a.loop), loops(0)
