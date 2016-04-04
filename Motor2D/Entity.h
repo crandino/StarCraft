@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "App.h"
+#include "Vector2D.h"
 #include "Animation.h"
 
 enum ENTITY_TYPE
@@ -32,16 +33,21 @@ public:
 	Animation*		current_animation;
 	uint			id;
 	iPoint			tile_pos;
+
+	Vector2D<int> direction;
+
 	unsigned int    hp;
+	vector<iPoint>  path;
 
 	// Constructors
 	Entity(const iPoint &p)
 	{
-		iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
-		tile_pos = tmp;
-		tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
-		dim.x = tmp.x;
-		dim.y = tmp.y;
+		//iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
+		tile_pos = p;
+		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
+		dim.x = p.x;
+		dim.y = p.y;
+
 	};
 
 	// Destructor
@@ -50,7 +56,7 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
-	void draw()
+	virtual void draw()
 	{
 		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
 	}
@@ -72,10 +78,10 @@ public:
 	{
 		
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
-
+		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.frames.push_back({ 64, 0, 64, 64 });
+		/*idle.frames.push_back({ 64, 0, 64, 64 });
 		idle.frames.push_back({ 128, 0, 64, 64 });
 		idle.frames.push_back({ 192, 0, 64, 64 });
 		idle.frames.push_back({ 256, 0, 64, 64 });
@@ -89,20 +95,41 @@ public:
 		idle.frames.push_back({ 768, 0, 64, 64 });
 		idle.frames.push_back({ 832, 0, 64, 64 });
 		idle.frames.push_back({ 896, 0, 64, 64 });
-		idle.frames.push_back({ 960, 0, 64, 64 });
-		idle.frames.push_back({ 0, 0, 64, 64 });
+		idle.frames.push_back({ 960, 0, 64, 64 });*/
+		idle.speed = 0.0f;
+		idle.loop = true; // IPL: if you put this true, the animation doesn't work well, try it!
 
-		idle.speed = 0.05f;
-		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
 
 		current_animation = &idle;
+
 		//-------------------------------------
 		dim.w = current_animation->getCurrentFrame().w;
 		dim.h = current_animation->getCurrentFrame().h;
 		type = MARINE;
 		faction = PLAYER;
-	
+
+		hp = 10;
+
+		direction.create(1, 1, p.x, p.y);
+		direction.setAngle(0.f);
 	}
+
+	void checkAngle()
+	{
+		float angle = direction.getAngle();
+
+		if (angle >= 18)
+		{
+			idle.frames.push_back({ 64, 0, 64, 64 });
+		}
+
+	}
+
+	void draw()
+	{
+		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
+	}
+
 };
 
 
@@ -134,7 +161,7 @@ public:
 		dim.w = current_animation->getCurrentFrame().w;
 		dim.h = current_animation->getCurrentFrame().h;
 		
-		type = MARINE;
+		type = COMMANDCENTER;
 
 		faction = PLAYER;
 	}

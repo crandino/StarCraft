@@ -37,7 +37,7 @@ public:
 		this->position.x = x;
 		this->position.y = y;
 		this->x = distance_x;
-		this->y = distance_y
+		this->y = distance_y;
 
 			return(*this);
 	}

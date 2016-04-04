@@ -50,6 +50,11 @@ private:
 	GuiCursor* mouse = nullptr;
 	SDL_Texture* mouse_texture = nullptr;
 	Animation cursor_animation;
+	Animation cursor_animation_idle;
+	Animation cursor_animation_left;
+	Animation cursor_animation_right;
+	Animation cursor_animation_up;
+	Animation cursor_animation_down;
 
 public:
 
