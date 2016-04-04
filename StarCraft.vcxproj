@@ -93,6 +93,7 @@
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
     <ClInclude Include="Motor2D\Window.h" />
+    <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor2D\App.cpp" />
