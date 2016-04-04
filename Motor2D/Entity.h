@@ -70,13 +70,26 @@ public:
 	{
 		
 		tex = app->tex->loadTexture("Terran/Unit/Marine.png"); //Sprites/Animations etc..
+
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
+		idle.frames.push_back({ 64, 0, 64, 64 });
+		idle.frames.push_back({ 128, 0, 64, 64 });
 		idle.frames.push_back({ 192, 0, 64, 64 });
 		idle.frames.push_back({ 256, 0, 64, 64 });
-		idle.frames.push_back({ 192, 0, 64, 64 });
+		idle.frames.push_back({ 320, 0, 64, 64 });
+		idle.frames.push_back({ 384, 0, 64, 64 });
+		idle.frames.push_back({ 448, 0, 64, 64 });
+		idle.frames.push_back({ 512, 0, 64, 64 });
+		idle.frames.push_back({ 576, 0, 64, 64 });
+		idle.frames.push_back({ 640, 0, 64, 64 });
+		idle.frames.push_back({ 704, 0, 64, 64 });
+		idle.frames.push_back({ 768, 0, 64, 64 });
+		idle.frames.push_back({ 832, 0, 64, 64 });
+		idle.frames.push_back({ 896, 0, 64, 64 });
+		idle.frames.push_back({ 960, 0, 64, 64 });
 		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.speed = 0.04f;
+		idle.speed = 0.05f;
 		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
 		current_animation = &idle;
 		//-------------------------------------
