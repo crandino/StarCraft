@@ -141,6 +141,38 @@ public:
 
 };
 
+class Zergling : public Entity
+{
+public:
+
+	Animation idle;
+	SDL_Rect section;
+	FACTION faction;
+	unsigned int hp = 10;
+
+	Zergling(iPoint &p) : Entity(p)
+	{
+
+		tex = app->tex->loadTexture("Unit/Zergling.png"); //Sprites/Animations etc..
+
+		//--TEST TO TRY THE ANIMATION MODULE----
+		idle.frames.push_back({ 0, 0, 128, 128 });
+		idle.frames.push_back({ 128, 0, 128, 128 });
+		idle.frames.push_back({ 256, 0, 128, 128 });
+
+		idle.speed = 0.05f;
+		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+
+		current_animation = &idle;
+		//-------------------------------------
+		dim.w = current_animation->getCurrentFrame().w;
+		dim.h = current_animation->getCurrentFrame().h;
+		type = ZERGLING;
+		faction = COMPUTER;
+
+	}
+};
+
 
 /*
 class Item : public Entity
