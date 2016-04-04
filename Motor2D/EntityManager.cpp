@@ -44,7 +44,13 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
 		e = new CommandCenter(pos);
+<<<<<<< HEAD
+	case(ZERGLING) :
+		LOG("Creating Zergling");
+		e = new Zergling(pos);
+=======
 		break;
+>>>>>>> origin/master
 	}
 
 	if (e != NULL)
@@ -94,6 +100,15 @@ bool EntityManager::preUpdate()
 
 		//if (e != NULL) remove(e->id);		
 	}
+
+	if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		iPoint p;
+		app->input->getMousePosition(p);
+		addEntity(p, ZERGLING);
+		//if (e != NULL) remove(e->id);		
+	}
+
 	
 	// Clicking middle button, eliminates an entity
 	if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
@@ -221,8 +236,18 @@ bool EntityManager::postUpdate()
 	map<uint, Entity*>::iterator it2 = selection.begin();
 	for (; it2 != selection.end(); ++it2)
 	{
-		rectangle section_circle = { 52, 56, 27, 17 };
-		app->render->blit(circle_characters, it2->second->dim.x + 19, it2->second->dim.y + 32, (SDL_Rect*)&section_circle, 1.0f);
+		if (it2->second->type == MARINE)
+		{
+			rectangle section_circle = { 52, 56, 27, 17 };
+			app->render->blit(circle_characters, it2->second->dim.x + 19, it2->second->dim.y + 32, (SDL_Rect*)&section_circle, 1.0f);
+		}
+		else if (it2->second->type == ZERGLING)
+		{
+			rectangle section_circle = { 52, 56, 27, 17 };
+			app->render->blit(circle_characters, it2->second->dim.x + 50, it2->second->dim.y + 55, (SDL_Rect*)&section_circle, 1.0f);
+		}
+
+		
 	}
 	
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
