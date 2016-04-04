@@ -68,8 +68,8 @@ bool Scene::start()
 	cursor_animation.frames.push_back({ 90, 2, 40, 42 });
 	cursor_animation.frames.push_back({ 134, 2, 40, 42 });
 	cursor_animation.frames.push_back({ 178, 2, 40, 42 });
-	cursor_animation.speed = 0.03f;
-	cursor_animation.loop = false; // Anim doesn't work
+	cursor_animation.speed = 0.02f;
+	cursor_animation.loop = true; 
 	mouse = app->gui->createCursor(mouse_texture, &cursor_animation);
 	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
     
