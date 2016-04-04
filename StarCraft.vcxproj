@@ -92,6 +92,7 @@
     <ClInclude Include="Motor2D\Gui.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
+    <ClInclude Include="Motor2D\Vector2D.h" />
     <ClInclude Include="Motor2D\Window.h" />
   </ItemGroup>
   <ItemGroup>

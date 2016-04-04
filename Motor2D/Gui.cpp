@@ -193,7 +193,7 @@ void GuiImage::draw() const
 }
 
 //CURSOR------------------------------------------------+//Cursor
-GuiCursor::GuiCursor(const SDL_Texture* texture) : GuiElements(), texture(texture)
+GuiCursor::GuiCursor(const SDL_Texture* texture, Animation* animation) : GuiElements(), texture(texture), cursor_anim(animation)
 {
 	section.x = section.y = 0;
 	app->tex->GetSize(texture, (unsigned int&)section.w, (unsigned int&)section.h);
@@ -220,7 +220,8 @@ void GuiCursor::updatePosition()
 void GuiCursor::draw()const
 {
 	//iPoint pos = getScreenPos();
-	app->render->blit(texture, position.x, position.y, (SDL_Rect*)&section, 0.0f);
+	//app->render->blit(texture, position.x, position.y, (SDL_Rect*)&section, 0.0f);
+	app->render->blit(texture, position.x, position.y, &(cursor_anim->getCurrentFrame()), 0.0f);
 }
 
 //---------------------------------------
@@ -416,11 +417,11 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const rectangle& section)
 }
 
 //Create cursor
-GuiCursor* Gui::createCursor(const SDL_Texture* texture){
+GuiCursor* Gui::createCursor(const SDL_Texture* texture, Animation* animation){
 
 	GuiCursor* ret = NULL;
 
-	ret = new GuiCursor(texture);
+	ret = new GuiCursor(texture, animation);
 	elements.push_back(ret);
 	
 	return ret;

@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Point2d.h"
+#include "Vector2D.h"
 #include "SDL\include\SDL_rect.h"
 #include "Entity.h"
 #include <map>
@@ -44,6 +45,10 @@ public:
 	Entity* const createMarine(iPoint &pos);
 	Entity* const createZergling(iPoint &pos);
 
+	//Movement methods
+	bool rotate(float dt);
+	bool isAngleReached();
+	bool checkAngle(float dt);
 
 private:
 
@@ -53,6 +58,11 @@ private:
 	multimap<float, Entity*>       selection_ordered;
 	uint next_ID;
 	uchar filter;
+
+	//Movement variables
+	float rotation_speed = 360.0f; //Used as angles / seconds
+	Vector2D<float> currentVelocity = { 0, 0 };
+	Vector2D<float> desiredVelocity = { 0, 0 };
 
 	SDL_Rect			 selector;
 	bool			selector_init;

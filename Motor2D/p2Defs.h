@@ -76,4 +76,8 @@ struct rectangle
 	}
 };
 
+// Tools for Vector2D class
+#define RADTODEG( a ) (a * 180 / 3.1416 )
+#define DEGTORAD( a ) (a / 180 * 3.1416 )
+
 #endif
