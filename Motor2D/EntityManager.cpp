@@ -184,7 +184,6 @@ bool EntityManager::preUpdate()
 	return true;
 } 
 
-
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {
@@ -279,6 +278,70 @@ bool EntityManager::remove(uint id)
 
 		selection.erase(id);
 		selection_ordered.clear();
+		return true;
+	}
+	return false;
+}
+
+bool EntityManager::checkAngle(float dt)
+{
+	bool ret = true;
+
+	if (!isAngleReached())
+	{
+		if (!rotate(dt));
+		ret = false;
+	}
+
+	return ret;
+}
+
+bool EntityManager::rotate(float dt)
+{
+	bool ret = true;
+	int positive = 1;
+
+	float currentAngle = currentVelocity.getAngle();
+	float desiredAngle = desiredVelocity.getAngle();
+
+	//Getting the direction of the rotation
+	float diffAngle = abs(currentAngle - desiredAngle);
+	bool currBigger = (currentAngle > desiredAngle);
+	bool difBigger = (diffAngle > 180);
+	if (currBigger == difBigger)
+		positive = 1;
+	else
+		positive = -1;
+
+	//Adding rotation angle by continuous evaluation: split the total rotation into
+	//smaller rotations to check if we reach the expected direction
+	float stepAngle = 4.5;
+	float angle = rotation_speed * dt;
+	int steps = (int)(angle / stepAngle);
+	float rest = angle - stepAngle * steps;
+
+	for (int i = 0; i < steps && ret; i++)
+	{
+		currentVelocity.setAngle(currentVelocity.getAngle() + stepAngle * positive);
+		if (isAngleReached())
+			ret = false;
+	}
+	if (ret)
+	{
+		currentVelocity.setAngle(currentVelocity.getAngle() + stepAngle * positive);
+	}
+	if (isAngleReached())
+		ret = false;
+
+	return ret;
+}
+
+bool EntityManager::isAngleReached()
+{
+	float diffVel = abs(currentVelocity.getAngle() - desiredVelocity.getAngle());
+	if (diffVel < 5.0 || diffVel > 355)
+	{
+		currentVelocity.setAngle(desiredVelocity.getAngle());
 		return true;
 	}
 	return false;

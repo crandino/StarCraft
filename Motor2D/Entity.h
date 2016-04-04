@@ -69,7 +69,7 @@ public:
 	Marine(iPoint &p) : Entity(p, lifes)
 	{
 		
-		tex = app->tex->loadTexture("temporaryTextures/marine.png"); //Sprites/Animations etc..
+		tex = app->tex->loadTexture("Terran/Unit/Marine.png"); //Sprites/Animations etc..
 		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
 		idle.frames.push_back({ 192, 0, 64, 64 });

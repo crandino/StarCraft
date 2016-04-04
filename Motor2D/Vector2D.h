@@ -1,8 +1,8 @@
 #ifndef __VECTOR2D_H__
 #define __VECTOR2D_H__
 
-#include "Motor2D\p2Defs.h"
-#include "Motor2D\Point2d.h"
+#include "p2Defs.h"
+#include "Point2d.h"
 #include <math.h>
 #include <cmath>
 
