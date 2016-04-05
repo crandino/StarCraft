@@ -176,25 +176,22 @@ bool EntityManager::preUpdate()
 	//}
 	//------------------------------
 
-	//if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN && start_path)
-	//{
-
-	//	iPoint tmp_mouse_position;
-	//	app->input->getMousePosition(tmp_mouse_position);
-	//	map<uint, Entity*>::iterator it = selection.begin();
-	//	for (; it != selection.end(); ++it); 
-	//	{
-	//		//app->path->createPath(it->second->tile_pos, tmp_mouse_position);
-	//		app->path->createPath(tile_start_path, tmp_mouse_position);
-	//	}
-	//}
-
-	//vector<iPoint> tmp_path = app->path->getLastPath();
-	//for (uint i = 0; i < app->path->getLastPath().capacity(); i++)
-	//{
-	//	iPoint pos(tmp_path.at(i).x, tmp_path.at(i).y);
-	//	app->render->DrawQuad({ tmp_path.at(i).x, tmp_path.at(i).y, 8, 8 }, 0, 0, 255);
-	//}
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN /*&& selection.begin() != selection.end()*/)
+	{
+		iPoint tmp_mouse_position;
+		app->input->getMousePosition(tmp_mouse_position);
+		tmp_mouse_position = app->render->screenToWorld(tmp_mouse_position.x, tmp_mouse_position.y);
+		tmp_mouse_position = app->map->worldToMap(app->map->data.back(), tmp_mouse_position.x, tmp_mouse_position.y);
+		map<uint, Entity*>::iterator it = selection.begin();
+		for (; it != selection.end(); ++it)
+		{
+			if (it->second->type == MARINE)
+			{
+				app->path->createPath(it->second->tile_pos, tmp_mouse_position);
+				it->second->path = app->path->getLastPath();
+			}
+		}
+	}
 
 	return true;
 } 

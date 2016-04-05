@@ -77,7 +77,7 @@ public:
 
 		tex_width = tex_height = 64;
 		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
-		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animations
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
@@ -182,7 +182,7 @@ public:
 
 		tex_width = tex_height = 128;		
 		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
-		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animation
 		tex = app->tex->loadTexture("Units/Zergling.png");

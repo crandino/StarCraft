@@ -223,7 +223,11 @@ bool App::preUpdate()
 
 	while (item != modules.end() && ret == true)
 	{
-		if ((*item)->active == false) continue;
+		if ((*item)->active == false)
+		{
+			++item;
+			continue;
+		}
 
 		ret = (*item)->preUpdate();
 		++item;
@@ -240,7 +244,11 @@ bool App::doUpdate()
 
 	while (item != modules.end() && ret == true)
 	{
-		if ((*item)->active == false) continue;
+		if ((*item)->active == false)
+		{
+			++item;
+			continue;
+		}
 
 		ret = (*item)->update(dt);
 		++item;
@@ -257,7 +265,11 @@ bool App::postUpdate()
 
 	while (item != modules.end() && ret == true)
 	{
-		if ((*item)->active == false) continue;
+		if ((*item)->active == false)
+		{
+			++item;
+			continue;
+		}
 
 		ret = (*item)->postUpdate();
 		++item;

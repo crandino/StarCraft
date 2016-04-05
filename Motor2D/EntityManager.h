@@ -70,8 +70,8 @@ private:
 	SDL_Texture* circle_characters;
 
 	//TEST
-	iPoint tile_start_path;
-	bool start_path;
+	//iPoint tile_start_path;
+	//bool start_path;
 	//------------------
 };
 
