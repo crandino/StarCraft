@@ -67,7 +67,7 @@ public:
 	}
 	virtual void move(float dt)
 	{
-		if (path.size() != 0)
+		if (path.size() > 0)
 		{
 			float pixels_to_move = 0;
 			float total_pixels_moved = 0;
