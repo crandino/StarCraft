@@ -118,5 +118,6 @@ public:
 };
 
 typedef Point2d<int> iPoint;
+typedef Point2d<float> fPoint;
 
 #endif // !__Point2d_H__

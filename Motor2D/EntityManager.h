@@ -32,6 +32,9 @@ public:
 	bool preUpdate();
 
 	// Called each loop iteration
+	bool update(float dt);
+
+	// Called each loop iteration
 	bool postUpdate();
 
 	// Called before quitting
@@ -68,11 +71,6 @@ private:
 
 	//Textures
 	SDL_Texture* circle_characters;
-
-	//TEST
-	//iPoint tile_start_path;
-	//bool start_path;
-	//------------------
 };
 
 #endif // __EntityManager_H__

@@ -27,8 +27,7 @@ class Entity
 {
 
 public:
-
-	iPoint			pos;						// World position of Entity. Upper_left corner.
+	fPoint			pos;						// World position of Entity. Upper_left corner.
 	iPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
 
@@ -42,6 +41,7 @@ public:
 	Vector2D<int>   direction;
 
 	unsigned int    hp;
+	float			speed;
 	Collider*       coll;
 
 	vector<iPoint>  path;
@@ -76,7 +76,7 @@ public:
 		center = { p.x, p.y };
 
 		tex_width = tex_height = 64;
-		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
+		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animations
@@ -109,6 +109,7 @@ public:
 		faction = PLAYER;
 
 		hp = 6;
+		speed = 2;
 
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);
@@ -146,7 +147,7 @@ public:
 
 		tex_width = 128;
 		tex_height = 100;
-		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
+		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 		// Animations
@@ -181,7 +182,7 @@ public:
 		center = { p.x, p.y };
 
 		tex_width = tex_height = 128;		
-		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
+		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animation

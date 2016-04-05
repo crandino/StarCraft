@@ -197,6 +197,45 @@ bool EntityManager::preUpdate()
 } 
 
 // Called each loop iteration
+bool EntityManager::update(float dt)
+{
+	map<uint, Entity*>::iterator it = selection.begin();
+	for (; it != selection.end(); ++it)
+	{
+		if (it->second->path.size() != 0)
+		{
+			if (it->second->path.begin()->y == it->second->tile_pos.y)
+			{
+				if (it->second->path.begin()->x < it->second->tile_pos.x)
+					it->second->pos.x -= it->second->speed /10 * dt;
+
+				else
+					it->second->pos.x += it->second->speed / 10 * dt;
+			}
+			else
+			{
+				if (it->second->path.begin()->y < it->second->tile_pos.y)
+					it->second->pos.y -= it->second->speed / 10 * dt;
+
+				else
+					it->second->pos.y += it->second->speed /10 * dt;
+			}
+
+			if (app->map->worldToMap(app->map->data.back(), it->second->pos.x, it->second->pos.y) != it->second->tile_pos)
+			{
+				it->second->tile_pos = app->map->worldToMap(app->map->data.back(), it->second->pos.x, it->second->pos.y);
+				if (it->second->tile_pos == it->second->path.back())
+					it->second->path.clear();
+				else
+					it->second->path.erase(it->second->path.begin());
+			}
+		}
+	}
+
+	return true;
+}
+
+// Called each loop iteration
 bool EntityManager::postUpdate()
 {
 	// Info about the bricks
