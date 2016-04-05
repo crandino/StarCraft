@@ -204,48 +204,7 @@ bool EntityManager::update(float dt)
 	map<uint, Entity*>::iterator it = selection.begin();
 	for (; it != selection.end(); ++it)
 	{
-		if (it->second->path.size() != 0)
-		{
-			float pixels_to_move = 0;
-			float total_pixels_moved = 0;
-			float total_pixels_to_move = it->second->speed / 100 * dt;
-
-			if (total_pixels_to_move > 8)
-				pixels_to_move = total_pixels_to_move / 8;
-			do{
-				if (total_pixels_moved + 8 > total_pixels_to_move)
-					pixels_to_move = total_pixels_to_move - total_pixels_moved;
-
-				if (it->second->path.begin()->y == it->second->tile_pos.y)
-				{
-					if (it->second->path.begin()->x < it->second->tile_pos.x)
-						it->second->center.x -= pixels_to_move;
-
-					else
-						it->second->center.x += pixels_to_move;
-				}
-				else
-				{
-					if (it->second->path.begin()->y < it->second->tile_pos.y)
-						it->second->center.y -= pixels_to_move;
-
-					else
-						it->second->center.y += pixels_to_move;
-				}
-				it->second->calculePos();
-
-				if (app->map->worldToMap(app->map->data.back(), it->second->center.x, it->second->center.y) != it->second->tile_pos)
-				{
-					it->second->tile_pos = app->map->worldToMap(app->map->data.back(), it->second->center.x, it->second->center.y);
-					if (it->second->tile_pos == it->second->path.back())
-						it->second->path.clear();
-					else
-						it->second->path.erase(it->second->path.begin());
-				}
-				total_pixels_moved += pixels_to_move;
-
-			} while (total_pixels_moved < total_pixels_to_move);
-		}
+		it->second->move(dt);
 	}
 
 	return true;
