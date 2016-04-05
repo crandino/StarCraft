@@ -211,7 +211,7 @@ bool EntityManager::update(float dt)
 			float total_pixels_to_move = it->second->speed / 100 * dt;
 
 			if (total_pixels_to_move > 8)
-				pixels_to_move = it->second->speed / 100 * dt / 8;
+				pixels_to_move = total_pixels_to_move / 8;
 			do{
 				if (total_pixels_moved + 8 > total_pixels_to_move)
 					pixels_to_move = total_pixels_to_move - total_pixels_moved;
