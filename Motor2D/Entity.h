@@ -28,7 +28,7 @@ class Entity
 
 public:
 	fPoint			pos;						// World position of Entity. Upper_left corner.
-	iPoint			center;						// World positoin of Entity. Center
+	fPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
 
 	int		     	tex_width, tex_height;
@@ -61,6 +61,10 @@ public:
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
+	virtual void calculePos()
+	{
+		pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };
+	}
 };
 
 class Marine : public Entity
@@ -73,7 +77,7 @@ public:
 	Marine(iPoint &p) 
 	{		
 		// Positions and dimensions
-		center = { p.x, p.y };
+		center = { (float)p.x, (float)p.y };
 
 		tex_width = tex_height = 64;
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
@@ -109,7 +113,7 @@ public:
 		faction = PLAYER;
 
 		hp = 6;
-		speed = 2;
+		speed = 10;
 
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);
@@ -143,7 +147,7 @@ public:
 	CommandCenter(iPoint &p)
 	{
 		// Positions and dimensions
-		center = { p.x, p.y };
+		center = { (float)p.x, (float)p.y };
 
 		tex_width = 128;
 		tex_height = 100;
@@ -179,7 +183,7 @@ public:
 	Zergling(iPoint &p)
 	{
 		// Positions and dimensions
-		center = { p.x, p.y };
+		center = { (float)p.x, (float)p.y };
 
 		tex_width = tex_height = 128;		
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
