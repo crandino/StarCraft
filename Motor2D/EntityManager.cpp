@@ -44,13 +44,11 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
 		e = new CommandCenter(pos);
-<<<<<<< HEAD
+		break;
 	case(ZERGLING) :
 		LOG("Creating Zergling");
 		e = new Zergling(pos);
-=======
 		break;
->>>>>>> origin/master
 	}
 
 	if (e != NULL)
@@ -70,11 +68,10 @@ bool EntityManager::preUpdate()
 	{
 		iPoint p;
 		app->input->getMousePosition(p);
-
 		p = app->render->screenToWorld(p.x, p.y);
 		addEntity(p, MARINE);
 
-		marine = addEntity(p, MARINE);
+		//marine = addEntity(p, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
 
@@ -87,17 +84,12 @@ bool EntityManager::preUpdate()
 		LOG("Marine angle: %f", marine->direction.getAngle());
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
-	{
-
-	}
-
 	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
 		iPoint p;
 		app->input->getMousePosition(p);
+		p = app->render->screenToWorld(p.x, p.y);
 		addEntity(p, COMMANDCENTER);
-
 		//if (e != NULL) remove(e->id);		
 	}
 
@@ -105,11 +97,11 @@ bool EntityManager::preUpdate()
 	{
 		iPoint p;
 		app->input->getMousePosition(p);
+		p = app->render->screenToWorld(p.x, p.y);
 		addEntity(p, ZERGLING);
 		//if (e != NULL) remove(e->id);		
 	}
-
-	
+		
 	// Clicking middle button, eliminates an entity
 	if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
 	{
@@ -135,21 +127,15 @@ bool EntityManager::preUpdate()
 
 	    map<uint, Entity*>::iterator it = active_entities.begin();
 		for (; it != active_entities.end(); ++it)
-			if (it->second->dim.x <= selector.x + selector.w &&  it->second->dim.x >= selector.x
-				&& it->second->dim.y <= selector.y + selector.h &&  it->second->dim.y >= selector.y)
+			if (it->second->pos.x <= selector.x + selector.w &&  it->second->pos.x >= selector.x
+				&& it->second->pos.y <= selector.y + selector.h &&  it->second->pos.y >= selector.y)
 				selection.insert(pair<uint, Entity*>(it->first, it->second));  
 
 	}		
 
 	// Once released right button, the selection is computed
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
-	{
 		selector_init = false;
-		if (app->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			selectAvailableEntities(filter);
-		else
-			selectAll(filter);
-	}
 
 	//Selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -175,21 +161,11 @@ bool EntityManager::preUpdate()
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		for (; it != active_entities.end(); ++it)
 		{
-			if (it->second->dim.x + 32  <= selector.x + selector.w &&  it->second->dim.x + 32 >= selector.x
-				&& it->second->dim.y + 32 <= selector.y + selector.h &&  it->second->dim.y + 32 >= selector.y)
+			if (it->second->pos.x + 32  <= selector.x + selector.w &&  it->second->pos.x + 32 >= selector.x
+				&& it->second->pos.y + 32 <= selector.y + selector.h &&  it->second->pos.y + 32 >= selector.y)
 				selection.insert(pair<uint, Entity*>(it->first, it->second));
 		}
 
-	}
-
-	// Once released right button, the selection is computed
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
-	{
-		selector_init = false;
-		if (app->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-			selectAvailableEntities(filter);
-		else
-			selectAll(filter);
 	}
 
 	////TEST
@@ -239,53 +215,35 @@ bool EntityManager::postUpdate()
 		if (it2->second->type == MARINE)
 		{
 			rectangle section_circle = { 52, 56, 27, 17 };
-			app->render->blit(circle_characters, it2->second->dim.x + 19, it2->second->dim.y + 32, (SDL_Rect*)&section_circle, 1.0f);
+			app->render->blit(circle_characters, it2->second->pos.x + 19, it2->second->pos.y + 32, (SDL_Rect*)&section_circle, 1.0f);
 		}
 		else if (it2->second->type == ZERGLING)
 		{
 			rectangle section_circle = { 52, 56, 27, 17 };
-			app->render->blit(circle_characters, it2->second->dim.x + 50, it2->second->dim.y + 55, (SDL_Rect*)&section_circle, 1.0f);
-		}
-
-		
+			app->render->blit(circle_characters, it2->second->pos.x + 50, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
+		}		
 	}
 	
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
 	{
-		//app->render->DrawQuad({ it2->second->dim.x, it2->second->dim.y, 64, 64 }, 35, 114, 48, 255, false, true);
+		//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
 		rectangle section_life = { 46, 79, 26, 8 };
-		app->render->blit(circle_characters, it2->second->dim.x + 20.5, it2->second->dim.y + 48, (SDL_Rect*)&section_life, 1.0f);
+		app->render->blit(circle_characters, it2->second->pos.x + 20.5, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
 		for (int i = 0, a = 0; i < it2->second->hp; i++)
 		{
 			rectangle greenquadlife = { 225, 32, 3, 4 };
-			app->render->blit(circle_characters, it2->second->dim.x + 22 + a, it2->second->dim.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
+			app->render->blit(circle_characters, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
 			greenquadlife.x += 4;
 			a += 4;
 		}
 
-		//app->render->DrawCircle(it2->second->dim.x + 32, it2->second->dim.y + 32, it2->second->dim.h/5, 35, 114, 48, 255, false);
+		//app->render->DrawCircle(it2->second->pos.x + 32, it2->second->pos.y + 32, it2->second->tex_height/5, 35, 114, 48, 255, false);
 	}
 	
 	// Entities drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 		it->second->draw();
-
-	/*// Drawing gradient color (red close to selection, blue for further entities) for ordered selection.
-	multimap<float, Entity*>::iterator ito = selection_ordered.begin();
-	ito = selection_ordered.begin();
-	if (selection_ordered.size() != 0)
-	{
-		float max_distance = selection_ordered.rbegin()->first;
-		int blue, red;
-
-		for (; ito != selection_ordered.end(); ++ito)
-		{
-			blue = (int)((ito->first / max_distance) * 255);
-			red = 255 - blue;
-			app->render->DrawQuad(ito->second->dim, red, 0, blue, 255, true);
-		}
-	}*/
 
 	// Drawing selector (white rectangle)
 	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false, false);
@@ -342,66 +300,13 @@ Entity *EntityManager::whichEntityOnMouse()
 	map<uint, Entity*>::reverse_iterator rit = active_entities.rbegin();
 	for (; rit != active_entities.rend(); ++rit)
 	{
-		if (p.x >= rit->second->dim.x &&
-			p.x <= rit->second->dim.x + rit->second->dim.w &&
-			p.y >= rit->second->dim.y &&
-			p.y <= rit->second->dim.y + rit->second->dim.h)
+		if (p.x >= rit->second->pos.x &&
+			p.x <= rit->second->pos.x + rit->second->tex_width &&
+			p.y >= rit->second->pos.y &&
+			p.y <= rit->second->pos.y + rit->second->tex_height)
 			return rit->second;
 	}
 	return NULL;
-}
-
-void EntityManager::selectAll(uchar filter)
-{
-	/*iPoint left_top, right_bottom;
-	left_top = app->map->worldToMap(app->map->data.front(), selector.x, selector.y);
-	right_bottom = app->map->worldToMap(app->map->data.front(), selector.x + selector.w, selector.y + selector.h);
-
-	for (uint x = left_top.x; x <= right_bottom.x; ++x)
-	{
-		for (uint y = left_top.y; y <= right_bottom.y; ++y)
-		{
-			map<uint, Entity*>::iterator it = active_entities.begin();
-			for (; it != active_entities.end(); it++)
-			{
-				if (it->second->tile_pos.x == x && it->second->tile_pos.y == y)
-				{
-					if (filter == 0)
-						selection.insert(pair<uint, Entity*>(it->first, it->second));
-					else if (it->second->behaviour == filter)
-						selection.insert(pair<uint, Entity*>(it->first, it->second));
-				}
-			}
-		}
-	}*/
-}
-
-void EntityManager::selectAvailableEntities(uchar filter)
-{
-	/*
-	//Area will contain all the Tile nodes that can be reached starting at the selector.
-	//pathList area;
-	//app->path->walkableAreaFrom(selector, area);
-
-	//doubleNode<pathNode> *item = area.list.getFirst();
-	while (item)
-	{
-		map<uint, Entity*>::iterator it = active_entities.begin();
-		for (; it != active_entities.end(); it++)
-		{
-			if (it->second->tile_pos.x == item->data.pos.x && it->second->tile_pos.y == item->data.pos.y)
-			{
-				if (filter == 0)
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-				else if (it->second->behaviour == filter)
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-			}
-		}
-		item = item->next;
-	}
-
-	sortEntities();
-	*/
 }
 
 // CalculateSelector: Method that computes the dimensions of the white rectangle selector.
@@ -413,17 +318,3 @@ void EntityManager::calculateSelector()
 	int selector_pos_y = (initial_selector_pos.y < final_selector_pos.y ? initial_selector_pos.y : final_selector_pos.y);
 	selector = { selector_pos_x, selector_pos_y, selector_width, selector_height };
 }
-/*
-void EntityManager::sortEntities()
-{
-	iPoint middle_point = app->map->worldToMap(((selector.x + selector.w) + selector.x) / 2, ((selector.y + selector.h) + selector.y) / 2);
-	map<uint, Entity*>::iterator it = selection.begin();
-
-	for (; it != selection.end(); ++it)
-	{
-		iPoint dest = app->map->worldToMap(it->second->dim.x, it->second->dim.y);
-//		float distance = app->path->costOfPath(middle_point, dest);
-		selection_ordered.insert(pair<float, Entity*>(distance, it->second));
-	}
-}
-*/

@@ -6,13 +6,14 @@
 #include "Vector2D.h"
 #include "Animation.h"
 #include "Collision.h"
+#include "p2Log.h"
 
 enum ENTITY_TYPE
 {
-	//Units
+	// Units
 	MARINE,
 	ZERGLING,
-	//Buildings
+	// Buildings
 	COMMANDCENTER
 };
 
@@ -27,35 +28,28 @@ class Entity
 
 public:
 
-	SDL_Rect		dim;
-	SDL_Rect		spritesheet_section;
+	iPoint			pos;						// World position of Entity. Upper_left corner.
+	iPoint			center;						// World positoin of Entity. Center
+	iPoint			tile_pos;					// Map position (tiles) of Entity
+
+	int		     	tex_width, tex_height;
+
 	ENTITY_TYPE		type;
 	SDL_Texture		*tex;   
-	Animation*		current_animation;
+	Animation		*current_animation;
 	uint			id;
-	iPoint			tile_pos;
-
-	Vector2D<int> direction;
+	
+	Vector2D<int>   direction;
 
 	unsigned int    hp;
-
-	Collider*        coll;
+	Collider*       coll;
 
 	vector<iPoint>  path;
 
 
 	// Constructors
-	Entity(const iPoint &p,unsigned int hp2)
-	{
-
-		//iPoint tmp = app->map->worldToMap(app->map->data.front(), p.x, p.y);
-		tile_pos = p;
-		//tmp = app->map->mapToWorld(app->map->data.front(), tmp.x, tmp.y);
-		dim.x = p.x;
-		dim.y = p.y;
-		coll = app->collision->addCollider(dim, COLLIDER_BOMB);
-		hp = hp2;
-	};
+	Entity()
+	{};
 
 	// Destructor
 	~Entity()
@@ -65,29 +59,28 @@ public:
 
 	virtual void draw()
 	{
-		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
+		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
-
-	
-
 };
 
 class Marine : public Entity
 {
 public:
 	
-	Animation idle;
-	SDL_Rect section;
-	FACTION faction;
+	Animation	idle;
+	FACTION		faction;
 
+	Marine(iPoint &p) 
+	{		
+		// Positions and dimensions
+		center = { p.x, p.y };
 
+		tex_width = tex_height = 64;
+		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
+		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
-	Marine(iPoint &p) : Entity(p,6)
-	{
-		
+		// Animations
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
-		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
-		//--TEST TO TRY THE ANIMATION MODULE----
 		idle.frames.push_back({ 0, 0, 64, 64 });
 		/*idle.frames.push_back({ 64, 0, 64, 64 });
 		idle.frames.push_back({ 128, 0, 64, 64 });
@@ -105,19 +98,17 @@ public:
 		idle.frames.push_back({ 896, 0, 64, 64 });
 		idle.frames.push_back({ 960, 0, 64, 64 });*/
 		idle.speed = 0.0f;
-		idle.loop = true; // IPL: if you put this true, the animation doesn't work well, try it!
-
-
+		idle.loop = true;
 		current_animation = &idle;
 
-		//-------------------------------------
-		dim.w = current_animation->getCurrentFrame().w;
-		dim.h = current_animation->getCurrentFrame().h;
+		// Colliders
+		coll = app->collision->addCollider({ center.x, center.y, 30, 30 }, COLLIDER_BOMB);
+
+		// Another stuff
 		type = MARINE;
 		faction = PLAYER;
 
-
-
+		hp = 6;
 
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);
@@ -136,41 +127,41 @@ public:
 
 	void draw()
 	{
-		app->render->blit(tex, dim.x, dim.y, &(current_animation->getCurrentFrame()));
+		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
-
 };
-
-
 
 class CommandCenter : public Entity
 {
 public:
 	FACTION faction;
 	Animation idle;
-	SDL_Rect section;
-	unsigned int hp = 1000;
-
+	
 public:
 
-
-	CommandCenter(iPoint &p) : Entity(p,1000)
+	CommandCenter(iPoint &p)
 	{
-		
-		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
-		
+		// Positions and dimensions
+		center = { p.x, p.y };
+
+		tex_width = 128;
+		tex_height = 100;
+		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
+		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+
+		// Animations
 		tex = app->tex->loadTexture("temporaryTextures/commandCenter.png"); //Sprites/Animations etc..
-		//--TEST TO TRY THE ANIMATION MODULE----
-		idle.frames.push_back({ 0, 27, 128, 100});
-		
+		idle.frames.push_back({ 0, 27, 128, 100 });
 		idle.speed = 1.0f;
-		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
+		idle.loop = false; 
 		current_animation = &idle;
-		//-------------------------------------
-		dim.w = current_animation->getCurrentFrame().w;
-		dim.h = current_animation->getCurrentFrame().h;
-		
+
+		// Colliders
+		coll = app->collision->addCollider({ center.x, center.y, 128, 100 }, COLLIDER_BOMB);
+
+		// Another stuff
 		type = COMMANDCENTER;
+		hp = 50;
 
 		faction = PLAYER;
 	}
@@ -182,48 +173,32 @@ class Zergling : public Entity
 public:
 
 	Animation idle;
-	SDL_Rect section;
 	FACTION faction;
-	unsigned int hp = 10;
 
-	Zergling(iPoint &p) : Entity(p)
+	Zergling(iPoint &p)
 	{
+		// Positions and dimensions
+		center = { p.x, p.y };
 
-		tex = app->tex->loadTexture("Unit/Zergling.png"); //Sprites/Animations etc..
+		tex_width = tex_height = 128;		
+		pos = { p.x - (tex_width / 2), p.y - (tex_height / 2) };
+		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
-		//--TEST TO TRY THE ANIMATION MODULE----
+		// Animation
+		tex = app->tex->loadTexture("Units/Zergling.png");
 		idle.frames.push_back({ 0, 0, 128, 128 });
-		idle.frames.push_back({ 128, 0, 128, 128 });
+		/*idle.frames.push_back({ 128, 0, 128, 128 });
 		idle.frames.push_back({ 256, 0, 128, 128 });
-
-		idle.speed = 0.05f;
-		idle.loop = false; // IPL: if you put this true, the animation doesn't work well, try it!
-
+		idle.speed = 0.05f;*/
+		idle.loop = false; 	
 		current_animation = &idle;
-		//-------------------------------------
-		dim.w = current_animation->getCurrentFrame().w;
-		dim.h = current_animation->getCurrentFrame().h;
+
+		// Collider
+		coll = app->collision->addCollider({ center.x, center.y, 24, 24 }, COLLIDER_BOMB);
+
+		// Another stuff
 		type = ZERGLING;
 		faction = COMPUTER;
-
+		hp = 10;
 	}
 };
-
-
-/*
-class Item : public Entity
-{
-	ENTITY_TYPE iType;
-
-public:
-
-	Item(iPoint &p, uint id, ITEM_TYPE) : Entity(p,id)
-	{
-		tex;//Sprites/Animations etc..;
-		SDL_QueryTexture(tex, NULL, NULL, &dim.w, &dim.h);
-		
-		type = iType;
-	}
-
-};
-*/

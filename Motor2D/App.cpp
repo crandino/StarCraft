@@ -46,9 +46,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(path);
 	addModule(entity_manager);
 	addModule(gui);
-	addModule(collision);
-
 	addModule(scene);
+	addModule(collision);	
 
 	// render last to swap buffer
 	addModule(render);

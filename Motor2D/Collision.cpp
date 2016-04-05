@@ -49,7 +49,7 @@ Collision::Collision() : Module()
 	matrix[COLLIDER_BOMB][COLLIDER_ENEMY] = true;
 	matrix[COLLIDER_BOMB][COLLIDER_PLAYER_ATTACK] = false;
 	matrix[COLLIDER_BOMB][COLLIDER_ENEMY_ATTACK] = false;
-	matrix[COLLIDER_BOMB][COLLIDER_BOMB] = false;
+	matrix[COLLIDER_BOMB][COLLIDER_BOMB] = true;
 }
 
 Collision::~Collision()
@@ -105,7 +105,7 @@ bool Collision::update(float dt)
 		if (debug)
 			drawDebug(c1);
 
-		it2 = next(it1);	 // avoid checking collisions already checked
+		it2 = next(it1);				 //avoid checking collisions already checked
 		while (it2 != colliders.end())
 		{
 			c2 = (*it2);
@@ -129,30 +129,30 @@ bool Collision::update(float dt)
 void Collision::drawDebug(Collider *col)
 {
 	Uint8 alpha = 80;
+	SDL_Rect r = { col->rect.x - col->rect.w / 2, col->rect.y - col->rect.h / 2, col->rect.w, col->rect.h };
 	switch (col->type)
 	{
 	case COLLIDER_NONE:
-		app->render->DrawQuad(col->rect, 255, 255, 255, alpha, false);
+		app->render->DrawQuad(r, 255, 255, 255, alpha, false);
 		break;
 	case COLLIDER_WALL:
-		app->render->DrawQuad(col->rect, 0, 0, 255, alpha);
+		app->render->DrawQuad(r, 0, 0, 255, alpha);
 		break;
 	case COLLIDER_PLAYER:
-		app->render->DrawQuad(col->rect, 255, 0, 0, alpha, false);
+		app->render->DrawQuad(r, 255, 0, 0, alpha, false);
 		break;
 	case COLLIDER_ENEMY:
-		app->render->DrawQuad(col->rect, 255, 100, 0, alpha, false);
+		app->render->DrawQuad(r, 255, 100, 0, alpha, false);
 		break;
 	case COLLIDER_PLAYER_ATTACK:
-		app->render->DrawQuad(col->rect, 255, 255, 0, alpha, false);
+		app->render->DrawQuad(r, 255, 255, 0, alpha, false);
 		break;
 	case COLLIDER_ENEMY_ATTACK:
-		app->render->DrawQuad(col->rect, 0, 255, 255, alpha, false);
+		app->render->DrawQuad(r, 0, 255, 255, alpha, false);
 		break;
 	case COLLIDER_BOMB:
-		app->render->DrawQuad(col->rect, 255, 0, 255, alpha, false);
+		app->render->DrawQuad(r, 255, 0, 255, alpha, false);
 		break;
-
 	}
 }
 
@@ -180,7 +180,13 @@ Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, Module *call
 
 bool Collider::checkCollision(SDL_Rect &r) const
 {
-	return SDL_HasIntersection(&rect, &r);
+	return ((rect.x - rect.w / 2) < (r.x + r.w / 2) &&
+		(rect.x + rect.w / 2) > (r.x - r.w / 2) &&
+		(rect.y - rect.h / 2) < (r.y + r.h / 2) &&
+		(rect.y + rect.h / 2) > (r.y - r.h / 2));
+
+	// DO NOT DELETE THESE LINES!
+	//return SDL_HasIntersection(&rect, &r);
 	/*return (rect.x < r.x + r.w &&
 		rect.x + rect.w > r.x &&
 		rect.y < r.y + r.h &&

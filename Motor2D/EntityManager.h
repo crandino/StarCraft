@@ -42,9 +42,6 @@ public:
 	Entity* getEntity(uint id);
 	Entity* whichEntityOnMouse();
 
-	Entity* const createMarine(iPoint &pos);
-	Entity* const createZergling(iPoint &pos);
-
 private:
 
 	map<uint, Entity*>               active_entities;

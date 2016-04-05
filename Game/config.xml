@@ -21,8 +21,9 @@
 
   <file_system>
     <path>data.zip</path>
+    <path>Zerg.zip</path>
     <path>Terran.zip</path>
-    <path>Zerg.zip</path>	
+    
   </file_system>
 
   <map>
