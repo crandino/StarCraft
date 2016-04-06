@@ -29,6 +29,7 @@ bool EntityManager::start()
 	next_ID = 0;
 	filter = 0;
     circle_characters = app->tex->loadTexture("Selection/Selection_circles.png");
+	hp_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
 
 	return true;
 }
@@ -233,11 +234,11 @@ bool EntityManager::postUpdate()
 	{
 		//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
 		SDL_Rect section_life = { 46, 79, 26, 8 };
-		app->render->blit(circle_characters, it2->second->pos.x + 20.5, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
+		app->render->blit(hp_tex, it2->second->pos.x + 20.5, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
 		for (int i = 0, a = 0; i < it2->second->hp; i++)
 		{
 			SDL_Rect greenquadlife = { 225, 32, 3, 4 };
-			app->render->blit(circle_characters, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
+			app->render->blit(hp_tex, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
 			greenquadlife.x += 4;
 			a += 4;
 		}

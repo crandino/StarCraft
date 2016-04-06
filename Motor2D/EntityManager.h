@@ -85,6 +85,7 @@ private:
 
 	//Textures
 	SDL_Texture* circle_characters;
+	SDL_Texture* hp_tex;
 };
 
 #endif // __EntityManager_H__
