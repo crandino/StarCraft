@@ -66,45 +66,46 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 bool EntityManager::preUpdate()
 {
 	//Marine Creation
-	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		iPoint p;
-		app->input->getMousePosition(p);
-		p = app->render->screenToWorld(p.x, p.y);
-		addEntity(p, MARINE);
+		if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+		{
+			angle = marine->direction.getAngle();
+			angle += 18.f;
+			marine->direction.setAngle(angle);
 
-		//marine = addEntity(p, MARINE);
-		//if (e != NULL) remove(e->id);		
-	}
-
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
-	{
-		angle = marine->direction.getAngle();
-		angle += 18.f;
-		marine->direction.setAngle(angle);
-
-		LOG("Marine angle: %f", marine->direction.getAngle());
-	}
-
-	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		iPoint p;
-		app->input->getMousePosition(p);
-		p = app->render->screenToWorld(p.x, p.y);
-		addEntity(p, COMMANDCENTER);
-		//if (e != NULL) remove(e->id);		
-	}
-
-	if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		iPoint p;
-		app->input->getMousePosition(p);
-		p = app->render->screenToWorld(p.x, p.y);
-		addEntity(p, ZERGLING);
-		//if (e != NULL) remove(e->id);		
-	}
+			LOG("Marine angle: %f", marine->direction.getAngle());
+		}
 		
+		//Point to check if the cursor is on a walkable tile
+		iPoint position;
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		
+		//if (app->path->isWalkable(position))
+		//{
+			if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
+			{
+				
+				addEntity(position, MARINE);
 
+				//marine = addEntity(p, MARINE);
+				//if (e != NULL) remove(e->id);		
+			}
+
+			if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+			{
+				
+				addEntity(position, COMMANDCENTER);
+			//if (e != NULL) remove(e->id);		
+			}
+
+			if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
+			{
+			
+				addEntity(position, ZERGLING);
+				//if (e != NULL) remove(e->id);		
+			}
+		
+	//}
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
