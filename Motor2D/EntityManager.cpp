@@ -183,10 +183,6 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->type == MARINE)
 			{
-				/*app->path->createPath(it->second->tile_pos, tmp_mouse_position);
-				it->second->path = app->path->getLastPath();
-				if (it->second->path.size() != 0)
-					it->second->path.erase(it->second->path.begin());*/
 				if (app->path->createPath(it->second->tile_pos, tmp_mouse_position) >= 0)
 					it->second->path = app->path->getLastPath();
 			}
