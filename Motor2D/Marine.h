@@ -70,6 +70,12 @@ public:
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
+
+	bool update(float dt)
+	{
+		coll->setPos(center.x - 10, center.y - 14);
+		return true;
+	}
 };
 
 #endif __MARINE_H__

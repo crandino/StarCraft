@@ -180,20 +180,19 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 	}
 
 
-	const pathNode *final_path = &close_list.list_of_nodes.back();
-	vector<iPoint> tmp;
-	while (final_path != NULL)
+	const pathNode *path_node = &close_list.list_of_nodes.back();
+	vector<iPoint> tile_positions_path;
+	while (path_node != NULL)
 	{
-		tmp.push_back(final_path->pos);
-		final_path = final_path->parent;
+		tile_positions_path.push_back(path_node->pos);
+		path_node = path_node->parent;
 	}
 	
-	for (vector<iPoint>::reverse_iterator rit = tmp.rbegin(); rit != tmp.rend(); ++rit)
+	// We reverse all the points unless the first one.
+	for (vector<iPoint>::reverse_iterator rit = tile_positions_path.rbegin() + 1; rit != tile_positions_path.rend(); ++rit)
 		path_found.push_back(*rit);
 
-	//// Reversing path, from origin to destination
-	//for (uint i = tmp.size() - 1; i >= 0; --i)
-	//	path_found.push_back(tmp[i]);
+	//path_found.erase(path_found.begin()); //we don't need the tile which is stepping
 
 	return path_found.size();
 }

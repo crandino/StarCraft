@@ -28,7 +28,8 @@ bool EntityManager::start()
 {
 	next_ID = 0;
 	filter = 0;
-    circle_characters = app->tex->loadTexture("Cursor/StarCraftCursors.png");
+    circle_characters = app->tex->loadTexture("Selection/Selection_circles.png");
+	hp_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
 
 	return true;
 }
@@ -65,7 +66,19 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
-	//Marine Creation
+
+	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		angle = marine->direction.getAngle();
+		angle += 18.f;
+		marine->direction.setAngle(angle);
+
+		LOG("Marine angle: %f", marine->direction.getAngle());
+	}
+		
+	//Point to check if the cursor is on a walkable tile
+	//if (app->path->isWalkable(position))
+	//{
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		iPoint p;
@@ -75,15 +88,6 @@ bool EntityManager::preUpdate()
 
 		//marine = addEntity(p, MARINE);
 		//if (e != NULL) remove(e->id);		
-	}
-
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
-	{
-		angle = marine->direction.getAngle();
-		angle += 18.f;
-		marine->direction.setAngle(angle);
-
-		LOG("Marine angle: %f", marine->direction.getAngle());
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -102,7 +106,7 @@ bool EntityManager::preUpdate()
 		addEntity(p, ZERGLING);	
 	}
 		
-
+	//}
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -184,13 +188,13 @@ bool EntityManager::postUpdate()
 	{
 		if (it2->second->type == MARINE)
 		{
-			SDL_Rect section_circle = { 52, 56, 27, 17 };
-			app->render->blit(circle_characters, it2->second->center.x, it2->second->center.y, (SDL_Rect*)&section_circle, 1.0f);
+			SDL_Rect section_circle = { 0, 62, 22, 13 };
+			app->render->blit(circle_characters, it2->second->pos.x + 19, it2->second->pos.y + 32, (SDL_Rect*)&section_circle, 1.0f);
 		}
 		else if (it2->second->type == ZERGLING)
 		{
-			SDL_Rect section_circle = { 52, 56, 27, 17 };
-			app->render->blit(circle_characters, it2->second->pos.x + 50, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
+			SDL_Rect section_circle = { 0, 62, 22, 13 };
+			app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
 		}		
 	}
 	
@@ -198,11 +202,11 @@ bool EntityManager::postUpdate()
 	{
 		//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
 		SDL_Rect section_life = { 46, 79, 26, 8 };
-		app->render->blit(circle_characters, it2->second->pos.x + 20.5, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
+		app->render->blit(hp_tex, it2->second->pos.x + 20.5, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
 		for (int i = 0, a = 0; i < it2->second->hp; i++)
 		{
 			SDL_Rect greenquadlife = { 225, 32, 3, 4 };
-			app->render->blit(circle_characters, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
+			app->render->blit(hp_tex, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
 			greenquadlife.x += 4;
 			a += 4;
 		}
