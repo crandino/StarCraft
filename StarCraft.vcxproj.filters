@@ -53,6 +53,9 @@
     <ClCompile Include="Motor2D\EntityManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\GameManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -118,9 +121,6 @@
     <ClInclude Include="Motor2D\Gui.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Animation.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Motor2D\Collision.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -130,6 +130,7 @@
     <ClInclude Include="Motor2D\Vector2D.h">
       <Filter>Tools</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Motor2D\Entity.h">
       <Filter>Entities</Filter>
     </ClInclude>
@@ -141,6 +142,13 @@
     </ClInclude>
     <ClInclude Include="Motor2D\CommandCenter.h">
       <Filter>Entities\Terran_Buildings</Filter>
+=======
+    <ClInclude Include="Motor2D\Animation.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\GameManager.h">
+      <Filter>Modules</Filter>
+>>>>>>> origin/master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
