@@ -64,6 +64,7 @@ iPoint GuiElements::getLocalPos() const
 	return iPoint(rect.x, rect.y);
 }
 
+
 void GuiElements::debugDraw() const
 {
 	rectangle r = getScreenRect();

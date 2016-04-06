@@ -102,16 +102,9 @@ bool EntityManager::preUpdate()
 		//if (e != NULL) remove(e->id);		
 	}
 		
-	// Clicking middle button, eliminates an entity
-	if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
-	{
-		iPoint p; app->input->getMousePosition(p);
-		const Entity *e = whichEntityOnMouse();
-		//if (e != NULL) remove(e->id);		
-	}
 
-	// Clicking and holding right button, starts a selection
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	// Clicking and holding left button, starts a selection
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		selector_init = true;
 		selection.clear();
@@ -119,8 +112,8 @@ bool EntityManager::preUpdate()
 		app->input->getMousePosition(initial_selector_pos);
 	}
 
-	// Holding right button, updates selector dimensions
-	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	// Holding left button, updates selector dimensions
+	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		app->input->getMousePosition(final_selector_pos);
 		calculateSelector();
@@ -133,12 +126,12 @@ bool EntityManager::preUpdate()
 
 	}		
 
-	// Once released right button, the selection is computed
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+	// Once released left button, the selection is computed
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 		selector_init = false;
 
 	//Selection
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		selector_init = true;
 		selection.clear();
@@ -147,8 +140,8 @@ bool EntityManager::preUpdate()
 		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
 	}
 
-	// Holding right button, updates selector dimensions
-	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	// Holding left button, updates selector dimensions
+	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		app->input->getMousePosition(final_selector_pos);
 		final_selector_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
@@ -176,7 +169,7 @@ bool EntityManager::preUpdate()
 	//}
 	//------------------------------
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN /*&& selection.begin() != selection.end()*/)
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN /*&& selection.begin() != selection.end()*/)
 	{
 		iPoint tmp_mouse_position;
 		app->input->getMousePosition(tmp_mouse_position);
@@ -215,7 +208,7 @@ bool EntityManager::postUpdate()
 {
 	// Info about the bricks
 	static char title[256];
-	sprintf_s(title, 256, "Active bricks: %d  Inactive bricks: %d",
+	sprintf_s(title, 256, "Active units: %d  Inactive units: %d",
 	active_entities.size(), inactive_entities.size());
 	//app->win->setTitle(title);	
 
@@ -251,7 +244,7 @@ bool EntityManager::postUpdate()
 		//app->render->DrawCircle(it2->second->pos.x + 32, it2->second->pos.y + 32, it2->second->tex_height/5, 35, 114, 48, 255, false);
 	}
 	
-	// Entities drawing
+	// Entities Drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 		it->second->draw();
