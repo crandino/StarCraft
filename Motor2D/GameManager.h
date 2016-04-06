@@ -12,12 +12,11 @@ public:
 	int currentWaves = 0;
 	int totalWaves = 4;
 	int score = 0;
+	int enemyCount = 0;
+
 	bool isFinished = false;
-	int hazardCount = 0;
+	bool gameOver = false;
 public:
-
-
-
 
 	GameManager()
 	{
@@ -26,6 +25,9 @@ public:
 
 
 	bool Victory = false;
+
+
+	bool start();
 
 	bool update();
 	

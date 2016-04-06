@@ -1,30 +1,47 @@
 #include "GameManager.h"
+#include "Timer.h"
+
+
+bool GameManager::start()
+{
+	bool ret = true;
+
+	return ret;
+}
+
 
 bool GameManager::update()
 {
 	bool ret = false;
 
+	/*
 	while (currentWaves != 5)
 	{
-		/*
-		for (int i = 0; i < hazardCount; i++)
+		if ()
+		{ 
+			if (true/*EntityDeath)
+			{
+				//timer
+				//++unitDeath;
+			}
+
+		if (isFinished)
 		{
-			//timer
-			yield return new WaitForSeconds(startWait);
-			Vector3 spawnPosition = new Vector3(Random.Range(-spawnValue.x, spawnValue.x), spawnValue.y, spawnValue.z);
-			Quaternion spawnRotation = Quaternion.identity;
-			Instantiate(hazard, spawnPosition, spawnRotation);
-			yield return new WaitForSeconds(spawnWait);
-		}
-		yield return new WaitForSeconds(waveWait);
-		if (gameOver)
-		{
-			gameOverText.text = "Press 'R' to restart the game.";
-			restart = true;
+				//Victory Text
 			break;
 		}
-		*/
-	}
 
+		else if (gameOver)
+		{
+				//Display message of game over
+				//Display Score
+				//End game loop
+				ret = true;
+				break;
+		}
+
+		
+	}
+*/
 	return ret;
 }
