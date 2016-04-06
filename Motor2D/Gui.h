@@ -55,13 +55,13 @@ public:
 	virtual void debugDraw() const;
 	virtual void update(const GuiElements* mouse_hover, const GuiElements* focus)
 	{}
-	virtual void updatePosition()
+	virtual void update()
 	{}
 	void checkInput(const GuiElements* mouse_hover, const GuiElements* focus);
 	void setLocalPos(int x, int y);
 	void center();
-	rectangle getScreenRect() const;
-	rectangle getLocalRect() const;
+	SDL_Rect getScreenRect() const;
+	SDL_Rect getLocalRect() const;
 	iPoint getScreenPos() const;
 	iPoint getLocalPos() const;
 	void setListener(Module* module);
@@ -84,7 +84,7 @@ protected:
 	bool have_focus = false;
 private:
 	bool mouse_inside = false;
-	rectangle rect;
+	SDL_Rect rect;
 };
 
 // ---------------------------------------------------
@@ -92,15 +92,15 @@ class GuiImage : public GuiElements
 {
 public:
 	GuiImage(const SDL_Texture* texture);
-	GuiImage(const SDL_Texture* texture, const rectangle& section);
+	GuiImage(const SDL_Texture* texture, const SDL_Rect& section);
 	~GuiImage();
 
-	void setSection(const rectangle& section);
+	void setSection(const SDL_Rect& section);
 	void draw() const;
 
 private:
 
-	rectangle section;
+	SDL_Rect section;
 	const SDL_Texture* texture = nullptr;
 };
 
@@ -108,23 +108,24 @@ private:
 class GuiCursor : public GuiElements
 {
 public:
-	GuiCursor(const SDL_Texture* texture, Animation* animation);
 
+	GuiCursor(const SDL_Texture* texture);
 	~GuiCursor();
 
-	void setPosition(iPoint coords);
-	void updatePosition();
-	void draw()const;
-	void setTexture(SDL_Texture* tmp_texture);
+	void update();
+	void draw() const;
+	void debugDraw() const;
 
 private:
 
 	const SDL_Texture* texture = nullptr;
-	Animation* cursor_anim;
-	rectangle section;
-	iPoint position;
-};
-	
+	Animation* current_animation;
+	Animation  idle;
+	Animation  left_disp;
+	Animation  right_disp;
+	Animation  up_disp;
+	Animation  down_disp;
+};	
 
 //-----------------------------------------------------------------------
 //CLASS GUI
@@ -158,19 +159,22 @@ public:
 
 	// Gui creation functions
 	GuiImage* createImage(const char* filename);
-	GuiImage* createImage(const SDL_Texture* texture, const rectangle& atlas_section);
-	GuiCursor* createCursor(const SDL_Texture* texture, Animation* animation);
+	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
+	GuiCursor* createCursor(const SDL_Texture* texture);
 	/*GuiLabel* CreateLabel(const char* text);
-	GuiHScrollBar* CreateHScrollBar(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
-	GuiHScrollBarVertical* CreateHScrollBarVertical(const rectangle& bar, const rectangle& thumb, const rectangle& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/
+	GuiHScrollBar* CreateHScrollBar(const SDL_Rect& bar, const SDL_Rect& thumb, const SDL_Rect& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });
+	GuiHScrollBarVertical* CreateHScrollBarVertical(const SDL_Rect& bar, const SDL_Rect& thumb, const SDL_Rect& bar_offset = { 0, 0, 0, 0 }, const iPoint& thumb_margins = { 0, 0 });*/
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
 
 	SDL_Rect mouseQuad(iPoint init_mouse);
 
+	GuiCursor *cursor;
+
 private:
 
+	
 	bool debug = false;
 	list<GuiElements*> elements;
 	const GuiElements* focus = nullptr;

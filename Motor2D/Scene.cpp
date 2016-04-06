@@ -45,65 +45,24 @@ bool Scene::start()
 	start_position.setZero();
 	final_position.setZero();*/
 
-	mouse_texture = app->tex->loadTexture("StarCraftCursors.png");
-
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
 	ui_terran->interactive = true;
 	ui_terran->setListener(this);
 	ui_terran->can_focus = true;
 
-	rectangle_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
-	rectangle_map->setLocalPos(4, 346);
-	rectangle_map->interactive = true;
-	rectangle_map->setListener(this);
-	rectangle_map->can_focus = true;
+	SDL_Rect_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
+	SDL_Rect_map->setLocalPos(4, 346);
+	SDL_Rect_map->interactive = true;
+	SDL_Rect_map->setListener(this);
+	SDL_Rect_map->can_focus = true;
 
-	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
-	rectangle_map_camera->parent = rectangle_map;
-	rectangle_map_camera->setLocalPos(3, 3);
-	rectangle_map_camera->interactive = true;
-	rectangle_map_camera->setListener(this);
-	rectangle_map_camera->can_focus = true;
-	
-	//Cursor
-	//IDLE
-	cursor_animation_idle.frames.push_back({ 2, 2, 40, 42 });
-	cursor_animation_idle.frames.push_back({ 46, 2, 40, 42 });
-	cursor_animation_idle.frames.push_back({ 90, 2, 40, 42 });
-	cursor_animation_idle.frames.push_back({ 134, 2, 40, 42 });
-	cursor_animation_idle.frames.push_back({ 178, 2, 40, 42 });
-	cursor_animation_idle.speed = 0.02f;
-	cursor_animation_idle.loop = true; 
-	
-	//LEFT
-	cursor_animation_left.frames.push_back({ 178, 232, 40, 42 });
-	cursor_animation_left.frames.push_back({ 222, 232, 40, 42 });
-	cursor_animation_left.speed = 0.02f;
-	cursor_animation_left.loop = true;
-	
-	//RIGHT
-	cursor_animation_right.frames.push_back({ 530, 232, 40, 42 });
-	cursor_animation_right.frames.push_back({ 574, 232, 40, 42 });
-	cursor_animation_right.speed = 0.02f;
-	cursor_animation_right.loop = true;
-	
-	//UP
-	cursor_animation_up.frames.push_back({ 354, 232, 40, 42 });
-	cursor_animation_up.frames.push_back({ 398, 232, 40, 42 });
-	cursor_animation_up.speed = 0.02f;
-	cursor_animation_up.loop = true;
-	
-	//DOWN
-	cursor_animation_down.frames.push_back({ 2, 232, 40, 42 });
-	cursor_animation_down.frames.push_back({ 46, 232, 40, 42 });
-	cursor_animation_down.speed = 0.02f;
-	cursor_animation_down.loop = true;
-	
-	mouse = app->gui->createCursor(mouse_texture, &cursor_animation);
-	mouse->setLocalPos(app->input->getMouseMotion().x, app->input->getMouseMotion().y);
-    
-	SDL_ShowCursor(SDL_DISABLE);
+	SDL_Rect_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
+	SDL_Rect_map_camera->parent = SDL_Rect_map;
+	SDL_Rect_map_camera->setLocalPos(3, 3);
+	SDL_Rect_map_camera->interactive = true;
+	SDL_Rect_map_camera->setListener(this);
+	SDL_Rect_map_camera->can_focus = true;
 	
 	return true;
 }
@@ -191,7 +150,7 @@ bool Scene::update(float dt)
 	}*/
 	//--------------------------------------------------------------------------
 
-	switch (app->render->curs_anim)
+	/*switch (app->render->curs_anim)
 	{
 	case 1:
 		cursor_animation = cursor_animation_left;
@@ -207,7 +166,7 @@ bool Scene::update(float dt)
 		break;
 	default:
 		cursor_animation = cursor_animation_idle;
-	}
+	}*/
 
 
 	return true;
@@ -234,34 +193,34 @@ bool Scene::cleanUp()
 //GUI
 void Scene::onGui(GuiElements* ui, GUI_EVENTS event)
 {
-	if (ui == rectangle_map)
+	if (ui == SDL_Rect_map)
 	{
 		if (event == GUI_EVENTS::MOUSE_LCLICK_DOWN)
 		{
 			iPoint pos_rect;
 			app->input->getMousePosition(pos_rect);
-			rectangle rect_map_camera_parent = rectangle_map_camera->parent->getScreenRect();
-			if (pos_rect.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
-				&& pos_rect.y + rectangle_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
-				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
+			SDL_Rect rect_map_camera_parent = SDL_Rect_map_camera->parent->getScreenRect();
+			if (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + SDL_Rect_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
+				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y);
 
-			else if (pos_rect.x + rectangle_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w)
+			else if (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w)
 			{
-				int i = (pos_rect.x + rectangle_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
-				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x - i, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
+				int i = (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
+				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x - i, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y);
 			}
-			else if (pos_rect.y + rectangle_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
+			else if (pos_rect.y + SDL_Rect_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
 			{
-				int i = (pos_rect.y + rectangle_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
-				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y - i);
+				int i = (pos_rect.y + SDL_Rect_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
+				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y - i);
 			}
 
-			else if (pos_rect.x + rectangle_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w
-				&& pos_rect.y + rectangle_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
+			else if (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + SDL_Rect_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
 			{
-				int i = (pos_rect.x + rectangle_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
-				int i2 = (pos_rect.y + rectangle_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
-				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x - i, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y - i2);
+				int i = (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
+				int i2 = (pos_rect.y + SDL_Rect_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
+				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x - i, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y - i2);
 			}
 
 		}

@@ -12,9 +12,8 @@
 using namespace std;
 
 // class Gui ---------------------------------------------------
-GuiElements::GuiElements() : rect({ 0, 0, 0, 0 })
-{
-}
+GuiElements::GuiElements()
+{ }
 
 void GuiElements::setLocalPos(int x, int y)
 {
@@ -36,12 +35,12 @@ void GuiElements::setSize(int w, int h)
 	rect.h = h;
 }
 
-rectangle GuiElements::getLocalRect() const
+SDL_Rect GuiElements::getLocalRect() const
 {
 	return rect;
 }
 
-rectangle GuiElements::getScreenRect() const
+SDL_Rect GuiElements::getScreenRect() const
 {
 	if (parent != nullptr)
 	{
@@ -67,12 +66,8 @@ iPoint GuiElements::getLocalPos() const
 
 void GuiElements::debugDraw() const
 {
-	rectangle r = getScreenRect();
-	if (this->getType() == CURSOR)
-		app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, true);
-	else
-	    app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);
-	
+	SDL_Rect r = getScreenRect();
+	app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);	
 }
 
 void GuiElements::setListener(Module* module)
@@ -166,7 +161,7 @@ GuiImage::GuiImage(const SDL_Texture* texture) : GuiElements(), texture(texture)
 }
 
 // --------------------------
-GuiImage::GuiImage(const SDL_Texture* texture, const rectangle& section) : GuiElements(), texture(texture), section(section)
+GuiImage::GuiImage(const SDL_Texture* texture, const SDL_Rect& section) : GuiElements(), texture(texture), section(section)
 {
 	setSize(section.w, section.h);
 }
@@ -176,7 +171,7 @@ GuiImage::~GuiImage()
 {}
 
 // --------------------------
-void GuiImage::setSection(const rectangle& section)
+void GuiImage::setSection(const SDL_Rect& section)
 {
 	this->section = section;
 }
@@ -187,7 +182,7 @@ void GuiImage::draw() const
 	iPoint p = getScreenPos();
 	if (parent && parent->cut_childs)
 	{
-		rectangle r = parent->getScreenRect();
+		SDL_Rect r = parent->getScreenRect();
 		app->render->SetViewPort({ r.x, r.y, r.w, r.h });
 		p = getLocalPos();
 	}
@@ -197,13 +192,46 @@ void GuiImage::draw() const
 		app->render->ResetViewPort();
 }
 
-//CURSOR------------------------------------------------+//Cursor
-GuiCursor::GuiCursor(const SDL_Texture* texture, Animation* animation) : GuiElements(), texture(texture), cursor_anim(animation)
+//CURSOR------------------------------------------------
+GuiCursor::GuiCursor(const SDL_Texture* texture)
 {
-	section.x = section.y = 0;
-	app->tex->GetSize(texture, (unsigned int&)section.w, (unsigned int&)section.h);
+	this->texture = texture;
+	current_animation = &idle;
+	setSize(41, 43);
+	
+	// IDLE animation
+	idle.frames.push_back({ 2, 2, 40, 42 });
+	idle.frames.push_back({ 46, 2, 40, 42 });
+	idle.frames.push_back({ 90, 2, 40, 42 });
+	idle.frames.push_back({ 134, 2, 40, 42 });
+	idle.frames.push_back({ 178, 2, 40, 42 });
+	idle.speed = 0.01f;
+	idle.loop = true;
 
-	setSize(section.w, section.h);
+	// LEFT displacement animation
+	left_disp.frames.push_back({ 178, 232, 40, 42 });
+	left_disp.frames.push_back({ 222, 232, 40, 42 });
+	left_disp.speed = 0.02f;
+	left_disp.loop = true;
+
+	//RIGHT
+	right_disp.frames.push_back({ 530, 232, 40, 42 });
+	right_disp.frames.push_back({ 574, 232, 40, 42 });
+	right_disp.speed = 0.02f;
+	right_disp.loop = true;
+
+	//UP
+	up_disp.frames.push_back({ 354, 232, 40, 42 });
+	up_disp.frames.push_back({ 398, 232, 40, 42 });
+	up_disp.speed = 0.02f;
+	up_disp.loop = true;
+
+	//DOWN
+	down_disp.frames.push_back({ 2, 232, 40, 42 });
+	down_disp.frames.push_back({ 46, 232, 40, 42 });
+	down_disp.speed = 0.02f;
+	down_disp.loop = true;
+
 	type = CURSOR;
 }
 
@@ -211,30 +239,24 @@ GuiCursor::~GuiCursor(){
 
 }
 
-void GuiCursor::setPosition(iPoint coords)
+void GuiCursor::update()
 {
-	position.x = coords.x;
-	position.y = coords.y;
-	iPoint position_debug_draw = app->render->screenToWorld(position.x, position.y);
-	setLocalPos(position_debug_draw.x, position_debug_draw.y);
-}
-void GuiCursor::updatePosition()
-{
-	iPoint mouse;
-	app->input->getMousePosition(mouse);
-	setPosition(mouse);
-}
-
-void GuiCursor::setTexture(SDL_Texture* tmp_texture)
-{
-	texture = tmp_texture;
+	iPoint p;
+	app->input->getMousePosition(p);
+	setLocalPos(p.x, p.y);
 }
 
 void GuiCursor::draw()const
 {
-	//iPoint pos = getScreenPos();
-	//app->render->blit(texture, position.x, position.y, (SDL_Rect*)&section, 0.0f);
-	app->render->blit(texture, position.x, position.y, &(cursor_anim->getCurrentFrame()), 0.0f);
+	SDL_Rect r = getLocalRect();
+	// To perfectly sync the tip cursor with the mouse, we need 20 pixels left and 17 pixels up
+	app->render->blit(texture, r.x - 20, r.y - 17, &(current_animation->getCurrentFrame()), 0.0f);
+}
+
+void GuiCursor::debugDraw() const
+{
+	SDL_Rect r = getScreenRect();
+	app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);
 }
 
 //---------------------------------------
@@ -265,6 +287,10 @@ bool Gui::awake(pugi::xml_node& conf)
 bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
+	// CURSOR
+	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
+
+	SDL_ShowCursor(SDL_DISABLE);
 
 	return true;
 }
@@ -360,7 +386,7 @@ bool Gui::preUpdate()
 		gui_test->update(mouse_hover, focus);
 		if (gui_test->getType() == CURSOR)
 		{
-			gui_test->updatePosition();
+			gui_test->update();
 		}
 	}
 
@@ -420,7 +446,7 @@ GuiImage* Gui::createImage(const char* filename)
 }
 
 // Create a simple image
-GuiImage* Gui::createImage(const SDL_Texture* texture, const rectangle& section)
+GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 {
 	GuiImage* ret = NULL;
 	if (texture == NULL)
@@ -434,11 +460,11 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const rectangle& section)
 }
 
 //Create cursor
-GuiCursor* Gui::createCursor(const SDL_Texture* texture, Animation* animation){
+GuiCursor* Gui::createCursor(const SDL_Texture* texture){
 
 	GuiCursor* ret = NULL;
 
-	ret = new GuiCursor(texture, animation);
+	ret = new GuiCursor(texture);
 	elements.push_back(ret);
 	
 	return ret;
@@ -467,7 +493,8 @@ const GuiElements* Gui::findMouseHover()
 		GuiElements* gui_test = *item;
 		if (gui_test->interactive == true)
 		{
-			if (gui_test->getScreenRect().Contains(mouse.x, mouse.y))
+			SDL_Rect r = gui_test->getScreenRect();
+			if (mouse.x >= r.x && mouse.x <= r.x + r.w && mouse.y >= r.y && mouse.y <= r.y + r.y)
 			{
 				elements.reverse();
                 return gui_test;

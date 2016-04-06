@@ -43,18 +43,8 @@ private:
 
 	//HUD UI
 	GuiImage* ui_terran = nullptr;
-	GuiImage* rectangle_map_camera = nullptr;
-	GuiImage* rectangle_map = nullptr;
-
-	//MOUSE UI
-	GuiCursor* mouse = nullptr;
-	SDL_Texture* mouse_texture = nullptr;
-	Animation cursor_animation;
-	Animation cursor_animation_idle;
-	Animation cursor_animation_left;
-	Animation cursor_animation_right;
-	Animation cursor_animation_up;
-	Animation cursor_animation_down;
+	GuiImage* SDL_Rect_map_camera = nullptr;
+	GuiImage* SDL_Rect_map = nullptr;
 
 public:
 

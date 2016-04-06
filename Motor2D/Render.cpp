@@ -59,8 +59,8 @@ bool Render::start()
 
 	// Camera offset movement activation
 	uint w, h; app->win->getWindowSize(w, h);
-	cursor_offset.x = (w * 0.1f); // 10% of map width
-	cursor_offset.y = (h * 0.1f); // 10% of map height
+	cursor_offset.x = (w * 0.01f); // 10% of map width
+	cursor_offset.y = (h * 0.01f); // 10% of map height
 	scroll_speed = 1.0f;
 
 	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
@@ -105,39 +105,15 @@ void Render::moveCamera(float dt)
 
 	// Checking displacement for X axis.
 	if (mouse_position.x < cursor_offset.x) // Left
-	{
 		camera.x += (camera.x + map_displacement <= 0 ? map_displacement : 0);
-		if (mouse_position.x < cursor_offset.x / 2)
-			camera.x += (camera.x + map_displacement <= 0 ? map_displacement : 0);
-		curs_anim = 1;
-	}
 	else if (mouse_position.x > (camera.w - cursor_offset.x)) // Right
-	{
 		camera.x -= (camera.x - map_displacement >= camera.w - map_limits.x ? map_displacement : 0);
-		if (mouse_position.x > (camera.w - cursor_offset.x / 2))
-			camera.x -= (camera.x - map_displacement >= camera.w - map_limits.x ? map_displacement : 0);
-		curs_anim = 2;
-	}
 
 	// Checking displacement for Y axis.
-	else if (mouse_position.y < cursor_offset.y) // Up
-	{
+	if (mouse_position.y < cursor_offset.y) // Up
 		camera.y += (camera.y + map_displacement <= 0 ? map_displacement : 0);
-		if (mouse_position.y < cursor_offset.y / 2)
-			camera.y += (camera.y + map_displacement <= 0 ? map_displacement : 0);
-		curs_anim = 3;
-	}
 	else if (mouse_position.y > (camera.h - cursor_offset.y)) // Down
-	{
 		camera.y -= (camera.y - map_displacement >= camera.h - map_limits.y ? map_displacement : 0);
-		if (mouse_position.y > (camera.h - cursor_offset.y / 2))
-			camera.y -= (camera.y - map_displacement >= camera.h - map_limits.y ? map_displacement : 0);
-		curs_anim = 4;
-	}
-	else
-	{
-		curs_anim = 0;
-	}
 }
 
 // Called before quitting

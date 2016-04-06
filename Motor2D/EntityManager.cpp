@@ -212,18 +212,18 @@ bool EntityManager::postUpdate()
 	active_entities.size(), inactive_entities.size());
 	//app->win->setTitle(title);	
 
-	// Basic selection. Entities surrounded by black rectangles.
+	// Basic selection. Entities surrounded by black SDL_Rects.
 	map<uint, Entity*>::iterator it2 = selection.begin();
 	for (; it2 != selection.end(); ++it2)
 	{
 		if (it2->second->type == MARINE)
 		{
-			rectangle section_circle = { 52, 56, 27, 17 };
+			SDL_Rect section_circle = { 52, 56, 27, 17 };
 			app->render->blit(circle_characters, it2->second->pos.x + 19, it2->second->pos.y + 32, (SDL_Rect*)&section_circle, 1.0f);
 		}
 		else if (it2->second->type == ZERGLING)
 		{
-			rectangle section_circle = { 52, 56, 27, 17 };
+			SDL_Rect section_circle = { 52, 56, 27, 17 };
 			app->render->blit(circle_characters, it2->second->pos.x + 50, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
 		}		
 	}
@@ -231,11 +231,11 @@ bool EntityManager::postUpdate()
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
 	{
 		//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
-		rectangle section_life = { 46, 79, 26, 8 };
+		SDL_Rect section_life = { 46, 79, 26, 8 };
 		app->render->blit(circle_characters, it2->second->pos.x + 20.5, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
 		for (int i = 0, a = 0; i < it2->second->hp; i++)
 		{
-			rectangle greenquadlife = { 225, 32, 3, 4 };
+			SDL_Rect greenquadlife = { 225, 32, 3, 4 };
 			app->render->blit(circle_characters, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
 			greenquadlife.x += 4;
 			a += 4;
@@ -249,7 +249,7 @@ bool EntityManager::postUpdate()
 	for (; it != active_entities.end(); ++it)
 		it->second->draw();
 
-	// Drawing selector (white rectangle)
+	// Drawing selector (white SDL_Rect)
 	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false, false);
 
 	return true;
@@ -313,7 +313,7 @@ Entity *EntityManager::whichEntityOnMouse()
 	return NULL;
 }
 
-// CalculateSelector: Method that computes the dimensions of the white rectangle selector.
+// CalculateSelector: Method that computes the dimensions of the white SDL_Rect selector.
 void EntityManager::calculateSelector()
 {
 	int selector_width = abs(final_selector_pos.x - initial_selector_pos.x);
