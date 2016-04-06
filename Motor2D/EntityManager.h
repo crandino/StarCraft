@@ -2,12 +2,27 @@
 #define __ENTITYMANAGER_H__
 
 #include "Module.h"
-#include "Point2d.h"
 #include "Vector2D.h"
 #include "SDL\include\SDL_rect.h"
-#include "Entity.h"
+#include "SDL\include\SDL_render.h"
 #include <map>
 #include <vector>
+
+enum ENTITY_TYPE
+{
+	// Units
+	MARINE,
+	ZERGLING,
+	// Buildings
+	COMMANDCENTER
+};
+
+enum FACTION
+{
+	PLAYER,
+	COMPUTER
+};
+
 
 class Entity;
 using namespace std;

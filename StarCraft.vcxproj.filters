@@ -124,14 +124,23 @@
     <ClInclude Include="Motor2D\Collision.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Entity.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Motor2D\EntityManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Vector2D.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Marine.h">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Zergling.h">
+      <Filter>Entities\Zerg_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\CommandCenter.h">
+      <Filter>Entities\Terran_Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +158,18 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{ce12f7f0-26c4-4616-92f2-630ac32f3b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{c78b57a0-e867-4113-8a72-c4bceb75219e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Terran_Units">
+      <UniqueIdentifier>{e933d342-b858-4d38-8346-3251226201e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Zerg_Units">
+      <UniqueIdentifier>{953a494a-759c-4625-9cb2-ce07deaf2ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Terran_Buildings">
+      <UniqueIdentifier>{63d255c2-8933-4f1d-8c54-e82af184257c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

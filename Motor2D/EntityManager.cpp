@@ -3,8 +3,10 @@
 #include "Input.h"
 #include "Window.h"
 #include "p2Log.h"
-#include <algorithm>
 #include "PathFinding.h"
+#include "Marine.h"
+#include "Zergling.h"
+#include "CommandCenter.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -151,7 +153,6 @@ bool EntityManager::preUpdate()
 		selector.x = cursor_pos.x;
 		selector.y = cursor_pos.y;*/
 
-
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		for (; it != active_entities.end(); ++it)
 		{
@@ -170,7 +171,7 @@ bool EntityManager::preUpdate()
 	//}
 	//------------------------------
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN /*&& selection.begin() != selection.end()*/)
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN && !selection.empty())
 	{
 		iPoint tmp_mouse_position;
 		app->input->getMousePosition(tmp_mouse_position);
