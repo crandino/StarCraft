@@ -30,11 +30,14 @@ public:
 	Collider*       coll;
 
 	vector<iPoint>  path;
+	SDL_Texture     *tile_path;
 
 
 	// Constructors
 	Entity()
-	{};
+	{
+		tile_path = app->tex->loadTexture("TemporaryTextures/path_tile.png");
+	};
 
 	// Destructor
 	~Entity()
@@ -52,6 +55,13 @@ public:
 	}
 	virtual void move(float dt)
 	{
+		//// To draw the path finding that the entity is following
+		for (vector<iPoint>::iterator it = path.begin(); it != path.end(); ++it)
+		{
+			iPoint p = app->map->mapToWorld(app->map->data.back(),it->x, it->y);
+			app->render->blit(tile_path, p.x, p.y);
+		}
+
 		if (path.size() > 0)
 		{
 			float pixels_to_move = 0;
