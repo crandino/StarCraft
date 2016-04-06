@@ -67,7 +67,6 @@ private:
 	void selectAll(uchar filter);
 	void selectAvailableEntities(uchar filter);
 	void calculateSelector();
-	void sortEntities();
 
 	//Textures
 	SDL_Texture* circle_characters;

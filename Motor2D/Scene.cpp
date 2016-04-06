@@ -32,10 +32,7 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {
-    app->map->load("TEST_MAP.tmx");
-    app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
-
-	int w, h;
+   	int w, h;
 	uchar *buffer = NULL;
 	if(app->map->createWalkabilityMap(w, h, &buffer))
 		app->path->setMap(w, h, buffer);
@@ -51,18 +48,18 @@ bool Scene::start()
 	ui_terran->setListener(this);
 	ui_terran->can_focus = true;
 
-	SDL_Rect_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
-	SDL_Rect_map->setLocalPos(4, 346);
-	SDL_Rect_map->interactive = true;
-	SDL_Rect_map->setListener(this);
-	SDL_Rect_map->can_focus = true;
+	rectangle_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
+	rectangle_map->setLocalPos(4, 346);
+	rectangle_map->interactive = true;
+	rectangle_map->setListener(this);
+	rectangle_map->can_focus = true;
 
-	SDL_Rect_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
-	SDL_Rect_map_camera->parent = SDL_Rect_map;
-	SDL_Rect_map_camera->setLocalPos(3, 3);
-	SDL_Rect_map_camera->interactive = true;
-	SDL_Rect_map_camera->setListener(this);
-	SDL_Rect_map_camera->can_focus = true;
+	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
+	rectangle_map_camera->parent = rectangle_map;
+	rectangle_map_camera->setLocalPos(3, 3);
+	rectangle_map_camera->interactive = true;
+	rectangle_map_camera->setListener(this);
+	rectangle_map_camera->can_focus = true;
 	
 	return true;
 }
@@ -111,12 +108,9 @@ bool Scene::update(float dt)
 		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
 
 	// Transition experiments
-	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
-		app->render->start_transition({ 2000, 2000 });
+	/*if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+		app->render->start_transition({ 2000, 2000 });*/
     
-	app->map->draw();
-	
-
 	// CRZ -> Code to test PathFinding! Do not delete! Some variables must be uncommented 
 	// on the Header File
 	/*if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -150,25 +144,6 @@ bool Scene::update(float dt)
 	}*/
 	//--------------------------------------------------------------------------
 
-	/*switch (app->render->curs_anim)
-	{
-	case 1:
-		cursor_animation = cursor_animation_left;
-		break;
-	case 2:
-		cursor_animation = cursor_animation_right;
-		break;
-	case 3:
-		cursor_animation = cursor_animation_up;
-		break;
-	case 4:
-		cursor_animation = cursor_animation_down;
-		break;
-	default:
-		cursor_animation = cursor_animation_idle;
-	}*/
-
-
 	return true;
 }
 
@@ -193,34 +168,34 @@ bool Scene::cleanUp()
 //GUI
 void Scene::onGui(GuiElements* ui, GUI_EVENTS event)
 {
-	if (ui == SDL_Rect_map)
+	if (ui == rectangle_map)
 	{
 		if (event == GUI_EVENTS::MOUSE_LCLICK_DOWN)
 		{
 			iPoint pos_rect;
 			app->input->getMousePosition(pos_rect);
-			SDL_Rect rect_map_camera_parent = SDL_Rect_map_camera->parent->getScreenRect();
-			if (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
-				&& pos_rect.y + SDL_Rect_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
-				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y);
+			SDL_Rect rect_map_camera_parent = rectangle_map_camera->parent->getScreenRect();
+			if (pos_rect.x + rectangle_map_camera->getScreenRect().w <= rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + rectangle_map_camera->getScreenRect().h < rect_map_camera_parent.y + rect_map_camera_parent.h)
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
 
-			else if (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w)
+			else if (pos_rect.x + rectangle_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w)
 			{
-				int i = (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
-				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x - i, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y);
+				int i = (pos_rect.x + rectangle_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x - i, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y);
 			}
-			else if (pos_rect.y + SDL_Rect_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
+			else if (pos_rect.y + rectangle_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
 			{
-				int i = (pos_rect.y + SDL_Rect_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
-				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y - i);
+				int i = (pos_rect.y + rectangle_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y - i);
 			}
 
-			else if (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w
-				&& pos_rect.y + SDL_Rect_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
+			else if (pos_rect.x + rectangle_map_camera->getScreenRect().w > rect_map_camera_parent.x + rect_map_camera_parent.w && pos_rect.x < rect_map_camera_parent.x + rect_map_camera_parent.w
+				&& pos_rect.y + rectangle_map_camera->getScreenRect().h > rect_map_camera_parent.y + rect_map_camera_parent.h && pos_rect.y < rect_map_camera_parent.y + rect_map_camera_parent.h)
 			{
-				int i = (pos_rect.x + SDL_Rect_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
-				int i2 = (pos_rect.y + SDL_Rect_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
-				SDL_Rect_map_camera->setLocalPos(pos_rect.x - SDL_Rect_map_camera->parent->getLocalPos().x - i, pos_rect.y - SDL_Rect_map_camera->parent->getLocalPos().y - i2);
+				int i = (pos_rect.x + rectangle_map_camera->getScreenRect().w) - (rect_map_camera_parent.x + rect_map_camera_parent.w);
+				int i2 = (pos_rect.y + rectangle_map_camera->getScreenRect().h) - (rect_map_camera_parent.y + rect_map_camera_parent.h);
+				rectangle_map_camera->setLocalPos(pos_rect.x - rectangle_map_camera->parent->getLocalPos().x - i, pos_rect.y - rectangle_map_camera->parent->getLocalPos().y - i2);
 			}
 
 		}

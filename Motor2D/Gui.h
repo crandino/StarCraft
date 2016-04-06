@@ -116,8 +116,6 @@ public:
 	void draw() const;
 	void debugDraw() const;
 
-private:
-
 	const SDL_Texture* texture = nullptr;
 	Animation* current_animation;
 	Animation  idle;
@@ -170,7 +168,11 @@ public:
 
 	SDL_Rect mouseQuad(iPoint init_mouse);
 
+	// Variables for Cursor
 	GuiCursor *cursor;
+	iPoint cursor_offset;
+	iPoint map_limits;
+	float scroll_speed;
 
 private:
 

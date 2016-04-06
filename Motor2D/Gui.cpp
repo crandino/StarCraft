@@ -5,6 +5,8 @@
 //#include "Fonts.h"
 #include "Input.h"
 #include "Gui.h"
+#include "Map.h"
+#include "Window.h"
 #include "p2Defs.h"
 #include "Textures.h"
 #include "SDL/include/SDL.h"
@@ -209,26 +211,38 @@ GuiCursor::GuiCursor(const SDL_Texture* texture)
 	idle.loop = true;
 
 	// LEFT displacement animation
-	left_disp.frames.push_back({ 178, 232, 40, 42 });
-	left_disp.frames.push_back({ 222, 232, 40, 42 });
+	// X positions has been modified to perfectly adapt to the screen
+	/*left_disp.frames.push_back({ 178, 232, 40, 42 });
+	left_disp.frames.push_back({ 222, 232, 40, 42 });*/
+	left_disp.frames.push_back({ 166, 232, 40, 42 });
+	left_disp.frames.push_back({ 210, 232, 40, 42 });
 	left_disp.speed = 0.02f;
 	left_disp.loop = true;
 
-	//RIGHT
-	right_disp.frames.push_back({ 530, 232, 40, 42 });
-	right_disp.frames.push_back({ 574, 232, 40, 42 });
+	//RIGHT displacement animation
+	// X positions has been modified to perfectly adapt to the screen
+	/*right_disp.frames.push_back({ 530, 232, 40, 42 });
+	right_disp.frames.push_back({ 574, 232, 40, 42 });*/
+	right_disp.frames.push_back({ 542, 232, 40, 42 });
+	right_disp.frames.push_back({ 586, 232, 40, 42 });
 	right_disp.speed = 0.02f;
 	right_disp.loop = true;
 
-	//UP
-	up_disp.frames.push_back({ 354, 232, 40, 42 });
-	up_disp.frames.push_back({ 398, 232, 40, 42 });
+	//UP displacement animation
+	// Y positions has been modified to perfectly adapt to the screen
+	/*up_disp.frames.push_back({ 354, 232, 40, 42 });
+	up_disp.frames.push_back({ 398, 232, 40, 42 });*/
+	up_disp.frames.push_back({ 354, 220, 40, 42 });
+	up_disp.frames.push_back({ 398, 220, 40, 42 });
 	up_disp.speed = 0.02f;
 	up_disp.loop = true;
 
-	//DOWN
-	down_disp.frames.push_back({ 2, 232, 40, 42 });
-	down_disp.frames.push_back({ 46, 232, 40, 42 });
+	//DOWN displacement animation
+	// Y positions has been modified to perfectly adapt to the screen
+	/*down_disp.frames.push_back({ 2, 232, 40, 42 });
+	down_disp.frames.push_back({ 46, 232, 40, 42 });*/
+	down_disp.frames.push_back({ 2, 244, 40, 42 });
+	down_disp.frames.push_back({ 46, 244, 40, 42 });
 	down_disp.speed = 0.02f;
 	down_disp.loop = true;
 
@@ -287,10 +301,17 @@ bool Gui::awake(pugi::xml_node& conf)
 bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
+	
 	// CURSOR
-	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
-
 	SDL_ShowCursor(SDL_DISABLE);
+	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
+	uint w, h; app->win->getWindowSize(w, h);
+	cursor_offset.x = (w * 0.01f); // 10% of map width
+	cursor_offset.y = (h * 0.01f); // 10% of map height
+	scroll_speed = 1.0f;
+
+	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
+		app->map->data.front().height * app->map->data.front().tile_height };	
 
 	return true;
 }
@@ -301,6 +322,32 @@ bool Gui::preUpdate()
 
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
+
+	// Cursor -> check for camera displacement.
+	iPoint pos = cursor->getLocalPos();
+	cursor->current_animation = &cursor->idle;
+	// Checking displacement for X axis.
+	if (pos.x < cursor_offset.x) // Left
+	{
+		app->render->camera.x += (app->render->camera.x + scroll_speed <= 0 ? scroll_speed : 0);
+		cursor->current_animation = &cursor->left_disp;
+	}
+	else if (pos.x > (app->render->camera.w - cursor_offset.x)) // Right
+	{
+		app->render->camera.x -= (app->render->camera.x - scroll_speed >= app->render->camera.w - map_limits.x ? scroll_speed : 0);
+		cursor->current_animation = &cursor->right_disp;
+	}
+	// Checking displacement for Y axis.
+	if (pos.y < cursor_offset.y) // Up
+	{
+		app->render->camera.y += (app->render->camera.y + scroll_speed <= 0 ? scroll_speed : 0);
+		cursor->current_animation = &cursor->up_disp;
+	}
+	else if (pos.y > (app->render->camera.h - cursor_offset.y)) // Down
+	{
+		app->render->camera.y -= (app->render->camera.y - scroll_speed >= app->render->camera.h - map_limits.y ? scroll_speed : 0);
+		cursor->current_animation = &cursor->down_disp;
+	}		
 
 	const GuiElements* mouse_hover = findMouseHover();
 	if (mouse_hover &&

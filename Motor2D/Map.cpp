@@ -26,6 +26,20 @@ bool Map::awake(pugi::xml_node& config)
 	folder.assign(config.child("folder").child_value());
 	return ret;
 }
+bool Map::start()
+{
+	app->map->load("TEST_MAP.tmx");
+	app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
+
+	return true;
+}
+
+// Called each loop iteration
+bool Map::update(float dt)
+{
+	draw();
+	return true;
+}
 
 void Map::draw()
 {

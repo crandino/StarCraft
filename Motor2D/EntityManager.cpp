@@ -26,7 +26,7 @@ bool EntityManager::start()
 {
 	next_ID = 0;
 	filter = 0;
-    circle_characters = app->tex->loadTexture("StarCraftCursors.png");
+    circle_characters = app->tex->loadTexture("Cursor/StarCraftCursors.png");
 
 	return true;
 }
@@ -117,18 +117,19 @@ bool EntityManager::preUpdate()
 	{
 		app->input->getMousePosition(final_selector_pos);
 		calculateSelector();
-
-	    map<uint, Entity*>::iterator it = active_entities.begin();
-		for (; it != active_entities.end(); ++it)
-			if (it->second->pos.x <= selector.x + selector.w &&  it->second->pos.x >= selector.x
-				&& it->second->pos.y <= selector.y + selector.h &&  it->second->pos.y >= selector.y)
-				selection.insert(pair<uint, Entity*>(it->first, it->second));  
-
 	}		
 
 	// Once released left button, the selection is computed
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	{
 		selector_init = false;
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
+			if (it->second->pos.x <= selector.x + selector.w &&  it->second->pos.x >= selector.x
+				&& it->second->pos.y <= selector.y + selector.h &&  it->second->pos.y >= selector.y)
+				selection.insert(pair<uint, Entity*>(it->first, it->second));
+	}
+		
 
 	//Selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -250,7 +251,7 @@ bool EntityManager::postUpdate()
 		it->second->draw();
 
 	// Drawing selector (white SDL_Rect)
-	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false, false);
+	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
 
 	return true;
 }

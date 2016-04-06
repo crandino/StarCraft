@@ -56,12 +56,6 @@ public:
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
-	//For Camera
-	
-	iPoint cursor_offset;
-	iPoint map_limits;
-
-	float scroll_speed;
 
 	// For transitions
 	bool			transition_active;

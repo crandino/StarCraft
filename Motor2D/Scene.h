@@ -8,7 +8,6 @@ using namespace std;
 
 struct SDL_Texture;
 class GuiImage;
-class GuiCursor;
 
 class Scene : public Module
 {
@@ -43,8 +42,8 @@ private:
 
 	//HUD UI
 	GuiImage* ui_terran = nullptr;
-	GuiImage* SDL_Rect_map_camera = nullptr;
-	GuiImage* SDL_Rect_map = nullptr;
+	GuiImage* rectangle_map_camera = nullptr;
+	GuiImage* rectangle_map = nullptr;
 
 public:
 
