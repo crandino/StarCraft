@@ -28,7 +28,7 @@ bool EntityManager::start()
 {
 	next_ID = 0;
 	filter = 0;
-    circle_characters = app->tex->loadTexture("Cursor/StarCraftCursors.png");
+    circle_characters = app->tex->loadTexture("Selection/Selection_circles.png");
 
 	return true;
 }
@@ -223,13 +223,13 @@ bool EntityManager::postUpdate()
 	{
 		if (it2->second->type == MARINE)
 		{
-			SDL_Rect section_circle = { 52, 56, 27, 17 };
+			SDL_Rect section_circle = { 0, 62, 22, 13 };
 			app->render->blit(circle_characters, it2->second->pos.x + 19, it2->second->pos.y + 32, (SDL_Rect*)&section_circle, 1.0f);
 		}
 		else if (it2->second->type == ZERGLING)
 		{
-			SDL_Rect section_circle = { 52, 56, 27, 17 };
-			app->render->blit(circle_characters, it2->second->pos.x + 50, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
+			SDL_Rect section_circle = { 0, 62, 22, 13 };
+			app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
 		}		
 	}
 	
