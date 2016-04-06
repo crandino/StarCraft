@@ -76,6 +76,7 @@
     <ClInclude Include="Motor2D\Entity.h" />
     <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
+    <ClInclude Include="Motor2D\GameManager.h" />
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
     <ClInclude Include="Motor2D\MemLeaks.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Motor2D\Collision.cpp" />
     <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
+    <ClCompile Include="Motor2D\GameManager.cpp" />
     <ClCompile Include="Motor2D\Input.cpp" />
     <ClCompile Include="Motor2D\main.cpp" />
     <ClCompile Include="Motor2D\Map.cpp" />
