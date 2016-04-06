@@ -29,7 +29,7 @@ public:
 		current_animation = &idle;
 
 		// Collider
-		coll = app->collision->addCollider({ center.x, center.y, 24, 24 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x - 12, center.y - 14, 24, 26 }, COLLIDER_BOMB);
 
 		// Another stuff
 		type = ZERGLING;

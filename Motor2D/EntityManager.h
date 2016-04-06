@@ -56,16 +56,13 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, ENTITY_TYPE type);
-	bool remove(uint id);
 	Entity* getEntity(uint id);
 	Entity* whichEntityOnMouse();
 
 private:
 
 	map<uint, Entity*>               active_entities;
-	map<uint, Entity*>             inactive_entities;
 	map<uint, Entity*>                     selection;
-	multimap<float, Entity*>       selection_ordered;
 	uint next_ID;
 	uchar filter;
 
@@ -78,10 +75,7 @@ private:
 	iPoint   initial_selector_pos;
 	iPoint     final_selector_pos;
 
-	void drawAll();
-	void selectAll(uchar filter);
-	void selectAvailableEntities(uchar filter);
-	void calculateSelector();
+	void	  calculateSelector();
 
 	//Textures
 	SDL_Texture* circle_characters;

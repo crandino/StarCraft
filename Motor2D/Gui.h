@@ -175,13 +175,14 @@ public:
 	float scroll_speed;
 
 private:
-
-	
+		
 	bool debug = false;
 	list<GuiElements*> elements;
 	const GuiElements* focus = nullptr;
 	SDL_Texture* atlas = nullptr;
 	string atlas_file_name;
+
+	SDL_Texture *path_walkability;
 };
 
 #endif

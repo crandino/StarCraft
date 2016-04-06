@@ -45,6 +45,12 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
+	virtual bool update(float dt)
+	{
+		//coll->setPos(center.x, center.y);
+		return true;
+	}
+
 	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));

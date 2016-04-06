@@ -29,7 +29,7 @@ public:
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ center.x, center.y, 128, 100 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ pos.x, pos.y, 128, 100 }, COLLIDER_BOMB);
 
 		// Another stuff
 		type = COMMANDCENTER;

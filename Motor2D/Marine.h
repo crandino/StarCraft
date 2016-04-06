@@ -38,11 +38,11 @@ public:
 		idle.frames.push_back({ 896, 0, 64, 64 });
 		idle.frames.push_back({ 960, 0, 64, 64 });*/
 		idle.speed = 0.0f;
-		idle.loop = true;
+		idle.loop = false;
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ center.x, center.y, 30, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x - 10, center.y - 14, 22, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
 		type = MARINE;

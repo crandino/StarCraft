@@ -123,11 +123,11 @@ bool PathFinding::setMap(const uint &width, const uint &height, uchar *data)
 
 int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 {
+	path_found.clear();
+
 	// Origin and destination are walkable?
 	if (!isWalkable(origin) || !isWalkable(destination))
 		return -1;
-
-	path_found.clear();
 
 	// Open and close list
 	pathList open_list, close_list;

@@ -2,7 +2,7 @@
 #include "App.h"
 #include "p2Log.h"
 #include "Render.h"
-//#include "Fonts.h"
+#include "PathFinding.h"
 #include "Input.h"
 #include "Gui.h"
 #include "Map.h"
@@ -311,7 +311,9 @@ bool Gui::start()
 	scroll_speed = 1.0f;
 
 	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
-		app->map->data.front().height * app->map->data.front().tile_height };	
+		app->map->data.front().height * app->map->data.front().tile_height };
+
+	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	return true;
 }
@@ -437,7 +439,6 @@ bool Gui::preUpdate()
 		}
 	}
 
-	
 	return true;
 }
 
@@ -458,6 +459,20 @@ bool Gui::postUpdate()
 			gui->debugDraw();
 	}
 
+	iPoint to_draw; app->input->getMousePosition(to_draw);
+	to_draw = app->render->screenToWorld(to_draw.x, to_draw.y);
+	iPoint map_cursor_pos = app->map->worldToMap(app->map->data.back(), to_draw.x, to_draw.y);
+	
+	if (app->path->isWalkable(map_cursor_pos))
+	{
+		SDL_Rect r = { 1, 1, 8, 8 };
+		app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
+	}
+	else
+	{
+		SDL_Rect r = { 10, 1, 8, 8 };
+		app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
+	}
 	
 	return true;
 }
