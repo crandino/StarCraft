@@ -149,6 +149,9 @@ public:
 	// Called before all Updates
 	bool preUpdate();
 
+	// Called each loop iteration
+	bool update(float dt);
+
 	// Called after all Updates
 	bool postUpdate();
 

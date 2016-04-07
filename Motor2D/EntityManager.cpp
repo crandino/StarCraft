@@ -169,11 +169,6 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 	{
 		it->second->update(dt);
-	}
-	
-	it = selection.begin();
-	for (; it != selection.end(); ++it)
-	{
 		it->second->move(dt);
 	}
 

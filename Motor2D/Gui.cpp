@@ -321,6 +321,11 @@ bool Gui::start()
 // Update all guis
 bool Gui::preUpdate()
 {
+	return true;
+}
+
+bool Gui::update(float dt)
+{
 
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
@@ -331,23 +336,23 @@ bool Gui::preUpdate()
 	// Checking displacement for X axis.
 	if (pos.x < cursor_offset.x) // Left
 	{
-		app->render->camera.x += (app->render->camera.x + scroll_speed <= 0 ? scroll_speed : 0);
+		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
 		cursor->current_animation = &cursor->left_disp;
 	}
 	else if (pos.x > (app->render->camera.w - cursor_offset.x)) // Right
 	{
-		app->render->camera.x -= (app->render->camera.x - scroll_speed >= app->render->camera.w - map_limits.x ? scroll_speed : 0);
+		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
 		cursor->current_animation = &cursor->right_disp;
 	}
 	// Checking displacement for Y axis.
 	if (pos.y < cursor_offset.y) // Up
 	{
-		app->render->camera.y += (app->render->camera.y + scroll_speed <= 0 ? scroll_speed : 0);
+		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
 		cursor->current_animation = &cursor->up_disp;
 	}
 	else if (pos.y > (app->render->camera.h - cursor_offset.y)) // Down
 	{
-		app->render->camera.y -= (app->render->camera.y - scroll_speed >= app->render->camera.h - map_limits.y ? scroll_speed : 0);
+		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 		cursor->current_animation = &cursor->down_disp;
 	}		
 

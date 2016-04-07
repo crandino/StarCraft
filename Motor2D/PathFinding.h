@@ -16,7 +16,7 @@ struct pathNode
 	pathNode(int score_g, int score_h, iPoint pos, const pathNode *parent_node);
 	pathNode(const pathNode& node);
 
-	// FindWalkableAdjacents: Fills a list of adjacent tiles that are walkable
+	// FindAdjacents: Fills a list of adjacent tiles
 	uint findAdjacents(pathList& list_to_fill) const;
 
 	// FindWalkableAdjacents: Fills a list of adjacent tiles that are walkable
