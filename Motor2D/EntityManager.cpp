@@ -85,7 +85,6 @@ bool EntityManager::preUpdate()
 	{
 		if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 		{
-
 			app->input->getMousePosition(position);
 			position = app->render->screenToWorld(position.x, position.y);
 			addEntity(position, MARINE);
@@ -96,18 +95,16 @@ bool EntityManager::preUpdate()
 
 		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 		{
-			iPoint p;
-			app->input->getMousePosition(p);
-			p = app->render->screenToWorld(p.x, p.y);
-			addEntity(p, COMMANDCENTER);
+			app->input->getMousePosition(position);
+			position = app->render->screenToWorld(position.x, position.y);
+			addEntity(position, COMMANDCENTER);
 		}
 
 		if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
 		{
-			iPoint p;
-			app->input->getMousePosition(p);
-			p = app->render->screenToWorld(p.x, p.y);
-			addEntity(p, ZERGLING);
+			app->input->getMousePosition(position);
+			position = app->render->screenToWorld(position.x, position.y);
+			addEntity(position, ZERGLING);
 		}
 	}
 	//}
