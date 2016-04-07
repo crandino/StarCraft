@@ -77,35 +77,39 @@ bool EntityManager::preUpdate()
 	}
 		
 	//Point to check if the cursor is on a walkable tile
-	//if (app->path->isWalkable(position))
-	//{
-	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
+	iPoint position; 
+	app->input->getMousePosition(position);
+	position = app->render->screenToWorld(position.x, position.y);
+	position = app->map->worldToMap(app->map->data.back(), position.x, position.y);
+	if (app->path->isWalkable(position))
 	{
-		iPoint p;
-		app->input->getMousePosition(p);
-		p = app->render->screenToWorld(p.x, p.y);
-		addEntity(p, MARINE);
+		if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
+		{
 
-		//marine = addEntity(p, MARINE);
-		//if (e != NULL) remove(e->id);		
-	}
+			app->input->getMousePosition(position);
+			position = app->render->screenToWorld(position.x, position.y);
+			addEntity(position, MARINE);
 
-	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		iPoint p;
-		app->input->getMousePosition(p);
-		p = app->render->screenToWorld(p.x, p.y);
-		addEntity(p, COMMANDCENTER);	
-	}
+			//marine = addEntity(p, MARINE);
+			//if (e != NULL) remove(e->id);		
+		}
 
-	if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		iPoint p;
-		app->input->getMousePosition(p);
-		p = app->render->screenToWorld(p.x, p.y);
-		addEntity(p, ZERGLING);	
+		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+		{
+			iPoint p;
+			app->input->getMousePosition(p);
+			p = app->render->screenToWorld(p.x, p.y);
+			addEntity(p, COMMANDCENTER);
+		}
+
+		if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			iPoint p;
+			app->input->getMousePosition(p);
+			p = app->render->screenToWorld(p.x, p.y);
+			addEntity(p, ZERGLING);
+		}
 	}
-		
 	//}
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
