@@ -17,6 +17,9 @@ struct pathNode
 	pathNode(const pathNode& node);
 
 	// FindWalkableAdjacents: Fills a list of adjacent tiles that are walkable
+	uint findAdjacents(pathList& list_to_fill) const;
+
+	// FindWalkableAdjacents: Fills a list of adjacent tiles that are walkable
 	uint findWalkableAdjacents(pathList& list_to_fill) const;
 	
 	// Score: Basically returns g + h
