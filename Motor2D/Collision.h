@@ -50,7 +50,7 @@ private:
 	list<Collider*> colliders;
 	
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
-	bool debug;
+	bool debug = false;
 
 public:
 

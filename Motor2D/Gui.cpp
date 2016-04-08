@@ -279,7 +279,6 @@ void GuiCursor::debugDraw() const
 Gui::Gui() : Module()
 {
 	name.assign("gui");
-	//debug = true;
 }
 
 // Destructor

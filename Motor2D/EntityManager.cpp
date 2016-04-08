@@ -179,10 +179,26 @@ bool EntityManager::preUpdate()
 // Called each loop iteration
 bool EntityManager::update(float dt)
 {
+	// Debug ---
+	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		debug = !debug;
+	}
+
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
 		it->second->update(dt);
+
+		//Debug: To draw the path finding that the entity is following
+		if (app->entity_manager->debug && it->second->path.size() > 0)
+		{
+			for (vector<iPoint>::iterator it2 = it->second->path.begin(); it2 != it->second->path.end(); ++it2)
+			{
+				iPoint p = app->map->mapToWorld(app->map->data.back(), it2->x, it2->y);
+				app->render->blit(it->second->tile_path, p.x, p.y);
+			}
+		}
 	}
 
 	return true;

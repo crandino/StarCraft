@@ -40,6 +40,8 @@ public:
 
 private:
 
+	bool debug = false;
+
 	//HUD UI
 	GuiImage* ui_terran = nullptr;
 	GuiImage* rectangle_map_camera = nullptr;

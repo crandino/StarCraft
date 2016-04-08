@@ -66,6 +66,8 @@ private:
 	uint next_ID;
 	uchar filter;
 
+	bool debug = false;
+
 	//ROF
 	Entity* marine;
 	float angle;
