@@ -276,10 +276,6 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 
 	path_found.erase(path_found.begin()); //we don't need the tile which is stepping
 
-	//// Reversing path, from origin to destination
-	//for (uint i = tmp.size() - 1; i >= 0; --i)
-	//	path_found.push_back(tmp[i]);
-
 	return path_found.size();
 }
 

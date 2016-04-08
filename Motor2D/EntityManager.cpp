@@ -81,6 +81,7 @@ bool EntityManager::preUpdate()
 	app->input->getMousePosition(position);
 	position = app->render->screenToWorld(position.x, position.y);
 	position = app->map->worldToMap(app->map->data.back(), position.x, position.y);
+
 	if (app->path->isWalkable(position))
 	{
 		if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
@@ -107,11 +108,13 @@ bool EntityManager::preUpdate()
 			addEntity(position, ZERGLING);
 		}
 	}
-	//}
+	
+
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		selector_init = true;
+		selector = { 0, 0, 0, 0 };
 		selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
 		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);		
