@@ -78,7 +78,30 @@ public:
 				if (total_pixels_moved + 8 > total_pixels_to_move)
 					pixels_to_move = total_pixels_to_move - total_pixels_moved;
 
-				if (path.begin()->y == tile_pos.y)
+				if (path.begin()->x < tile_pos.x && path.begin()->y < tile_pos.y)
+				{
+					center.x -= pixels_to_move / 2;
+					center.y -= pixels_to_move / 2;
+				}
+				else if (path.begin()->x < tile_pos.x && path.begin()->y > tile_pos.y)
+				{
+					center.x -= pixels_to_move / 2;
+					center.y += pixels_to_move / 2;
+
+				}
+				else if (path.begin()->x > tile_pos.x && path.begin()->y > tile_pos.y)
+				{
+					center.x += pixels_to_move / 2;
+					center.y += pixels_to_move / 2;
+
+				}
+				else if (path.begin()->x > tile_pos.x && path.begin()->y < tile_pos.y)
+				{
+					center.x += pixels_to_move / 2;
+					center.y -= pixels_to_move / 2;
+
+				}
+				else if (path.begin()->y == tile_pos.y)
 				{
 					if (path.begin()->x < tile_pos.x)
 						center.x -= pixels_to_move;
@@ -104,7 +127,7 @@ public:
 						path.clear();
 						has_target = false;
 					}						
-					else
+					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
 						path.erase(path.begin());
 				}
 				total_pixels_moved += pixels_to_move;
