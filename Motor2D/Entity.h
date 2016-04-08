@@ -52,6 +52,7 @@ public:
 	virtual bool update(float dt)
 	{
 		//coll->setPos(center.x, center.y);
+		//if (has_target) move(dt);
 		return true;
 	}
 

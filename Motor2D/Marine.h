@@ -74,6 +74,7 @@ public:
 	bool update(float dt)
 	{
 		coll->setPos(center.x - 10, center.y - 14);
+		if (has_target) move(dt);
 		return true;
 	}
 };

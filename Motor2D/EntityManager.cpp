@@ -183,7 +183,6 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 	{
 		it->second->update(dt);
-		if (it->second->has_target) it->second->move(dt);
 	}
 
 	return true;
