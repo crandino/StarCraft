@@ -1,25 +1,29 @@
 #include "GameManager.h"
-#include "Timer.h"
+
 
 
 bool GameManager::start()
 {
 	bool ret = true;
 
+	timeBetweenWaves.start();
 	return ret;
 }
 
 
+
 bool GameManager::update()
 {
-	bool ret = false;
 
+	bool ret = false;
+	
 	/*
+	
 	while (currentWaves != 5)
 	{
 		if ()
 		{ 
-			if (true/*EntityDeath)
+			if (trueEntityDeath)
 			{
 				//timer
 				//++unitDeath;
@@ -42,6 +46,6 @@ bool GameManager::update()
 
 		
 	}
-*/
+	*/
 	return ret;
 }

@@ -2,10 +2,15 @@
 #define __GAMEMANAGER_H__
 
 #include "Module.h"
+#include "Timer.h"
 
 using namespace std;
 
 //Class that manages the game. The win lose cycle, the points earned, the resources, waves etc..
+
+/*
+Place a timer, entity manager communicate zerg list/map etc..
+*/
 class GameManager : public Module
 {
 public:
@@ -31,11 +36,11 @@ public:
 
 	bool update();
 	
+	bool postUpdate();
 
-
-
-private:
-
+//Time Management
+public:
+	Timer timeBetweenWaves;
 
 };
 
