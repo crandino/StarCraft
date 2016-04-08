@@ -12,6 +12,7 @@ class Entity
 {
 
 public:
+
 	fPoint			pos;						// World position of Entity. Upper_left corner.
 	fPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
@@ -29,6 +30,7 @@ public:
 	float			speed;
 	Collider*       coll;
 
+	bool			has_target;
 	vector<iPoint>  path;
 	SDL_Texture     *tile_path;
 
@@ -36,6 +38,7 @@ public:
 	// Constructors
 	Entity()
 	{
+		has_target = false;
 		tile_path = app->tex->loadTexture("TemporaryTextures/path_tile.png");
 	};
 
@@ -102,7 +105,10 @@ public:
 				{
 					tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 					if (tile_pos == path.back())
+					{
 						path.clear();
+						has_target = false;
+					}						
 					else
 						path.erase(path.begin());
 				}

@@ -140,22 +140,21 @@ bool EntityManager::preUpdate()
 		}
 	}		
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_DOWN && !selection.empty())
+	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		iPoint tmp_mouse_position;
-		app->input->getMousePosition(tmp_mouse_position);
-		tmp_mouse_position = app->render->screenToWorld(tmp_mouse_position.x, tmp_mouse_position.y);
-		tmp_mouse_position = app->map->worldToMap(app->map->data.back(), tmp_mouse_position.x, tmp_mouse_position.y);
+		// Target position is where the player has clicked to move his units.
+		iPoint target_position;
+		app->input->getMousePosition(target_position);
+		target_position = app->render->screenToWorld(target_position.x, target_position.y);
+		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
+
 		map<uint, Entity*>::iterator it = selection.begin();
 		for (; it != selection.end(); ++it)
 		{
 			if (it->second->type == MARINE)
 			{
-				/*app->path->createPath(it->second->tile_pos, tmp_mouse_position);
-				it->second->path = app->path->getLastPath();
-				if (it->second->path.size() != 0)
-					it->second->path.erase(it->second->path.begin());*/
-				if (app->path->createPath(it->second->tile_pos, tmp_mouse_position) != -1)
+				it->second->has_target = true;
+				if (app->path->createPath(it->second->tile_pos, target_position) != -1)
 					it->second->path = app->path->getLastPath();
 			}
 		}
@@ -167,12 +166,11 @@ bool EntityManager::preUpdate()
 // Called each loop iteration
 bool EntityManager::update(float dt)
 {
-
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
 		it->second->update(dt);
-		it->second->move(dt);
+		if (it->second->has_target) it->second->move(dt);
 	}
 
 	return true;
