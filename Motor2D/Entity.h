@@ -32,6 +32,7 @@ public:
 
 	bool			has_target;
 	vector<iPoint>  path;
+	iPoint			distance_to_center_selector;
 	SDL_Texture     *tile_path;
 
 

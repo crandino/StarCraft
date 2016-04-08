@@ -136,7 +136,10 @@ bool EntityManager::preUpdate()
 		for (; it != active_entities.end(); ++it)
 		{
 			if (it->second->coll->checkCollision(selector))
+			{
+				it->second->distance_to_center_selector = it->second->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
 				selection.insert(pair<uint, Entity*>(it->first, it->second));
+			}
 		}
 	}		
 
@@ -153,9 +156,19 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->type == MARINE)
 			{
-				it->second->has_target = true;
-				if (app->path->createPath(it->second->tile_pos, target_position) != -1)
-					it->second->path = app->path->getLastPath();
+				if (selection.size() > 1)
+				{
+					it->second->has_target = true;
+					iPoint target = target_position + it->second->distance_to_center_selector;
+					if (app->path->createPath(it->second->tile_pos, target) != -1)
+						it->second->path = app->path->getLastPath();
+				}
+				else
+				{
+					it->second->has_target = true;
+					if (app->path->createPath(it->second->tile_pos, target_position) != -1)
+						it->second->path = app->path->getLastPath();
+				}
 			}
 		}
 	}
