@@ -458,11 +458,17 @@ bool Gui::postUpdate()
 	{
 		GuiElements* gui = *item;
 		if (gui->draw_element == true)
-			gui->draw();
+		{
+			if (gui->getType() != CURSOR)
+				gui->draw();
+		}
 
 		if (debug == true && gui->draw_element == true)
 			gui->debugDraw();
 	}
+
+	if (cursor->draw_element == true)
+		cursor->draw();
 
 	iPoint to_draw; app->input->getMousePosition(to_draw);
 	to_draw = app->render->screenToWorld(to_draw.x, to_draw.y);
