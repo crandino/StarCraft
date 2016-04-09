@@ -56,12 +56,16 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, ENTITY_TYPE type);
+	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
 	Entity* whichEntityOnMouse();
+
+	uint getWaveZerglingSize();
 
 private:
 
 	map<uint, Entity*>               active_entities;
+	vector<Entity*>					   waveZerglings;
 	map<uint, Entity*>                     selection;
 	uint next_ID;
 	uchar filter;

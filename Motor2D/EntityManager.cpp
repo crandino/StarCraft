@@ -58,11 +58,23 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+		addInEnemyContainer(e);
 	}
 
 	return e;
 }
- 
+
+uint EntityManager::getWaveZerglingSize()
+{
+	return waveZerglings.size();
+}
+
+Entity* const EntityManager::addInEnemyContainer(Entity* e)//Maybe return type should be void?
+{
+	waveZerglings.push_back(e);
+	LOG("Enemy added in wave. Number of enemies %d", waveZerglings.size());
+	return e;
+}
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
@@ -110,6 +122,7 @@ bool EntityManager::preUpdate()
 	}
 	
 
+
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -117,7 +130,22 @@ bool EntityManager::preUpdate()
 		selector = { 0, 0, 0, 0 };
 		selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
-		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);		
+		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
+		
+		//Click and select unit
+		if (whichEntityOnMouse() != NULL)
+		{
+			Entity* e = whichEntityOnMouse();
+
+			pair<uint, Entity*>unitSelected(1, e);
+
+			unitSelected.second->distance_to_center_selector = unitSelected.second->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
+			selection.insert(pair<uint, Entity*>(unitSelected.first, unitSelected.second));
+		}
+		else
+		{
+			selection.clear();
+		}
 	}
 
 	// Holding left button, updates selector dimensions
@@ -125,6 +153,7 @@ bool EntityManager::preUpdate()
 	{
 		app->input->getMousePosition(final_selector_pos);
 		final_selector_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
+
 		calculateSelector();
 	}		
 
@@ -141,6 +170,7 @@ bool EntityManager::preUpdate()
 				selection.insert(pair<uint, Entity*>(it->first, it->second));
 			}
 		}
+		
 	}		
 
 	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -172,6 +202,9 @@ bool EntityManager::preUpdate()
 			}
 		}
 	}
+
+
+
 
 	return true;
 } 

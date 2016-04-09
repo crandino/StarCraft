@@ -16,14 +16,12 @@ bool GameManager::update()
 {
 
 	bool ret = false;
-	
 	/*
-	
 	while (currentWaves != 5)
 	{
 		if ()
 		{ 
-			if (trueEntityDeath)
+			if ()
 			{
 				//timer
 				//++unitDeath;
