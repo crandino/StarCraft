@@ -59,7 +59,8 @@ public:
 	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
 	Entity* whichEntityOnMouse();
-
+	Entity* deleteEntity();
+	void deleteAllEntities();
 	uint getWaveZerglingSize();
 
 private:

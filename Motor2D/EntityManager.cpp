@@ -119,6 +119,11 @@ bool EntityManager::preUpdate()
 			position = app->render->screenToWorld(position.x, position.y);
 			addEntity(position, ZERGLING);
 		}
+
+		if (app->input->getKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+		{
+			deleteAllEntities();
+		}
 	}
 	
 
@@ -328,4 +333,10 @@ void EntityManager::calculateSelector()
 	int selector_pos_x = (initial_selector_pos.x < final_selector_pos.x ? initial_selector_pos.x : final_selector_pos.x);
 	int selector_pos_y = (initial_selector_pos.y < final_selector_pos.y ? initial_selector_pos.y : final_selector_pos.y);
 	selector = { selector_pos_x, selector_pos_y, selector_width, selector_height };
+}
+
+void EntityManager::deleteAllEntities()
+{
+	active_entities.clear();
+	selection.clear();
 }
