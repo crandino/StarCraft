@@ -36,6 +36,8 @@ public:
 	SDL_Texture     *tile_path;
 
 
+	bool markedToDelete = false;
+
 	// Constructors
 	Entity()
 	{
@@ -135,6 +137,12 @@ public:
 			} while (total_pixels_moved < total_pixels_to_move);
 		}
 	}
+
+	void markToDelete()
+	{
+		markedToDelete = true;
+	}
+
 };
 
 #endif !__ENTITY_H__

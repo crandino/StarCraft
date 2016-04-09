@@ -124,6 +124,11 @@ bool EntityManager::preUpdate()
 		{
 			deleteAllEntities();
 		}
+
+		if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+		{
+			deleteEntity(selection);
+		}
 	}
 	
 
@@ -335,6 +340,33 @@ void EntityManager::calculateSelector()
 	selector = { selector_pos_x, selector_pos_y, selector_width, selector_height };
 }
 
+//Deletes all units SELECTED
+void EntityManager::deleteEntity(map<uint, Entity*> selection){}
+/*{
+	vector<Entity* const> unitsToDelete;
+	map<uint, Entity*>::iterator it;
+	
+	vector <Entity* const>::iterator itdel;
+	bool must_delete = true;
+
+	for (auto it = selection.cbegin(); it != selection.cend() /* not hoisted ;it++)*/
+//	{
+		/*Stores entities in a vector that is going to be erased later
+		(add into the .h to become accessible to erase them at another
+		time*/
+	/*	 std::map<uint, entity*>::iterator itdel;
+		 itdel = active_entities.find(it->first);
+		 unitstodelete.push_back(itdel->second);
+		 unitstodelete.erase(itdel);
+	}
+
+	
+
+}
+
+*/
+
+//Deletes all the units in the screen (DEBUG PURPOSES ONLY)
 void EntityManager::deleteAllEntities()
 {
 	active_entities.clear();

@@ -59,7 +59,7 @@ public:
 	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
 	Entity* whichEntityOnMouse();
-	Entity* deleteEntity();
+	void deleteEntity(map<uint, Entity*> selection);
 	void deleteAllEntities();
 	uint getWaveZerglingSize();
 
@@ -68,8 +68,10 @@ private:
 	map<uint, Entity*>               active_entities;
 	vector<Entity*>					   waveZerglings;
 	map<uint, Entity*>                     selection;
+	map<uint, Entity*>						ToDelete;
 	uint next_ID;
 	uchar filter;
+	
 
 	bool debug = false;
 
