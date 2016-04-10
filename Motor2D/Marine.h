@@ -63,7 +63,6 @@ public:
 		{
 			idle.frames.push_back({ 64, 0, 64, 64 });
 		}
-
 	}
 
 	void draw()

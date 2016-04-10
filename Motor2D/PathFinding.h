@@ -17,10 +17,10 @@ struct pathNode
 	pathNode(const pathNode& node);
 
 	// FindAdjacents: Fills a list of adjacent tiles
-	uint findAdjacents(pathList& list_to_fill) const;
+	uint findAdjacents(pathList& list_to_fill, bool diagonals = false) const;
 
 	// FindWalkableAdjacents: Fills a list of adjacent tiles that are walkable
-	uint findWalkableAdjacents(pathList& list_to_fill) const;
+	uint findWalkableAdjacents(pathList& list_to_fill, bool diagonals = false) const;
 	
 	// Score: Basically returns g + h
 	int score() const;
@@ -61,6 +61,10 @@ public:
 
 	// CreatePath: Request to have a path from A to B
 	int createPath(const iPoint& origin, const iPoint& destination);
+
+	// findNearestWalkableTile: Returns the position of the nearest walkable tile
+	// Radius set the maximum distance from the origin to success.
+	iPoint PathFinding::findNearestWalkableTile(const iPoint &originm, uint radius = 0) const;
 
 	// GetLastPath: Returns order path step by step
 	const vector<iPoint> &getLastPath() const;

@@ -258,9 +258,7 @@ bool EntityManager::update(float dt)
 {
 	// Debug ---
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	{
 		debug = !debug;
-	}
 
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
