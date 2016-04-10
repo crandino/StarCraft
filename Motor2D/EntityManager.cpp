@@ -240,10 +240,12 @@ bool EntityManager::preUpdate()
 
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
+		Entity* e = whichEntityOnMouse();
 		LOG("Hostility ON");
-		if(selection.empty() == FALSE)
+		if (selection.empty() == FALSE)
 		{
-			KillEntity(whichEntityOnMouse());
+			if (e != NULL)
+				KillEntity(e);
 		}
 	}
 
