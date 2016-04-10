@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "FileSystem.h"
 #include "Textures.h"
+#include "PathFinding.h"
 #include "Map.h"
 #include <math.h>
 #include <string>
@@ -87,6 +88,107 @@ void Map::draw()
 	}
 }
 
+bool Map::setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value)
+{
+	list<MapData>::iterator map = data.begin();
+	while (map != data.end())
+	{
+		if (map->name == map_name)
+		{
+			list<MapLayer*>::iterator layer = map->layers.begin();
+			while (layer != map->layers.end())
+			{
+				if ((*layer)->name == layer_name)
+				{
+					(*layer)->properties.setPropertyValue(property_name, value);
+					return true;
+				}
+				++layer;
+			}
+		}
+		++map;
+	}
+
+	return false;
+}
+
+iPoint Map::mapToWorld(MapData &map, int x, int y) const
+{
+	iPoint ret;
+
+	if (map.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x * map.tile_width;
+		ret.y = y * map.tile_height;
+	}
+	else if (map.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - y) * (map.tile_width * 0.5f);
+		ret.y = (x + y) * (map.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+iPoint Map::worldToMap(MapData &map, int x, int y) const
+{
+	iPoint ret(0, 0);
+
+	if (map.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / map.tile_width;
+		if (ret.x < 0)
+			ret.x = 0;
+		else if (ret.x > map.width - 1)
+			ret.x = map.width - 1;
+
+		ret.y = y / map.tile_height;
+		if (ret.y < 0)
+			ret.y = 0;
+		else if (ret.y > map.height - 1)
+			ret.y = map.height - 1;
+	}
+	else if (map.type == MAPTYPE_ISOMETRIC)
+	{
+
+		float half_width = map.tile_width * 0.5f;
+		float half_height = map.tile_height * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2) - 1;
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+bool Map::isAreaWalkable(const SDL_Rect &rect)
+{
+	iPoint first_tile = worldToMap(data.back(), rect.x, rect.y);
+	iPoint last_tile = worldToMap(data.back(), rect.x + rect.w, rect.y + rect.h);
+	iPoint point_to_check;
+
+	for (int y = first_tile.y; y < last_tile.y; ++y)
+	{
+		for (int x = first_tile.x; x < last_tile.x; ++x)
+		{
+			point_to_check.set(x, y);
+			if (!app->path->isWalkable({ x, y }))
+				return false;
+		}
+	}
+
+	return true;
+}
+
 int Properties::get(const char* value, int default_value) const
 {
 	list<Property*>::const_iterator item = listProperties.begin();
@@ -117,30 +219,6 @@ bool Properties::setPropertyValue(const char* name, int default_value)
 	return false;
 }
 
-bool Map::setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value)
-{
-	list<MapData>::iterator map = data.begin();
-	while (map != data.end())
-	{
-		if (map->name == map_name)
-		{
-			list<MapLayer*>::iterator layer = map->layers.begin();
-			while (layer != map->layers.end())
-			{
-				if ((*layer)->name == layer_name)
-				{
-					(*layer)->properties.setPropertyValue(property_name, value);
-					return true;
-				}
-				++layer;
-			}
-		}
-		++map;
-	}
-
-	return false;
-}
-
 TileSet* MapData::getTilesetFromTileId(int id) const
 {
 	// Pick the right Tileset based on a tile id
@@ -155,64 +233,6 @@ TileSet* MapData::getTilesetFromTileId(int id) const
 	}
 
 	return tileset;
-}
-
-iPoint Map::mapToWorld(MapData &map, int x, int y) const
-{
-	iPoint ret;
-
-	if(map.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x * map.tile_width;
-		ret.y = y * map.tile_height;
-	}
-	else if(map.type == MAPTYPE_ISOMETRIC)
-	{
-		ret.x = (x - y) * (map.tile_width * 0.5f);
-		ret.y = (x + y) * (map.tile_height * 0.5f);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-iPoint Map::worldToMap(MapData &map, int x, int y) const
-{
-	iPoint ret(0,0);
-
-	if (map.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x / map.tile_width;
-		if (ret.x < 0)
-			ret.x = 0;
-		else if (ret.x > map.width - 1)
-			ret.x = map.width - 1;
-
-		ret.y = y / map.tile_height;
-		if (ret.y < 0)
-			ret.y = 0;
-		else if (ret.y > map.height - 1)
-			ret.y = map.height - 1;
-	}
-	else if (map.type == MAPTYPE_ISOMETRIC)
-	{
-		
-		float half_width = map.tile_width * 0.5f;
-		float half_height = map.tile_height * 0.5f;
-		ret.x = int( (x / half_width + y / half_height) / 2) - 1;
-		ret.y = int( (y / half_height - (x / half_width)) / 2);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
 }
 
 SDL_Rect TileSet::getTileRect(int id) const

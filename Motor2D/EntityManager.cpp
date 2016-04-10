@@ -56,6 +56,11 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 		break;
 	}
 
+	if (app->map->isAreaWalkable(e->coll->rect))
+		LOG("No problem!");
+	else
+		LOG("Problem");
+
 	if (e != NULL)
 	{
 		e->id = ++next_ID;
@@ -82,8 +87,6 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 {
 	enemyWave.insert(pair<uint, Entity*>(id, e));
 }
-
-
 
 // Called each loop iteration
 bool EntityManager::preUpdate()

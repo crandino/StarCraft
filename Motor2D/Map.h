@@ -138,6 +138,10 @@ public:
 	bool createWalkabilityMap(int& width, int& height, uchar** buffer) const;
 	bool setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value);
 
+	// CRZ 
+	// Given an area, determine whether all this area is walkable.
+	bool isAreaWalkable(const SDL_Rect &rect);
+
 private:
 
 	bool loadMap(const char *map_name);
