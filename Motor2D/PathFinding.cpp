@@ -66,6 +66,7 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill) const
 	uint items_before = list_to_fill.list_of_nodes.size();
 	iPoint new_pos;
 	uint items_added = 0;
+	bool north = false, west = false, south = false, east = false;
 
 	// North
 	new_pos.set(pos.x, pos.y - 1);
@@ -73,14 +74,7 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill) const
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
-	}
-
-	//North-West
-	new_pos.set(pos.x - 1, pos.y - 1);
-	if (app->path->isWalkable(new_pos))
-	{
-		items_added++;
-		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		north = true;
 	}
 
 	// West
@@ -89,11 +83,12 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill) const
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		west = true;
 	}
 
-	//South-West
-	new_pos.set(pos.x - 1, pos.y + 1);
-	if (app->path->isWalkable(new_pos))
+	//North-West
+	new_pos.set(pos.x - 1, pos.y - 1);
+	if (north && west && app->path->isWalkable(new_pos))
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
@@ -105,11 +100,12 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill) const
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		south = true;
 	}
 
-	//South-East
-	new_pos.set(pos.x + 1, pos.y + 1);
-	if (app->path->isWalkable(new_pos))
+	//South-West
+	new_pos.set(pos.x - 1, pos.y + 1);
+	if (south && west && app->path->isWalkable(new_pos))
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
@@ -121,11 +117,20 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill) const
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		east = true;
+	}
+
+	//South-East
+	new_pos.set(pos.x + 1, pos.y + 1);
+	if (south && east && app->path->isWalkable(new_pos))
+	{
+		items_added++;
+		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
 	}
 
 	//North-East
 	new_pos.set(pos.x + 1, pos.y - 1);
-	if (app->path->isWalkable(new_pos))
+	if (north && east && app->path->isWalkable(new_pos))
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
