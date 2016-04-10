@@ -469,20 +469,22 @@ bool Gui::postUpdate()
 	if (cursor->draw_element == true)
 		cursor->draw();
 
-	iPoint to_draw; app->input->getMousePosition(to_draw);
-	to_draw = app->render->screenToWorld(to_draw.x, to_draw.y);
-	iPoint map_cursor_pos = app->map->worldToMap(app->map->data.back(), to_draw.x, to_draw.y);
-	
-	if (app->path->isWalkable(map_cursor_pos))
+	if (debug)
 	{
-		SDL_Rect r = { 1, 1, 8, 8 };
-		app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
-	}
-	else
-	{
-		SDL_Rect r = { 10, 1, 8, 8 };
-		app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
-	}
+		iPoint to_draw; app->input->getMousePosition(to_draw);
+		to_draw = app->render->screenToWorld(to_draw.x, to_draw.y);
+
+		if (app->path->isWalkable(app->map->worldToMap(app->map->data.back(), to_draw.x, to_draw.y)))
+		{
+			SDL_Rect r = { 1, 1, 8, 8 };
+			app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
+		}
+		else
+		{
+			SDL_Rect r = { 10, 1, 8, 8 };
+			app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
+		}
+	}	
 	
 	return true;
 }

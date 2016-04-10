@@ -76,32 +76,20 @@ bool Scene::update(float dt)
 	float cam_speed = 1.0f;
 
 	// Debug ---
-	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	{
-		debug = !debug;
-		if (debug)
-			app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
-		else
-			app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
-	}
+	//if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	//{
+	//	debug = !debug;
+	//	if (debug)
+	//		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
+	//	else
+	//		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+	//}
 
 	/*if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 		app->loadGame("save_game.xml");
 
 	if (app->input->getKey(SDL_SCANCODE_K) == KEY_DOWN)
 		app->saveGame("save_game.xml");*/
-
-	/* (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += cam_speed;
-
-	if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= cam_speed;
-
-	if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += cam_speed;
-
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= cam_speed;*/
 
 	if (app->input->getKey(SDL_SCANCODE_KP_PLUS) == KEY_UP)
 		app->audio->volumeUp();
@@ -110,12 +98,12 @@ bool Scene::update(float dt)
 		app->audio->volumeDown();
 
 	// Paint Layers -- Draw or undraw the map
-	//if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
-	//	app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
+	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
 
-	/// Paint Layers -- Draw or undraw the map
-	//if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
-	//	app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+	// Paint Layers -- Draw or undraw the map
+	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
+		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
 
 	// Transition experiments
 	/*if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
