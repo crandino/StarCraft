@@ -85,14 +85,18 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill, bool diagonals) con
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
-	}
 
-	//North-West
-	new_pos.set(pos.x - 1, pos.y - 1);
-	if (diagonals && app->path->isWalkable(new_pos))
-	{
-		items_added++;
-		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		new_pos.set(pos.x - 1, pos.y);
+		if (diagonals && app->path->isWalkable(new_pos))
+		{
+			//North-West
+			new_pos.set(pos.x - 1, pos.y - 1);
+			if (app->path->isWalkable(new_pos))
+			{
+				items_added++;
+				list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+			}
+		}
 	}
 
 	// West
@@ -101,14 +105,18 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill, bool diagonals) con
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
-	}
 
-	//South-West
-	new_pos.set(pos.x - 1, pos.y + 1);
-	if (diagonals && app->path->isWalkable(new_pos))
-	{
-		items_added++;
-		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		new_pos.set(pos.x, pos.y + 1);
+		if (diagonals && app->path->isWalkable(new_pos))
+		{
+			//South-West
+			new_pos.set(pos.x - 1, pos.y + 1);
+			if (app->path->isWalkable(new_pos))
+			{
+				items_added++;
+				list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+			}
+		}
 	}
 
 	// South
@@ -117,14 +125,18 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill, bool diagonals) con
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
-	}	
 
-	//South-East
-	new_pos.set(pos.x + 1, pos.y + 1);
-	if (diagonals && app->path->isWalkable(new_pos))
-	{
-		items_added++;
-		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		new_pos.set(pos.x + 1, pos.y);
+		if (diagonals && app->path->isWalkable(new_pos))
+		{
+			//South-East
+			new_pos.set(pos.x + 1, pos.y + 1);
+			if (app->path->isWalkable(new_pos))
+			{
+				items_added++;
+				list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+			}
+		}
 	}
 
 	// East
@@ -133,14 +145,18 @@ uint pathNode::findWalkableAdjacents(pathList& list_to_fill, bool diagonals) con
 	{
 		items_added++;
 		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
-	}
 
-	//North-East
-	new_pos.set(pos.x + 1, pos.y - 1);
-	if (diagonals && app->path->isWalkable(new_pos))
-	{
-		items_added++;
-		list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+		new_pos.set(pos.x, pos.y - 1);
+		if (diagonals && app->path->isWalkable(new_pos))
+		{
+			//North-East
+			new_pos.set(pos.x + 1, pos.y - 1);
+			if (app->path->isWalkable(new_pos))
+			{
+				items_added++;
+				list_to_fill.list_of_nodes.push_back(pathNode(-1, -1, new_pos, this));
+			}
+		}
 	}
 
 	return items_added - items_before;
