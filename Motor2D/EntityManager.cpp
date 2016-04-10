@@ -244,7 +244,7 @@ bool EntityManager::preUpdate()
 		LOG("Hostility ON");
 		if (selection.empty() == FALSE)
 		{
-			if (e != NULL)
+			if (e != NULL && e->type == ZERGLING)
 				KillEntity(e);
 		}
 	}
@@ -277,9 +277,6 @@ bool EntityManager::update(float dt)
 			}
 		}
 	}
-
-
-	
 
 	return true;
 }
@@ -407,10 +404,10 @@ void EntityManager::deleteEntityKilled(Entity* e)
 {
 
 	vector <Entity* const>::iterator itdel;
-	bool must_delete = true;
+	
 		/*Deletes enemy in the enemy wave*/
 	active_entities.erase(e->id);
-
+	/*RIE: When a lot of zerglings are added they don't die in the order they should don't know why*/
 	LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
 	
 }
