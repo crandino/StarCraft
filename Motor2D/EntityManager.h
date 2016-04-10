@@ -58,10 +58,20 @@ public:
 	Entity* const addEntity(iPoint &pos, ENTITY_TYPE type);
 	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
-	Entity* whichEntityOnMouse();
+	
 	void deleteEntity(map<uint, Entity*> selection);
+	void deleteEntityKilled(Entity* e);
 	void deleteAllEntities();
 	uint getWaveZerglingSize();
+
+	void AddEntityToWave(uint n, Entity* e);
+
+	/*---------Methods for attacking other units------------*/
+
+	//Method that Kills entities Used for the kill of zerglings and other units
+	void KillEntity(map<uint, Entity*> selection);
+	void KillEntity(Entity* e);
+	Entity* whichEntityOnMouse();
 
 private:
 
@@ -69,6 +79,7 @@ private:
 	vector<Entity*>					   waveZerglings;
 	map<uint, Entity*>                     selection;
 	map<uint, Entity*>						ToDelete;
+	map<uint, Entity*>						enemyWave;
 	uint next_ID;
 	uchar filter;
 	

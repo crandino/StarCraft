@@ -51,6 +51,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 	case(ZERGLING) :
 		LOG("Creating Zergling");
 		e = new Zergling(pos);
+		addInEnemyContainer(e);
+		AddEntityToWave(e->id, e);
 		break;
 	}
 
@@ -58,7 +60,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(next_ID, e));
-		addInEnemyContainer(e);
 	}
 
 	return e;
@@ -75,6 +76,15 @@ Entity* const EntityManager::addInEnemyContainer(Entity* e)//Maybe return type s
 	LOG("Enemy added in wave. Number of enemies %d", waveZerglings.size());
 	return e;
 }
+/*Method that adds zerglings into a map called enemyWave 
+(where all zerglings of the wave are stored)*/
+void EntityManager::AddEntityToWave(uint id,Entity* e)
+{
+	enemyWave.insert(pair<uint, Entity*>(id, e));
+}
+
+
+
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
@@ -226,11 +236,22 @@ bool EntityManager::preUpdate()
 		}
 	}
 
+	//------------------------ATTACK MECHANICS------------------------------------//
 
-
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		LOG("Hostility ON");
+		if(selection.empty() == FALSE)
+		{
+			KillEntity(whichEntityOnMouse());
+		}
+	}
 
 	return true;
 } 
+
+
+
 
 // Called each loop iteration
 bool EntityManager::update(float dt)
@@ -256,6 +277,9 @@ bool EntityManager::update(float dt)
 			}
 		}
 	}
+
+
+	
 
 	return true;
 }
@@ -354,30 +378,56 @@ void EntityManager::calculateSelector()
 }
 
 //Deletes all units SELECTED
-void EntityManager::deleteEntity(map<uint, Entity*> selection){}
-/*{
+void EntityManager::deleteEntity(map<uint, Entity*> selection)
+{
 	vector<Entity* const> unitsToDelete;
 	map<uint, Entity*>::iterator it;
 	
 	vector <Entity* const>::iterator itdel;
 	bool must_delete = true;
 
-	for (auto it = selection.cbegin(); it != selection.cend() /* not hoisted ;it++)*/
-//	{
+	for (auto it = selection.cbegin(); it != selection.cend() /* not hoisted */; it++)
+	{
 		/*Stores entities in a vector that is going to be erased later
 		(add into the .h to become accessible to erase them at another
 		time*/
-	/*	 std::map<uint, entity*>::iterator itdel;
-		 itdel = active_entities.find(it->first);
-		 unitstodelete.push_back(itdel->second);
-		 unitstodelete.erase(itdel);
-	}
 
+		 std::map<uint, Entity*>::iterator itdel;
+		 itdel = active_entities.find(it->first);
+		 active_entities.erase(itdel);
+		 
+	}
 	
+	selection.clear();
 
 }
 
-*/
+/*Method that deletes an entity*/
+void EntityManager::deleteEntityKilled(Entity* e)
+{
+
+	vector <Entity* const>::iterator itdel;
+	bool must_delete = true;
+		/*Deletes enemy in the enemy wave*/
+	active_entities.erase(e->id);
+
+	LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
+	
+}
+
+
+
+
+
+void EntityManager::KillEntity(map<uint, Entity*> selection)
+{
+	deleteEntity(selection);
+}
+
+void EntityManager::KillEntity(Entity* e)
+{
+	deleteEntityKilled(e);
+}
 
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)
 void EntityManager::deleteAllEntities()
