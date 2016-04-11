@@ -189,7 +189,7 @@ list<pathNode>::iterator pathList::find(const iPoint& point)
 
 list<pathNode>::iterator pathList::getNodeLowestScore()
 {
-	int score = 65355;
+	int score = 2147483647;
 	list<pathNode>::iterator it = list_of_nodes.begin();
 	list<pathNode>::iterator lowest_score = list_of_nodes.end();
 	while (it != list_of_nodes.end())
