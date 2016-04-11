@@ -15,7 +15,7 @@ class GameManager : public Module
 {
 public:
 	int currentWaves = 0;
-	int totalWaves = 4;
+	int totalWaves = 2;
 	int score = 0;
 	int enemyCount = 0;
 

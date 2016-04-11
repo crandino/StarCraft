@@ -14,7 +14,6 @@ bool GameManager::start()
 
 bool GameManager::update()
 {
-
 	bool ret = false;
 	/*
 	while (currentWaves != 5)
