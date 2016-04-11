@@ -148,6 +148,12 @@
     <ClInclude Include="Motor2D\GameManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Unit.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Building.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">

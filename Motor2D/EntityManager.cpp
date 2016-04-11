@@ -34,7 +34,7 @@ bool EntityManager::start()
 	return true;
 }
 
-Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
+Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 {
 	Entity *e = NULL;
 
@@ -55,11 +55,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, ENTITY_TYPE type)
 		AddEntityToWave(e->id, e);
 		break;
 	}
-
-	if (app->map->isAreaWalkable(e->coll->rect))
-		LOG("No problem!");
-	else
-		LOG("Problem");
 
 	if (e != NULL)
 	{
@@ -102,73 +97,52 @@ bool EntityManager::preUpdate()
 	}
 		
 	//Point to check if the cursor is on a walkable tile
-	iPoint position; 
-	app->input->getMousePosition(position);
-	position = app->render->screenToWorld(position.x, position.y);
-	position = app->map->worldToMap(app->map->data.back(), position.x, position.y);
-
-	if (app->path->isWalkable(position))
-	{
-		if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
-		{
-			app->input->getMousePosition(position);
-			position = app->render->screenToWorld(position.x, position.y);
-			addEntity(position, MARINE);
-
-			//marine = addEntity(p, MARINE);
-			//if (e != NULL) remove(e->id);		
-		}
-
-		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
-		{
-			app->input->getMousePosition(position);
-			position = app->render->screenToWorld(position.x, position.y);
-			addEntity(position, COMMANDCENTER);
-		}
-
-		if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
-		{
-			app->input->getMousePosition(position);
-			position = app->render->screenToWorld(position.x, position.y);
-			addEntity(position, ZERGLING);
-		}
-
-		if (app->input->getKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
-		{
-			deleteAllEntities();
-		}
-
-		if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
-		{
-			deleteEntity(selection);
-		}
-	}
+	iPoint position;
 	
+	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, MARINE);
 
+		//marine = addEntity(p, MARINE);
+		//if (e != NULL) remove(e->id);		
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, COMMANDCENTER);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, ZERGLING);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+		deleteAllEntities();
+
+	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+		deleteEntity(selection);
 
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		selector_init = true;
-		selector = { 0, 0, 0, 0 };
 		selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
 		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
 		
-		//Click and select unit
-		if (whichEntityOnMouse() != NULL)
-		{
-			Entity* e = whichEntityOnMouse();
-
-			pair<uint, Entity*>unitSelected(1, e);
-
-			unitSelected.second->distance_to_center_selector = unitSelected.second->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
-			selection.insert(pair<uint, Entity*>(unitSelected.first, unitSelected.second));
-		}
+		//Click and select unit	
+		selector_init = true;
+		Entity *e = whichEntityOnMouse();
+		if (e != NULL)
+			selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };
 		else
-		{
-			selection.clear();
-		}
+			selector = { 0, 0, 0, 0 };		
 	}
 
 	// Holding left button, updates selector dimensions
@@ -189,7 +163,20 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->coll->checkCollision(selector))
 			{
-				it->second->distance_to_center_selector = it->second->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
+				switch (it->second->type)
+				{
+				case(UNIT) :
+				{
+					Unit *u = (Unit*)it->second;
+					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
+					break;
+				}
+				case(BUILDING) :
+				{
+					Building *b = (Building*)it->second;
+					break;
+				}
+				}
 				selection.insert(pair<uint, Entity*>(it->first, it->second));
 			}
 		}
@@ -207,52 +194,21 @@ bool EntityManager::preUpdate()
 		map<uint, Entity*>::iterator it = selection.begin();
 		for (; it != selection.end(); ++it)
 		{
-			if (it->second->type == MARINE)
+			if (it->second->type == UNIT)
 			{
-				if (selection.size() > 1)
+				Unit *unit = (Unit*)it->second;
+				unit->has_target = true;
+				if (selection.size() == 1)
 				{	
-						it->second->has_target = true;
-						iPoint target = target_position + it->second->distance_to_center_selector;
-						//IPL: This "if" is for to put the limit in the pathfinding
-						if (it->second->tile_pos.x - 70 < target.x && it->second->tile_pos.x + 70 > target.x)
-						{
-							if (it->second->tile_pos.y - 70 < target.y && it->second->tile_pos.y + 70 > target.y)
-							{
-								if (app->path->createPath(it->second->tile_pos, target) != -1)
-									it->second->path = app->path->getLastPath();
-							}
-						}
-						else
-						{
-							LOG("SO FAR!");
-						}
-
-						/*if (app->path->createPath(it->second->tile_pos, target) != -1)
-							it->second->path = app->path->getLastPath();*/
+					if (app->path->createPath(unit->tile_pos, target_position) != -1)
+						unit->path = app->path->getLastPath();
 				}
 				else
 				{
-					it->second->has_target = true;
-					// IPL: If you want to test the limit on path finding, delete (or comment) what is under these lines---------
-					/*if (app->path->createPath(it->second->tile_pos, target_position) != -1)
-						it->second->path = app->path->getLastPath();*/
-					//-----------------------------------------------------------------------------------------------------------
-
-					//IPL: With this "if" you can put a limit on the pathfinding, I did it only for one unit just for test. I let this on comment, uncomment for test. This can be improved (by a lot :D)  
-				    if (it->second->tile_pos.x - 70 < target_position.x && it->second->tile_pos.x + 70 > target_position.x)
-					{
-						if (it->second->tile_pos.y - 70 < target_position.y && it->second->tile_pos.y + 70 > target_position.y)
-						{
-							if (app->path->createPath(it->second->tile_pos, target_position) != -1)
-								it->second->path = app->path->getLastPath();
-						}
-						
-					}
-					else
-					{
-						LOG("SO FAR!");
-					}
-				}
+					iPoint target = target_position + unit->distance_to_center_selector;
+					if (app->path->createPath(unit->tile_pos, target) != -1)
+						unit->path = app->path->getLastPath();					
+				}					
 			}
 		}
 	}
@@ -288,15 +244,15 @@ bool EntityManager::update(float dt)
 	{
 		it->second->update(dt);
 
-		//Debug: To draw the path finding that the entity is following
-		if (app->entity_manager->debug && it->second->path.size() > 0)
-		{
-			for (vector<iPoint>::iterator it2 = it->second->path.begin(); it2 != it->second->path.end(); ++it2)
-			{
-				iPoint p = app->map->mapToWorld(app->map->data.back(), it2->x, it2->y);
-				app->render->blit(it->second->tile_path, p.x, p.y);
-			}
-		}
+		////Debug: To draw the path finding that the entity is following
+		//if (app->entity_manager->debug && it->second->path.size() > 0)
+		//{
+		//	for (vector<iPoint>::iterator it2 = it->second->path.begin(); it2 != it->second->path.end(); ++it2)
+		//	{
+		//		iPoint p = app->map->mapToWorld(app->map->data.back(), it2->x, it2->y);
+		//		app->render->blit(it->second->tile_path, p.x, p.y);
+		//	}
+		//}
 	}
 
 	return true;
@@ -342,8 +298,8 @@ bool EntityManager::postUpdate()
 	for (; it != active_entities.end(); ++it)
 		it->second->draw();
 
-	// Drawing selector (white SDL_Rect)
-	if (selector_init) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
+	// Drawing selector (green SDL_Rect)
+	if (selector_init && selector.w > 1 && selector.h > 1) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
 
 	return true;
 }
@@ -376,20 +332,21 @@ Entity *EntityManager::whichEntityOnMouse()
 	map<uint, Entity*>::reverse_iterator rit = active_entities.rbegin();
 	for (; rit != active_entities.rend(); ++rit)
 	{
-		if (p.x >= rit->second->pos.x &&
-			p.x <= rit->second->pos.x + rit->second->tex_width &&
-			p.y >= rit->second->pos.y &&
-			p.y <= rit->second->pos.y + rit->second->tex_height)
+		if (p.x >= rit->second->coll->rect.x &&
+			p.x <= rit->second->coll->rect.x + rit->second->coll->rect.w &&
+			p.y >= rit->second->coll->rect.y &&
+			p.y <= rit->second->coll->rect.y + rit->second->coll->rect.h)
 			return rit->second;
 	}
 	return NULL;
 }
 
-// CalculateSelector: Method that computes the dimensions of the white SDL_Rect selector.
+// CalculateSelector: Method that computes the dimensions of the green SDL_Rect selector.
 void EntityManager::calculateSelector()
 {
-	int selector_width = abs(final_selector_pos.x - initial_selector_pos.x);
-	int selector_height = abs(final_selector_pos.y - initial_selector_pos.y);
+	// If dimensions of the selector are less than 1/1 (for width/height), it sets 1. Eliminates 0 width/height to proper alone selection. 
+	int selector_width = abs(final_selector_pos.x - initial_selector_pos.x) > 1 ? abs(final_selector_pos.x - initial_selector_pos.x) : 1;
+	int selector_height = abs(final_selector_pos.y - initial_selector_pos.y) > 1 ? abs(final_selector_pos.y - initial_selector_pos.y) : 1;
 	int selector_pos_x = (initial_selector_pos.x < final_selector_pos.x ? initial_selector_pos.x : final_selector_pos.x);
 	int selector_pos_y = (initial_selector_pos.y < final_selector_pos.y ? initial_selector_pos.y : final_selector_pos.y);
 	selector = { selector_pos_x, selector_pos_y, selector_width, selector_height };
@@ -413,7 +370,6 @@ void EntityManager::deleteEntity(map<uint, Entity*> selection)
 		 std::map<uint, Entity*>::iterator itdel;
 		 itdel = active_entities.find(it->first);
 		 active_entities.erase(itdel);
-		 
 	}
 	
 	selection.clear();

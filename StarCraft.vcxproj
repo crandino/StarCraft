@@ -72,6 +72,7 @@
     <ClInclude Include="Motor2D\App.h" />
     <ClInclude Include="Motor2D\Audio.h" />
     <ClInclude Include="Motor2D\Brofiler.h" />
+    <ClInclude Include="Motor2D\Building.h" />
     <ClInclude Include="Motor2D\Collision.h" />
     <ClInclude Include="Motor2D\CommandCenter.h" />
     <ClInclude Include="Motor2D\Entity.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Motor2D\Gui.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
+    <ClInclude Include="Motor2D\Unit.h" />
     <ClInclude Include="Motor2D\Vector2D.h" />
     <ClInclude Include="Motor2D\Window.h" />
     <ClInclude Include="Motor2D\Zergling.h" />

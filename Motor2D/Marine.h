@@ -1,14 +1,13 @@
 #ifndef __MARINE_H__
 #define __MARINE_H__
 
-#include "Entity.h"
+#include "Unit.h"
 
-class Marine : public Entity
+class Marine : public Unit
 {
 public:
 
 	Animation	idle;
-	FACTION		faction;
 
 	Marine(iPoint &p)
 	{
@@ -16,6 +15,7 @@ public:
 		center = { (float)p.x, (float)p.y };
 
 		tex_width = tex_height = 64;
+		collider_offset = { 10, 14 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
@@ -42,11 +42,12 @@ public:
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ center.x - 10, center.y - 14, 22, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
-		type = MARINE;
+		
 		faction = PLAYER;
+		flying = false;
 
 		hp = 6;
 		speed = 10;

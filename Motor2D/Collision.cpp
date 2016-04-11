@@ -178,15 +178,5 @@ Collider* Collision::addCollider(SDL_Rect rect, COLLIDER_TYPE type, Module *call
 
 bool Collider::checkCollision(SDL_Rect &r) const
 {
-	/*return ((rect.x - rect.w / 2) < (r.x + r.w / 2) &&
-		(rect.x + rect.w / 2) > (r.x - r.w / 2) &&
-		(rect.y - rect.h / 2) < (r.y + r.h / 2) &&
-		(rect.y + rect.h / 2) > (r.y - r.h / 2));*/
-
-	// DO NOT DELETE THESE LINES!
 	return (bool)SDL_HasIntersection(&rect, &r);
-	/*return (rect.x < r.x + r.w &&
-		rect.x + rect.w > r.x &&
-		rect.y < r.y + r.h &&
-		rect.h + rect.y > r.y);*/
 }

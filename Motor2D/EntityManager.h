@@ -10,11 +10,8 @@
 
 enum ENTITY_TYPE
 {
-	// Units
-	MARINE,
-	ZERGLING,
-	// Buildings
-	COMMANDCENTER
+	UNIT,
+	BUILDING
 };
 
 enum FACTION
@@ -23,8 +20,19 @@ enum FACTION
 	COMPUTER
 };
 
+enum SPECIALIZATION
+{
+	// Units
+	MARINE,
+	ZERGLING,
+
+	// Buildings
+	COMMANDCENTER
+};
 
 class Entity;
+class Unit;
+class Building;
 using namespace std;
 
 class EntityManager : public Module
@@ -55,7 +63,7 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	Entity* const addEntity(iPoint &pos, ENTITY_TYPE type);
+	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
 	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
 	
@@ -79,7 +87,7 @@ private:
 	vector<Entity*>					   waveZerglings;
 	map<uint, Entity*>                     selection;
 	map<uint, Entity*>						ToDelete;
-	map<uint, Entity*>						enemyWave;
+	map<uint, Entity*>					   enemyWave;
 	uint next_ID;
 	uchar filter;
 	
@@ -87,7 +95,7 @@ private:
 	bool debug = false;
 
 	//ROF
-	Entity* marine;
+	Unit* marine;
 	float angle;
 
 	SDL_Rect			 selector;
