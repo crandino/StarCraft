@@ -213,45 +213,14 @@ bool EntityManager::preUpdate()
 				{	
 						it->second->has_target = true;
 						iPoint target = target_position + it->second->distance_to_center_selector;
-						//IPL: This "if" is for to put the limit in the pathfinding
-						if (it->second->tile_pos.x - 70 < target.x && it->second->tile_pos.x + 70 > target.x)
-						{
-							if (it->second->tile_pos.y - 70 < target.y && it->second->tile_pos.y + 70 > target.y)
-							{
-								if (app->path->createPath(it->second->tile_pos, target) != -1)
-									it->second->path = app->path->getLastPath();
-							}
-						}
-						else
-						{
-							LOG("SO FAR!");
-						}
-
-						/*if (app->path->createPath(it->second->tile_pos, target) != -1)
-							it->second->path = app->path->getLastPath();*/
+						if (app->path->createPath(it->second->tile_pos, target) != -1)
+						it->second->path = app->path->getLastPath();
 				}
 				else
 				{
 					it->second->has_target = true;
-					// IPL: If you want to test the limit on path finding, delete (or comment) what is under these lines---------
-					/*if (app->path->createPath(it->second->tile_pos, target_position) != -1)
-						it->second->path = app->path->getLastPath();*/
-					//-----------------------------------------------------------------------------------------------------------
-
-					//IPL: With this "if" you can put a limit on the pathfinding, I did it only for one unit just for test. I let this on comment, uncomment for test. This can be improved (by a lot :D)  
-				    if (it->second->tile_pos.x - 70 < target_position.x && it->second->tile_pos.x + 70 > target_position.x)
-					{
-						if (it->second->tile_pos.y - 70 < target_position.y && it->second->tile_pos.y + 70 > target_position.y)
-						{
-							if (app->path->createPath(it->second->tile_pos, target_position) != -1)
-								it->second->path = app->path->getLastPath();
-						}
-						
-					}
-					else
-					{
-						LOG("SO FAR!");
-					}
+					if (app->path->createPath(it->second->tile_pos, target_position) != -1)
+						it->second->path = app->path->getLastPath();
 				}
 			}
 		}
