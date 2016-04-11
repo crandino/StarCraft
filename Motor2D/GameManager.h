@@ -18,7 +18,7 @@ public:
 	int totalWaves = 2;
 	int score = 0;
 	int enemyCount = 0;
-
+	uint killCount;
 	bool isFinished = false;
 	bool gameOver = false;
 public:
@@ -31,17 +31,22 @@ public:
 
 	bool Victory = false;
 
+	void addPoints(uint points);
 
 	bool start();
 
-	bool update();
+	bool update(float dt);
 	
 	bool postUpdate();
 
 //Time Management
 public:
+	Timer GeneralTime;
 	Timer timeBetweenWaves;
-
+	uint scoreCurrentWave;
+	uint totalScore = 0;
+	uint32 WaveTime1 = 5000;//120.000 = 2 minutes per wave in the future or some other game designish number
+	uint size1 = 10;
 };
 
 #endif

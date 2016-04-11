@@ -79,7 +79,15 @@ public:
 	void KillEntity(map<uint, Entity*> selection);
 	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
-	map<uint, Entity*>                     selection;
+	map<uint, Entity*>     selection;
+
+	/*---------------Creating Waves-------------------*/
+	void createZergling();
+	void createWave(uint size/*zergling num, hidralisk....num*/);
+
+public:
+
+	bool unitsKilled = false;
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();

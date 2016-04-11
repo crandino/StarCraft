@@ -13,6 +13,7 @@
 #include "App.h"
 #include "Gui.h"
 #include "Collision.h"
+#include "GameManager.h"
 
 #include <iostream> 
 #include <sstream> 
@@ -34,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new Gui();
 	entity_manager = new EntityManager();
 	collision = new Collision();
+	game_manager = new GameManager();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -48,7 +50,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(gui);
 	addModule(scene);
 	addModule(collision);	
-
+	addModule(game_manager);
 	// render last to swap buffer
 	addModule(render);
 }

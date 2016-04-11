@@ -23,6 +23,7 @@ class PathFinding;
 class Gui;
 class EntityManager;
 class Collision;
+class GameManager;
 
 class App
 {
@@ -98,6 +99,7 @@ public:
 	Gui*				gui;
 	EntityManager*		entity_manager;
 	Collision*			collision;
+	GameManager*		game_manager;
 
 private:
 

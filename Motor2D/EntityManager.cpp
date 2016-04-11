@@ -386,6 +386,29 @@ void EntityManager::calculateSelector()
 	selector = { selector_pos_x, selector_pos_y, selector_width, selector_height };
 }
 
+/*------------------WAVE RELATED METHODS--------------------------*/
+
+void EntityManager::createWave(uint size/*zergling num, hidralisk....num*/)
+{
+
+
+	for (int i = 0; i < size; i++)
+	{
+		createZergling();
+	}
+}
+
+void EntityManager::createZergling()
+{
+
+	//Point to check if the cursor is on a walkable tile
+
+	iPoint position = { 100, 450 };
+
+	addEntity(position, ZERGLING);
+}
+
+
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)
 {
