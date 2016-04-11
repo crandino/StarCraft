@@ -95,7 +95,7 @@ private:
 	bool debug = false;
 
 	//ROF
-	Unit* marine;
+	Entity* marine;
 	float angle;
 
 	SDL_Rect			 selector;

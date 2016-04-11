@@ -27,7 +27,11 @@ public:
 	Animation		*current_animation;
 	uint			id;
 	
-	unsigned int    hp;
+	unsigned int    max_hp;
+	float           current_hp;
+	unsigned int    max_hp_bars;
+	float           current_hp_bars;
+
 	Collider*       coll;
 
 	bool markedToDelete = false;

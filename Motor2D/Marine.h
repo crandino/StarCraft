@@ -85,8 +85,14 @@ public:
 		faction = PLAYER;
 		flying = false;
 
-		hp = 6;
+		max_hp = 40;
+		current_hp = 30.0f;
+		max_hp_bars = 6;
+		
+		//current_hp_bars = 6;
+		
 		speed = 10;
+		
 
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);

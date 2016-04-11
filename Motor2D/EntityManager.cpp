@@ -87,11 +87,14 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 bool EntityManager::preUpdate()
 {
 
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
-		marine->angle += 0.5f;
+		Marine *m = (Marine*)marine;
+		//m->angle += 0.5f;
+		m->current_hp -= 1.0f;
 
-		LOG("Marine angle: %f", marine->angle);
+		LOG("Marine angle: %f", m->angle);
+		LOG("Marine hp: %f", m->current_hp);
 	}
 		
 	//ROF Iterate all entities to check their angle
@@ -108,9 +111,9 @@ bool EntityManager::preUpdate()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, MARINE);
+		//addEntity(position, MARINE);
 
-		//marine = addEntity(position, MARINE);
+		marine = addEntity(position, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}		
 
@@ -275,10 +278,12 @@ bool EntityManager::postUpdate()
 	
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
 	{
+		//MSC provisional method that calculates current HP bars
+		ceil(it2->second->current_hp_bars = it2->second->current_hp * it2->second->max_hp_bars / it2->second->max_hp);
 		//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
 		SDL_Rect section_life = { 496, 20, 25, 8 };
 		app->render->blit(hp_tex, it2->second->pos.x + 21, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
-		for (int i = 0, a = 0; i < it2->second->hp; i++)
+		for (int i = 0, a = 0; i < it2->second->current_hp_bars; i++)
 		{
 			SDL_Rect greenquadlife = { 497, 32, 3, 4 };
 			app->render->blit(hp_tex, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
@@ -300,7 +305,7 @@ bool EntityManager::postUpdate()
 
 			SDL_Rect section_life = { 536, 20, 41, 8 };
 			app->render->blit(hp_tex, it->second->coll->rect.x - 7, it->second->coll->rect.y + 27, (SDL_Rect*)&section_life, 1.0f);
-			for (int i = 0, a = 0; i < it->second->hp; i++)
+			for (int i = 0, a = 0; i < it->second->current_hp_bars; i++)
 			{
 				SDL_Rect greenquadlife = { 537, 32, 3, 4 };
 				app->render->blit(hp_tex, it->second->coll->rect.x - 6 + a , it->second->coll->rect.y + 29, (SDL_Rect*)&greenquadlife, 1.0f);

@@ -34,7 +34,7 @@ public:
 		// Another stuff
 		type = UNIT;
 		faction = COMPUTER;
-		hp = 10;
+		max_hp = 10;
 		flying = false;
 	}
 };

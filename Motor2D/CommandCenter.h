@@ -34,7 +34,7 @@ public:
 
 		// Another stuff
 		building_type = COMMANDCENTER;
-		hp = 50;
+		max_hp = 50;
 
 		faction = PLAYER;
 	}

@@ -76,6 +76,7 @@ bool Scene::update(float dt)
 {
 	float cam_speed = 1.0f;
 
+
 	// Debug ---
 	//if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	//{
