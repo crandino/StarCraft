@@ -33,6 +33,43 @@ public:
 	{
 		if (path.size() > 0)
 		{
+
+			iPoint pos_path = *path.begin();
+
+			if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				angle = 0.f;
+			}
+			else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				angle = 45.f;
+			}
+			else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
+			{
+				angle = 90.f;
+			}
+
+			else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				angle = 135.f;
+			}
+			else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				angle = 180.f;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				angle = 225.f;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
+			{
+				angle = 270.f;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				angle = 315.f;
+			}
+
 			float pixels_to_move = 0;
 			float total_pixels_moved = 0;
 			float total_pixels_to_move = speed / 100 * dt;

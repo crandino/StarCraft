@@ -9,25 +9,25 @@ public:
 	//ROF
 	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
 	Animation	idle;
-	Animation	idle_up;
+	Animation	walk_up;
 
 	Animation   one;
-	Animation   idle_right_up;
+	Animation   walk_right_up;
 	Animation   three;
 
-	Animation   right;
+	Animation   walk_right;
 	Animation   five;
-	Animation   idle_right_down;
+	Animation   walk_right_down;
 	Animation   seven;
 
-	Animation   down;
+	Animation   walk_down;
 	Animation   nine;
-	Animation   idle_left_down;
+	Animation   walk_left_down;
 	Animation   eleven;
 
-	Animation   left;
+	Animation   walk_left;
 	Animation   thirdteen;
-	Animation   idle_left_up;
+	Animation   walk_left_up;
 	Animation   fifteen;
 
 	Marine(iPoint &p)
@@ -44,37 +44,118 @@ public:
 		
 	    //---------------Idle Animation-----------------
 		idle.frames.push_back({ 0, 0, 64, 64 });
+		idle.frames.push_back({ 0, 64, 64, 64 });
+		idle.frames.push_back({ 0, 128, 64, 64 });
+		idle.frames.push_back({ 0, 64, 64, 64 });
+		idle.frames.push_back({ 0, 0, 64, 64 });
+		idle.speed = 0.02f;
+		idle.loop = true;
+		//----------------------------------------------
 
+		//--------------Walking Animations--------------
+		walk_up.frames.push_back({ 0, 0, 64, 64 });
+		walk_up.frames.push_back({ 0, 256, 64, 64 });
+		walk_up.frames.push_back({ 0, 320, 64, 64 });
+		walk_up.frames.push_back({ 0, 384, 64, 64 });
+		walk_up.frames.push_back({ 0, 448, 64, 64 });
+		walk_up.frames.push_back({ 0, 512, 64, 64 });
+		walk_up.frames.push_back({ 0, 576, 64, 64 });
+		walk_up.frames.push_back({ 0, 640, 64, 64 });
+		walk_up.frames.push_back({ 0, 704, 64, 64 });
+		walk_up.frames.push_back({ 0, 768, 64, 64 });
+		walk_up.speed = 0.05f;
 
-		idle_up.frames.push_back({ 0, 0, 64, 64 });
-		idle_up.frames.push_back({ 0, 256, 64, 64 });
-		idle_up.frames.push_back({ 0, 320, 64, 64 });
-		idle_up.frames.push_back({ 0, 384, 64, 64 });
-		idle_up.frames.push_back({ 0, 448, 64, 64 });
-		idle_up.frames.push_back({ 0, 512, 64, 64 });
-		idle_up.frames.push_back({ 0, 576, 64, 64 });
-		idle_up.frames.push_back({ 0, 640, 64, 64 });
-		idle_up.frames.push_back({ 0, 704, 64, 64 });
-		idle_up.frames.push_back({ 0, 768, 64, 64 });
-		idle_up.speed = 0.05f;
 		//one.frames.push_back({ 64, 0, 64, 64 });
-		idle_right_up.frames.push_back({ 128, 0, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 0, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 256, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 320, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 384, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 448, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 512, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 576, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 640, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 704, 64, 64 });
+		walk_right_up.frames.push_back({ 128, 768, 64, 64 });
+		walk_right_up.speed = 0.05f;
+
 		//three.frames.push_back({ 192, 0, 64, 64 });
-		right.frames.push_back({ 256, 0, 64, 64 });
+		walk_right.frames.push_back({ 256, 0, 64, 64 });
+		walk_right.frames.push_back({ 256, 256, 64, 64 });
+		walk_right.frames.push_back({ 256, 320, 64, 64 });
+		walk_right.frames.push_back({ 256, 384, 64, 64 });
+		walk_right.frames.push_back({ 256, 448, 64, 64 });
+		walk_right.frames.push_back({ 256, 512, 64, 64 });
+		walk_right.frames.push_back({ 256, 576, 64, 64 });
+		walk_right.frames.push_back({ 256, 640, 64, 64 });
+		walk_right.frames.push_back({ 256, 704, 64, 64 });
+		walk_right.frames.push_back({ 256, 768, 64, 64 });
+		walk_right.speed = 0.05f;
+
 		//five.frames.push_back({ 320, 0, 64, 64 });
-		idle_right_down.frames.push_back({ 384, 0, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 0, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 256, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 320, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 384, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 448, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 512, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 576, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 640, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 704, 64, 64 });
+		walk_right_down.frames.push_back({ 384, 768, 64, 64 });
+		walk_right_down.speed = 0.05f;
+
 		//seven.frames.push_back({ 448, 0, 64, 64 });
-		down.frames.push_back({ 512, 0, 64, 64 });
+		walk_down.frames.push_back({ 512, 0, 64, 64 });
+		walk_down.frames.push_back({ 512, 256, 64, 64 });
+		walk_down.frames.push_back({ 512, 320, 64, 64 });
+		walk_down.frames.push_back({ 512, 384, 64, 64 });
+		walk_down.frames.push_back({ 512, 448, 64, 64 });
+		walk_down.frames.push_back({ 512, 512, 64, 64 });
+		walk_down.frames.push_back({ 512, 576, 64, 64 });
+		walk_down.frames.push_back({ 512, 640, 64, 64 });
+		walk_down.frames.push_back({ 512, 704, 64, 64 });
+		walk_down.frames.push_back({ 512, 768, 64, 64 });
+		walk_down.speed = 0.05f;
 		//nine.frames.push_back({ 576, 0, 64, 64 });
-		idle_left_down.frames.push_back({ 640, 0, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 0, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 256, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 320, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 384, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 448, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 512, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 576, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 640, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 704, 64, 64 });
+		walk_left_down.frames.push_back({ 640, 768, 64, 64 });
+		walk_left_down.speed = 0.05f;
 		//eleven.frames.push_back({ 704, 0, 64, 64 });
-		left.frames.push_back({ 768, 0, 64, 64 });
+		walk_left.frames.push_back({ 768, 0, 64, 64 });
+		walk_left.frames.push_back({ 768, 256, 64, 64 });
+		walk_left.frames.push_back({ 768, 320, 64, 64 });
+		walk_left.frames.push_back({ 768, 384, 64, 64 });
+		walk_left.frames.push_back({ 768, 448, 64, 64 });
+		walk_left.frames.push_back({ 768, 512, 64, 64 });
+		walk_left.frames.push_back({ 768, 576, 64, 64 });
+		walk_left.frames.push_back({ 768, 640, 64, 64 });
+		walk_left.frames.push_back({ 768, 704, 64, 64 });
+		walk_left.frames.push_back({ 768, 768, 64, 64 });
+		walk_left.speed = 0.05f;
 		//thirdteen.frames.push_back({ 832, 0, 64, 64 });
-		idle_left_up.frames.push_back({ 896, 0, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 0, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 256, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 320, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 384, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 448, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 512, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 576, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 640, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 704, 64, 64 });
+		walk_left_up.frames.push_back({ 896, 768, 64, 64 });
+		walk_left_up.speed = 0.05f;
 		//fifteen.frames.push_back({ 960, 0, 64, 64 });
+		//----------------------------------------------
 
 		angle = -1;
-
 		current_animation = &idle;
 
 		// Colliders
@@ -110,7 +191,7 @@ public:
 
 		if (angle >= 0.f && angle < 22.5f)
 		{
-			current_animation = &idle_up;
+			current_animation = &walk_up;
 		}
 		if (angle >= 22.5f && angle < 45.f)
 		{
@@ -118,7 +199,7 @@ public:
 		}
 		if (angle >= 45.f && angle < 67.5f)
 		{
-			current_animation = &idle_right_up;
+			current_animation = &walk_right_up;
 		}
 		if (angle >= 67.5f && angle < 90.f)
 		{
@@ -126,7 +207,7 @@ public:
 		}
 		if (angle >= 90.f && angle < 112.5f)
 		{
-			current_animation = &right;
+			current_animation = &walk_right;
 		}
 		if (angle >= 112.5f && angle < 135.f)
 		{
@@ -134,7 +215,7 @@ public:
 		}
 		if (angle >= 135.f && angle < 157.5f)
 		{
-			current_animation = &idle_right_down;
+			current_animation = &walk_right_down;
 		}
 		if (angle >= 157.5f && angle < 180.f)
 		{
@@ -143,7 +224,7 @@ public:
 		// From 180 to 360 degrees
 		if (angle >= 180.f && angle < 202.5f)
 		{
-			current_animation = &down;
+			current_animation = &walk_down;
 		}
 		if (angle >= 202.5f && angle < 225.f)
 		{
@@ -151,7 +232,7 @@ public:
 		}
 		if (angle >= 225.f && angle < 247.5f)
 		{
-			current_animation = &idle_left_down;
+			current_animation = &walk_left_down;
 		}
 		if (angle >= 247.5f && angle < 270.f)
 		{
@@ -159,7 +240,7 @@ public:
 		}
 		if (angle >= 270.f && angle < 292.5f)
 		{
-			current_animation = &left;
+			current_animation = &walk_left;
 		}
 		if (angle >= 292.5f && angle < 315.f)
 		{
@@ -167,7 +248,7 @@ public:
 		}
 		if (angle >= 315.f && angle < 337.5f)
 		{
-			current_animation = &idle_left_up;
+			current_animation = &walk_left_up;
 		}
 		if (angle >= 337.5f && angle < 360.f)
 		{
