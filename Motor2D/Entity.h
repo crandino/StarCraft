@@ -7,6 +7,8 @@
 #include "App.h"
 #include "Animation.h"
 #include "Collision.h"
+#include "Marine.h"
+#include "SDL\include\SDL.h"
 
 class Entity
 {
@@ -26,6 +28,7 @@ public:
 	
 	Vector2D<int>   direction;
 	float angle;
+	
 
 	unsigned int    hp;
 	float			speed;
@@ -35,6 +38,8 @@ public:
 	vector<iPoint>  path;
 	iPoint			distance_to_center_selector;
 	SDL_Texture     *tile_path;
+	bool            end_path = false;
+
 
 
 	bool markedToDelete = false;
@@ -65,6 +70,7 @@ public:
 
 	}
 
+
 	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
@@ -73,10 +79,52 @@ public:
 	{
 		pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };
 	}
+
 	virtual void move(float dt)
 	{
 		if (path.size() > 0)
 		{
+			iPoint pos_path = *path.begin();
+			if (tile_pos == path.back())
+			{
+				angle = -1.0f;
+			}
+			
+			if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				angle = 0.f;
+			}
+		    else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				angle = 45.f;
+			}
+			else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
+			{
+				angle = 90.f;
+			}
+			
+			else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				angle = 135.f;
+			}
+			else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				angle = 180.f;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				angle = 225.f;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
+			{
+				angle = 270.f;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				angle = 315.f;
+			}
+			
+
 			float pixels_to_move = 0;
 			float total_pixels_moved = 0;
 			float total_pixels_to_move = speed / 100 * dt;
@@ -135,6 +183,7 @@ public:
 					{
 						path.clear();
 						has_target = false;
+						end_path = true;
 					}						
 					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
 						path.erase(path.begin());
@@ -143,6 +192,7 @@ public:
 
 			} while (total_pixels_moved < total_pixels_to_move);
 		}
+		
 	}
 
 	void markToDelete()

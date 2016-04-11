@@ -1,6 +1,8 @@
 #include "App.h"
 #include "Point2d.h"
 #include "PathFinding.h"
+#include "EntityManager.h"
+
 
 // Two interesting links about PathFinding
 // Introduction: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
@@ -301,7 +303,10 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 	}
 
 	for (vector<iPoint>::reverse_iterator rit = tmp.rbegin(); rit != tmp.rend(); ++rit)
-		path_found.push_back(*rit);
+	{
+	     path_found.push_back(*rit);
+	}
+	
 
 	path_found.erase(path_found.begin()); //we don't need the tile which is stepping
 

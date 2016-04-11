@@ -72,12 +72,13 @@ public:
 	void KillEntity(map<uint, Entity*> selection);
 	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
+	map<uint, Entity*>                     selection;
 
 private:
 
 	map<uint, Entity*>               active_entities;
 	vector<Entity*>					   waveZerglings;
-	map<uint, Entity*>                     selection;
+	//map<uint, Entity*>                     selection;
 	map<uint, Entity*>						ToDelete;
 	map<uint, Entity*>						enemyWave;
 	uint next_ID;

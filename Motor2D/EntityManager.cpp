@@ -102,10 +102,10 @@ bool EntityManager::preUpdate()
 	//ROF Iterate all entities to check their angle
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
-	{
+	{	
 		it->second->checkAngle();
 	}
-
+ 
 	//Point to check if the cursor is on a walkable tile
 	iPoint position; 
 	app->input->getMousePosition(position);
@@ -119,6 +119,7 @@ bool EntityManager::preUpdate()
 			app->input->getMousePosition(position);
 			position = app->render->screenToWorld(position.x, position.y);
 			//addEntity(position, MARINE);
+	
 
 			marine = addEntity(position, MARINE);
 			//if (e != NULL) remove(e->id);		
