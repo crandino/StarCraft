@@ -60,6 +60,7 @@ bool Scene::start()
 	rectangle_map_camera->interactive = true;
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
+	rectangle_map_camera->draw_element = false;
 	
 	return true;
 }
