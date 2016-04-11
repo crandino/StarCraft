@@ -86,7 +86,7 @@ public:
 		flying = false;
 
 		max_hp = 40;
-		current_hp = 30.0f;
+		current_hp = 40.0f;
 		max_hp_bars = 6;
 		
 		//current_hp_bars = 6;
