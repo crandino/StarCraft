@@ -235,7 +235,9 @@ bool EntityManager::preUpdate()
 		if (selection.empty() == FALSE)
 		{
 			if (e != NULL && e->type == ZERGLING)
-				KillEntity(e);
+			{
+				KillEntity(e);			
+			}
 		}
 	}
 
