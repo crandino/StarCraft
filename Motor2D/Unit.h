@@ -12,6 +12,7 @@ public:
 	vector<iPoint>  path;
 	iPoint			distance_to_center_selector;
 	SDL_Texture     *tile_path;
+	float			angle;
 	Vector2D<int>   direction;
 	float			speed;
 	SPECIALIZATION  unit_type;

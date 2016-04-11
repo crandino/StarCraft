@@ -47,6 +47,12 @@ public:
 		return true;
 	}
 
+	//This name could be changed
+	virtual void checkAngle()
+	{
+
+	}
+
 	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
