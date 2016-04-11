@@ -22,7 +22,7 @@ public:
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 		// Animations
-		tex = app->tex->loadTexture("temporaryTextures/commandCenter.png"); //Sprites/Animations etc..
+		tex = app->tex->loadTexture("Building/CommandCenter.png"); //Sprites/Animations etc..
 		idle.frames.push_back({ 0, 27, 128, 100 });
 		idle.speed = 1.0f;
 		idle.loop = false;
