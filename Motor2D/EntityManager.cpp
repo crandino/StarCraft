@@ -92,15 +92,20 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 bool EntityManager::preUpdate()
 {
 
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		angle = marine->direction.getAngle();
-		angle += 18.f;
-		marine->direction.setAngle(angle);
+		marine->angle += 0.5f;
 
-		LOG("Marine angle: %f", marine->direction.getAngle());
+		LOG("Marine angle: %f", marine->angle);
 	}
 		
+	//ROF Iterate all entities to check their angle
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		it->second->checkAngle();
+	}
+
 	//Point to check if the cursor is on a walkable tile
 	iPoint position; 
 	app->input->getMousePosition(position);
@@ -113,9 +118,9 @@ bool EntityManager::preUpdate()
 		{
 			app->input->getMousePosition(position);
 			position = app->render->screenToWorld(position.x, position.y);
-			addEntity(position, MARINE);
+			//addEntity(position, MARINE);
 
-			//marine = addEntity(p, MARINE);
+			marine = addEntity(position, MARINE);
 			//if (e != NULL) remove(e->id);		
 		}
 

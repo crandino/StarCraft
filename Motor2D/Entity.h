@@ -25,6 +25,7 @@ public:
 	uint			id;
 	
 	Vector2D<int>   direction;
+	float angle;
 
 	unsigned int    hp;
 	float			speed;
@@ -56,6 +57,12 @@ public:
 		//coll->setPos(center.x, center.y);
 		//if (has_target) move(dt);
 		return true;
+	}
+
+	//This name could be changed
+	virtual void checkAngle()
+	{
+
 	}
 
 	virtual void draw()
