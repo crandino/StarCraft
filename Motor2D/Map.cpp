@@ -189,6 +189,11 @@ bool Map::isAreaWalkable(const SDL_Rect &rect)
 	return true;
 }
 
+void Map::changeLogic(const SDL_Rect &rect, WALKABILITY walk_value)
+{
+
+}
+
 int Properties::get(const char* value, int default_value) const
 {
 	list<Property*>::const_iterator item = listProperties.begin();
