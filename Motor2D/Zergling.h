@@ -1,14 +1,13 @@
 #ifndef __ZERGLING_H__
 #define __ZERGLING_H__
 
-#include "Entity.h"
+#include "Unit.h"
 
-class Zergling : public Entity
+class Zergling : public Unit
 {
 public:
 
 	Animation idle;
-	FACTION faction;
 
 	Zergling(iPoint &p)
 	{
@@ -16,6 +15,7 @@ public:
 		center = { (float)p.x, (float)p.y };
 
 		tex_width = tex_height = 128;
+		collider_offset = { 12, 14 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
@@ -29,12 +29,13 @@ public:
 		current_animation = &idle;
 
 		// Collider
-		coll = app->collision->addCollider({ center.x - 12, center.y - 14, 24, 26 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 24, 26 }, COLLIDER_BOMB);
 
 		// Another stuff
-		type = ZERGLING;
+		type = UNIT;
 		faction = COMPUTER;
-		hp = 10;
+		max_hp = 10;
+		flying = false;
 	}
 };
 

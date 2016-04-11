@@ -18,38 +18,40 @@ public:
 	fPoint			pos;						// World position of Entity. Upper_left corner.
 	fPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
+	iPoint			collider_offset;			// Useful to correctly place the collider rect
 
 	int		     	tex_width, tex_height;
 
+	FACTION			faction;
 	ENTITY_TYPE		type;
+	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;
 	uint			id;
 	
 	Vector2D<int>   direction;
 	float angle;
+	float speed;
 	
 
-	unsigned int    hp;
-	float			speed;
-	Collider*       coll;
+	unsigned int    max_hp;
+	float           current_hp;
+	unsigned int    max_hp_bars;
+	float           current_hp_bars;
 
+	Collider*       coll;
+	
 	bool			has_target;
 	vector<iPoint>  path;
 	iPoint			distance_to_center_selector;
 	SDL_Texture     *tile_path;
 	bool            end_path = false;
 
-
-
 	bool markedToDelete = false;
 
 	// Constructors
 	Entity()
-	{
-		has_target = false;
-		tile_path = app->tex->loadTexture("TemporaryTextures/path_tile.png");
-	};
+	{};
 
 	// Destructor
 	~Entity()
@@ -59,8 +61,6 @@ public:
 
 	virtual bool update(float dt)
 	{
-		//coll->setPos(center.x, center.y);
-		//if (has_target) move(dt);
 		return true;
 	}
 
@@ -75,6 +75,7 @@ public:
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
+
 	virtual void calculePos()
 	{
 		pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };

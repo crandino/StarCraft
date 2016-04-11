@@ -7,6 +7,13 @@
 #include "p2Defs.h"
 #include <string>
 
+enum WALKABILITY
+{
+	LOW_GROUND = 1,
+	NO_WALKABLE = 2,
+	HIGH_GROUND = 3
+};
+
 using namespace std;
 
 // ----------------------------------------------------
@@ -141,6 +148,7 @@ public:
 	// CRZ 
 	// Given an area, determine whether all this area is walkable.
 	bool isAreaWalkable(const SDL_Rect &rect);
+	void changeLogic(const SDL_Rect &rect, WALKABILITY walk_value);
 
 private:
 

@@ -60,6 +60,13 @@ bool Scene::start()
 	rectangle_map_camera->interactive = true;
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
+	rectangle_map_camera->draw_element = false;
+
+	////ROF Start menu without interaction, it will be disabeled till it fully works
+	//start_menu_img = app->tex->loadTexture("Screens/Start_Image.png");
+	//start_menu = app->gui->createImage(start_menu_img, { 0, 0, 296, 336 });
+	//start_menu->center();
+	//start_menu->setLocalPos(start_menu->getLocalPos().x-5, start_menu->getLocalPos().y - 60);
 	
 	return true;
 }
@@ -74,6 +81,7 @@ bool Scene::preUpdate()
 bool Scene::update(float dt)
 {
 	float cam_speed = 1.0f;
+
 
 	// Debug ---
 	//if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)

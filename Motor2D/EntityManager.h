@@ -10,11 +10,8 @@
 
 enum ENTITY_TYPE
 {
-	// Units
-	MARINE,
-	ZERGLING,
-	// Buildings
-	COMMANDCENTER
+	UNIT,
+	BUILDING
 };
 
 enum FACTION
@@ -23,8 +20,19 @@ enum FACTION
 	COMPUTER
 };
 
+enum SPECIALIZATION
+{
+	// Units
+	MARINE,
+	ZERGLING,
+
+	// Buildings
+	COMMANDCENTER
+};
 
 class Entity;
+class Unit;
+class Building;
 using namespace std;
 
 class EntityManager : public Module
@@ -55,7 +63,7 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	Entity* const addEntity(iPoint &pos, ENTITY_TYPE type);
+	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
 	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
 	
@@ -67,12 +75,14 @@ public:
 	void AddEntityToWave(uint n, Entity* e);
 
 	/*---------Methods for attacking other units------------*/
-
 	//Method that Kills entities Used for the kill of zerglings and other units
 	void KillEntity(map<uint, Entity*> selection);
 	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
 	map<uint, Entity*>                     selection;
+
+	/* -------- Methods for building -----------------------*/
+	void choosePlaceForBuilding();
 
 private:
 
@@ -80,12 +90,15 @@ private:
 	vector<Entity*>					   waveZerglings;
 	//map<uint, Entity*>                     selection;
 	map<uint, Entity*>						ToDelete;
-	map<uint, Entity*>						enemyWave;
-	uint next_ID;
-	uchar filter;
-	
+	map<uint, Entity*>					   enemyWave;
+	uint next_ID;	
 
 	bool debug = false;
+
+	// CRZ -> Variables to build buildings.
+	bool building_mode;
+	Building* building_to_place;
+	SDL_Texture* building_tile;
 
 	//ROF
 	Entity* marine;
@@ -101,6 +114,7 @@ private:
 	//Textures
 	SDL_Texture* circle_characters;
 	SDL_Texture* hp_tex;
+	
 };
 
 #endif // __EntityManager_H__

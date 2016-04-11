@@ -1,12 +1,12 @@
 #ifndef __COMMANDCENTER_H__
 #define __COMMANDCENTER_H__
 
-#include "Entity.h"
+#include "Building.h"
 
-class CommandCenter : public Entity
+class CommandCenter : public Building
 {
 public:
-	FACTION faction;
+
 	Animation idle;
 
 public:
@@ -18,6 +18,7 @@ public:
 
 		tex_width = 128;
 		tex_height = 100;
+		collider_offset.setZero();
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
@@ -29,11 +30,11 @@ public:
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ pos.x, pos.y, 128, 100 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 128, 100 }, COLLIDER_BOMB);
 
 		// Another stuff
-		type = COMMANDCENTER;
-		hp = 50;
+		building_type = COMMANDCENTER;
+		max_hp = 50;
 
 		faction = PLAYER;
 	}

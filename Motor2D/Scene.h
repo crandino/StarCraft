@@ -46,6 +46,10 @@ private:
 	GuiImage* ui_terran = nullptr;
 	GuiImage* rectangle_map_camera = nullptr;
 	GuiImage* rectangle_map = nullptr;
+	GuiImage* start_menu = nullptr;
+
+	//ROF
+	SDL_Texture* start_menu_img = nullptr;
 
 public:
 

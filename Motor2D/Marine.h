@@ -1,15 +1,16 @@
 #ifndef __MARINE_H__
 #define __MARINE_H__
 
-#include "Entity.h"
+#include "Unit.h"
 
-class Marine : public Entity
+class Marine : public Unit
 {
 public:
 	//ROF
 	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
 	Animation	idle;
 	Animation	idle_up;
+
 	Animation   one;
 	Animation   idle_right_up;
 	Animation   three;
@@ -29,15 +30,13 @@ public:
 	Animation   idle_left_up;
 	Animation   fifteen;
 
-	FACTION		faction;
-	
-
 	Marine(iPoint &p)
 	{
 		// Positions and dimensions
 		center = { (float)p.x, (float)p.y };
 
 		tex_width = tex_height = 64;
+		collider_offset = { 10, 14 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y); 
 		// Animations
@@ -79,14 +78,21 @@ public:
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ center.x - 10, center.y - 14, 22, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
-		type = MARINE;
+		
 		faction = PLAYER;
+		flying = false;
 
-		hp = 6;
+		max_hp = 40;
+		current_hp = 40.0f;
+		max_hp_bars = 6;
+		
+		//current_hp_bars = 6;
+		
 		speed = 10;
+		
 
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);

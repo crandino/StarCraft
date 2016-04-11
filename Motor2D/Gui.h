@@ -183,6 +183,7 @@ private:
 	list<GuiElements*> elements;
 	const GuiElements* focus = nullptr;
 	SDL_Texture* atlas = nullptr;
+	SDL_Texture* terran_console = nullptr;
 	string atlas_file_name;
 
 	SDL_Texture *path_walkability;
