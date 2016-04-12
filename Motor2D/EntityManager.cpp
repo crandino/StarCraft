@@ -58,10 +58,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		addInEnemyContainer(e);
 		AddEntityToWave(e->id, e);
 		break;
-	//case(SCV) :
-	//	LOG("Creating SCV");
-	//	e = new Scv(pos);
-	//	break;
+	case(SCV) :
+		LOG("Creating SCV");
+		e = new Scv(pos);
+		break;
 	}
 
 	if (e != NULL && e->type == UNIT)
@@ -123,12 +123,12 @@ bool EntityManager::preUpdate()
 		marine = addEntity(position, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
-	//if (app->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
-	//{
-	//	app->input->getMousePosition(position);
-	//	position = app->render->screenToWorld(position.x, position.y);
-	//	addEntity(position, SCV);	
-	//}
+	if (app->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, SCV);	
+	}
 
 	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
