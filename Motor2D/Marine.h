@@ -88,7 +88,7 @@ public:
 		walk_up.frames.push_back({ 0, 768, 64, 64 });
 		walk_up.speed = 0.05f;
 
-		//one.frames.push_back({ 64, 0, 64, 64 });
+		one.frames.push_back({ 64, 0, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 0, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 256, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 320, 64, 64 });
@@ -101,7 +101,7 @@ public:
 		walk_right_up.frames.push_back({ 128, 768, 64, 64 });
 		walk_right_up.speed = 0.05f;
 
-		//three.frames.push_back({ 192, 0, 64, 64 });
+		three.frames.push_back({ 192, 0, 64, 64 });
 		walk_right.frames.push_back({ 256, 0, 64, 64 });
 		walk_right.frames.push_back({ 256, 256, 64, 64 });
 		walk_right.frames.push_back({ 256, 320, 64, 64 });
@@ -114,7 +114,7 @@ public:
 		walk_right.frames.push_back({ 256, 768, 64, 64 });
 		walk_right.speed = 0.05f;
 
-		//five.frames.push_back({ 320, 0, 64, 64 });
+		five.frames.push_back({ 320, 0, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 0, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 256, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 320, 64, 64 });
@@ -127,7 +127,7 @@ public:
 		walk_right_down.frames.push_back({ 384, 768, 64, 64 });
 		walk_right_down.speed = 0.05f;
 
-		//seven.frames.push_back({ 448, 0, 64, 64 });
+		seven.frames.push_back({ 448, 0, 64, 64 });
 		walk_down.frames.push_back({ 512, 0, 64, 64 });
 		walk_down.frames.push_back({ 512, 256, 64, 64 });
 		walk_down.frames.push_back({ 512, 320, 64, 64 });
@@ -139,7 +139,7 @@ public:
 		walk_down.frames.push_back({ 512, 704, 64, 64 });
 		walk_down.frames.push_back({ 512, 768, 64, 64 });
 		walk_down.speed = 0.05f;
-		//nine.frames.push_back({ 576, 0, 64, 64 });
+		nine.frames.push_back({ 576, 0, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 0, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 256, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 320, 64, 64 });
@@ -151,7 +151,7 @@ public:
 		walk_left_down.frames.push_back({ 640, 704, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 768, 64, 64 });
 		walk_left_down.speed = 0.05f;
-		//eleven.frames.push_back({ 704, 0, 64, 64 });
+		eleven.frames.push_back({ 704, 0, 64, 64 });
 		walk_left.frames.push_back({ 768, 0, 64, 64 });
 		walk_left.frames.push_back({ 768, 256, 64, 64 });
 		walk_left.frames.push_back({ 768, 320, 64, 64 });
@@ -163,7 +163,7 @@ public:
 		walk_left.frames.push_back({ 768, 704, 64, 64 });
 		walk_left.frames.push_back({ 768, 768, 64, 64 });
 		walk_left.speed = 0.05f;
-		//thirdteen.frames.push_back({ 832, 0, 64, 64 });
+		thirdteen.frames.push_back({ 832, 0, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 0, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 256, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 320, 64, 64 });
@@ -175,7 +175,7 @@ public:
 		walk_left_up.frames.push_back({ 896, 704, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 768, 64, 64 });
 		walk_left_up.speed = 0.05f;
-		//fifteen.frames.push_back({ 960, 0, 64, 64 });
+		fifteen.frames.push_back({ 960, 0, 64, 64 });
 		//----------------------------------------------
 
 		angle = -1;
@@ -214,7 +214,6 @@ public:
 		if (path.size() > 0)
 		{
 			// From 0 to 180 degrees
-
 			if (angle >= 0.f && angle < 22.5f)
 			{
 				current_animation = &walk_up;

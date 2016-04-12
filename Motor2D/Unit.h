@@ -15,6 +15,7 @@ public:
 	Vector2D<int>   direction;
 	float			speed;
 	SPECIALIZATION  unit_type;
+	UNIT_DIRECTION	unit_direction;
 
 	Unit()
 	{
@@ -33,42 +34,7 @@ public:
 		if (path.size() > 0)
 		{
 
-			iPoint pos_path = *path.begin();
-
-			if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
-			{
-				angle = 0.f;
-			}
-			else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
-			{
-				angle = 45.f;
-			}
-			else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
-			{
-				angle = 90.f;
-			}
-
-			else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
-			{
-				angle = 135.f;
-			}
-			else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
-			{
-				angle = 180.f;
-			}
-			else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
-			{
-				angle = 225.f;
-			}
-			else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
-			{
-				angle = 270.f;
-			}
-			else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
-			{
-				angle = 315.f;
-			}
-
+			checkUnitDirection();
 			float pixels_to_move = 0;
 			float total_pixels_moved = 0;
 			float total_pixels_to_move = speed / 100 * dt;
@@ -134,6 +100,79 @@ public:
 				total_pixels_moved += pixels_to_move;
 
 			} while (total_pixels_moved < total_pixels_to_move);
+		}
+	}
+
+	void checkUnitDirection()
+	{
+		switch (unit_direction)
+		{
+		case(UP) :
+			angle = 0.f;
+			break;
+
+		case(RIGHT_UP) :
+			angle = 45.f;
+			break;
+
+		case(RIGHT) :
+			angle = 90.f;
+			break;
+
+		case(RIGHT_DOWN) :
+			angle = 135.f;
+			break;
+
+		case(DOWN) :
+			angle = 180.f;
+			break;
+
+		case(LEFT_DOWN) :
+			angle = 225.f;
+			break;
+
+		case(LEFT) :
+			angle = 270.f;
+			break;
+
+		case(LEFT_UP) :
+			angle = 315.f;
+			break;
+		}
+
+		iPoint pos_path = *path.begin();
+
+		if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
+		{
+			unit_direction = UP;
+		}
+		else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
+		{
+			unit_direction = RIGHT_UP;
+		}
+		else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
+		{
+			unit_direction = RIGHT;
+		}
+		else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
+		{
+			unit_direction = RIGHT_DOWN;
+		}
+		else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
+		{
+			unit_direction = DOWN;
+		}
+		else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
+		{
+			unit_direction = LEFT_DOWN;
+		}
+		else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
+		{
+			unit_direction = LEFT;
+		}
+		else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
+		{
+			unit_direction = LEFT_UP;
 		}
 	}
 };

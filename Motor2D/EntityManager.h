@@ -32,6 +32,18 @@ enum SPECIALIZATION
 	COMMANDCENTER
 };
 
+enum UNIT_DIRECTION
+{
+	UP,
+	RIGHT_UP,
+	RIGHT,
+	RIGHT_DOWN,
+	DOWN,
+	LEFT_DOWN,
+	LEFT,
+	LEFT_UP
+};
+
 class Entity;
 class Unit;
 class Building;
