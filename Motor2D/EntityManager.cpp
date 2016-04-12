@@ -368,7 +368,17 @@ bool EntityManager::postUpdate()
 				a += 4;
 			}
 		}
-       it->second->draw();
+		//MSC attempt to create a timer to slow down marine animations. It's not working exactly as intended. Can be tested willingly.
+		/*uint32 i = 0;
+		uint32 dt = app->getDt();
+		//uint32 dt = 5000000;
+		while (i < dt)
+		{
+			if (i == dt-1) {i = dt;  it->second->draw();
+			}
+			else i++;
+		}*/
+		it->second->draw(); //if you try the method, comment this line
 	}
 		
 	// Drawing selector (green SDL_Rect)
