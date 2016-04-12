@@ -46,7 +46,7 @@ public:
 	uint scoreCurrentWave;
 	uint totalScore = 0;
 	uint32 WaveTime1 = 5000;//120.000 = 2 minutes per wave in the future or some other game designish number
-	uint size1 = 10;
+	uint size1 = 1;
 };
 
 #endif

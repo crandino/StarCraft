@@ -253,7 +253,7 @@ bool EntityManager::preUpdate()
 	{
 		Entity* e = whichEntityOnMouse();
 		LOG("Hostility ON");
-		if (selection.empty() == FALSE)
+		if (!selection.empty())
 		{
 			if (e != NULL && e->type == ZERGLING)
 			{
