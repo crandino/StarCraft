@@ -23,6 +23,7 @@ public:
 
 	FACTION			faction;
 	ENTITY_TYPE		type;
+	SPECIALIZATION  specialization;
 	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;

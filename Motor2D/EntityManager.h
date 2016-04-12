@@ -107,15 +107,15 @@ public:
 
 public:
 
-	bool unitsKilled = false;
+	bool unitKilled = false;
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
 
 private:
 
-	map<uint, Entity*>               active_entities;
-	vector<Entity*>					   waveZerglings;
+	map<uint, Entity*>					active_entities;
+	map<uint, Entity*>					  waveZerglings;
 	//map<uint, Entity*>                     selection;
 	map<uint, Entity*>						ToDelete;
 	map<uint, Entity*>					   enemyWave;

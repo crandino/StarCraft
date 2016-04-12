@@ -80,7 +80,7 @@ uint EntityManager::getWaveZerglingSize()
 
 Entity* const EntityManager::addInEnemyContainer(Entity* e)//Maybe return type should be void?
 {
-	waveZerglings.push_back(e);
+	waveZerglings.insert(pair<uint,Entity*>(e->id,e));
 	LOG("Enemy added in wave. Number of enemies %d", waveZerglings.size());
 	return e;
 }
@@ -267,7 +267,7 @@ bool EntityManager::preUpdate()
 		LOG("Hostility ON");
 		if (!selection.empty())
 		{
-			if (e != NULL && e->type == ZERGLING)
+			if (e != NULL && e->specialization == ZERGLING)
 			{
 				KillEntity(e);			
 			}
@@ -498,6 +498,8 @@ void EntityManager::deleteEntity(map<uint, Entity*> selection)
 		std::map<uint, Entity*>::iterator itdel;
 		itdel = active_entities.find(it->first);
 		active_entities.erase(itdel);
+		itdel = waveZerglings.find(it->first);
+		waveZerglings.erase(itdel);
 	}
 
 	selection.clear();
@@ -510,6 +512,7 @@ void EntityManager::deleteEntityKilled(Entity* e)
 
 	/*Deletes enemy in the enemy wave*/
 	active_entities.erase(e->id);
+	unitKilled = true;
 	/*RIE: When a lot of zerglings are added they don't die in the order they should don't know why*/
 	LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
 }

@@ -33,6 +33,7 @@ public:
 
 		// Another stuff
 		type = UNIT;
+		specialization = ZERGLING;
 		faction = COMPUTER;
 		max_hp = 10;
 		flying = false;

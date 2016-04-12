@@ -4,6 +4,8 @@
 #include "p2Log.h"
 #include <time.h>
 
+//Author: RIE code.
+
 bool GameManager::start()
 {
 	bool ret = true;
@@ -11,12 +13,9 @@ bool GameManager::start()
 	timeBetweenWaves.start();
 	GeneralTime.start();
 	LOG("LAST HOPE GAME STARTS!");
-	
-	srand(time(NULL));
-	iPoint radius;
 
 
-	app->entity_manager->createWave(size1);
+	//app->entity_manager->createWave(size1);
 	
 	return ret;
 }
@@ -25,29 +24,34 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 	
-	if (currentWaves < 2)//Before all waves finish the game isn't finished or the player dies.
+	if (currentWaves < 2)
 	{
-		if (timeBetweenWaves.readSec() > WaveTime1)//We check how much time do we have left before releasing a new wave
+		if (timeBetweenWaves.readSec() >= WaveTime1)//We check how much time do we have left before releasing a new wave
 		{
 			LOG("Wave time is over! prepare for the next wave!!!");
-			if (app->entity_manager->unitsKilled == true)//
-			{
-				killCount++;
+			
+				app->entity_manager->createWave(size1);
+				timeBetweenWaves.start();
 
-				
-				
-				if (app->entity_manager->getWaveZerglingSize() < 0)
+				if (app->entity_manager->getWaveZerglingSize() <= 0)//Not working yet but will finish it tomorrow.
 				{
 					addPoints(scoreCurrentWave);
 					killCount = 0;
-					timeBetweenWaves.start();
+					
+					
 				}
 				//timer
 				//++unitKillCount;
-			}
+			
 
 		}
 		
+		if (app->entity_manager->unitKilled == true)//If a unit is killed, frags are added and points too
+		{
+			killCount++;
+			app->entity_manager->unitKilled = false;
+		}
+
 		if (isFinished)
 		{
 			//Victory Text
@@ -64,7 +68,6 @@ bool GameManager::update(float dt)
 				GeneralTime.start();
 				/*1: Whether the player has died*/
 				ret = false;
-				
 		}
 
 		
