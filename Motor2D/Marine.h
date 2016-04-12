@@ -47,7 +47,7 @@ public:
 		idle_up.frames.push_back({ 0, 128, 64, 64 });
 		idle_up.frames.push_back({ 0, 64, 64, 64 });
 		idle_up.frames.push_back({ 0, 0, 64, 64 });
-		idle_up.speed = 0.02f;
+		idle_up.speed = 0.005f;
 		idle_up.loop = true;
 
 		idle_right.frames.push_back({ 256, 0, 64, 64 });
@@ -55,7 +55,7 @@ public:
 		idle_right.frames.push_back({ 256, 128, 64, 64 });
 		idle_right.frames.push_back({ 256, 64, 64, 64 });
 		idle_right.frames.push_back({ 256, 0, 64, 64 });
-		idle_right.speed = 0.02f;
+		idle_right.speed = 0.005f;
 		idle_right.loop = true;
 
 		idle_down.frames.push_back({ 448, 0, 64, 64 });
@@ -63,7 +63,7 @@ public:
 		idle_down.frames.push_back({ 448, 128, 64, 64 });
 		idle_down.frames.push_back({ 448, 64, 64, 64 });
 		idle_down.frames.push_back({ 448, 0, 64, 64 });
-		idle_down.speed = 0.02f;
+		idle_down.speed = 0.005f;
 		idle_down.loop = true;
 
 		idle_left.frames.push_back({ 768, 0, 64, 64 });
@@ -71,7 +71,7 @@ public:
 		idle_left.frames.push_back({ 768, 128, 64, 64 });
 		idle_left.frames.push_back({ 768, 64, 64, 64 });
 		idle_left.frames.push_back({ 768, 0, 64, 64 });
-		idle_left.speed = 0.02f;
+		idle_left.speed = 0.005f;
 		idle_left.loop = true;
 		//----------------------------------------------
 
@@ -86,7 +86,7 @@ public:
 		walk_up.frames.push_back({ 0, 640, 64, 64 });
 		walk_up.frames.push_back({ 0, 704, 64, 64 });
 		walk_up.frames.push_back({ 0, 768, 64, 64 });
-		walk_up.speed = 0.05f;
+		walk_up.speed = 0.02f;
 
 		one.frames.push_back({ 64, 0, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 0, 64, 64 });
@@ -99,7 +99,7 @@ public:
 		walk_right_up.frames.push_back({ 128, 640, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 704, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 768, 64, 64 });
-		walk_right_up.speed = 0.05f;
+		walk_right_up.speed = 0.02f;
 
 		three.frames.push_back({ 192, 0, 64, 64 });
 		walk_right.frames.push_back({ 256, 0, 64, 64 });
@@ -112,7 +112,7 @@ public:
 		walk_right.frames.push_back({ 256, 640, 64, 64 });
 		walk_right.frames.push_back({ 256, 704, 64, 64 });
 		walk_right.frames.push_back({ 256, 768, 64, 64 });
-		walk_right.speed = 0.05f;
+		walk_right.speed = 0.02f;
 
 		five.frames.push_back({ 320, 0, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 0, 64, 64 });
@@ -125,7 +125,7 @@ public:
 		walk_right_down.frames.push_back({ 384, 640, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 704, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 768, 64, 64 });
-		walk_right_down.speed = 0.05f;
+		walk_right_down.speed = 0.02f;
 
 		seven.frames.push_back({ 448, 0, 64, 64 });
 		walk_down.frames.push_back({ 512, 0, 64, 64 });
@@ -138,7 +138,7 @@ public:
 		walk_down.frames.push_back({ 512, 640, 64, 64 });
 		walk_down.frames.push_back({ 512, 704, 64, 64 });
 		walk_down.frames.push_back({ 512, 768, 64, 64 });
-		walk_down.speed = 0.05f;
+		walk_down.speed = 0.02f;
 		nine.frames.push_back({ 576, 0, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 0, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 256, 64, 64 });
@@ -150,7 +150,7 @@ public:
 		walk_left_down.frames.push_back({ 640, 640, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 704, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 768, 64, 64 });
-		walk_left_down.speed = 0.05f;
+		walk_left_down.speed = 0.02f;
 		eleven.frames.push_back({ 704, 0, 64, 64 });
 		walk_left.frames.push_back({ 768, 0, 64, 64 });
 		walk_left.frames.push_back({ 768, 256, 64, 64 });
@@ -162,7 +162,7 @@ public:
 		walk_left.frames.push_back({ 768, 640, 64, 64 });
 		walk_left.frames.push_back({ 768, 704, 64, 64 });
 		walk_left.frames.push_back({ 768, 768, 64, 64 });
-		walk_left.speed = 0.05f;
+		walk_left.speed = 0.02f;
 		thirdteen.frames.push_back({ 832, 0, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 0, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 256, 64, 64 });
@@ -174,7 +174,7 @@ public:
 		walk_left_up.frames.push_back({ 896, 640, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 704, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 768, 64, 64 });
-		walk_left_up.speed = 0.05f;
+		walk_left_up.speed = 0.02f;
 		fifteen.frames.push_back({ 960, 0, 64, 64 });
 		//----------------------------------------------
 

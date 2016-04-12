@@ -3,6 +3,7 @@
 #define __ANIMATION_H__
 
 #include <vector>
+#include"App.h"
 
 using namespace std;
 
@@ -27,7 +28,8 @@ public:
 
 	SDL_Rect& getCurrentFrame()
 	{
-		current_frame += speed;
+		float real_speed =  speed * app->getDt();
+		current_frame += real_speed;
 		if (current_frame >= frames.size())
 		{
 			current_frame = (loop) ? 0.0f : frames.size() - 1;

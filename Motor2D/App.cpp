@@ -416,7 +416,7 @@ uint App::getFrameRate() const
 	return frames_on_last_update != 0 ? frames_on_last_update : 30;
 }
 
-uint App::getDt() const
+float App::getDt() const
 {
 	return dt;
 }

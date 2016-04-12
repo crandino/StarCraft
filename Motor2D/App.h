@@ -57,7 +57,7 @@ public:
 	void saveGame(const char *file) const;
 	void *getSaveGames(list<string> &list_saved_games) const;
 	uint getFrameRate() const;
-	uint getDt() const;
+	float getDt() const;
 
 private:
 
