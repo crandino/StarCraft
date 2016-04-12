@@ -2,15 +2,13 @@
 #include "p2Log.h"
 #include "App.h"
 #include "Input.h"
-#include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "Map.h"
 #include "PathFinding.h"
 #include "Scene.h"
-#include "Gui.h"
-#include "Animation.h"
+
+#include "GuiImage.h"
 
 Scene::Scene() : Module()
 {

@@ -56,6 +56,15 @@
     <ClCompile Include="Motor2D\GameManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\GuiImage.cpp">
+      <Filter>UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\GuiCursor.cpp">
+      <Filter>UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\GuiElements.cpp">
+      <Filter>UI_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -154,6 +163,15 @@
     <ClInclude Include="Motor2D\Building.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\GuiImage.h">
+      <Filter>UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\GuiElements.h">
+      <Filter>UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\GuiCursor.h">
+      <Filter>UI_elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">
@@ -182,6 +200,9 @@
     </Filter>
     <Filter Include="Entities\Terran_Buildings">
       <UniqueIdentifier>{63d255c2-8933-4f1d-8c54-e82af184257c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI_elements">
+      <UniqueIdentifier>{2e36ea98-665d-4212-9f2c-61d41d6cd8a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

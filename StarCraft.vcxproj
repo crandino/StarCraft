@@ -79,6 +79,9 @@
     <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
     <ClInclude Include="Motor2D\GameManager.h" />
+    <ClInclude Include="Motor2D\GuiCursor.h" />
+    <ClInclude Include="Motor2D\GuiElements.h" />
+    <ClInclude Include="Motor2D\GuiImage.h" />
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
     <ClInclude Include="Motor2D\Marine.h" />
@@ -108,6 +111,9 @@
     <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
     <ClCompile Include="Motor2D\GameManager.cpp" />
+    <ClCompile Include="Motor2D\GuiCursor.cpp" />
+    <ClCompile Include="Motor2D\GuiElements.cpp" />
+    <ClCompile Include="Motor2D\GuiImage.cpp" />
     <ClCompile Include="Motor2D\Input.cpp" />
     <ClCompile Include="Motor2D\main.cpp" />
     <ClCompile Include="Motor2D\Map.cpp" />
