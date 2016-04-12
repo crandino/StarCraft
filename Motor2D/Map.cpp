@@ -189,9 +189,36 @@ bool Map::isAreaWalkable(const SDL_Rect &rect)
 	return true;
 }
 
-void Map::changeLogic(const SDL_Rect &rect, WALKABILITY walk_value)
+bool Map::changeLogic(const SDL_Rect &rect, WALKABILITY walk_value)
 {
+	list<MapData>::iterator map = data.begin();
+	while (map != data.end())
+	{
+		if (map->name == "LOGIC_MAP.tmx")
+		{
+			list<MapLayer*>::iterator layer = map->layers.begin();
+			while (layer != map->layers.end())
+			{
+				if ((*layer)->name == "Logic_Layer")
+				{
+					iPoint first_tile = app->map->worldToMap(app->map->data.back(), rect.x, rect.y);
+					iPoint last_tile = app->map->worldToMap(app->map->data.back(), rect.x + rect.w, rect.y + rect.h);
 
+					for (int y = first_tile.y; y < last_tile.y; ++y)
+					{
+						for (int x = first_tile.x; x < last_tile.x; ++x)
+						{
+							(*layer)->data[y * (*layer)->width + x] = walk_value;
+						}
+					}
+					return true;
+				}
+				++layer;
+			}
+		}
+		++map;
+	}
+	return false;
 }
 
 int Properties::get(const char* value, int default_value) const

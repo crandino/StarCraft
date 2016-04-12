@@ -137,7 +137,7 @@ bool EntityManager::preUpdate()
 
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
-
+	
 	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if (app->map->isAreaWalkable(building_to_place->coll->rect))
@@ -145,6 +145,27 @@ bool EntityManager::preUpdate()
 			building_to_place->id = ++next_ID;
 			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
 			building_mode = false;
+
+			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+			int w, h;
+			uchar *buffer = NULL;
+			if (app->map->createWalkabilityMap(w, h, &buffer))
+			{
+				app->path->setMap(w, h, buffer);
+
+				map<uint, Entity*>::iterator it = active_entities.begin();
+				for (; it != active_entities.end(); ++it)
+				{
+					if (it->second->type == UNIT)
+					{
+						Unit *unit = (Unit*)it->second;
+
+						if (unit->path.size() > 0)
+							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+								unit->path = app->path->getLastPath();
+					}
+				}
+			}
 		}
 	}		
 
@@ -256,15 +277,19 @@ bool EntityManager::update(float dt)
 	{
 		it->second->update(dt);
 
-		////Debug: To draw the path finding that the entity is following
-		//if (app->entity_manager->debug && it->second->path.size() > 0)
-		//{
-		//	for (vector<iPoint>::iterator it2 = it->second->path.begin(); it2 != it->second->path.end(); ++it2)
-		//	{
-		//		iPoint p = app->map->mapToWorld(app->map->data.back(), it2->x, it2->y);
-		//		app->render->blit(it->second->tile_path, p.x, p.y);
-		//	}
-		//}
+		//Debug: To draw the path finding that the entity is following
+		/*if (app->entity_manager->debug)
+		{
+			Unit *unit = (Unit*)it->second;
+			if (unit->path.size() > 0)
+			{
+				for (vector<iPoint>::iterator it2 = unit->path.begin(); it2 != unit->path.end(); ++it2)
+				{
+					iPoint p = app->map->mapToWorld(app->map->data.back(), it2->x, it2->y);
+					app->render->blit(unit->tile_path, p.x, p.y);
+				}
+			}
+		}*/
 	}
 
 	return true;

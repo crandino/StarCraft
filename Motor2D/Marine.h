@@ -187,74 +187,79 @@ public:
 		{
 			angle -= 360.f;
 		}
-		// From 0 to 180 degrees
 
-		if (angle >= 0.f && angle < 22.5f)
+		if (path.size() > 0)
 		{
-			current_animation = &walk_up;
-		}
-		if (angle >= 22.5f && angle < 45.f)
-		{
-			current_animation = &one;
-		}
-		if (angle >= 45.f && angle < 67.5f)
-		{
-			current_animation = &walk_right_up;
-		}
-		if (angle >= 67.5f && angle < 90.f)
-		{
-			current_animation = &three;
-		}
-		if (angle >= 90.f && angle < 112.5f)
-		{
-			current_animation = &walk_right;
-		}
-		if (angle >= 112.5f && angle < 135.f)
-		{
-			current_animation = &five;
-		}
-		if (angle >= 135.f && angle < 157.5f)
-		{
-			current_animation = &walk_right_down;
-		}
-		if (angle >= 157.5f && angle < 180.f)
-		{
-			current_animation = &seven;
-		}
-		// From 180 to 360 degrees
-		if (angle >= 180.f && angle < 202.5f)
-		{
-			current_animation = &walk_down;
-		}
-		if (angle >= 202.5f && angle < 225.f)
-		{
-			current_animation = &nine;
-		}
-		if (angle >= 225.f && angle < 247.5f)
-		{
-			current_animation = &walk_left_down;
-		}
-		if (angle >= 247.5f && angle < 270.f)
-		{
-			current_animation = &eleven;
-		}
-		if (angle >= 270.f && angle < 292.5f)
-		{
-			current_animation = &walk_left;
-		}
-		if (angle >= 292.5f && angle < 315.f)
-		{
-			current_animation = &thirdteen;
-		}
-		if (angle >= 315.f && angle < 337.5f)
-		{
-			current_animation = &walk_left_up;
-		}
-		if (angle >= 337.5f && angle < 360.f)
-		{
-			current_animation = &fifteen;
-		}
+			// From 0 to 180 degrees
 
+			if (angle >= 0.f && angle < 22.5f)
+			{
+				current_animation = &walk_up;
+			}
+			if (angle >= 22.5f && angle < 45.f)
+			{
+				current_animation = &one;
+			}
+			if (angle >= 45.f && angle < 67.5f)
+			{
+				current_animation = &walk_right_up;
+			}
+			if (angle >= 67.5f && angle < 90.f)
+			{
+				current_animation = &three;
+			}
+			if (angle >= 90.f && angle < 112.5f)
+			{
+				current_animation = &walk_right;
+			}
+			if (angle >= 112.5f && angle < 135.f)
+			{
+				current_animation = &five;
+			}
+			if (angle >= 135.f && angle < 157.5f)
+			{
+				current_animation = &walk_right_down;
+			}
+			if (angle >= 157.5f && angle < 180.f)
+			{
+				current_animation = &seven;
+			}
+			// From 180 to 360 degrees
+			if (angle >= 180.f && angle < 202.5f)
+			{
+				current_animation = &walk_down;
+			}
+			if (angle >= 202.5f && angle < 225.f)
+			{
+				current_animation = &nine;
+			}
+			if (angle >= 225.f && angle < 247.5f)
+			{
+				current_animation = &walk_left_down;
+			}
+			if (angle >= 247.5f && angle < 270.f)
+			{
+				current_animation = &eleven;
+			}
+			if (angle >= 270.f && angle < 292.5f)
+			{
+				current_animation = &walk_left;
+			}
+			if (angle >= 292.5f && angle < 315.f)
+			{
+				current_animation = &thirdteen;
+			}
+			if (angle >= 315.f && angle < 337.5f)
+			{
+				current_animation = &walk_left_up;
+			}
+			if (angle >= 337.5f && angle < 360.f)
+			{
+				current_animation = &fifteen;
+			}
+		}
+		else
+			current_animation = &idle;
 		
 	}
 
