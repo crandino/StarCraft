@@ -24,7 +24,9 @@ enum SPECIALIZATION
 {
 	// Units
 	MARINE,
+	SCV,
 	ZERGLING,
+
 
 	// Buildings
 	COMMANDCENTER
@@ -82,8 +84,14 @@ public:
 	map<uint, Entity*>     selection;
 
 	/*---------------Creating Waves-------------------*/
-	void createZergling();
-	void createWave(uint size/*zergling num, hidralisk....num*/);
+	void createZergling(iPoint position, iPoint radius);
+	void createWave(uint size, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
+
+public:
+
+	/*---Utilities---*/ //Move to Globals when we have more time so it can be used by other modules
+	iPoint EntityManager::changeSign(iPoint point);
+
 
 public:
 

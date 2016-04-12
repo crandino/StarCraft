@@ -8,23 +8,22 @@ class Marine : public Unit
 public:
 	//ROF
 	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
-	Animation	idle;
+	Animation	idle_up;
+	Animation   idle_right;
+	Animation	idle_down;
+	Animation	idle_left;
 	Animation	walk_up;
-
 	Animation   one;
 	Animation   walk_right_up;
 	Animation   three;
-
 	Animation   walk_right;
 	Animation   five;
 	Animation   walk_right_down;
 	Animation   seven;
-
 	Animation   walk_down;
 	Animation   nine;
 	Animation   walk_left_down;
 	Animation   eleven;
-
 	Animation   walk_left;
 	Animation   thirdteen;
 	Animation   walk_left_up;
@@ -43,13 +42,37 @@ public:
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
 		
 	    //---------------Idle Animation-----------------
-		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.frames.push_back({ 0, 64, 64, 64 });
-		idle.frames.push_back({ 0, 128, 64, 64 });
-		idle.frames.push_back({ 0, 64, 64, 64 });
-		idle.frames.push_back({ 0, 0, 64, 64 });
-		idle.speed = 0.02f;
-		idle.loop = true;
+		idle_up.frames.push_back({ 0, 0, 64, 64 });
+		idle_up.frames.push_back({ 0, 64, 64, 64 });
+		idle_up.frames.push_back({ 0, 128, 64, 64 });
+		idle_up.frames.push_back({ 0, 64, 64, 64 });
+		idle_up.frames.push_back({ 0, 0, 64, 64 });
+		idle_up.speed = 0.02f;
+		idle_up.loop = true;
+
+		idle_right.frames.push_back({ 256, 0, 64, 64 });
+		idle_right.frames.push_back({ 256, 64, 64, 64 });
+		idle_right.frames.push_back({ 256, 128, 64, 64 });
+		idle_right.frames.push_back({ 256, 64, 64, 64 });
+		idle_right.frames.push_back({ 256, 0, 64, 64 });
+		idle_right.speed = 0.02f;
+		idle_right.loop = true;
+
+		idle_down.frames.push_back({ 448, 0, 64, 64 });
+		idle_down.frames.push_back({ 448, 64, 64, 64 });
+		idle_down.frames.push_back({ 448, 128, 64, 64 });
+		idle_down.frames.push_back({ 448, 64, 64, 64 });
+		idle_down.frames.push_back({ 448, 0, 64, 64 });
+		idle_down.speed = 0.02f;
+		idle_down.loop = true;
+
+		idle_left.frames.push_back({ 768, 0, 64, 64 });
+		idle_left.frames.push_back({ 768, 64, 64, 64 });
+		idle_left.frames.push_back({ 768, 128, 64, 64 });
+		idle_left.frames.push_back({ 768, 64, 64, 64 });
+		idle_left.frames.push_back({ 768, 0, 64, 64 });
+		idle_left.speed = 0.02f;
+		idle_left.loop = true;
 		//----------------------------------------------
 
 		//--------------Walking Animations--------------
@@ -156,7 +179,7 @@ public:
 		//----------------------------------------------
 
 		angle = -1;
-		current_animation = &idle;
+		current_animation = &idle_up;
 
 		// Colliders
 		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);
@@ -258,8 +281,26 @@ public:
 				current_animation = &fifteen;
 			}
 		}
-		else
-			current_animation = &idle;
+		else 
+		{
+			if (angle >= 0.f && angle < 22.5f)
+			{
+				current_animation = &idle_up;
+			}
+			if (angle >= 90.f && angle < 112.5f)
+			{
+				current_animation = &idle_right;
+			}
+			if (angle >= 180.f && angle < 202.5f)
+			{
+				current_animation = &idle_down;
+			}
+			if (angle >= 270.f && angle < 292.5f)
+			{
+				current_animation = &idle_left;
+			}
+			
+		}		
 		
 	}
 

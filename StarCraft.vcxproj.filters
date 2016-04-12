@@ -171,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\GuiCursor.h">
       <Filter>UI_elements</Filter>
+     </ClInclude>
+    <ClInclude Include="Motor2D\Scv.h">
+      <Filter>Entities\Terran_Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

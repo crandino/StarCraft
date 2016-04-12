@@ -6,7 +6,9 @@
 #include "PathFinding.h"
 #include "Marine.h"
 #include "Zergling.h"
+#include "Scv.h"
 #include "CommandCenter.h"
+
 
 EntityManager::EntityManager() : Module()
 {
@@ -55,6 +57,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e = new Zergling(pos);
 		addInEnemyContainer(e);
 		AddEntityToWave(e->id, e);
+		break;
+	case(SCV) :
+		LOG("Creating SCV");
+		e = new Scv(pos);
 		break;
 	}
 
@@ -116,7 +122,13 @@ bool EntityManager::preUpdate()
 
 		marine = addEntity(position, MARINE);
 		//if (e != NULL) remove(e->id);		
-	}		
+	}
+	if (app->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, SCV);	
+	}
 
 	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
@@ -253,7 +265,7 @@ bool EntityManager::preUpdate()
 	{
 		Entity* e = whichEntityOnMouse();
 		LOG("Hostility ON");
-		if (selection.empty() == FALSE)
+		if (!selection.empty())
 		{
 			if (e != NULL && e->type == ZERGLING)
 			{
@@ -311,7 +323,12 @@ bool EntityManager::postUpdate()
 		{
 			SDL_Rect section_circle = { 0, 62, 22, 13 };
 			app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
-		}		
+		}
+		if (it2->second->type == SCV)
+		{	//TODO IPL
+			SDL_Rect section_circle = { 0, 62, 22, 13 };
+			app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
+		}
 	}
 	
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
@@ -413,22 +430,51 @@ void EntityManager::calculateSelector()
 
 /*------------------WAVE RELATED METHODS--------------------------*/
 
-void EntityManager::createWave(uint size/*zergling num, hidralisk....num*/)
+void EntityManager::createWave(uint size, iPoint position/*zergling num, hidralisk....num*/)
 {
-
+	
 
 	for (int i = 0; i < size; i++)
 	{
-		createZergling();
+		iPoint radius;
+		radius.x = rand() % 30 + 1;
+		radius.y = rand() % 30 + 1;//RIE: Things to Improve in the future make it responsive to tile system?
+		
+		int sign = rand() % 3;
+
+		radius = changeSign(radius);
+		
+		
+		createZergling(position, radius);
 	}
 }
 
-void EntityManager::createZergling()
+iPoint EntityManager::changeSign(iPoint point)
+{
+	int sign = rand() % 4;
+
+		switch (sign)
+		{
+			case (1) :
+		
+						 point.x = point.x*-1;
+						 break;
+		
+			case(2) :	
+						point.y = point.y*-1;
+						break;
+		
+			default: 
+			break;
+	}
+		return point;
+}
+void EntityManager::createZergling(iPoint position, iPoint radius)
 {
 
 	//Point to check if the cursor is on a walkable tile
-
-	iPoint position = { 100, 450 };
+	//Check that the radius doesn't touch the logic of the map
+	position = { position.x + radius.x, position.y + radius.y };
 
 	addEntity(position, ZERGLING);
 }

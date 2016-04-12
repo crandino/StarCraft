@@ -2,7 +2,7 @@
 #include "GameManager.h"
 #include "EntityManager.h"
 #include "p2Log.h"
-
+#include <time.h>
 
 bool GameManager::start()
 {
@@ -11,8 +11,12 @@ bool GameManager::start()
 	timeBetweenWaves.start();
 	GeneralTime.start();
 	LOG("LAST HOPE GAME STARTS!");
+	
+	srand(time(NULL));
+	iPoint radius;
 
-	app->entity_manager->createWave(size1/*zergling, hidralisk*/);
+
+	app->entity_manager->createWave(size1);
 	
 	return ret;
 }

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Timer.h"
 
+
 using namespace std;
 
 //Class that manages the game. The win lose cycle, the points earned, the resources, waves etc..
@@ -21,6 +22,12 @@ public:
 	uint killCount;
 	bool isFinished = false;
 	bool gameOver = false;
+
+	/*---- Wave Creation ----*/
+	int center;
+	int radiusSpawnOffset = 30;
+
+
 public:
 
 	GameManager()
@@ -43,10 +50,11 @@ public:
 public:
 	Timer GeneralTime;
 	Timer timeBetweenWaves;
+	Timer RandomGenerator;
 	uint scoreCurrentWave;
 	uint totalScore = 0;
-	uint32 WaveTime1 = 5000;//120.000 = 2 minutes per wave in the future or some other game designish number
-	uint size1 = 10;
+	uint32 WaveTime1 = 30000;//120.000 = 2 minutes per wave in the future or some other game designish number
+	uint size1 = 5;
 };
 
 #endif
