@@ -8,6 +8,7 @@
 #include "Zergling.h"
 #include "CommandCenter.h"
 
+
 EntityManager::EntityManager() : Module()
 {
 	name.assign("EntityManager");
@@ -413,22 +414,51 @@ void EntityManager::calculateSelector()
 
 /*------------------WAVE RELATED METHODS--------------------------*/
 
-void EntityManager::createWave(uint size/*zergling num, hidralisk....num*/)
+void EntityManager::createWave(uint size, iPoint position/*zergling num, hidralisk....num*/)
 {
-
+	
 
 	for (int i = 0; i < size; i++)
 	{
-		createZergling();
+		iPoint radius;
+		radius.x = rand() % 30 + 1;
+		radius.y = rand() % 30 + 1;//RIE: Things to Improve in the future make it responsive to tile system?
+		
+		int sign = rand() % 3;
+
+		radius = changeSign(radius);
+		
+		
+		createZergling(position, radius);
 	}
 }
 
-void EntityManager::createZergling()
+iPoint EntityManager::changeSign(iPoint point)
+{
+	int sign = rand() % 4;
+
+		switch (sign)
+		{
+			case (1) :
+		
+						 point.x = point.x*-1;
+						 break;
+		
+			case(2) :	
+						point.y = point.y*-1;
+						break;
+		
+			default: 
+			break;
+	}
+		return point;
+}
+void EntityManager::createZergling(iPoint position, iPoint radius)
 {
 
 	//Point to check if the cursor is on a walkable tile
-
-	iPoint position = { 100, 450 };
+	//Check that the radius doesn't touch the logic of the map
+	position = { position.x + radius.x, position.y + radius.y };
 
 	addEntity(position, ZERGLING);
 }
