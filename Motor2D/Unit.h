@@ -3,10 +3,9 @@
 
 #include "Entity.h"
 
-class Unit : public Entity
+class Unit: public Entity
 {
 public:
-	
 	bool			flying;
 	bool			has_target;
 	vector<iPoint>  path;

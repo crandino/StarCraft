@@ -6,6 +6,7 @@
 #include "PathFinding.h"
 #include "Marine.h"
 #include "Zergling.h"
+#include "Scv.h"
 #include "CommandCenter.h"
 
 
@@ -57,6 +58,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		addInEnemyContainer(e);
 		AddEntityToWave(e->id, e);
 		break;
+	//case(SCV) :
+	//	LOG("Creating SCV");
+	//	e = new Scv(pos);
+	//	break;
 	}
 
 	if (e != NULL && e->type == UNIT)
@@ -117,7 +122,13 @@ bool EntityManager::preUpdate()
 
 		marine = addEntity(position, MARINE);
 		//if (e != NULL) remove(e->id);		
-	}		
+	}
+	//if (app->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
+	//{
+	//	app->input->getMousePosition(position);
+	//	position = app->render->screenToWorld(position.x, position.y);
+	//	addEntity(position, SCV);	
+	//}
 
 	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
@@ -312,7 +323,12 @@ bool EntityManager::postUpdate()
 		{
 			SDL_Rect section_circle = { 0, 62, 22, 13 };
 			app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
-		}		
+		}
+		if (it2->second->type == SCV)
+		{	//TODO IPL
+			SDL_Rect section_circle = { 0, 62, 22, 13 };
+			app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
+		}
 	}
 	
 	for (it2 = selection.begin(); it2 != selection.end(); ++it2)

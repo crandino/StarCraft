@@ -24,7 +24,9 @@ enum SPECIALIZATION
 {
 	// Units
 	MARINE,
+	SCV,
 	ZERGLING,
+
 
 	// Buildings
 	COMMANDCENTER

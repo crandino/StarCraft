@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Collision.h"
 #include "Marine.h"
+#include "Scv.h"
 #include "SDL\include\SDL.h"
 
 class Entity

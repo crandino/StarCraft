@@ -154,6 +154,9 @@
     <ClInclude Include="Motor2D\Building.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Scv.h">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">
