@@ -11,7 +11,6 @@ public:
 	vector<iPoint>  path;
 	iPoint			distance_to_center_selector;
 	SDL_Texture     *tile_path;
-	float			angle;
 	Vector2D<int>   direction;
 	float			speed;
 	UNIT_DIRECTION	unit_direction;
@@ -104,6 +103,79 @@ public:
 
 	void checkUnitDirection()
 	{
+		if (state == ATTACK)
+		{
+			if (target_to_attack->tile_pos.x == tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
+			{
+				unit_direction = UP;
+			}
+			else if (target_to_attack->tile_pos.x > tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
+			{
+				unit_direction = RIGHT_UP;
+			}
+			else if (target_to_attack->tile_pos.x > tile_pos.x && target_to_attack->tile_pos.y == tile_pos.y)
+			{
+				unit_direction = RIGHT;
+			}
+			else if (target_to_attack->tile_pos.x > tile_pos.x && target_to_attack->tile_pos.y > tile_pos.y)
+			{
+				unit_direction = RIGHT_DOWN;
+			}
+			else if (target_to_attack->tile_pos.x == tile_pos.x && target_to_attack->tile_pos.y > tile_pos.y)
+			{
+				unit_direction = DOWN;
+			}
+			else if (target_to_attack->tile_pos.x < tile_pos.x && target_to_attack->tile_pos.y > tile_pos.y)
+			{
+				unit_direction = LEFT_DOWN;
+			}
+			else if (target_to_attack->tile_pos.x < tile_pos.x && target_to_attack->tile_pos.y == tile_pos.y)
+			{
+				unit_direction = LEFT;
+			}
+			else if (target_to_attack->tile_pos.x < tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
+			{
+				unit_direction = LEFT_UP;
+			}
+		}
+		else
+		{
+			iPoint pos_path = *path.begin();
+
+			if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				unit_direction = UP;
+			}
+			else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				unit_direction = RIGHT_UP;
+			}
+			else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
+			{
+				unit_direction = RIGHT;
+			}
+			else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				unit_direction = RIGHT_DOWN;
+			}
+			else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				unit_direction = DOWN;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
+			{
+				unit_direction = LEFT_DOWN;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
+			{
+				unit_direction = LEFT;
+			}
+			else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
+			{
+				unit_direction = LEFT_UP;
+			}
+		}
+
 		switch (unit_direction)
 		{
 		case(UP) :
@@ -138,41 +210,6 @@ public:
 			angle = 315.f;
 			break;
 		}
-
-		iPoint pos_path = *path.begin();
-
-		if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
-		{
-			unit_direction = UP;
-		}
-		else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
-		{
-			unit_direction = RIGHT_UP;
-		}
-		else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
-		{
-			unit_direction = RIGHT;
-		}
-		else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
-		{
-			unit_direction = RIGHT_DOWN;
-		}
-		else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
-		{
-			unit_direction = DOWN;
-		}
-		else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
-		{
-			unit_direction = LEFT_DOWN;
-		}
-		else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
-		{
-			unit_direction = LEFT;
-		}
-		else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
-		{
-			unit_direction = LEFT_UP;
-		}
 	}
 
 	bool update(float dt)
@@ -204,6 +241,7 @@ public:
 		case ATTACK:
 			if ((timer_attack_delay += dt) >= attack_delay)
 			{
+				checkUnitDirection();
 				attack();
 				timer_attack_delay = 0.0f;
 			}

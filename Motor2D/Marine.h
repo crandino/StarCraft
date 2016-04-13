@@ -54,7 +54,7 @@ public:
 		// Animations
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
 		#include "Marine_animations.h";
-		angle = -1;
+		angle = 0;
 		current_animation = &idle_up;
 
 
@@ -104,64 +104,64 @@ public:
 			{
 				current_animation = &walk_up;
 			}
-			if (angle >= 22.5f && angle < 45.f)
+			else if (angle >= 22.5f && angle < 45.f)
 			{
 				current_animation = &one;
 			}
-			if (angle >= 45.f && angle < 67.5f)
+			else if (angle >= 45.f && angle < 67.5f)
 			{
 				current_animation = &walk_right_up;
 			}
-			if (angle >= 67.5f && angle < 90.f)
+			else if (angle >= 67.5f && angle < 90.f)
 			{
 				current_animation = &three;
 			}
-			if (angle >= 90.f && angle < 112.5f)
+			else if (angle >= 90.f && angle < 112.5f)
 			{
 				current_animation = &walk_right;
 			}
-			if (angle >= 112.5f && angle < 135.f)
+			else if (angle >= 112.5f && angle < 135.f)
 			{
 				current_animation = &five;
 			}
-			if (angle >= 135.f && angle < 157.5f)
+			else if (angle >= 135.f && angle < 157.5f)
 			{
 				current_animation = &walk_right_down;
 			}
-			if (angle >= 157.5f && angle < 180.f)
+			else if (angle >= 157.5f && angle < 180.f)
 			{
 				current_animation = &seven;
 			}
 			// From 180 to 360 degrees
-			if (angle >= 180.f && angle < 202.5f)
+			else if (angle >= 180.f && angle < 202.5f)
 			{
 				current_animation = &walk_down;
 			}
-			if (angle >= 202.5f && angle < 225.f)
+			else if (angle >= 202.5f && angle < 225.f)
 			{
 				current_animation = &nine;
 			}
-			if (angle >= 225.f && angle < 247.5f)
+			else if (angle >= 225.f && angle < 247.5f)
 			{
 				current_animation = &walk_left_down;
 			}
-			if (angle >= 247.5f && angle < 270.f)
+			else if (angle >= 247.5f && angle < 270.f)
 			{
 				current_animation = &eleven;
 			}
-			if (angle >= 270.f && angle < 292.5f)
+			else if (angle >= 270.f && angle < 292.5f)
 			{
 				current_animation = &walk_left;
 			}
-			if (angle >= 292.5f && angle < 315.f)
+			else if (angle >= 292.5f && angle < 315.f)
 			{
 				current_animation = &thirdteen;
 			}
-			if (angle >= 315.f && angle < 337.5f)
+			else if (angle >= 315.f && angle < 337.5f)
 			{
 				current_animation = &walk_left_up;
 			}
-			if (angle >= 337.5f && angle < 360.f)
+			else if (angle >= 337.5f && angle < 360.f)
 			{
 				current_animation = &fifteen;
 			}
@@ -170,36 +170,60 @@ public:
 		{
 			if (angle >= 0.f && angle < 22.5f)
 			{
-				current_animation = &idle_up;
+				if (state == ATTACK)
+					current_animation = &attack_up;
+				else
+					current_animation = &idle_up;
 			}
 
-			if (angle >= 45.f && angle < 67.5f)
+			else if (angle >= 45.f && angle < 67.5f)
 			{
-				current_animation = &idle_right_up;
+				if (state == ATTACK)
+					current_animation = &attack_right_up;
+				else
+					current_animation = &idle_right_up;
 			}
-			if (angle >= 90.f && angle < 112.5f)
+			else if (angle >= 90.f && angle < 112.5f)
 			{
-				current_animation = &idle_right;
+				if (state == ATTACK)
+					current_animation = &attack_right;
+				else
+					current_animation = &idle_right;
 			}
-			if (angle >= 135.f && angle < 157.5f)
+			else if (angle >= 135.f && angle < 157.5f)
 			{
-				current_animation = &idle_right_down;
+				if (state == ATTACK)
+					current_animation = &attack_right_down;
+				else
+					current_animation = &idle_right_down;
 			}
-			if (angle >= 180.f && angle < 202.5f)
+			else if (angle >= 180.f && angle < 202.5f)
 			{
-				current_animation = &idle_down;
+				if (state == ATTACK)
+					current_animation = &attack_down;
+				else
+					current_animation = &idle_down;
 			}
-			if (angle >= 225.f && angle < 247.5f)
+			else if (angle >= 225.f && angle < 247.5f)
 			{
-				current_animation = &idle_left_down;
+				if (state == ATTACK)
+					current_animation = &attack_left_down;
+				else
+					current_animation = &idle_left_down;
 			}
-			if (angle >= 270.f && angle < 292.5f)
+			else if (angle >= 270.f && angle < 292.5f)
 			{
-				current_animation = &idle_left;
+				if (state == ATTACK)
+					current_animation = &attack_left;
+				else
+					current_animation = &idle_left;
 			}
-			if (angle >= 315.f && angle < 337.5f)
+			else if (angle >= 315.f && angle < 337.5f)
 			{
-				current_animation = &idle_left_up;
+				if (state == ATTACK)
+					current_animation = &attack_left_up;
+				else
+					current_animation = &idle_left_up;
 			}
 			
 		}		

@@ -492,7 +492,10 @@ bool EntityManager::searchNearEntity(Entity* e)
 		Unit* unit = (Unit*)e;
 		unit->has_target = false;
 		if (value <= e->range_to_attack)
+		{
+			unit->checkUnitDirection();
 			e->state = ATTACK;
+		}
 		else
 			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)
 			{

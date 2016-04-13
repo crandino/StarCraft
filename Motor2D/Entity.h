@@ -107,7 +107,6 @@ public:
 				state = IDLE;
 				target_to_attack->markToDelete();
 				target_to_attack = NULL;
-				has_target = false;
 			}
 		}
 		else
