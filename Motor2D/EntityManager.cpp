@@ -515,7 +515,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	{
 		if (it->second != e && e->faction != it->second->faction)
 		{
-			float d = e->pos.distanceTo(it->second->pos);
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			if (d <= value)
 			{
 				(e->target_to_attack) = &(*it->second);
@@ -535,7 +535,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 			{
 				unit->has_target = true;
 				unit->path = app->path->getLastPath();
-				e->state = MOVE;
+				e->state = MOVE_ALERT;
 			}
 	}
 

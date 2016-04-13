@@ -46,7 +46,7 @@ public:
 
 		speed = 8.0f;
 		range_to_view = 200;
-		range_to_attack = 64;
+		range_to_attack = 32;
 		damage = 3.0f;
 		attack_delay = 200.0f;
 	}
