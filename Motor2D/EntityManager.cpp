@@ -161,8 +161,6 @@ bool EntityManager::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
 
-
-
 	// Clicking and holding left button, starts a selection
 	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -273,7 +271,6 @@ bool EntityManager::preUpdate()
 			if (app->map->createWalkabilityMap(w, h, &buffer))
 			{
 				app->path->setMap(w, h, buffer);
-
 				map<uint, Entity*>::iterator it = active_entities.begin();
 				for (; it != active_entities.end(); ++it)
 				{
@@ -290,9 +287,13 @@ bool EntityManager::preUpdate()
 		}
 	}
 
+<<<<<<< HEAD
 
 
 		//------------------------ATTACK MECHANICS------------------------------------//
+=======
+	//------------------------ATTACK MECHANICS------------------------------------//
+>>>>>>> origin/master
 
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -302,13 +303,12 @@ bool EntityManager::preUpdate()
 		{
 			if (e != NULL && e->specialization == ZERGLING)
 			{
-
 				KillEntity(e);
 			}
 		}
 	}
-		//--------------------------GETTING INSIDE BUNKERS------------------------------//
 
+	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		//Getting inside Bunker
@@ -477,7 +477,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	{
 		if (it->second != e && e->faction != it->second->faction)
 		{
-			float d = e->pos.distanceTo(it->second->pos);
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			if (d <= value)
 			{
 				(e->target_to_attack) = &(*it->second);
@@ -497,7 +497,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 			{
 				unit->has_target = true;
 				unit->path = app->path->getLastPath();
-				e->state = MOVE;
+				e->state = MOVE_ALERT;
 			}
 	}
 
@@ -565,6 +565,7 @@ void EntityManager::deleteEntityKilled(Entity* e)
 {
 	vector <Entity* const>::iterator itdel;
 
+	e->coll->to_delete = true;
 	active_entities.erase(e->id);
 	unitKilled = true;
 	if (e->faction == COMPUTER)

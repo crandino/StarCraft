@@ -9,7 +9,6 @@ public:
 
 	uint capacity;
 	bool storage;
-	SPECIALIZATION  building_type;
 
 	Building() 
 	{

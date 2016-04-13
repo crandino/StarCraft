@@ -33,16 +33,15 @@ public:
 		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 126, 69 }, COLLIDER_BOMB);
 
 		// Another stuff
-		building_type = BUNKER;
 		specialization = BUNKER;
 		max_hp = 350;
+		current_hp = 350.0f;
 		capacity = 4;
 
 		faction = PLAYER;
 		selection_type = { 226, 66, 146, 88 };
 		circle_selection_offset = 34;
 	}
-
 };
 
 #endif !__COMMANDCENTER_H__
