@@ -37,7 +37,7 @@ public:
 		max_hp = 1500;
 		current_hp = 1500;
 		max_hp_bars = 36;
-		offset_life = { -58, 58 };
+		offset_life = { -80, 57 };
 
 		state = IDLE;
 		faction = PLAYER;
