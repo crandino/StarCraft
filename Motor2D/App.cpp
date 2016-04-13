@@ -1,3 +1,4 @@
+//Engine
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "EntityManager.h"
@@ -13,7 +14,10 @@
 #include "App.h"
 #include "Gui.h"
 #include "Collision.h"
+//Gameplay
 #include "GameManager.h"
+#include "AI.h"
+
 
 #include <iostream> 
 #include <sstream> 
@@ -36,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entity_manager = new EntityManager();
 	collision = new Collision();
 	game_manager = new GameManager();
+	artificial_inteligence = new AI();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp

@@ -65,6 +65,9 @@
     <ClCompile Include="Motor2D\GuiElements.cpp">
       <Filter>UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\AI.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -171,9 +174,12 @@
     </ClInclude>
     <ClInclude Include="Motor2D\GuiCursor.h">
       <Filter>UI_elements</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="Motor2D\Scv.h">
       <Filter>Entities\Terran_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\AI.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,7 @@ class Gui;
 class EntityManager;
 class Collision;
 class GameManager;
+class AI;
 
 class App
 {
@@ -101,7 +102,7 @@ public:
 	EntityManager*		entity_manager;
 	Collision*			collision;
 	GameManager*		game_manager;
-
+	AI*					artificial_inteligence;
 private:
 
 	list<Module*>		modules;  

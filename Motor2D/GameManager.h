@@ -57,8 +57,8 @@ public:
 	uint scoreCurrentWave = 0;
 	uint totalScore = 0;
 
-	uint32 WaveTime1 = 7;//120.000 = 2 minutes per wave in the future or some other game designish number
-	uint size1 = 3; // Changes number of zerglings per wave
+	uint32 WaveTime1 = 7;//120 = 2 minutes per wave in the future or some other game designish number
+	uint size1 = 7; // Changes number of zerglings per wave
 };
 
 #endif

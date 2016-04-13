@@ -37,13 +37,10 @@ bool GameManager::update(float dt)
 				{
 					addPoints(scoreCurrentWave);
 					killCount = 0;
-					
-					
 				}
 				//timer
 				//++unitKillCount;
 			
-
 		}
 		
 		if (app->entity_manager->unitKilled == true)//If a unit is killed, frags are added and points too
