@@ -110,16 +110,16 @@ bool EntityManager::preUpdate()
 		LOG("Marine angle: %f", m->angle);
 		LOG("Marine hp: %f", m->current_hp);
 	}
-		
+
 	//ROF Iterate all entities to check their angle
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
-	{	
+	{
 		it->second->checkAngle();
 	}
 
 	iPoint position;
-	
+
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);
@@ -133,7 +133,7 @@ bool EntityManager::preUpdate()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, SCV);	
+		addEntity(position, SCV);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -161,7 +161,7 @@ bool EntityManager::preUpdate()
 
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
-	
+
 	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if (app->map->isAreaWalkable(building_to_place->coll->rect))
@@ -191,7 +191,7 @@ bool EntityManager::preUpdate()
 				}
 			}
 		}
-	}		
+	}
 
 	// Clicking and holding left button, starts a selection
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -199,14 +199,15 @@ bool EntityManager::preUpdate()
 		selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
 		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
-		
+
 		//Click and select unit	
 		selector_init = true;
 		Entity *e = whichEntityOnMouse();
+
 		if (e != NULL)
 			selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };
 		else
-			selector = { 0, 0, 0, 0 };		
+			selector = { 0, 0, 0, 0 };
 	}
 
 	// Holding left button, updates selector dimensions
@@ -216,7 +217,7 @@ bool EntityManager::preUpdate()
 		final_selector_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
 
 		calculateSelector();
-	}		
+	}
 
 	// Once released left button, the selection is computed
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
@@ -237,9 +238,9 @@ bool EntityManager::preUpdate()
 				}
 				}
 				selection.insert(pair<uint, Entity*>(it->first, it->second));
-			}			
+			}
 		}
-	}		
+	}
 
 	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -257,7 +258,7 @@ bool EntityManager::preUpdate()
 				Unit *unit = (Unit*)it->second;
 				unit->has_target = true;
 				if (selection.size() == 1)
-				{	
+				{
 					if (app->path->createPath(unit->tile_pos, target_position) != -1)
 						unit->path = app->path->getLastPath();
 				}
@@ -265,10 +266,11 @@ bool EntityManager::preUpdate()
 				{
 					iPoint target = target_position + unit->distance_to_center_selector;
 					if (app->path->createPath(unit->tile_pos, target) != -1)
-						unit->path = app->path->getLastPath();					
-				}					
+						unit->path = app->path->getLastPath();
+				}
 			}
 		}
+
 	}
 
 	//------------------------ATTACK MECHANICS------------------------------------//
@@ -281,13 +283,31 @@ bool EntityManager::preUpdate()
 		{
 			if (e != NULL && e->specialization == ZERGLING)
 			{
-				KillEntity(e);			
+				KillEntity(e);
 			}
 		}
 	}
+	//--------------------------GETTING INSIDE BUNKERS------------------------------//
+	
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		//Getting inside Bunker
+		Entity *e = whichEntityOnMouse();
+
+		if (!selection.empty())
+		{
+			if (e != NULL && e->specialization == BUNKER) {
+				GetInsideBunker((Building*)e);
+			}
+		}
+
+		return true;
+	}
 
 	return true;
-} 
+}
+
+
 
 // Called each loop iteration
 bool EntityManager::update(float dt)
@@ -526,6 +546,27 @@ void EntityManager::KillEntity(map<uint, Entity*> selection)
 void EntityManager::KillEntity(Entity* e)
 {
 	deleteEntityKilled(e);
+}
+
+void EntityManager::GetInsideBunker(Building* e)
+{
+	int marines = selection.size();
+	for (int i = 0; i <= marines; i++) 
+	{
+		--e->capacity;
+		if (marines == 1)
+		{
+			KillEntity(selection.at(marines));
+			--marines;
+		}
+		else
+			KillEntity(selection.at(--marines));
+
+		if (e->capacity == 0)
+		{
+			break;
+		}
+	}
 }
 
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)

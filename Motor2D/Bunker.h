@@ -34,6 +34,7 @@ public:
 
 		// Another stuff
 		building_type = BUNKER;
+		specialization = BUNKER;
 		max_hp = 350;
 		capacity = 4;
 
