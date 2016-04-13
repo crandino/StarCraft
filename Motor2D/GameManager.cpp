@@ -13,8 +13,8 @@ bool GameManager::start()
 	timeBetweenWaves.start();
 	GeneralTime.start();
 	LOG("LAST HOPE GAME STARTS!");
-	
-	//app->entity_manager->createWave(size1);
+
+	app->entity_manager->createWave(size1);
 	
 	return ret;
 }

@@ -37,10 +37,11 @@ public:
 	float angle;
 	float speed;
 	
-
+	// Lifes attributes
 	uint			max_hp;
-	uint            current_hp;
+	int             current_hp;
 	uint            max_hp_bars;
+	iPoint			offset_life;
 
 	Collider*       coll;
 	

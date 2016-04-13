@@ -122,10 +122,12 @@ public:
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
 
+public:
+	map<uint, Entity*>					  waveZerglings;
+
 private:
 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					  waveZerglings;
 	//map<uint, Entity*>                     selection;
 	map<uint, Entity*>						ToDelete;
 	map<uint, Entity*>					   enemyWave;
