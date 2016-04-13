@@ -31,7 +31,8 @@ enum SPECIALIZATION  // Second specialization
 
 
 	// Buildings
-	COMMANDCENTER
+	COMMANDCENTER, 
+	BUNKER,
 };
 
 enum UNIT_DIRECTION

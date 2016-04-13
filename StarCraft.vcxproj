@@ -73,6 +73,7 @@
     <ClInclude Include="Motor2D\Audio.h" />
     <ClInclude Include="Motor2D\Brofiler.h" />
     <ClInclude Include="Motor2D\Building.h" />
+    <ClInclude Include="Motor2D\Bunker.h" />
     <ClInclude Include="Motor2D\Collision.h" />
     <ClInclude Include="Motor2D\CommandCenter.h" />
     <ClInclude Include="Motor2D\Entity.h" />

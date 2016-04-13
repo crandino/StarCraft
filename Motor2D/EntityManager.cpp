@@ -8,6 +8,7 @@
 #include "Zergling.h"
 #include "Scv.h"
 #include "CommandCenter.h"
+#include "Bunker.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -48,6 +49,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
 		e = new CommandCenter(pos);
+		building_to_place = (Building*)e;
+		building_mode = true;
+		break;
+	case(BUNKER) :
+		LOG("Creating Bunker");
+		e = new Bunker(pos);
 		building_to_place = (Building*)e;
 		building_mode = true;
 		break;
@@ -134,6 +141,12 @@ bool EntityManager::preUpdate()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, COMMANDCENTER);
+	}
+	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, BUNKER);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)

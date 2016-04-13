@@ -181,6 +181,9 @@
     <ClInclude Include="Motor2D\AI.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Bunker.h">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">
