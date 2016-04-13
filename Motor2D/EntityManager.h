@@ -96,6 +96,7 @@ public:
 
 	void AddEntityToWave(uint n, Entity* e);
 	/*--------Methods for interact with buildings----------*/
+	void GetInsideBunker(Building* e);
 
 	/*---------Methods for attacking other units------------*/
 	//Method that Kills entities Used for the kill of zerglings and other units
