@@ -70,7 +70,7 @@ public:
 	SDL_Texture     *tile_path;
 	bool            end_path = false;
 
-	bool			markedto_delete = false;
+	bool			marked_to_delete = false;
 
 	// Constructors
 	Entity()
@@ -105,19 +105,13 @@ public:
 			if ((target_to_attack->current_hp -= damage) <= 0.0f)
 			{
 				state = IDLE;
-				target_to_attack->markto_delete();
+				target_to_attack->markToDelete();
 				target_to_attack = NULL;
 				has_target = false;
 			}
 		}
 		else
-		{
 			state = IDLE;
-			if (type == UNIT)
-			{
-				app->entity_manager->searchNearEntity(this);
-			}
-		}
 	}
 
 	virtual void draw()
@@ -125,9 +119,9 @@ public:
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
 
-	void markto_delete()
+	void markToDelete()
 	{
-		markedto_delete = true;
+		marked_to_delete = true;
 	}
 
 };

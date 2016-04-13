@@ -287,8 +287,8 @@ bool EntityManager::preUpdate()
 		}
 	}
 
-	//------------------------ATTACK MECHANICS------------------------------------//
 
+	//------------------------ATTACK MECHANICS------------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		Entity* e = whichEntityOnMouse();
@@ -380,16 +380,7 @@ bool EntityManager::postUpdate()
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		//MSC attempt to create a timer to slow down marine animations. It's not working exactly as intended. Can be tested willingly.
-		/*uint32 i = 0;
-		uint32 dt = app->getDt();
-		//uint32 dt = 5000000;
-		while (i < dt)
-		{
-			if (i == dt-1) {i = dt;  it->second->draw();
-			}
-			else i++;
-		}*/
+		
 		it->second->draw(); //if you try the method, comment this line
 	}
 		
@@ -616,8 +607,12 @@ void EntityManager::deleteAllEntities()
 void EntityManager::choosePlaceForBuilding()
 {
 	iPoint p; app->input->getMousePosition(p);
-	building_to_place->pos = { (float)p.x - building_to_place->tex_width / 2, (float)p.y - building_to_place->tex_height / 2 };
-	building_to_place->center = { (float)p.x, (float)p.y };
+	iPoint pos = app->render->screenToWorld( p.x - building_to_place->tex_width / 2, p.y - building_to_place->tex_height / 2 );
+	//building_to_place->pos = { (float)pos.x, (float)pos.y };
+	
+	iPoint center = app->render->screenToWorld(p.x, p.y);
+	building_to_place->center = { (float)center.x, (float)center.y };
+	
 	building_to_place->coll->setPos(building_to_place->pos.x - building_to_place->collider_offset.x, building_to_place->pos.y - building_to_place->collider_offset.y);
 
 	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y);
