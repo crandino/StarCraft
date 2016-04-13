@@ -256,104 +256,103 @@ bool EntityManager::preUpdate()
 					}
 				}
 			}
-
 		}
+	}
 
-		if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (app->map->isAreaWalkable(building_to_place->coll->rect))
 		{
-			if (app->map->isAreaWalkable(building_to_place->coll->rect))
+			building_to_place->id = ++next_ID;
+			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
+			building_mode = false;
+
+			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+			int w, h;
+			uchar *buffer = NULL;
+			if (app->map->createWalkabilityMap(w, h, &buffer))
 			{
-				building_to_place->id = ++next_ID;
-				active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-				building_mode = false;
+				app->path->setMap(w, h, buffer);
 
-				app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-				int w, h;
-				uchar *buffer = NULL;
-				if (app->map->createWalkabilityMap(w, h, &buffer))
+				map<uint, Entity*>::iterator it = active_entities.begin();
+				for (; it != active_entities.end(); ++it)
 				{
-					app->path->setMap(w, h, buffer);
-
-					map<uint, Entity*>::iterator it = active_entities.begin();
-					for (; it != active_entities.end(); ++it)
+					if (it->second->type == UNIT)
 					{
-						if (it->second->type == UNIT)
-						{
-							Unit *unit = (Unit*)it->second;
+						Unit *unit = (Unit*)it->second;
 
-							if (unit->path.size() > 0)
-								if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-									unit->path = app->path->getLastPath();
-						}
+						if (unit->path.size() > 0)
+							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+								unit->path = app->path->getLastPath();
 					}
 				}
 			}
 		}
+	}
 
-		if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (app->map->isAreaWalkable(building_to_place->coll->rect))
 		{
-			if (app->map->isAreaWalkable(building_to_place->coll->rect))
+			building_to_place->id = ++next_ID;
+			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
+			building_mode = false;
+
+			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+			int w, h;
+			uchar *buffer = NULL;
+			if (app->map->createWalkabilityMap(w, h, &buffer))
 			{
-				building_to_place->id = ++next_ID;
-				active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-				building_mode = false;
+				app->path->setMap(w, h, buffer);
 
-				app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-				int w, h;
-				uchar *buffer = NULL;
-				if (app->map->createWalkabilityMap(w, h, &buffer))
+				map<uint, Entity*>::iterator it = active_entities.begin();
+				for (; it != active_entities.end(); ++it)
 				{
-					app->path->setMap(w, h, buffer);
-
-					map<uint, Entity*>::iterator it = active_entities.begin();
-					for (; it != active_entities.end(); ++it)
+					if (it->second->type == UNIT)
 					{
-						if (it->second->type == UNIT)
-						{
-							Unit *unit = (Unit*)it->second;
+						Unit *unit = (Unit*)it->second;
 
-							if (unit->path.size() > 0)
-								if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-									unit->path = app->path->getLastPath();
-						}
+						if (unit->path.size() > 0)
+							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+								unit->path = app->path->getLastPath();
 					}
 				}
 			}
 		}
+	}
 
 		//------------------------ATTACK MECHANICS------------------------------------//
 
-		if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		Entity* e = whichEntityOnMouse();
+		LOG("Hostility ON");
+		if (!selection.empty())
 		{
-			Entity* e = whichEntityOnMouse();
-			LOG("Hostility ON");
-			if (!selection.empty())
+			if (e != NULL && e->specialization == ZERGLING)
 			{
-				if (e != NULL && e->specialization == ZERGLING)
-				{
 
-					KillEntity(e);
-				}
+				KillEntity(e);
 			}
 		}
+	}
 		//--------------------------GETTING INSIDE BUNKERS------------------------------//
 
-		if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		//Getting inside Bunker
+		Entity *e = whichEntityOnMouse();
+
+		if (!selection.empty())
 		{
-			//Getting inside Bunker
-			Entity *e = whichEntityOnMouse();
+			if (e != NULL && e->specialization == BUNKER) {
+				GetInsideBunker((Building*)e);
 
-			if (!selection.empty())
-			{
-				if (e != NULL && e->specialization == BUNKER) {
-					GetInsideBunker((Building*)e);
-
-					/*
-					Stop animation. Put a KEY_UP to stop the animation
-					We also need to not make this an insta kill for the zergling
-					*/
-					KillEntity(e);
-				}
+				/*
+				Stop animation. Put a KEY_UP to stop the animation
+				We also need to not make this an insta kill for the zergling
+				*/
+				KillEntity(e);
 			}
 		}
 	}
