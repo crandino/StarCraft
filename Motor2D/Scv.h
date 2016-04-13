@@ -54,6 +54,7 @@ public:
 
 		// Another stuff
 
+		state = IDLE;
 		faction = PLAYER;
 		flying = false;
 

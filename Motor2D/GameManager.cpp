@@ -6,6 +6,15 @@
 
 //Author: RIE code.
 
+//Number to change the number of waves
+#define TOTALWAVES 1
+#define TOTALUNITSALLWAVES TOTALWAVES*2
+#define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME2 10
+#define	SIZE1 2 // Changes number of zerglings per wave
+#define ZERGLINGSCORE 20
+
+
 bool GameManager::start()
 {
 	bool ret = true;
@@ -14,7 +23,7 @@ bool GameManager::start()
 	GeneralTime.start();
 	LOG("LAST HOPE GAME STARTS!");
 
-	app->entity_manager->createWave(size1);
+	//app->entity_manager->createWave(size1);//First wave that is created
 	
 	return ret;
 }
@@ -23,35 +32,39 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 	
-	if (currentWaves < 2)
+	if (currentWaves < TOTALWAVES)
 	{
-		if (timeBetweenWaves.readSec() >= WaveTime1)//We check how much time do we have left before releasing a new wave
+		if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 		{
 			LOG("Wave time is over! prepare for the next wave!!!");
 			
-				app->entity_manager->createWave(size1);
+				app->entity_manager->createWave(SIZE1);
 				timeBetweenWaves.start();
-
-				if (app->entity_manager->getWaveZerglingSize() <= 0)//Not working yet but will finish it tomorrow.
-				{
-					addPoints(scoreCurrentWave);
-					killCount = 0;
-				}
-				//timer
-				//++unitKillCount;
-			
+				currentWaves++;
 		}
 		
-		if (app->entity_manager->unitKilled == true)//If a unit is killed, frags are added and points too
-		{
-			killCount++;
-			app->entity_manager->unitKilled = false;
-		}
 
-		if (isFinished)
+
+		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
+		if (app->entity_manager->enemyJustDied)
+		{
+			LOG("Score:", scoreCurrentWave);
+			addPoints(scoreCurrentWave);
+			
+			if (killCount >= SIZE1)
+			{
+				LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
+				killCount = 0;
+			}
+		}
+		//timer
+		//++unitKillCount;
+	
+		if (killCount == TOTALUNITSALLWAVES)
 		{
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)
+			LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
 
 			ret = false;
 		}
@@ -59,7 +72,9 @@ bool GameManager::update(float dt)
 		else if (gameOver)
 		{
 				//Display message of game over
+				LOG("GAME OVER");
 				//Display Score
+				LOG("Score: %d", scoreCurrentWave);
 				//End game loop
 				GeneralTime.start();
 				/*1: Whether the player has died*/
@@ -80,5 +95,5 @@ bool GameManager::postUpdate()
 
 void GameManager::addPoints(uint points)
 {
-	totalScore += scoreCurrentWave;
+	totalScore += ZERGLINGSCORE;
 }

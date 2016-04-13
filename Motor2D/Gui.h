@@ -96,15 +96,25 @@ public:
 	GuiImage* ui_create_builds = nullptr;
 
 	//Variables for CircleSelection. There are 10 size selection
-	/*W_22 = { 3, 4, 22, 13 };
+	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling
 	W_32 = { 28, 9, 32, 19 };
-	W_48 = { 64, 5, 48, 29 };*/
+	W_48 = { 64, 5, 48, 29 };
+	W_62 = { 116, 2, 62, 37};
+	W_72 = { 184, 19, 72, 43};
+	W_94 = { 261, 1, 94, 56};
+	W_94 = { 261, 1, 94, 56};
+	W_110 = { 361, 1, 110, 66};
+	W_122 =  {376, 74, 122, 73};
+	W_146 = {226, 66, 146, 88};
+	W_222 = { 2, 44, 222, 134};*/
 	SDL_Texture*	circles_of_selection;
 
 	// Variables for life of entities;
 	SDL_Texture* lifes_tex;
-	SDL_Rect	 life;
-	SDL_Rect	 no_life;
+	SDL_Rect	 green_life;
+	SDL_Rect	 yellow_life;
+	SDL_Rect	 red_life;
+	SDL_Rect     white_life;
 	
 
 private:

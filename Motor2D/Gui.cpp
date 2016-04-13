@@ -93,8 +93,11 @@ bool Gui::start()
 	// CIRCLES OF SELECTIOM
 	circles_of_selection = app->tex->loadTexture("Selection/Selection_circles.png");
 	lifes_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
-	life = { 486, 1, 5, 8 };
-	no_life = { 492, 1, 5, 8 };	
+
+	green_life = { 486, 3, 4, 5 };
+	yellow_life = { 496, 3, 4, 5 };
+	red_life = { 501, 3, 4, 5 };
+	white_life = { 491, 3, 4, 5 };	
 
 
 
@@ -285,12 +288,12 @@ bool Gui::postUpdate()
 		// Life counter blitting
 		if (e->current_hp > 0)
 		{
-			uint bars_to_draw = (e->max_hp_bars * ((float)e->current_hp / (float)e->max_hp)) + 1;
+			uint bars_to_draw = ceil((e->max_hp_bars * ((float)e->current_hp / (float)e->max_hp)) + 1);
 			uint bar = 1;
 			for (; bar < bars_to_draw; ++bar)
-				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * life.w), e->center.y + e->offset_life.y, &life);
+				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * green_life.w), e->center.y + e->offset_life.y, &green_life);
 			for (; bar <= e->max_hp_bars; ++bar)
-				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * no_life.w), e->center.y + e->offset_life.y, &no_life);
+			    app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * white_life.w), e->center.y + e->offset_life.y, &white_life);
 		}
 
 		
@@ -299,8 +302,9 @@ bool Gui::postUpdate()
 		else
 			drawHudSelection(SPECIALIZATION::NOTYPE);
 
-		
-	}
+	}		
+
+	
 
 	list<GuiElements*>::iterator item;
 

@@ -99,6 +99,8 @@ public:
 	/*--------Methods for interact with buildings----------*/
 	void GetInsideBunker(Building* e);
 
+	bool searchNearEntity(Entity* e);
+
 	/*---------Methods for attacking other units------------*/
 	//Method that Kills entities Used for the kill of zerglings and other units
 	void KillEntity(map<uint, Entity*> selection);
@@ -117,8 +119,10 @@ public:
 
 
 public:
+	//Frag count
+	bool enemyJustDied = false;
 
-	bool unitKilled = false;
+
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
@@ -130,30 +134,32 @@ public:
 private:
 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					ToDelete;
+	map<uint, Entity*>					to_delete;
 	map<uint, Entity*>					enemyWave;
-	uint next_ID;	
+	uint								next_ID;	
 
 	bool debug = false;
 
 	// CRZ -> Variables to build buildings.
-	bool building_mode;
-	Building* building_to_place;
-	SDL_Texture* building_tile;
+	bool			building_mode;
+	Building*		building_to_place;
+	SDL_Texture*	building_tile;
 
 	//ROF
 	Entity* marine;
-	float angle;
+	float	angle;
 
-	SDL_Rect			 selector;
+	SDL_Rect		selector;
 	bool			selector_init;
-	iPoint   initial_selector_pos;
-	iPoint     final_selector_pos;
+	iPoint			initial_selector_pos;
+	iPoint			final_selector_pos;
 
-	void	  calculateSelector();
+	void			calculateSelector();
 
 	//Textures
 	SDL_Texture* hp_tex;
+
+	
 	
 };
 

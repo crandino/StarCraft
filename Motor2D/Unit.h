@@ -14,7 +14,6 @@ public:
 	float			angle;
 	Vector2D<int>   direction;
 	float			speed;
-	SPECIALIZATION  unit_type;
 	UNIT_DIRECTION	unit_direction;
 
 	Unit()
@@ -92,6 +91,7 @@ public:
 					{
 						path.clear();
 						has_target = false;
+						state = IDLE;
 					}
 					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
 						path.erase(path.begin());
@@ -173,6 +173,43 @@ public:
 		{
 			unit_direction = LEFT_UP;
 		}
+	}
+
+	bool update(float dt)
+	{
+		coll->setPos(center.x - 10, center.y - 14);
+
+		switch (state)
+		{
+		case IDLE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			break;
+		case MOVE:
+			if (has_target) move(dt);
+			break;
+		case MOVE_ALERT:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			if (has_target) move(dt);
+			break;
+		case ATTACK:
+			if ((timer_attack_delay += dt) >= attack_delay)
+			{
+				attack();
+				timer_attack_delay = 0.0f;
+			}
+			break;
+		}
+		return true;
 	}
 };
 

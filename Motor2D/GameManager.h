@@ -19,7 +19,7 @@ public:
 	int totalWaves = 2;
 	int score = 0;
 	int enemyCount = 0;
-	uint killCount;
+	uint killCount = 0;
 	bool isFinished = false;
 	bool gameOver = false;
 
@@ -57,8 +57,12 @@ public:
 	uint scoreCurrentWave = 0;
 	uint totalScore = 0;
 
-	uint32 WaveTime1 = 15;//120 = 2 minutes per wave in the future or some other game designish number
-	uint size1 = 10; // Changes number of zerglings per wave
+private:
+	uint previousUnitKilled = 0;
+
+
+	uint32 WaveTime1 = 300;//120 = 2 minutes per wave in the future or some other game designish number
+	uint size1 = 0; // Changes number of zerglings per wave
 };
 
 #endif

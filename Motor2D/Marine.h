@@ -9,9 +9,13 @@ public:
 	//ROF
 	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
 	Animation	idle_up;
+	Animation	idle_right_up;
 	Animation   idle_right;
+	Animation	idle_right_down;
 	Animation	idle_down;
+	Animation	idle_left_down;
 	Animation	idle_left;
+	Animation	idle_left_up;
 	Animation	walk_up;
 	Animation   one;
 	Animation   walk_right_up;
@@ -59,6 +63,7 @@ public:
 
 		// Another stuff
 		
+		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 3, 4, 22, 13 };
 		circle_selection_offset = -1;
@@ -68,10 +73,15 @@ public:
 		current_hp = 40.0f;
 		max_hp_bars = 6;
 		offset_life = { -19, 16 };
+
+		range_to_view = 200;
+		range_to_attack = 100;
+		damage = 5.0f;
+		attack_delay = 200.0f;
 		
 		//current_hp_bars = 6;
 		
-		speed = 10;
+		speed = 10.0f;
 		
 
 		direction.create(1, 1, p.x, p.y);
@@ -87,7 +97,7 @@ public:
 			angle -= 360.f;
 		}
 
-		if (path.size() > 0)
+		if (has_target)
 		{
 			// From 0 to 180 degrees
 			if (angle >= 0.f && angle < 22.5f)
@@ -162,17 +172,34 @@ public:
 			{
 				current_animation = &idle_up;
 			}
+
+			if (angle >= 45.f && angle < 67.5f)
+			{
+				current_animation = &idle_right_up;
+			}
 			if (angle >= 90.f && angle < 112.5f)
 			{
 				current_animation = &idle_right;
+			}
+			if (angle >= 135.f && angle < 157.5f)
+			{
+				current_animation = &idle_right_down;
 			}
 			if (angle >= 180.f && angle < 202.5f)
 			{
 				current_animation = &idle_down;
 			}
+			if (angle >= 225.f && angle < 247.5f)
+			{
+				current_animation = &idle_left_down;
+			}
 			if (angle >= 270.f && angle < 292.5f)
 			{
 				current_animation = &idle_left;
+			}
+			if (angle >= 315.f && angle < 337.5f)
+			{
+				current_animation = &idle_left_up;
 			}
 			
 		}		
@@ -182,13 +209,6 @@ public:
 	void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
-	}
-
-	bool update(float dt)
-	{
-		coll->setPos(center.x - 10, center.y - 14);
-		if (has_target) move(dt);
-		return true;
 	}
 };
 

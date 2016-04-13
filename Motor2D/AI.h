@@ -12,9 +12,9 @@ using namespace std;
 //Author: RIE
 enum IA_STATES
 {
-	IDLE = 0,
-	ATTACK = 1,
-	FLEEING = 2
+	IA_IDLE = 0,
+	IA_ATTACK = 1,
+	IA_FLEEING = 2
 };
 
 

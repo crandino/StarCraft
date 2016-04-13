@@ -33,11 +33,13 @@ public:
 		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 128, 100 }, COLLIDER_BOMB);
 
 		// Another stuff
-		max_hp = 500;
-		current_hp = 500;
-		max_hp_bars = 20;
+		specialization = COMMANDCENTER;
+		max_hp = 1500;
+		current_hp = 1500;
+		max_hp_bars = 36;
 		offset_life = { -58, 58 };
 
+		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 226, 66, 146, 88 };
 		circle_selection_offset = 34;

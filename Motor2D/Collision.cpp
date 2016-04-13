@@ -75,7 +75,7 @@ bool Collision::preUpdate()
 		if ((*tmp)->to_delete == true)
 		{
 			RELEASE(*tmp);
-			colliders.erase(tmp);
+			tmp = colliders.erase(tmp);
 		}			
 		else
 			++tmp;
