@@ -59,9 +59,10 @@ void Map::draw()
 			if (layer->properties.get("NoDraw") != 0)
 				continue;
 
-			// Camera-culling: Render only blits what camera is showing.
+			// Camera-culling: Render only blits what camera is showing. Behind Terran HUD it shouldn't blit.
+			unsigned int hud_terran_height = 105;
 			iPoint initial_tile = app->map->worldToMap(*map_to_draw ,- app->render->camera.x, -app->render->camera.y);
-			iPoint final_tile = app->map->worldToMap(*map_to_draw ,- app->render->camera.x + app->render->camera.w, -app->render->camera.y + app->render->camera.h);
+			iPoint final_tile = app->map->worldToMap(*map_to_draw, -app->render->camera.x + app->render->camera.w, -app->render->camera.y + app->render->camera.h - hud_terran_height);
 
 			iPoint blit_position = initial_tile;
 

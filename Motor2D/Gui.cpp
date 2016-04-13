@@ -298,9 +298,7 @@ const GuiElements* Gui::findMouseHover()
 	iPoint mouse;
 	app->input->getMousePosition(mouse);
 
-	elements.reverse();
-
-	for (list<GuiElements*>::iterator item = elements.begin(); item != elements.end(); item++)
+	for (list<GuiElements*>::reverse_iterator item = elements.rbegin(); item != elements.rend(); ++item)
 	{
 		GuiElements* gui_test = *item;
 		if (gui_test->interactive == true)

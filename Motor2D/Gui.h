@@ -33,10 +33,7 @@ enum GUI_TYPES
 {
 	UNKNOWN,
 	IMAGE,
-	LABEL,
 	CURSOR,
-	BUTTON,
-	HSCROLLBAR
 };
 
 // ---------------------------------------------------
