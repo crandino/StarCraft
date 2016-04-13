@@ -269,6 +269,10 @@ bool EntityManager::preUpdate()
 		{
 			if (e != NULL && e->specialization == ZERGLING)
 			{
+				/*
+				Stop animation. Put a KEY_UP to stop the animation
+				We also need to not make this an insta kill for the zergling
+				*/
 				KillEntity(e);			
 			}
 		}
