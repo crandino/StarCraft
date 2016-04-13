@@ -17,7 +17,7 @@ public:
 		center = { (float)p.x, (float)p.y };
 
 		tex_width = 96;
-		tex_height = 59;
+		tex_height = 128;
 		collider_offset.set(-1, -38);
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
