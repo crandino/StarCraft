@@ -51,8 +51,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(audio);
 	addModule(map);
 	addModule(path);
-	addModule(entity_manager);
 	addModule(gui);
+	addModule(entity_manager);
 	addModule(scene);
 	addModule(collision);	
 	addModule(game_manager);

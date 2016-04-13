@@ -31,7 +31,8 @@ enum SPECIALIZATION  // Second specialization
 
 
 	// Buildings
-	COMMANDCENTER
+	COMMANDCENTER, 
+	BUNKER,
 };
 
 enum UNIT_DIRECTION
@@ -94,6 +95,8 @@ public:
 	uint getWaveZerglingSize();
 
 	void AddEntityToWave(uint n, Entity* e);
+	/*--------Methods for interact with buildings----------*/
+	void GetInsideBunker(Building* e);
 
 	bool searchNearEntity(Entity* e);
 
@@ -102,7 +105,7 @@ public:
 	void KillEntity(map<uint, Entity*> selection);
 	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
-	map<uint, Entity*>     selection;
+	//map<uint, Entity*>     selection;
 
 	/*---------------Creating Waves-------------------*/
 	void createZergling(iPoint position, iPoint radius);
@@ -121,11 +124,13 @@ public:
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
 
+public:
+	map<uint, Entity*>					waveZerglings;
+	map<uint, Entity*>                  selection;
+
 private:
 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					waveZerglings;
-	//map<uint, Entity*>                selection;
 	map<uint, Entity*>					toDelete;
 	map<uint, Entity*>					enemyWave;
 	uint								next_ID;	
@@ -149,7 +154,6 @@ private:
 	void			calculateSelector();
 
 	//Textures
-	SDL_Texture* circle_characters;
 	SDL_Texture* hp_tex;
 	
 };

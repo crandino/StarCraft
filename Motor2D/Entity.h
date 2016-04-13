@@ -32,10 +32,13 @@ public:
 
 	FACTION			faction;
 	ENTITY_TYPE		type;
-	SDL_Rect        selection_type;
 	SPECIALIZATION  specialization;
 	STATE			state;
 	float			timer_to_check = 0.0f;
+
+	// UI paramters
+	SDL_Rect        selection_type;
+	int				circle_selection_offset;
 	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;
@@ -44,18 +47,20 @@ public:
 	Vector2D<int>   direction;
 	float			angle;
 	float			speed;
-	
 
-	unsigned int    max_hp;
-	float           current_hp;
-	unsigned int    max_hp_bars;
-	float           current_hp_bars;
+	// Lifes attributes
+	uint			max_hp;
+	int             current_hp;
+	uint            max_hp_bars;
+	iPoint			offset_life;
+
 	Entity			*target_to_attack;
 	unsigned int	range_to_attack;
 	unsigned int	range_to_view;
 	float			damage;
 	float			attack_delay;
 	float			timer_attack_delay = 0.0f;
+	
 
 	Collider*       coll;
 	

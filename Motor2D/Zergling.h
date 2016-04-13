@@ -36,8 +36,12 @@ public:
 		specialization = ZERGLING;
 		state = IDLE;
 		faction = COMPUTER;
-		max_hp = 10;
-		current_hp = max_hp;
+		max_hp = 40;
+		current_hp = 40.0f;
+		max_hp_bars = 6;
+		selection_type = { 3, 4, 22, 13 };
+		circle_selection_offset = -1;
+		offset_life = { -19, 16 };
 		flying = false;
 	}
 };
