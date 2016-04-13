@@ -616,7 +616,7 @@ void EntityManager::choosePlaceForBuilding()
 {
 	iPoint p; app->input->getMousePosition(p);
 	iPoint pos = app->render->screenToWorld( p.x - building_to_place->tex_width / 2, p.y - building_to_place->tex_height / 2 );
-	//building_to_place->pos = { (float)pos.x, (float)pos.y };
+	building_to_place->pos = { (float)pos.x, (float)pos.y };
 	
 	iPoint center = app->render->screenToWorld(p.x, p.y);
 	building_to_place->center = { (float)center.x, (float)center.y };
