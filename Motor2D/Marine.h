@@ -194,6 +194,7 @@ public:
 		max_hp = 40;
 		current_hp = 40.0f;
 		max_hp_bars = 6;
+		offset_life = { -19, 16 };
 		
 		//current_hp_bars = 6;
 		

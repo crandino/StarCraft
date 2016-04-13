@@ -34,7 +34,10 @@ public:
 
 		// Another stuff
 		building_type = COMMANDCENTER;
-		max_hp = 50;
+		max_hp = 500;
+		current_hp = 500;
+		max_hp_bars = 20;
+		offset_life = { -58, 58 };
 
 		faction = PLAYER;
 		selection_type = { 226, 66, 146, 88 };
