@@ -43,6 +43,12 @@ public:
 		circle_selection_offset = -1;
 		offset_life = { -19, 16 };
 		flying = false;
+
+		speed = 8.0f;
+		range_to_view = 200;
+		range_to_attack = 64;
+		damage = 3.0f;
+		attack_delay = 200.0f;
 	}
 };
 

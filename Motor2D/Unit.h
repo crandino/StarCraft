@@ -175,6 +175,40 @@ public:
 			unit_direction = LEFT_UP;
 		}
 	}
+
+	bool update(float dt)
+	{
+		coll->setPos(center.x - 10, center.y - 14);
+
+		switch (state)
+		{
+		case IDLE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			break;
+		case MOVE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			if (has_target) move(dt);
+			break;
+		case ATTACK:
+			if ((timer_attack_delay += dt) >= attack_delay)
+			{
+				attack();
+				timer_attack_delay = 0.0f;
+			}
+			break;
+		}
+		return true;
+	}
 };
 
 
