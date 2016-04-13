@@ -22,14 +22,15 @@ bool AI::preUpdate()
 
 bool AI::start()
 {
-	zergArmyWave = app->entity_manager->waveZerglings;
+	//zergArmyWave = app->entity_manager->waveZerglings;
+	return true;
 }
 
 void AI::checkForClosestPlayerUnit()
 {
-	map<uint, Entity*>::iterator it = zergArmyWave.begin();
+	//map<uint, Entity*>::iterator it = zergArmyWave.begin();
 	
-	it->second->pos.distanceTo();
+	//it->second->pos.distanceTo();
 }
 
 void AI::checkForClosestPlayerBuilding()

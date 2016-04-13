@@ -72,8 +72,7 @@ public:
 	{
 
 	}
-
-
+	
 	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));

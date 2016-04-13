@@ -161,38 +161,7 @@ bool EntityManager::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
 
-	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (app->map->isAreaWalkable(building_to_place->coll->rect))
-		{
-			building_to_place->id = ++next_ID;
-			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-			building_mode = false;
-
-			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			int w, h;
-			uchar *buffer = NULL;
-			if (app->map->createWalkabilityMap(w, h, &buffer))
-			{
-				app->path->setMap(w, h, buffer);
-
-				map<uint, Entity*>::iterator it = active_entities.begin();
-				for (; it != active_entities.end(); ++it)
-				{
-					if (it->second->type == UNIT)
-					{
-						Unit *unit = (Unit*)it->second;
-
-						if (unit->path.size() > 0)
-							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-								unit->path = app->path->getLastPath();
-					}
-				}
-			}
-		}
-	}
-=======
->>>>>>> origin/master
+	
 
 	// Clicking and holding left button, starts a selection
 	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -246,24 +215,13 @@ bool EntityManager::preUpdate()
 				{
 					Unit *u = (Unit*)it->second;
 					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
-
-					break;
-				}
-				}
-				selection.insert(pair<uint, Entity*>(it->first, it->second));
+					selection.insert(pair<uint, Entity*>(it->first, it->second));
+				}		
+				if (it->second->type == BUILDING && !units_only)
+					selection.insert(pair<uint, Entity*>(it->first, it->second));
 			}
 		}
 	}
-
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-				}					
-
-				if (it->second->type == BUILDING && !units_only)
-					selection.insert(pair<uint, Entity*>(it->first, it->second)); 
-			}
-		}	
-	}		
->>>>>>> origin/master
 
 	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -294,6 +252,37 @@ bool EntityManager::preUpdate()
 			}
 		}
 
+	}
+
+	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (app->map->isAreaWalkable(building_to_place->coll->rect))
+		{
+			building_to_place->id = ++next_ID;
+			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
+			building_mode = false;
+
+			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+			int w, h;
+			uchar *buffer = NULL;
+			if (app->map->createWalkabilityMap(w, h, &buffer))
+			{
+				app->path->setMap(w, h, buffer);
+
+				map<uint, Entity*>::iterator it = active_entities.begin();
+				for (; it != active_entities.end(); ++it)
+				{
+					if (it->second->type == UNIT)
+					{
+						Unit *unit = (Unit*)it->second;
+
+						if (unit->path.size() > 0)
+							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+								unit->path = app->path->getLastPath();
+					}
+				}
+			}
+		}
 	}
 
 	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -359,7 +348,6 @@ bool EntityManager::preUpdate()
 				We also need to not make this an insta kill for the zergling
 				*/
 				KillEntity(e);			
->>>>>>> origin/master
 			}
 		}
 

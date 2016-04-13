@@ -41,7 +41,7 @@ private:
 	float timeUpdatesIA = 0.12f;
 	float timeNextUpdate = 0;
 
-	map<uint, Entity*> zergArmyWave;
+	//map<uint, Entity*> zergArmyWave;
 
 };
 

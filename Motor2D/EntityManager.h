@@ -103,7 +103,7 @@ public:
 	void KillEntity(map<uint, Entity*> selection);
 	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
-	map<uint, Entity*>     selection;
+	//map<uint, Entity*>     selection;
 
 	/*---------------Creating Waves-------------------*/
 	void createZergling(iPoint position, iPoint radius);
@@ -123,14 +123,14 @@ public:
 	void choosePlaceForBuilding();
 
 public:
-	map<uint, Entity*>					  waveZerglings;
+	map<uint, Entity*>					waveZerglings;
+	map<uint, Entity*>                  selection;
 
 private:
 
 	map<uint, Entity*>					active_entities;
-	//map<uint, Entity*>                     selection;
-	map<uint, Entity*>						ToDelete;
-	map<uint, Entity*>					   enemyWave;
+	map<uint, Entity*>					ToDelete;
+	map<uint, Entity*>					enemyWave;
 	uint next_ID;	
 
 	bool debug = false;
