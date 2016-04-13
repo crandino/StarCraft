@@ -190,6 +190,9 @@ public:
 			}
 			break;
 		case MOVE:
+			if (has_target) move(dt);
+			break;
+		case MOVE_ALERT:
 			if ((timer_to_check += dt) >= TIME_TO_CHECK)
 			{
 				if (searchNearestEnemy())
