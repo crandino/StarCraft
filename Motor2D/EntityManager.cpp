@@ -161,8 +161,6 @@ bool EntityManager::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
 
-
-
 	// Clicking and holding left button, starts a selection
 	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -273,7 +271,6 @@ bool EntityManager::preUpdate()
 			if (app->map->createWalkabilityMap(w, h, &buffer))
 			{
 				app->path->setMap(w, h, buffer);
-
 				map<uint, Entity*>::iterator it = active_entities.begin();
 				for (; it != active_entities.end(); ++it)
 				{
@@ -290,39 +287,8 @@ bool EntityManager::preUpdate()
 		}
 	}
 
-	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (app->map->isAreaWalkable(building_to_place->coll->rect))
-		{
-			building_to_place->id = ++next_ID;
-			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-			building_mode = false;
 
-			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			int w, h;
-			uchar *buffer = NULL;
-			if (app->map->createWalkabilityMap(w, h, &buffer))
-			{
-				app->path->setMap(w, h, buffer);
-
-				map<uint, Entity*>::iterator it = active_entities.begin();
-				for (; it != active_entities.end(); ++it)
-				{
-					if (it->second->type == UNIT)
-					{
-						Unit *unit = (Unit*)it->second;
-
-						if (unit->path.size() > 0)
-							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-								unit->path = app->path->getLastPath();
-					}
-				}
-			}
-		}
-	}
-
-		//------------------------ATTACK MECHANICS------------------------------------//
-
+	//------------------------ATTACK MECHANICS------------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		Entity* e = whichEntityOnMouse();
@@ -336,8 +302,8 @@ bool EntityManager::preUpdate()
 			}
 		}
 	}
-		//--------------------------GETTING INSIDE BUNKERS------------------------------//
 
+	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		//Getting inside Bunker
@@ -391,7 +357,7 @@ bool EntityManager::update(float dt)
 	for (; it2 != active_entities.end(); ++it2)
 	{
 		if (it2->second->current_hp <= 0.0f)
-			toDelete.insert(pair<uint, Entity*>(it2->first, it2->second));
+			to_delete.insert(pair<uint, Entity*>(it2->first, it2->second));
 	}
 
 	return true;
@@ -403,35 +369,23 @@ bool EntityManager::postUpdate()
 	/*Resetting bool for Game Manager*/
 	enemyJustDied = false;
 
-
-
-
-	if (toDelete.size() > 0)
+	if (to_delete.size() > 0)
 	{
-		map<uint, Entity*>::iterator it = toDelete.begin();
-		for (; it != toDelete.end(); ++it)
+		map<uint, Entity*>::iterator it = to_delete.begin();
+		for (; it != to_delete.end(); ++it)
 		{
-			
+			it->second->coll->to_delete = true;
 			active_entities.erase(active_entities.find(it->second->id));
 			delete it->second;
 		}
-		toDelete.clear();
+		to_delete.clear();
 	}
 
 	// Entities Drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		//MSC attempt to create a timer to slow down marine animations. It's not working exactly as intended. Can be tested willingly.
-		/*uint32 i = 0;
-		uint32 dt = app->getDt();
-		//uint32 dt = 5000000;
-		while (i < dt)
-		{
-			if (i == dt-1) {i = dt;  it->second->draw();
-			}
-			else i++;
-		}*/
+		
 		it->second->draw(); //if you try the method, comment this line
 	}
 		
@@ -525,7 +479,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	{
 		if (it->second != e && e->faction != it->second->faction)
 		{
-			float d = e->pos.distanceTo(it->second->pos);
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			if (d <= value)
 			{
 				(e->target_to_attack) = &(*it->second);
@@ -545,7 +499,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 			{
 				unit->has_target = true;
 				unit->path = app->path->getLastPath();
-				e->state = MOVE;
+				e->state = MOVE_ALERT;
 			}
 	}
 
@@ -586,7 +540,7 @@ void EntityManager::createZergling(iPoint position, iPoint radius)
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)
 {
-	vector<Entity* const> unitsToDelete;
+	vector<Entity* const> unitsto_delete;
 	map<uint, Entity*>::iterator it;
 
 	vector <Entity* const>::iterator itdel;
@@ -613,6 +567,7 @@ void EntityManager::deleteEntityKilled(Entity* e)
 {
 	vector <Entity* const>::iterator itdel;
 
+	e->coll->to_delete = true;
 	active_entities.erase(e->id);
 	enemyJustDied = true;
 	if (e->faction == COMPUTER)
@@ -653,6 +608,13 @@ void EntityManager::GetInsideBunker(Building* e)
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)
 void EntityManager::deleteAllEntities()
 {
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); it++)
+	{
+		it->second->coll->to_delete = true;
+		delete it->second;
+	}	
+
 	active_entities.clear();
 	selection.clear();
 }
@@ -660,8 +622,12 @@ void EntityManager::deleteAllEntities()
 void EntityManager::choosePlaceForBuilding()
 {
 	iPoint p; app->input->getMousePosition(p);
-	building_to_place->pos = { (float)p.x - building_to_place->tex_width / 2, (float)p.y - building_to_place->tex_height / 2 };
-	building_to_place->center = { (float)p.x, (float)p.y };
+	iPoint pos = app->render->screenToWorld( p.x - building_to_place->tex_width / 2, p.y - building_to_place->tex_height / 2 );
+	building_to_place->pos = { (float)pos.x, (float)pos.y };
+	
+	iPoint center = app->render->screenToWorld(p.x, p.y);
+	building_to_place->center = { (float)center.x, (float)center.y };
+	
 	building_to_place->coll->setPos(building_to_place->pos.x - building_to_place->collider_offset.x, building_to_place->pos.y - building_to_place->collider_offset.y);
 
 	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y);

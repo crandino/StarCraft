@@ -9,12 +9,13 @@
 #include "Collision.h"
 #include "SDL\include\SDL.h"
 
-#define TIME_TO_CHECK 50.0f
+#define TIME_TO_CHECK 100.0f
 
 enum STATE
 {
 	IDLE,
 	MOVE,
+	MOVE_ALERT,
 	ATTACK
 };
 
@@ -69,7 +70,7 @@ public:
 	SDL_Texture     *tile_path;
 	bool            end_path = false;
 
-	bool			markedToDelete = false;
+	bool			marked_to_delete = false;
 
 	// Constructors
 	Entity()
@@ -99,7 +100,7 @@ public:
 
 	virtual void attack()
 	{
-		if (pos.distanceTo(target_to_attack->pos) <= range_to_attack)
+		if ((abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y)) <= range_to_attack)
 		{
 			if ((target_to_attack->current_hp -= damage) <= 0.0f)
 			{
@@ -110,14 +111,7 @@ public:
 			}
 		}
 		else
-		{
 			state = IDLE;
-			if (type == UNIT)
-			{
-				app->entity_manager->searchNearEntity(this);
-			}
-		}
-
 	}
 
 	virtual void draw()
@@ -127,7 +121,8 @@ public:
 
 	void markToDelete()
 	{
-		markedToDelete = true;
+
+		marked_to_delete = true;
 
 	}
 

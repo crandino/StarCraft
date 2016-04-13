@@ -133,7 +133,7 @@ public:
 private:
 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					toDelete;
+	map<uint, Entity*>					to_delete;
 	map<uint, Entity*>					enemyWave;
 	uint								next_ID;	
 

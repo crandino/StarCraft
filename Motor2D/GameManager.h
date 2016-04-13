@@ -56,8 +56,13 @@ public:
 	//Score system attributes
 	uint scoreCurrentWave = 0;
 	uint totalScore = 0;
+
 private:
 	uint previousUnitKilled = 0;
+
+
+	uint32 WaveTime1 = 300;//120 = 2 minutes per wave in the future or some other game designish number
+	uint size1 = 0; // Changes number of zerglings per wave
 };
 
 #endif
