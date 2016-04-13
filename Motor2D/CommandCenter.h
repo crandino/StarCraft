@@ -33,7 +33,6 @@ public:
 		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 128, 100 }, COLLIDER_BOMB);
 
 		// Another stuff
-		building_type = COMMANDCENTER;
 		max_hp = 500;
 		current_hp = 500;
 		max_hp_bars = 20;
@@ -42,6 +41,7 @@ public:
 		faction = PLAYER;
 		selection_type = { 226, 66, 146, 88 };
 		circle_selection_offset = 34;
+		specialization = COMMANDCENTER;
 	}
 
 };

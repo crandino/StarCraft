@@ -32,7 +32,7 @@
   </map>
 
  <gui>
-    <atlas file="gui/UI_Panel_Terran.png"/>
+    <atlas file="TerranConsole/UI_Panel_Terran.png"/>
  </gui>
   
   

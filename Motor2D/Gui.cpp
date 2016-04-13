@@ -39,8 +39,46 @@ bool Gui::awake(pugi::xml_node& conf)
 bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
-	terran_console = app->tex->loadTexture("TerranConsole/tconsole.png");
+	//terran_console = app->tex->loadTexture("TerranConsole/tconsole.png");
 	
+	// HUD
+	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
+	ui_terran->setLocalPos(0, 292);
+	ui_terran->interactive = true;
+	//ui_terran->setListener(this);
+	ui_terran->can_focus = true;
+
+	rectangle_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
+	rectangle_map->setLocalPos(4, 346);
+	rectangle_map->interactive = true;
+	//rectangle_map->setListener(this);
+	rectangle_map->can_focus = true;
+
+	rectangle_command = app->gui->createImage(NULL, { 0, 152, 37, 34 });
+	rectangle_command->setLocalPos(505, 358);
+	rectangle_command->interactive = true;
+	//ui_terran->setListener(this);
+	rectangle_command->can_focus = true;
+
+	rectangle_command_2 = app->gui->createImage(NULL, { 48, 152, 37, 34 });
+	rectangle_command_2->setLocalPos(551, 358);
+	rectangle_command_2->interactive = true;
+	//ui_terran->setListener(this);
+	rectangle_command_2->can_focus = true;
+
+	// HUD Command Center
+	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });
+	ui_create_bot->setLocalPos(505, 358);
+	ui_create_bot->interactive = true;
+	ui_create_bot->can_focus = true;
+	ui_create_bot->draw_element = false;
+
+	ui_create_builds = app->gui->createImage(NULL, { 298, 28, 37, 34 });
+	ui_create_builds->setLocalPos(551, 358);
+	ui_create_builds->interactive = true;
+	ui_create_builds->can_focus = true;
+	ui_create_builds->draw_element = false;
+
 	// CURSOR
 	SDL_ShowCursor(SDL_DISABLE);
 	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
@@ -58,10 +96,44 @@ bool Gui::start()
 	life = { 486, 1, 5, 8 };
 	no_life = { 492, 1, 5, 8 };	
 
+
+
 	// To show walkability on building mode
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	return true;
+}
+
+void Gui::drawHudSelection(SPECIALIZATION  selection)
+{
+	switch (selection)
+	{
+	      case (COMMANDCENTER) :
+			  //Desactivate quad background
+		      rectangle_command->draw_element = false;
+		      rectangle_command->interactive = false;
+		      rectangle_command->can_focus = false;
+			  rectangle_command_2->draw_element = false;
+
+			  //Activate new images
+		      ui_create_bot->draw_element = true; 
+			  ui_create_builds->draw_element = true;
+
+
+		      break;
+
+		  case (NOTYPE) :
+			  //Desactivate all the options of Entities
+			  ui_create_bot->draw_element = false;
+			  ui_create_builds->draw_element = false;
+
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command->interactive = true;
+			  rectangle_command->can_focus = true;
+			  break;
+	}
 }
 
 // Update all guis
@@ -198,6 +270,11 @@ bool Gui::update(float dt)
 // Called after all Updates
 bool Gui::postUpdate()
 {
+	//Check if we have entities selected
+	if (app->entity_manager->selection.size() == 0)
+	{
+		drawHudSelection(SPECIALIZATION::NOTYPE);
+	}
 	// Blit of Selection Circles and Lifes
 	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 	{
@@ -214,7 +291,15 @@ bool Gui::postUpdate()
 				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * life.w), e->center.y + e->offset_life.y, &life);
 			for (; bar <= e->max_hp_bars; ++bar)
 				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * no_life.w), e->center.y + e->offset_life.y, &no_life);
-		}		
+		}
+
+		
+		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
+			drawHudSelection(COMMANDCENTER);
+		else
+			drawHudSelection(SPECIALIZATION::NOTYPE);
+
+		
 	}
 
 	list<GuiElements*>::iterator item;
@@ -232,7 +317,7 @@ bool Gui::postUpdate()
 			gui->debugDraw();
 	}
 
-	if (cursor->draw_element == true)
+	//if (cursor->draw_element == true)
 		cursor->draw();
 
 	if (debug)

@@ -40,18 +40,6 @@ bool Scene::start()
 	start_position.setZero();
 	final_position.setZero();*/
 
-	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
-	ui_terran->setLocalPos(0, 292);
-	ui_terran->interactive = true;
-	ui_terran->setListener(this);
-	ui_terran->can_focus = true;
-
-	rectangle_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
-	rectangle_map->setLocalPos(4, 346);
-	rectangle_map->interactive = true;
-	rectangle_map->setListener(this);
-	rectangle_map->can_focus = true;
-
 	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
 	rectangle_map_camera->setLocalPos(3, 3);

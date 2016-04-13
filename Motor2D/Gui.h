@@ -5,10 +5,12 @@
 #include "Module.h"
 #include "Render.h"
 #include "Animation.h"
+#include "EntityManager.h"
 
 class GuiCursor;
 class GuiImage;
 using namespace std;
+
 
 enum GUI_EVENTS
 {
@@ -35,6 +37,9 @@ enum GUI_TYPES
 	IMAGE,
 	CURSOR,
 };
+
+
+
 
 // ---------------------------------------------------
 class Gui : public Module
@@ -80,6 +85,16 @@ public:
 	iPoint map_limits;
 	float scroll_speed;
 
+	//HUD 
+	GuiImage* ui_terran = nullptr;
+	GuiImage* rectangle_map = nullptr;
+	GuiImage* rectangle_command = nullptr;
+	GuiImage* rectangle_command_2 = nullptr;
+
+	//Command Center HUD
+	GuiImage* ui_create_bot = nullptr;
+	GuiImage* ui_create_builds = nullptr;
+
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 };
 	W_32 = { 28, 9, 32, 19 };
@@ -100,6 +115,7 @@ private:
 	SDL_Texture* atlas = nullptr;
 	SDL_Texture* terran_console = nullptr;
 	string atlas_file_name;
+	void drawHudSelection(SPECIALIZATION  selection);
 
 	SDL_Texture *path_walkability;
 };

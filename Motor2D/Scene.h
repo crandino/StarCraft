@@ -43,7 +43,7 @@ private:
 	bool debug = false;
 
 	//HUD UI
-	GuiImage* ui_terran = nullptr;
+	
 	GuiImage* rectangle_map_camera = nullptr;
 	GuiImage* rectangle_map = nullptr;
 	GuiImage* start_menu = nullptr;
@@ -52,7 +52,8 @@ private:
 	SDL_Texture* start_menu_img = nullptr;
 
 public:
-
+   
+	//GuiImage* ui_terran = nullptr;
 	// CRZ PathFinding tests
 	/*SDL_Texture *path_tile;
 	bool	     path_selected;

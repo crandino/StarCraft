@@ -33,7 +33,6 @@ public:
 		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 126, 69 }, COLLIDER_BOMB);
 
 		// Another stuff
-		building_type = BUNKER;
 		specialization = BUNKER;
 		max_hp = 350;
 		capacity = 4;

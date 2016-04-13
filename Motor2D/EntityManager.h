@@ -25,6 +25,7 @@ enum ENTITY_TYPE  // First specialization: unit or building
 enum SPECIALIZATION  // Second specialization
 {
 	// Units
+	NOTYPE,
 	MARINE,
 	SCV,
 	ZERGLING,
@@ -124,7 +125,7 @@ public:
 
 public:
 	map<uint, Entity*>					waveZerglings;
-	map<uint, Entity*>                  selection;
+	map<uint, Entity*>                  selection; 
 
 private:
 
