@@ -34,9 +34,9 @@ public:
 
 		// Another stuff
 		specialization = COMMANDCENTER;
-		max_hp = 500;
-		current_hp = 500;
-		max_hp_bars = 20;
+		max_hp = 1500;
+		current_hp = 1500;
+		max_hp_bars = 36;
 		offset_life = { -58, 58 };
 
 		state = IDLE;

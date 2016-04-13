@@ -81,7 +81,7 @@ public:
 	float scroll_speed;
 
 	//Variables for CircleSelection. There are 10 size selection
-	/*W_22 = { 3, 4, 22, 13 };
+	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling
 	W_32 = { 28, 9, 32, 19 };
 	W_48 = { 64, 5, 48, 29 };
 	W_62 = { 116, 2, 62, 37};
@@ -96,8 +96,10 @@ public:
 
 	// Variables for life of entities;
 	SDL_Texture* lifes_tex;
-	SDL_Rect	 life;
-	SDL_Rect	 no_life;
+	SDL_Rect	 green_life;
+	SDL_Rect	 yellow_life;
+	SDL_Rect	 red_life;
+	SDL_Rect     white_life;
 	
 
 private:
