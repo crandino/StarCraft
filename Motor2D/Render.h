@@ -5,6 +5,13 @@
 #include "Point2d.h"
 #include "Module.h"
 
+struct Sprite
+{
+	SDL_Texture *tex;
+
+};
+
+
 class Render : public Module
 {
 public:

@@ -23,8 +23,11 @@ public:
 
 	FACTION			faction;
 	ENTITY_TYPE		type;
-	SDL_Rect        selection_type;
 	SPECIALIZATION  specialization;
+
+	// UI paramters
+	SDL_Rect        selection_type;
+	int				circle_selection_offset;
 	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;
@@ -35,10 +38,9 @@ public:
 	float speed;
 	
 
-	unsigned int    max_hp;
-	float           current_hp;
-	unsigned int    max_hp_bars;
-	float           current_hp_bars;
+	uint			max_hp;
+	uint            current_hp;
+	uint            max_hp_bars;
 
 	Collider*       coll;
 	

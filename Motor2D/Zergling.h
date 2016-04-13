@@ -36,6 +36,8 @@ public:
 		specialization = ZERGLING;
 		faction = COMPUTER;
 		max_hp = 10;
+		selection_type = { 3, 4, 22, 13 };
+		circle_selection_offset = -1;
 		flying = false;
 	}
 };

@@ -309,27 +309,6 @@ bool EntityManager::update(float dt)
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {
-	// Basic selection. Entities surrounded by black SDL_Rects.
-	//map<uint, Entity*>::iterator it2 = selection.begin();
-	//for (; it2 != selection.end(); ++it2)
-	//{
-	//	if (it2->second->type == MARINE)
-	//	{
-	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
-	//		app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
-	//	}
-	//	else if (it2->second->type == ZERGLING)
-	//	{
-	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
-	//		app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
-	//	}
-	//	if (it2->second->type == SCV)
-	//	{	//TODO IPL
-	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
-	//		app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
-	//	}
-	//}
-	
 	//for (map<uint, Entity*>::iterator it2 = selection.begin(); it2 != selection.end(); ++it2)
 	//{
 	//	//MSC provisional method that calculates current HP bars
@@ -547,6 +526,7 @@ void EntityManager::choosePlaceForBuilding()
 {
 	iPoint p; app->input->getMousePosition(p);
 	building_to_place->pos = { (float)p.x - building_to_place->tex_width / 2, (float)p.y - building_to_place->tex_height / 2 };
+	building_to_place->center = { (float)p.x, (float)p.y };
 	building_to_place->coll->setPos(building_to_place->pos.x - building_to_place->collider_offset.x, building_to_place->pos.y - building_to_place->collider_offset.y);
 
 	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y);

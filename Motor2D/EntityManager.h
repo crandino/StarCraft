@@ -147,7 +147,6 @@ private:
 	void	  calculateSelector();
 
 	//Textures
-	SDL_Texture* circle_characters;
 	SDL_Texture* hp_tex;
 	
 };

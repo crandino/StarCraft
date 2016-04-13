@@ -195,10 +195,11 @@ bool Gui::update(float dt)
 // Called after all Updates
 bool Gui::postUpdate()
 {
+	// Blit of Selection Circles
 	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 	{
 		Entity *e = it->second;
-		app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y, &e->selection_type);
+		app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset, &e->selection_type);
 	}
 
 	list<GuiElements*>::iterator item;

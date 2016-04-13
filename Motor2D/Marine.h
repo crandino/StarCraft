@@ -188,6 +188,7 @@ public:
 		
 		faction = PLAYER;
 		selection_type = { 3, 4, 22, 13 };
+		circle_selection_offset = -1;
 		flying = false;
 
 		max_hp = 40;
@@ -313,9 +314,6 @@ public:
 	{
 		coll->setPos(center.x - 10, center.y - 14);
 		if (has_target) move(dt);
-	
-
-
 		return true;
 	}
 };

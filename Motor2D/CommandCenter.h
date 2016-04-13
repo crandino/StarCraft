@@ -37,6 +37,8 @@ public:
 		max_hp = 50;
 
 		faction = PLAYER;
+		selection_type = { 226, 66, 146, 88 };
+		circle_selection_offset = 34;
 	}
 
 };
