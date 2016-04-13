@@ -356,7 +356,7 @@ bool EntityManager::update(float dt)
 	for (; it2 != active_entities.end(); ++it2)
 	{
 		if (it2->second->current_hp <= 0.0f)
-			toDelete.insert(pair<uint, Entity*>(it2->first, it2->second));
+			to_delete.insert(pair<uint, Entity*>(it2->first, it2->second));
 	}
 
 	return true;
@@ -365,15 +365,15 @@ bool EntityManager::update(float dt)
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {	
-	if (toDelete.size() > 0)
+	if (to_delete.size() > 0)
 	{
-		map<uint, Entity*>::iterator it = toDelete.begin();
-		for (; it != toDelete.end(); ++it)
+		map<uint, Entity*>::iterator it = to_delete.begin();
+		for (; it != to_delete.end(); ++it)
 		{
 			active_entities.erase(active_entities.find(it->second->id));
 			delete it->second;
 		}
-		toDelete.clear();
+		to_delete.clear();
 	}
 
 	// Entities Drawing
@@ -541,7 +541,7 @@ void EntityManager::createZergling(iPoint position, iPoint radius)
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)
 {
-	vector<Entity* const> unitsToDelete;
+	vector<Entity* const> unitsto_delete;
 	map<uint, Entity*>::iterator it;
 
 	vector <Entity* const>::iterator itdel;

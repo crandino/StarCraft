@@ -36,10 +36,12 @@ public:
 		specialization = BUNKER;
 		max_hp = 350;
 		current_hp = 350.0f;
+		max_hp_bars = 10;
+		offset_life = { -50, 50 };
 		capacity = 4;
 
 		faction = PLAYER;
-		selection_type = { 226, 66, 146, 88 };
+		selection_type = { 116, 2, 62, 37 };
 		circle_selection_offset = 34;
 	}
 };
