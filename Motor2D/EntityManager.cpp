@@ -370,6 +370,7 @@ bool EntityManager::postUpdate()
 		map<uint, Entity*>::iterator it = to_delete.begin();
 		for (; it != to_delete.end(); ++it)
 		{
+			it->second->coll->to_delete = true;
 			active_entities.erase(active_entities.find(it->second->id));
 			delete it->second;
 		}
@@ -600,6 +601,13 @@ void EntityManager::GetInsideBunker(Building* e)
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)
 void EntityManager::deleteAllEntities()
 {
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); it++)
+	{
+		it->second->coll->to_delete = true;
+		delete it->second;
+	}	
+
 	active_entities.clear();
 	selection.clear();
 }
