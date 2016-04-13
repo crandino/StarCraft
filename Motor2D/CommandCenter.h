@@ -33,7 +33,7 @@ public:
 		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 128, 100 }, COLLIDER_BOMB);
 
 		// Another stuff
-		building_type = COMMANDCENTER;
+		specialization = COMMANDCENTER;
 		max_hp = 500;
 		current_hp = 500;
 		max_hp_bars = 20;

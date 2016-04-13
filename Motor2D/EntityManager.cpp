@@ -271,7 +271,6 @@ bool EntityManager::preUpdate()
 			if (app->map->createWalkabilityMap(w, h, &buffer))
 			{
 				app->path->setMap(w, h, buffer);
-
 				map<uint, Entity*>::iterator it = active_entities.begin();
 				for (; it != active_entities.end(); ++it)
 				{
@@ -298,13 +297,12 @@ bool EntityManager::preUpdate()
 		{
 			if (e != NULL && e->specialization == ZERGLING)
 			{
-
 				KillEntity(e);
 			}
 		}
 	}
-	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 
+	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		//Getting inside Bunker

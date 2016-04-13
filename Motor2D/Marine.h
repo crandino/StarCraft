@@ -81,7 +81,7 @@ public:
 		
 		//current_hp_bars = 6;
 		
-		speed = 10;
+		speed = 10.0f;
 		
 
 		direction.create(1, 1, p.x, p.y);
@@ -209,41 +209,6 @@ public:
 	void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
-	}
-
-	bool update(float dt)
-	{
-		coll->setPos(center.x - 10, center.y - 14);
-
-		switch (state)
-		{
-		case IDLE:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
-			{
-				if(searchNearestEnemy())
-					LOG("Enemy found");
-				timer_to_check = 0.0f;
-			}
-			break;
-		case MOVE:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
-			{
-				if (searchNearestEnemy())
-					LOG("Enemy found");
-				timer_to_check = 0.0f;
-			}
-			if (has_target) move(dt);
-			break;
-		case ATTACK:
-			if ((timer_attack_delay += dt) >= attack_delay)
-			{
-
-				attack();
-				timer_attack_delay = 0.0f;
-			}
-			break;
-		}
-		return true;
 	}
 };
 
