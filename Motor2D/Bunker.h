@@ -16,21 +16,21 @@ public:
 		// Positions and dimensions
 		center = { (float)p.x, (float)p.y };
 
-		tex_width = 126;
+		tex_width = 96;
 		tex_height = 59;
-		collider_offset.setZero();
+		collider_offset.set(-1, -38);
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 		// Animations
 		tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
-		idle.frames.push_back({ 0, 27, 126, 59 });
+		idle.frames.push_back({ 0, 0, 96, 128 });
 		idle.speed = 1.0f;
 		idle.loop = false;
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 126, 69 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 96, 59 }, COLLIDER_BOMB);
 
 		// Another stuff
 		specialization = BUNKER;
@@ -40,10 +40,11 @@ public:
 		offset_life = { -50, 50 };
 		capacity = 4;
 
+		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 116, 2, 62, 37 };
 		circle_selection_offset = 34;
 	}
 };
 
-#endif !__COMMANDCENTER_H__
+#endif !__BUNKER_H__
