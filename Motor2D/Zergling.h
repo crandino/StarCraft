@@ -131,7 +131,7 @@ public:
 		{
 			if (angle >= 0.f && angle < 22.5f)
 			{
-				current_animation = &attack_left_up;
+				current_animation = &idle_up;
 			}
 			if (angle >= 45.f && angle < 67.5f)
 			{
