@@ -111,13 +111,7 @@ public:
 			}
 		}
 		else
-		{
 			state = IDLE;
-			if (type == UNIT)
-			{
-				app->entity_manager->searchNearEntity(this);
-			}
-		}
 
 	}
 
