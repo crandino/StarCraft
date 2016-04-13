@@ -87,6 +87,7 @@
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
     <ClInclude Include="Motor2D\Marine.h" />
+    <ClInclude Include="Motor2D\Marine_animations.h" />
     <ClInclude Include="Motor2D\MemLeaks.h" />
     <ClInclude Include="Motor2D\Module.h" />
     <ClInclude Include="Motor2D\p2Defs.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Motor2D\Vector2D.h" />
     <ClInclude Include="Motor2D\Window.h" />
     <ClInclude Include="Motor2D\Zergling.h" />
+    <ClInclude Include="Motor2D\Zergling_animations.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor2D\App.cpp" />
