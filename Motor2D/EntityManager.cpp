@@ -57,12 +57,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		building_to_place = (Building*)e;
 		building_mode = true;
 		break;
-	/*case(ZERGLING) :
+	case(ZERGLING) :
 		LOG("Creating Zergling");
 		e = new Zergling(pos);
 		addInEnemyContainer(e);
 		AddEntityToWave(e->id, e);
-		break;*/
+		break;
 	case(SCV) :
 		LOG("Creating SCV");
 		e = new Scv(pos);
