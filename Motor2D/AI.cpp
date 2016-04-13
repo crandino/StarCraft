@@ -28,10 +28,8 @@ bool AI::start()
 void AI::checkForClosestPlayerUnit()
 {
 	map<uint, Entity*>::iterator it = zergArmyWave.begin();
-	for (; it != zergArmyWave.end(); ++it)
-	{
-		it->second->checkAngle();
-	}
+	
+	it->second->pos.distanceTo();
 }
 
 void AI::checkForClosestPlayerBuilding()
