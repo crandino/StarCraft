@@ -160,40 +160,9 @@ bool EntityManager::preUpdate()
 
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
-	
-	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (app->map->isAreaWalkable(building_to_place->coll->rect))
-		{
-			building_to_place->id = ++next_ID;
-			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-			building_mode = false;
-
-			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			int w, h;
-			uchar *buffer = NULL;
-			if (app->map->createWalkabilityMap(w, h, &buffer))
-			{
-				app->path->setMap(w, h, buffer);
-
-				map<uint, Entity*>::iterator it = active_entities.begin();
-				for (; it != active_entities.end(); ++it)
-				{
-					if (it->second->type == UNIT)
-					{
-						Unit *unit = (Unit*)it->second;
-
-						if (unit->path.size() > 0)
-							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-								unit->path = app->path->getLastPath();
-					}
-				}
-			}
-		}
-	}		
 
 	// Clicking and holding left button, starts a selection
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
@@ -221,23 +190,35 @@ bool EntityManager::preUpdate()
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		selector_init = false;
+		bool units_only = false;    // If only one unit is on selection, buildings will be excluded
 		map<uint, Entity*>::iterator it = active_entities.begin();
+
+		// First, we need to know if any unit has been selected. 
 		for (; it != active_entities.end(); ++it)
 		{
 			if (it->second->coll->checkCollision(selector))
 			{
-				switch (it->second->type)
-				{
-				case(UNIT) :
+				if (it->second->type == UNIT)
+					units_only = true;
+			}
+		}
+
+		// Now, we include the entities according to the only_units boolean variable.
+		for (it = active_entities.begin(); it != active_entities.end(); ++it)
+		{
+			if (it->second->coll->checkCollision(selector))
+			{
+				if (it->second->type == UNIT)
 				{
 					Unit *u = (Unit*)it->second;
 					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
-					break;
-				}
-				}
-				selection.insert(pair<uint, Entity*>(it->first, it->second));
-			}			
-		}
+					selection.insert(pair<uint, Entity*>(it->first, it->second));
+				}					
+
+				if (it->second->type == BUILDING && !units_only)
+					selection.insert(pair<uint, Entity*>(it->first, it->second)); 
+			}
+		}	
 	}		
 
 	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -266,6 +247,37 @@ bool EntityManager::preUpdate()
 					if (app->path->createPath(unit->tile_pos, target) != -1)
 						unit->path = app->path->getLastPath();					
 				}					
+			}
+		}
+	}
+
+	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (app->map->isAreaWalkable(building_to_place->coll->rect))
+		{
+			building_to_place->id = ++next_ID;
+			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
+			building_mode = false;
+
+			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+			int w, h;
+			uchar *buffer = NULL;
+			if (app->map->createWalkabilityMap(w, h, &buffer))
+			{
+				app->path->setMap(w, h, buffer);
+
+				map<uint, Entity*>::iterator it = active_entities.begin();
+				for (; it != active_entities.end(); ++it)
+				{
+					if (it->second->type == UNIT)
+					{
+						Unit *unit = (Unit*)it->second;
+
+						if (unit->path.size() > 0)
+							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+								unit->path = app->path->getLastPath();
+					}
+				}
 			}
 		}
 	}
