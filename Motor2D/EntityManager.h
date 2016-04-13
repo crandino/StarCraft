@@ -8,19 +8,21 @@
 #include <map>
 #include <vector>
 
-enum ENTITY_TYPE
-{
-	UNIT,
-	BUILDING
-};
+// Some enums to separate behaviour, UI, ...
 
-enum FACTION
+enum FACTION   // Controlled by player or computer
 {
 	PLAYER,
 	COMPUTER
 };
 
-enum SPECIALIZATION
+enum ENTITY_TYPE  // First specialization: unit or building
+{
+	UNIT,
+	BUILDING
+};
+
+enum SPECIALIZATION  // Second specialization
 {
 	// Units
 	MARINE,
@@ -42,6 +44,11 @@ enum UNIT_DIRECTION
 	LEFT_DOWN,
 	LEFT,
 	LEFT_UP
+};
+
+enum SELECTION_TYPE // Which kind of selection must wear, according to its width
+{
+	W_22, W_32, W_48, W_62, W_72, W_94, W_110, W_122, W_146, W_222
 };
 
 class Entity;

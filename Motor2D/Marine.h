@@ -187,6 +187,7 @@ public:
 		// Another stuff
 		
 		faction = PLAYER;
+		selection_type = { 3, 4, 22, 13 };
 		flying = false;
 
 		max_hp = 40;

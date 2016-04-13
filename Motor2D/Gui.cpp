@@ -3,6 +3,8 @@
 #include "Render.h"
 #include "PathFinding.h"
 #include "Input.h"
+#include "EntityManager.h"
+#include "Entity.h"
 #include "Gui.h"
 #include "Map.h"
 #include "Window.h"
@@ -50,6 +52,10 @@ bool Gui::start()
 	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
 		app->map->data.front().height * app->map->data.front().tile_height };
 
+	// CIRCLES OF SELECTIOM
+	circles_of_selection = app->tex->loadTexture("Selection/Selection_circles.png");
+
+	// To show walkability on building mode
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	return true;
@@ -189,6 +195,12 @@ bool Gui::update(float dt)
 // Called after all Updates
 bool Gui::postUpdate()
 {
+	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+	{
+		Entity *e = it->second;
+		app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y, &e->selection_type);
+	}
+
 	list<GuiElements*>::iterator item;
 
 	for (item = elements.begin(); item != elements.end(); item++)

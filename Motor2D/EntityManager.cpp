@@ -29,8 +29,7 @@ bool EntityManager::awake(pugi::xml_node &node)
 bool EntityManager::start()
 {
 	next_ID = 0;
-    circle_characters = app->tex->loadTexture("Selection/Selection_circles.png");
-	hp_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
+    hp_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
 	building_tile = app->tex->loadTexture("maps/Path_Tiles.png");
 
 	return true;
@@ -311,49 +310,49 @@ bool EntityManager::update(float dt)
 bool EntityManager::postUpdate()
 {
 	// Basic selection. Entities surrounded by black SDL_Rects.
-	map<uint, Entity*>::iterator it2 = selection.begin();
-	for (; it2 != selection.end(); ++it2)
-	{
-		if (it2->second->type == MARINE)
-		{
-			SDL_Rect section_circle = { 0, 62, 22, 13 };
-			app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
-		}
-		else if (it2->second->type == ZERGLING)
-		{
-			SDL_Rect section_circle = { 0, 62, 22, 13 };
-			app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
-		}
-		if (it2->second->type == SCV)
-		{	//TODO IPL
-			SDL_Rect section_circle = { 0, 62, 22, 13 };
-			app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
-		}
-	}
+	//map<uint, Entity*>::iterator it2 = selection.begin();
+	//for (; it2 != selection.end(); ++it2)
+	//{
+	//	if (it2->second->type == MARINE)
+	//	{
+	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
+	//		app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
+	//	}
+	//	else if (it2->second->type == ZERGLING)
+	//	{
+	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
+	//		app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
+	//	}
+	//	if (it2->second->type == SCV)
+	//	{	//TODO IPL
+	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
+	//		app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
+	//	}
+	//}
 	
-	for (it2 = selection.begin(); it2 != selection.end(); ++it2)
-	{
-		//MSC provisional method that calculates current HP bars
-		ceil(it2->second->current_hp_bars = it2->second->current_hp * it2->second->max_hp_bars / it2->second->max_hp);
-		//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
-		SDL_Rect section_life = { 496, 20, 25, 8 };
-		app->render->blit(hp_tex, it2->second->pos.x + 21, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
-		for (int i = 0, a = 0; i < it2->second->current_hp_bars; i++)
-		{
-			SDL_Rect greenquadlife = { 497, 32, 3, 4 };
-			app->render->blit(hp_tex, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
-			greenquadlife.x += 4;
-			a += 4;
-		}
+	//for (map<uint, Entity*>::iterator it2 = selection.begin(); it2 != selection.end(); ++it2)
+	//{
+	//	//MSC provisional method that calculates current HP bars
+	//	ceil(it2->second->current_hp_bars = it2->second->current_hp * it2->second->max_hp_bars / it2->second->max_hp);
+	//	//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
+	//	SDL_Rect section_life = { 496, 20, 25, 8 };
+	//	app->render->blit(hp_tex, it2->second->pos.x + 21, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
+	//	for (int i = 0, a = 0; i < it2->second->current_hp_bars; i++)
+	//	{
+	//		SDL_Rect greenquadlife = { 497, 32, 3, 4 };
+	//		app->render->blit(hp_tex, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
+	//		greenquadlife.x += 4;
+	//		a += 4;
+	//	}
 
-		//app->render->DrawCircle(it2->second->pos.x + 32, it2->second->pos.y + 32, it2->second->tex_height/5, 35, 114, 48, 255, false);
-	}
+	//	//app->render->DrawCircle(it2->second->pos.x + 32, it2->second->pos.y + 32, it2->second->tex_height/5, 35, 114, 48, 255, false);
+	//}
 	
 	// Entities Drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second->type == ZERGLING)
+		/*if (it->second->type == ZERGLING)
 		{
 			SDL_Rect section_circle = { 0, 81, 23, 15 };
 			app->render->blit(circle_characters, it->second->coll->rect.x + 1, it->second->coll->rect.y + 12, (SDL_Rect*)&section_circle, 1.0f);
@@ -367,7 +366,7 @@ bool EntityManager::postUpdate()
 				greenquadlife.x += 4;
 				a += 4;
 			}
-		}
+		}*/
 		//MSC attempt to create a timer to slow down marine animations. It's not working exactly as intended. Can be tested willingly.
 		/*uint32 i = 0;
 		uint32 dt = app->getDt();

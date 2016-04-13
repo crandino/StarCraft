@@ -18,11 +18,12 @@ public:
 	fPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
 	iPoint			collider_offset;			// Useful to correctly place the collider rect
-
+	
 	int		     	tex_width, tex_height;
 
 	FACTION			faction;
 	ENTITY_TYPE		type;
+	SDL_Rect        selection_type;
 	SPECIALIZATION  specialization;
 	
 	SDL_Texture		*tex;   

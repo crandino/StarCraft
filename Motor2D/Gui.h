@@ -81,6 +81,13 @@ public:
 	iPoint map_limits;
 	float scroll_speed;
 
+	//Variables for CircleSelection. There are 10 size selection
+	/*W_22 = { 3, 4, 22, 13 };
+	W_32 = { 28, 9, 32, 19 };
+	W_48 = { 64, 5, 48, 29 };*/
+	SDL_Texture*	circles_of_selection;
+	
+
 private:
 		
 	bool debug = false;
