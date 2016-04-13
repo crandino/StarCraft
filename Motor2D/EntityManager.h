@@ -118,8 +118,10 @@ public:
 
 
 public:
+	//Frag count
+	bool enemyJustDied = false;
 
-	bool unitKilled = false;
+
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
@@ -155,6 +157,8 @@ private:
 
 	//Textures
 	SDL_Texture* hp_tex;
+
+	
 	
 };
 

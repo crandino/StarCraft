@@ -331,8 +331,8 @@ bool EntityManager::preUpdate()
 		{
 			if (e != NULL && e->specialization == ZERGLING)
 			{
-
 				KillEntity(e);
+				enemyJustDied = true;
 			}
 		}
 	}
@@ -400,11 +400,18 @@ bool EntityManager::update(float dt)
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {	
+	/*Resetting bool for Game Manager*/
+	enemyJustDied = false;
+
+
+
+
 	if (toDelete.size() > 0)
 	{
 		map<uint, Entity*>::iterator it = toDelete.begin();
 		for (; it != toDelete.end(); ++it)
 		{
+			
 			active_entities.erase(active_entities.find(it->second->id));
 			delete it->second;
 		}
@@ -433,6 +440,9 @@ bool EntityManager::postUpdate()
 
 	if (building_mode)
 		choosePlaceForBuilding();
+
+	
+
 
 	return true;
 }
@@ -604,7 +614,7 @@ void EntityManager::deleteEntityKilled(Entity* e)
 	vector <Entity* const>::iterator itdel;
 
 	active_entities.erase(e->id);
-	unitKilled = true;
+	enemyJustDied = true;
 	if (e->faction == COMPUTER)
 		LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
 }
