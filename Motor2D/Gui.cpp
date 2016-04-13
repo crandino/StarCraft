@@ -3,6 +3,8 @@
 #include "Render.h"
 #include "PathFinding.h"
 #include "Input.h"
+#include "EntityManager.h"
+#include "Entity.h"
 #include "Gui.h"
 #include "Map.h"
 #include "Window.h"
@@ -50,6 +52,13 @@ bool Gui::start()
 	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
 		app->map->data.front().height * app->map->data.front().tile_height };
 
+	// CIRCLES OF SELECTIOM
+	circles_of_selection = app->tex->loadTexture("Selection/Selection_circles.png");
+	lifes_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
+	life = { 486, 1, 5, 8 };
+	no_life = { 492, 1, 5, 8 };	
+
+	// To show walkability on building mode
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	return true;
@@ -189,6 +198,25 @@ bool Gui::update(float dt)
 // Called after all Updates
 bool Gui::postUpdate()
 {
+	// Blit of Selection Circles and Lifes
+	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+	{
+		// Circle selection blitting
+		Entity *e = it->second;
+		app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset, &e->selection_type);
+
+		// Life counter blitting
+		if (e->current_hp > 0)
+		{
+			uint bars_to_draw = (e->max_hp_bars * ((float)e->current_hp / (float)e->max_hp)) + 1;
+			uint bar = 1;
+			for (; bar < bars_to_draw; ++bar)
+				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * life.w), e->center.y + e->offset_life.y, &life);
+			for (; bar <= e->max_hp_bars; ++bar)
+				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * no_life.w), e->center.y + e->offset_life.y, &no_life);
+		}		
+	}
+
 	list<GuiElements*>::iterator item;
 
 	for (item = elements.begin(); item != elements.end(); item++)

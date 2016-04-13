@@ -187,11 +187,14 @@ public:
 		// Another stuff
 		
 		faction = PLAYER;
+		selection_type = { 3, 4, 22, 13 };
+		circle_selection_offset = -1;
 		flying = false;
 
 		max_hp = 40;
 		current_hp = 40.0f;
 		max_hp_bars = 6;
+		offset_life = { -19, 16 };
 		
 		//current_hp_bars = 6;
 		
@@ -312,9 +315,6 @@ public:
 	{
 		coll->setPos(center.x - 10, center.y - 14);
 		if (has_target) move(dt);
-	
-
-
 		return true;
 	}
 };

@@ -33,7 +33,6 @@ public:
 	{
 		if (path.size() > 0)
 		{
-
 			checkUnitDirection();
 			float pixels_to_move = 0;
 			float total_pixels_moved = 0;

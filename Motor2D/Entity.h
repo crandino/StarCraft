@@ -18,12 +18,16 @@ public:
 	fPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
 	iPoint			collider_offset;			// Useful to correctly place the collider rect
-
+	
 	int		     	tex_width, tex_height;
 
 	FACTION			faction;
 	ENTITY_TYPE		type;
 	SPECIALIZATION  specialization;
+
+	// UI paramters
+	SDL_Rect        selection_type;
+	int				circle_selection_offset;
 	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;
@@ -33,11 +37,11 @@ public:
 	float angle;
 	float speed;
 	
-
-	unsigned int    max_hp;
-	float           current_hp;
-	unsigned int    max_hp_bars;
-	float           current_hp_bars;
+	// Lifes attributes
+	uint			max_hp;
+	int             current_hp;
+	uint            max_hp_bars;
+	iPoint			offset_life;
 
 	Collider*       coll;
 	

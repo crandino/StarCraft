@@ -14,6 +14,8 @@ public:
 	Building() 
 	{
 		type = BUILDING;
+		capacity = 0;
+		storage = false;
 	};
 };
 
