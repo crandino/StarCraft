@@ -9,9 +9,13 @@ public:
 	//ROF
 	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
 	Animation	idle_up;
+	Animation	idle_right_up;
 	Animation   idle_right;
+	Animation	idle_right_down;
 	Animation	idle_down;
+	Animation	idle_left_down;
 	Animation	idle_left;
+	Animation	idle_left_up;
 	Animation	walk_up;
 	Animation   one;
 	Animation   walk_right_up;
@@ -168,17 +172,34 @@ public:
 			{
 				current_animation = &idle_up;
 			}
+
+			if (angle >= 45.f && angle < 67.5f)
+			{
+				current_animation = &idle_right_up;
+			}
 			if (angle >= 90.f && angle < 112.5f)
 			{
 				current_animation = &idle_right;
+			}
+			if (angle >= 135.f && angle < 157.5f)
+			{
+				current_animation = &idle_right_down;
 			}
 			if (angle >= 180.f && angle < 202.5f)
 			{
 				current_animation = &idle_down;
 			}
+			if (angle >= 225.f && angle < 247.5f)
+			{
+				current_animation = &idle_left_down;
+			}
 			if (angle >= 270.f && angle < 292.5f)
 			{
 				current_animation = &idle_left;
+			}
+			if (angle >= 315.f && angle < 337.5f)
+			{
+				current_animation = &idle_left_up;
 			}
 			
 		}		
@@ -216,6 +237,7 @@ public:
 		case ATTACK:
 			if ((timer_attack_delay += dt) >= attack_delay)
 			{
+
 				attack();
 				timer_attack_delay = 0.0f;
 			}

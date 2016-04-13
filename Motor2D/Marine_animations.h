@@ -10,6 +10,14 @@ idle_up.frames.push_back({ 0, 0, 64, 64 });
 idle_up.speed = 0.005f;
 idle_up.loop = true;
 
+idle_right_up.frames.push_back({ 128, 0, 64, 64 });
+idle_right_up.frames.push_back({ 128, 64, 64, 64 });
+idle_right_up.frames.push_back({ 128, 128, 64, 64 });
+idle_right_up.frames.push_back({ 128, 64, 64, 64 });
+idle_right_up.frames.push_back({ 128, 0, 64, 64 });
+idle_right_up.speed = 0.005f;
+idle_right_up.loop = true;
+
 idle_right.frames.push_back({ 256, 0, 64, 64 });
 idle_right.frames.push_back({ 256, 64, 64, 64 });
 idle_right.frames.push_back({ 256, 128, 64, 64 });
@@ -17,6 +25,14 @@ idle_right.frames.push_back({ 256, 64, 64, 64 });
 idle_right.frames.push_back({ 256, 0, 64, 64 });
 idle_right.speed = 0.005f;
 idle_right.loop = true;
+
+idle_right_down.frames.push_back({ 384, 0, 64, 64 });
+idle_right_down.frames.push_back({ 384, 64, 64, 64 });
+idle_right_down.frames.push_back({ 384, 128, 64, 64 });
+idle_right_down.frames.push_back({ 384, 64, 64, 64 });
+idle_right_down.frames.push_back({ 384, 0, 64, 64 });
+idle_right_down.speed = 0.005f;
+idle_right_down.loop = true;
 
 idle_down.frames.push_back({ 448, 0, 64, 64 });
 idle_down.frames.push_back({ 448, 64, 64, 64 });
@@ -26,6 +42,14 @@ idle_down.frames.push_back({ 448, 0, 64, 64 });
 idle_down.speed = 0.005f;
 idle_down.loop = true;
 
+idle_left_down.frames.push_back({ 640, 0, 64, 64 });
+idle_left_down.frames.push_back({ 640, 64, 64, 64 });
+idle_left_down.frames.push_back({ 640, 128, 64, 64 });
+idle_left_down.frames.push_back({ 640, 64, 64, 64 });
+idle_left_down.frames.push_back({ 640, 0, 64, 64 });
+idle_left_down.speed = 0.005f;
+idle_left_down.loop = true;
+
 idle_left.frames.push_back({ 768, 0, 64, 64 });
 idle_left.frames.push_back({ 768, 64, 64, 64 });
 idle_left.frames.push_back({ 768, 128, 64, 64 });
@@ -33,6 +57,14 @@ idle_left.frames.push_back({ 768, 64, 64, 64 });
 idle_left.frames.push_back({ 768, 0, 64, 64 });
 idle_left.speed = 0.005f;
 idle_left.loop = true;
+
+idle_left_up.frames.push_back({ 960, 0, 64, 64 });
+idle_left_up.frames.push_back({ 960, 64, 64, 64 });
+idle_left_up.frames.push_back({ 960, 128, 64, 64 });
+idle_left_up.frames.push_back({ 960, 64, 64, 64 });
+idle_left_up.frames.push_back({ 960, 0, 64, 64 });
+idle_left_up.speed = 0.005f;
+idle_left_up.loop = true;
 //----------------------------------------------
 
 //--------------Walking Animations--------------
