@@ -186,6 +186,7 @@ public:
 
 		// Another stuff
 		
+		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 3, 4, 22, 13 };
 		flying = false;
@@ -193,6 +194,10 @@ public:
 		max_hp = 40;
 		current_hp = 40.0f;
 		max_hp_bars = 6;
+		range_to_view = 200;
+		range_to_attack = 100;
+		damage = 5.0f;
+		attack_delay = 200.0f;
 		
 		//current_hp_bars = 6;
 		
@@ -212,7 +217,7 @@ public:
 			angle -= 360.f;
 		}
 
-		if (path.size() > 0)
+		if (has_target)
 		{
 			// From 0 to 180 degrees
 			if (angle >= 0.f && angle < 22.5f)
@@ -312,9 +317,33 @@ public:
 	bool update(float dt)
 	{
 		coll->setPos(center.x - 10, center.y - 14);
-		if (has_target) move(dt);
-	
-
+		switch (state)
+		{
+		case IDLE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if(searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			break;
+		case MOVE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			if (has_target) move(dt);
+			break;
+		case ATTACK:
+			if ((timer_attack_delay += dt) >= attack_delay)
+			{
+				attack();
+				timer_attack_delay = 0.0f;
+			}
+			break;
+		}
 
 		return true;
 	}

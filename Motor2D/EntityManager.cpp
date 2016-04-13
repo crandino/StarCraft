@@ -246,13 +246,19 @@ bool EntityManager::preUpdate()
 				if (selection.size() == 1)
 				{	
 					if (app->path->createPath(unit->tile_pos, target_position) != -1)
+					{
 						unit->path = app->path->getLastPath();
+						unit->state = MOVE;
+					}
 				}
 				else
 				{
 					iPoint target = target_position + unit->distance_to_center_selector;
 					if (app->path->createPath(unit->tile_pos, target) != -1)
-						unit->path = app->path->getLastPath();					
+					{
+						unit->path = app->path->getLastPath();
+						unit->state = MOVE;
+					}		
 				}					
 			}
 		}
@@ -303,81 +309,35 @@ bool EntityManager::update(float dt)
 		}*/
 	}
 
+	map<uint, Entity*>::iterator it2 = active_entities.begin();
+	for (; it2 != active_entities.end(); ++it2)
+	{
+		if (it2->second->current_hp <= 0.0f)
+			toDelete.insert(pair<uint, Entity*>(it2->first, it2->second));
+	}
+
 	return true;
 }
 
 // Called each loop iteration
 bool EntityManager::postUpdate()
-{
-	// Basic selection. Entities surrounded by black SDL_Rects.
-	//map<uint, Entity*>::iterator it2 = selection.begin();
-	//for (; it2 != selection.end(); ++it2)
-	//{
-	//	if (it2->second->type == MARINE)
-	//	{
-	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
-	//		app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
-	//	}
-	//	else if (it2->second->type == ZERGLING)
-	//	{
-	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
-	//		app->render->blit(circle_characters, it2->second->pos.x + 53, it2->second->pos.y + 55, (SDL_Rect*)&section_circle, 1.0f);
-	//	}
-	//	if (it2->second->type == SCV)
-	//	{	//TODO IPL
-	//		SDL_Rect section_circle = { 0, 62, 22, 13 };
-	//		app->render->blit(circle_characters, it2->second->pos.x + 21, it2->second->pos.y + 34, (SDL_Rect*)&section_circle, 1.0f);
-	//	}
-	//}
-	
-	//for (map<uint, Entity*>::iterator it2 = selection.begin(); it2 != selection.end(); ++it2)
-	//{
-	//	//MSC provisional method that calculates current HP bars
-	//	ceil(it2->second->current_hp_bars = it2->second->current_hp * it2->second->max_hp_bars / it2->second->max_hp);
-	//	//app->render->DrawQuad({ it2->second->pos.x, it2->second->pos.y, 64, 64 }, 35, 114, 48, 255, false, true);
-	//	SDL_Rect section_life = { 496, 20, 25, 8 };
-	//	app->render->blit(hp_tex, it2->second->pos.x + 21, it2->second->pos.y + 48, (SDL_Rect*)&section_life, 1.0f);
-	//	for (int i = 0, a = 0; i < it2->second->current_hp_bars; i++)
-	//	{
-	//		SDL_Rect greenquadlife = { 497, 32, 3, 4 };
-	//		app->render->blit(hp_tex, it2->second->pos.x + 22 + a, it2->second->pos.y + 50, (SDL_Rect*)&greenquadlife, 1.0f);
-	//		greenquadlife.x += 4;
-	//		a += 4;
-	//	}
-
-	//	//app->render->DrawCircle(it2->second->pos.x + 32, it2->second->pos.y + 32, it2->second->tex_height/5, 35, 114, 48, 255, false);
-	//}
-	
-	// Entities Drawing
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
+{	
+	if (toDelete.size() > 0)
 	{
-		/*if (it->second->type == ZERGLING)
+		map<uint, Entity*>::iterator it = toDelete.begin();
+		for (; it != toDelete.end(); ++it)
 		{
-			SDL_Rect section_circle = { 0, 81, 23, 15 };
-			app->render->blit(circle_characters, it->second->coll->rect.x + 1, it->second->coll->rect.y + 12, (SDL_Rect*)&section_circle, 1.0f);
+			active_entities.erase(active_entities.find(it->second->id));
+			delete it->second;
+		}
+		toDelete.clear();
+	}
 
-			SDL_Rect section_life = { 536, 20, 41, 8 };
-			app->render->blit(hp_tex, it->second->coll->rect.x - 7, it->second->coll->rect.y + 27, (SDL_Rect*)&section_life, 1.0f);
-			for (int i = 0, a = 0; i < it->second->current_hp_bars; i++)
-			{
-				SDL_Rect greenquadlife = { 537, 32, 3, 4 };
-				app->render->blit(hp_tex, it->second->coll->rect.x - 6 + a , it->second->coll->rect.y + 29, (SDL_Rect*)&greenquadlife, 1.0f);
-				greenquadlife.x += 4;
-				a += 4;
-			}
-		}*/
-		//MSC attempt to create a timer to slow down marine animations. It's not working exactly as intended. Can be tested willingly.
-		/*uint32 i = 0;
-		uint32 dt = app->getDt();
-		//uint32 dt = 5000000;
-		while (i < dt)
-		{
-			if (i == dt-1) {i = dt;  it->second->draw();
-			}
-			else i++;
-		}*/
-		it->second->draw(); //if you try the method, comment this line
+	// Entities Drawing
+	map<uint, Entity*>::iterator it2 = active_entities.begin();
+	for (; it2 != active_entities.end(); ++it2)
+	{
+		it2->second->draw();
 	}
 		
 	// Drawing selector (green SDL_Rect)
@@ -458,6 +418,42 @@ void EntityManager::createWave(uint size, iPoint position/*zergling num, hidrali
 	}
 }
 
+bool EntityManager::searchNearEntity(Entity* e)
+{
+	bool ret = false;
+	float value = e->range_to_view;
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second != e && e->faction != it->second->faction)
+		{
+			float d = e->pos.distanceTo(it->second->pos);
+			if (d <= value)
+			{
+				(e->target_to_attack) = &(*it->second);
+				value = d;
+				ret = true;
+			}
+		}
+	}
+	if (e->target_to_attack != NULL)
+	{
+		Unit* unit = (Unit*)e;
+		unit->has_target = false;
+		if (value <= e->range_to_attack)
+			e->state = ATTACK;
+		else
+			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)
+			{
+				unit->has_target = true;
+				unit->path = app->path->getLastPath();
+				e->state = MOVE;
+			}
+	}
+
+	return ret;
+}
+
 iPoint EntityManager::changeSign(iPoint point)
 {
 	int sign = rand() % 4;
@@ -519,11 +515,10 @@ void EntityManager::deleteEntityKilled(Entity* e)
 {
 	vector <Entity* const>::iterator itdel;
 
-	/*Deletes enemy in the enemy wave*/
 	active_entities.erase(e->id);
 	unitKilled = true;
-	/*RIE: When a lot of zerglings are added they don't die in the order they should don't know why*/
-	LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
+	if (e->faction == COMPUTER)
+		LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
 }
 
 void EntityManager::KillEntity(map<uint, Entity*> selection)

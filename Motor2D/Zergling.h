@@ -34,8 +34,10 @@ public:
 		// Another stuff
 		type = UNIT;
 		specialization = ZERGLING;
+		state = IDLE;
 		faction = COMPUTER;
 		max_hp = 10;
+		current_hp = max_hp;
 		flying = false;
 	}
 };

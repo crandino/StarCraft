@@ -36,6 +36,7 @@ public:
 		building_type = COMMANDCENTER;
 		max_hp = 50;
 
+		state = IDLE;
 		faction = PLAYER;
 	}
 

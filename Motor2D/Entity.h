@@ -9,6 +9,15 @@
 #include "Collision.h"
 #include "SDL\include\SDL.h"
 
+#define TIME_TO_CHECK 50.0f
+
+enum STATE
+{
+	IDLE,
+	MOVE,
+	ATTACK
+};
+
 class Entity
 {
 
@@ -25,20 +34,28 @@ public:
 	ENTITY_TYPE		type;
 	SDL_Rect        selection_type;
 	SPECIALIZATION  specialization;
+	STATE			state;
+	float			timer_to_check = 0.0f;
 	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;
 	uint			id;
 	
 	Vector2D<int>   direction;
-	float angle;
-	float speed;
+	float			angle;
+	float			speed;
 	
 
 	unsigned int    max_hp;
 	float           current_hp;
 	unsigned int    max_hp_bars;
 	float           current_hp_bars;
+	Entity			*target_to_attack;
+	unsigned int	range_to_attack;
+	unsigned int	range_to_view;
+	float			damage;
+	float			attack_delay;
+	float			timer_attack_delay = 0.0f;
 
 	Collider*       coll;
 	
@@ -47,7 +64,7 @@ public:
 	SDL_Texture     *tile_path;
 	bool            end_path = false;
 
-	bool markedToDelete = false;
+	bool			markedToDelete = false;
 
 	// Constructors
 	Entity()
@@ -70,6 +87,33 @@ public:
 
 	}
 
+	virtual bool searchNearestEnemy()
+	{
+		return app->entity_manager->searchNearEntity(this);
+	}
+
+	virtual void attack()
+	{
+		if (pos.distanceTo(target_to_attack->pos) <= range_to_attack)
+		{
+			if ((target_to_attack->current_hp -= damage) <= 0.0f)
+			{
+				state = IDLE;
+				target_to_attack->markToDelete();
+				target_to_attack = NULL;
+				has_target = false;
+			}
+		}
+		else
+		{
+			state = IDLE;
+			if (type == UNIT)
+			{
+				app->entity_manager->searchNearEntity(this);
+			}
+		}
+
+	}
 
 	virtual void draw()
 	{

@@ -95,6 +95,8 @@ public:
 
 	void AddEntityToWave(uint n, Entity* e);
 
+	bool searchNearEntity(Entity* e);
+
 	/*---------Methods for attacking other units------------*/
 	//Method that Kills entities Used for the kill of zerglings and other units
 	void KillEntity(map<uint, Entity*> selection);
@@ -122,29 +124,29 @@ public:
 private:
 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					  waveZerglings;
-	//map<uint, Entity*>                     selection;
-	map<uint, Entity*>						ToDelete;
-	map<uint, Entity*>					   enemyWave;
-	uint next_ID;	
+	map<uint, Entity*>					waveZerglings;
+	//map<uint, Entity*>                selection;
+	map<uint, Entity*>					toDelete;
+	map<uint, Entity*>					enemyWave;
+	uint								next_ID;	
 
 	bool debug = false;
 
 	// CRZ -> Variables to build buildings.
-	bool building_mode;
-	Building* building_to_place;
-	SDL_Texture* building_tile;
+	bool			building_mode;
+	Building*		building_to_place;
+	SDL_Texture*	building_tile;
 
 	//ROF
 	Entity* marine;
-	float angle;
+	float	angle;
 
-	SDL_Rect			 selector;
+	SDL_Rect		selector;
 	bool			selector_init;
-	iPoint   initial_selector_pos;
-	iPoint     final_selector_pos;
+	iPoint			initial_selector_pos;
+	iPoint			final_selector_pos;
 
-	void	  calculateSelector();
+	void			calculateSelector();
 
 	//Textures
 	SDL_Texture* circle_characters;
