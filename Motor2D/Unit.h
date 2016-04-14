@@ -100,6 +100,11 @@ public:
 
 			} while (total_pixels_moved < total_pixels_to_move);
 		}
+		else
+		{
+			state = IDLE;
+			has_target = false;
+		}
 	}
 
 	void checkUnitDirection()

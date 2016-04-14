@@ -238,7 +238,7 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 	if (!isWalkable(origin))
 		return -1;
 
-	iPoint new_dest = findNearestWalkableTile(destination, 5);
+	iPoint new_dest = findNearestWalkableTile(destination, origin, 5);
 	if (new_dest == iPoint(-1, -1))
 		return -1;		
 
@@ -313,9 +313,9 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 	return path_found.size();
 }
 
-iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, uint radius) const
+iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &destination, uint radius) const
 {
-	if(isWalkable(origin))
+	if (isWalkable(origin))
 		return origin;
 	else
 	{
@@ -340,8 +340,8 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, uint radius) c
 					{
 						if (open_list.find(item->pos) == open_list.list_of_nodes.end())
 							open_list.list_of_nodes.push_back(*item);
-					}				
-						
+					}
+
 					++item;
 				}
 			}
@@ -350,7 +350,55 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, uint radius) c
 
 		}
 	}
-	return iPoint(-1, -1);
+	pathList open_list, close_list;
+
+	open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
+	while (open_list.list_of_nodes.size() > 0)
+	{
+		list<pathNode>::iterator pnode = open_list.getNodeLowestScore();
+		close_list.list_of_nodes.push_back(*pnode);
+		iPoint pos = pnode->pos;
+		open_list.list_of_nodes.erase(pnode);
+		pnode = close_list.find(pos);
+
+		if (app->path->isWalkable(pnode->pos))
+		{
+			return pnode->pos;
+			break;
+		}
+
+		pathList candidate_nodes;
+		int items_added = pnode->findAdjacents(candidate_nodes);
+
+		if (items_added > 0)
+		{
+			list<pathNode>::iterator item = candidate_nodes.list_of_nodes.begin();
+			while (item != candidate_nodes.list_of_nodes.end())
+			{
+				if (close_list.find(item->pos) != close_list.list_of_nodes.end())
+				{
+					++item;
+					continue;
+				}
+				else if (open_list.find(item->pos) != open_list.list_of_nodes.end())
+				{
+					list<pathNode>::iterator to_compare = open_list.find(item->pos);
+					if (item->calculateF(destination) < to_compare->score())
+					{
+						to_compare->parent = item->parent;
+						to_compare->calculateF(destination);
+					}
+				}
+				else
+				{
+					item->calculateF(destination);
+					open_list.list_of_nodes.push_back(*item);
+				}
+				++item;
+			}
+		}
+	}
+
 }
 
 const vector<iPoint> &PathFinding::getLastPath() const
