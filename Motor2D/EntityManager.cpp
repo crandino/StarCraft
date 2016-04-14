@@ -594,15 +594,20 @@ void EntityManager::KillEntity(Entity* e)
 void EntityManager::GetInsideBunker(Building* e)
 {
 	map<uint, Entity*>::iterator it = selection.begin();
-	for (; it != selection.end(); it++)
-	{
-		if (it->second->specialization == MARINE)
-			KillEntity(it->second);
-
-		if (e->capacity == 0)
+	if(e->capacity != 0){
+		for (; it != selection.end(); it++)
 		{
-			break;
+			--e->capacity;
+			if (it->second->specialization == MARINE) {
+				KillEntity(it->second);
+			}
+				
+			if (e->capacity == 0)
+			{
+				break;
+			}
 		}
+		selection.clear();
 	}
 }
 
