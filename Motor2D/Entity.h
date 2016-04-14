@@ -110,6 +110,7 @@ public:
 			{
 				state = IDLE;
 				target_to_attack->markToDelete();
+				app->entity_manager->enemyJustDied = true;
 				target_to_attack = NULL;
 			}
 

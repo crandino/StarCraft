@@ -8,10 +8,10 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define TOTALUNITSALLWAVES TOTALWAVES*2
+#define TOTALUNITSALLWAVES SIZE1*2
 #define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 10
-#define	SIZE1 2 // Changes number of zerglings per wave
+#define	SIZE1 5 // Changes number of zerglings per wave
 #define ZERGLINGSCORE 20
 
 
@@ -48,19 +48,23 @@ bool GameManager::update(float dt)
 		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
 		if (app->entity_manager->enemyJustDied)
 		{
-			LOG("Score:", scoreCurrentWave);
+			
 			addPoints(scoreCurrentWave);
+			killCount++;
+			LOG("Score: %d", scoreCurrentWave);
 			
 			if (killCount >= SIZE1)
 			{
 				LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
 				killCount = 0;
+				totalKills += killCount;
+				totalScore += scoreCurrentWave;
 			}
 		}
 		//timer
 		//++unitKillCount;
 	
-		if (killCount == TOTALUNITSALLWAVES)
+		if (totalKills == TOTALUNITSALLWAVES)
 		{
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)

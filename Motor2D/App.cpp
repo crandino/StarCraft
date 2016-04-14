@@ -39,9 +39,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new Gui();
 	entity_manager = new EntityManager();
 	collision = new Collision();
-	game_manager = new GameManager();
 	artificial_inteligence = new AI();
-
+	game_manager = new GameManager();
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
 	addModule(fs);

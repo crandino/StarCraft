@@ -289,7 +289,7 @@ bool EntityManager::preUpdate()
 
 
 	//------------------------ATTACK MECHANICS------------------------------------//
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	/*if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		Entity* e = whichEntityOnMouse();
 		LOG("Hostility ON");
@@ -301,7 +301,7 @@ bool EntityManager::preUpdate()
 				enemyJustDied = true;
 			}
 		}
-	}
+	}*/
 
 	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -452,8 +452,6 @@ void EntityManager::calculateSelector()
 
 void EntityManager::createWave(uint size, iPoint position/*zergling num, hidralisk....num*/)
 {
-	
-
 	for (int i = 0; i < size; i++)
 	{
 		iPoint radius;
@@ -485,10 +483,10 @@ bool EntityManager::searchNearEntity(Entity* e)
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			uint maxHP = it->second->current_hp;
 			
-
-			if (d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. Howerver too dumb:D!
+			if (d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
 			{
 				(e->target_to_attack) = &(*it->second);
+				LOG("BUG NET");
 				value = d;
 				previousMaxHP = maxHP;
 				ret = true;
@@ -517,8 +515,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 
 	return ret;
 }
-
-
 
 
 
