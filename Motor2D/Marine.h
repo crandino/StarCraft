@@ -167,7 +167,7 @@ public:
 			}
 		}
 		else 
-		{
+		{ //TODO IPL: ALL ANGLE ATTACK.
 			if (angle >= 0.f && angle < 22.5f)
 			{
 				if (state == ATTACK)

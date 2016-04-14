@@ -131,36 +131,62 @@ public:
 		{
 			if (angle >= 0.f && angle < 22.5f)
 			{
-				current_animation = &idle_up;
+				if (state == ATTACK)
+					current_animation = &attack_up;
+				else
+					current_animation = &idle_up;
 			}
-			if (angle >= 45.f && angle < 67.5f)
+
+			else if (angle >= 45.f && angle < 67.5f)
 			{
-				current_animation = &idle_right_up;
+				if (state == ATTACK)
+					current_animation = &attack_right_up;
+				else
+					current_animation = &idle_right_up;
 			}
-			if (angle >= 90.f && angle < 112.5f)
+			else if (angle >= 90.f && angle < 112.5f)
 			{
-				current_animation = &idle_right;
+				if (state == ATTACK)
+					current_animation = &attack_right;
+				else
+					current_animation = &idle_right;
 			}
-			if (angle >= 135.f && angle < 157.5f)
+			else if (angle >= 135.f && angle < 157.5f)
 			{
-				current_animation = &idle_right_down;
+				if (state == ATTACK)
+					current_animation = &attack_right_down;
+				else
+					current_animation = &idle_right_down;
 			}
-			if (angle >= 180.f && angle < 202.5f)
+			else if (angle >= 180.f && angle < 202.5f)
 			{
-				current_animation = &idle_down;
+				if (state == ATTACK)
+					current_animation = &attack_down;
+				else
+					current_animation = &idle_down;
 			}
-			if (angle >= 225.f && angle < 247.5f)
+			else if (angle >= 225.f && angle < 247.5f)
 			{
-				current_animation = &idle_left_down;
+				if (state == ATTACK)
+					current_animation = &attack_left_down;
+				else
+					current_animation = &idle_left_down;
 			}
-			if (angle >= 270.f && angle < 292.5f)
+			else if (angle >= 270.f && angle < 292.5f)
 			{
-				current_animation = &idle_left;
+				if (state == ATTACK)
+					current_animation = &attack_left;
+				else
+					current_animation = &idle_left;
 			}
-			if (angle >= 315.f && angle < 337.5f)
+			else if (angle >= 315.f && angle < 337.5f)
 			{
-				current_animation = &idle_left_up;
+				if (state == ATTACK)
+					current_animation = &attack_left_up;
+				else
+					current_animation = &idle_left_up;
 			}
+
 		}
 	}
 

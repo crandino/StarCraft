@@ -39,13 +39,21 @@ enum SPECIALIZATION  // Second specialization
 enum UNIT_DIRECTION
 {
 	UP,
+	RIGHT_UP_22,
 	RIGHT_UP,
+	RIGHT_UP_66,
 	RIGHT,
+	RIGHT_DOWN_112,
 	RIGHT_DOWN,
+	RIGHT_DOWN_157,
 	DOWN,
+	LEFT_DOWN_202,
 	LEFT_DOWN,
+	LEFT_DOWN_247,
 	LEFT,
-	LEFT_UP
+	LEFT_UP_292,
+	LEFT_UP,
+	LEFT_UP_337
 };
 
 enum SELECTION_TYPE // Which kind of selection must wear, according to its width

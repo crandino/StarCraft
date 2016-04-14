@@ -103,6 +103,7 @@ public:
 
 	void checkUnitDirection()
 	{
+
 		if (state == ATTACK)
 		{
 			if (target_to_attack->tile_pos.x == tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
@@ -140,40 +141,42 @@ public:
 		}
 		else
 		{
-			iPoint pos_path = *path.begin();
-
-			if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
+			if (path.size()>0)
 			{
-				unit_direction = UP;
-			}
-			else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
-			{
-				unit_direction = RIGHT_UP;
-			}
-			else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
-			{
-				unit_direction = RIGHT;
-			}
-			else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
-			{
-				unit_direction = RIGHT_DOWN;
-			}
-			else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
-			{
-				unit_direction = DOWN;
-			}
-			else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
-			{
-				unit_direction = LEFT_DOWN;
-			}
-			else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
-			{
-				unit_direction = LEFT;
-			}
-			else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
-			{
-				unit_direction = LEFT_UP;
-			}
+				iPoint pos_path = *path.begin();
+				if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
+				{
+					unit_direction = UP;
+				}
+				else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
+				{
+					unit_direction = RIGHT_UP;
+				}
+				else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
+				{
+					unit_direction = RIGHT;
+				}
+				else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
+				{
+					unit_direction = RIGHT_DOWN;
+				}
+				else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
+				{
+					unit_direction = DOWN;
+				}
+				else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
+				{
+					unit_direction = LEFT_DOWN;
+				}
+				else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
+				{
+					unit_direction = LEFT;
+				}
+				else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
+				{
+					unit_direction = LEFT_UP;
+				}
+			}	
 		}
 
 		switch (unit_direction)
