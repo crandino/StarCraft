@@ -472,32 +472,42 @@ void EntityManager::createWave(uint size, iPoint position/*zergling num, hidrali
 bool EntityManager::searchNearEntity(Entity* e)
 {
 	bool ret = false;
+
 	float value = e->range_to_view;
 	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
+	uint previousMaxHP = 10000;
+
+	for (; it != active_entities.end(); ++it)//First and foremost the unit looks for the closest and weakest enemy
 	{
+		
 		if (it->second != e && e->faction != it->second->faction)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			if (d <= value)
+			uint maxHP = it->second->current_hp;
+			
+
+			if (d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. Howerver too dumb:D!
 			{
 				(e->target_to_attack) = &(*it->second);
 				value = d;
+				previousMaxHP = maxHP;
 				ret = true;
 			}
+			
+
 		}
 	}
-	if (e->target_to_attack != NULL)
+	if (e->target_to_attack != NULL)//Second it does the calculus and changes the IA states
 	{
 		Unit* unit = (Unit*)e;
 		unit->has_target = false;
-		if (value <= e->range_to_attack)
+		if (value <= e->range_to_attack)//If the entity isn't in the range of attack it changes the direction and state
 		{
 			unit->checkUnitDirection();
 			e->state = ATTACK;
 		}
 		else
-			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)
+			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)//the path to the selected entity is constructed
 			{
 				unit->has_target = true;
 				unit->path = app->path->getLastPath();
@@ -507,6 +517,11 @@ bool EntityManager::searchNearEntity(Entity* e)
 
 	return ret;
 }
+
+
+
+
+
 
 iPoint EntityManager::changeSign(iPoint point)
 {

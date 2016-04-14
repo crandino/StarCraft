@@ -7,7 +7,7 @@
 //Author: RIE code.
 
 //Number to change the number of waves
-#define TOTALWAVES 1
+#define TOTALWAVES 2
 #define TOTALUNITSALLWAVES TOTALWAVES*2
 #define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 10
@@ -32,7 +32,7 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 	
-	if (currentWaves < TOTALWAVES)
+	if (currentWaves <= TOTALWAVES)
 	{
 		if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 		{

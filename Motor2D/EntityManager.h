@@ -109,6 +109,7 @@ public:
 
 	bool searchNearEntity(Entity* e);
 
+
 	/*---------Methods for attacking other units------------*/
 	//Method that Kills entities Used for the kill of zerglings and other units
 	void KillEntity(map<uint, Entity*> selection);

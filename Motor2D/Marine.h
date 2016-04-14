@@ -74,7 +74,7 @@ public:
 		max_hp_bars = 6;
 		offset_life = { -19, 16 };
 
-		range_to_view = 200;
+		range_to_view = 300;
 		range_to_attack = 100;
 		damage = 5.0f;
 		attack_delay = 200.0f;

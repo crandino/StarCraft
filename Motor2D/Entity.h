@@ -72,6 +72,9 @@ public:
 
 	bool			marked_to_delete = false;
 
+
+
+
 	// Constructors
 	Entity()
 	{};
@@ -98,6 +101,7 @@ public:
 		return app->entity_manager->searchNearEntity(this);
 	}
 
+
 	virtual void attack()
 	{
 		if ((abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y)) <= range_to_attack)
@@ -108,6 +112,9 @@ public:
 				target_to_attack->markToDelete();
 				target_to_attack = NULL;
 			}
+
+			
+
 		}
 		else
 			state = IDLE;
