@@ -60,9 +60,9 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		break;
 	case(ZERGLING) :
 		LOG("Creating Zergling");
-	/*	e = new Zergling(pos);
+		e = new Zergling(pos);
 		addInEnemyContainer(e);
-		AddEntityToWave(e->id, e);*/
+		AddEntityToWave(e->id, e);
 		break;
 	case(SCV) :
 		LOG("Creating SCV");
