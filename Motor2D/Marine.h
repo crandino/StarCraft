@@ -66,6 +66,7 @@ public:
 		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 3, 4, 22, 13 };
+		specialization = MARINE;
 		circle_selection_offset = -1;
 		flying = false;
 

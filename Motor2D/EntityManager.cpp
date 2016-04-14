@@ -313,12 +313,6 @@ bool EntityManager::preUpdate()
 		{
 			if (e != NULL && e->specialization == BUNKER) {
 				GetInsideBunker((Building*)e);
-
-				/*
-				Stop animation. Put a KEY_UP to stop the animation
-				We also need to not make this an insta kill for the zergling
-				*/
-				KillEntity(e);
 			}
 		}
 	}
@@ -599,17 +593,11 @@ void EntityManager::KillEntity(Entity* e)
 
 void EntityManager::GetInsideBunker(Building* e)
 {
-	int marines = selection.size();
-	for (int i = 0; i <= marines; i++) 
+	map<uint, Entity*>::iterator it = selection.begin();
+	for (; it != selection.end(); it++)
 	{
-		--e->capacity;
-		if (marines == 1)
-		{
-			KillEntity(selection.at(marines));
-			--marines;
-		}
-		else
-			KillEntity(selection.at(--marines));
+		if (it->second->specialization == MARINE)
+			KillEntity(it->second);
 
 		if (e->capacity == 0)
 		{
