@@ -328,7 +328,7 @@ bool Map::load(const char* file_name)
 	int size = app->fs->load(tmp.data(), &buf);
 	pugi::xml_parse_result result = map_file.load_buffer(buf, size);
 
-	//RELEASE(buf);
+	RELEASE(buf);
 
 	if(result == NULL)
 	{
