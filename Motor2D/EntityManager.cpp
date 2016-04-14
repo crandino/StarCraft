@@ -142,9 +142,10 @@ bool EntityManager::preUpdate()
 				pos_commander = it->second->pos;
 			}
 		}
-		position = app->render->screenToWorld(pos_commander.x, pos_commander.y);
-		position.x += 20;
-		position.y += 95;
+	
+		position.x = pos_commander.x + 20;
+		position.y = pos_commander.y + 100;
+
 		addEntity(position, SCV);
 	}
 
