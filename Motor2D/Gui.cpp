@@ -44,7 +44,7 @@ bool Gui::start()
 	// HUD
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
-	ui_terran->interactive = true;
+	ui_terran->interactive = false;
 	//ui_terran->setListener(this);
 	ui_terran->can_focus = true;
 
@@ -69,14 +69,16 @@ bool Gui::start()
 	// HUD Command Center
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });
 	ui_create_bot->setLocalPos(505, 358);
-	ui_create_bot->interactive = true;
+	ui_create_bot->setListener(this);
+	ui_create_bot->interactive = false;
 	ui_create_bot->can_focus = true;
 	ui_create_bot->draw_element = false;
 
 	ui_create_builds = app->gui->createImage(NULL, { 298, 28, 37, 34 });
 	ui_create_builds->setLocalPos(551, 358);
-	ui_create_builds->interactive = true;
+	ui_create_builds->interactive = false;
 	ui_create_builds->can_focus = true;
+	ui_create_builds->setListener(this);
 	ui_create_builds->draw_element = false;
 
 	// CURSOR
@@ -107,6 +109,39 @@ bool Gui::start()
 	return true;
 }
 
+void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
+{
+	if (ui == ui_create_builds)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_LCLICK_DOWN) :
+			app->entity_manager->create_bunker = true;
+			break;
+
+		case(MOUSE_LCLICK_DOWN_REPEAT) :
+			app->entity_manager->create_bunker = true;
+			break;
+		}
+	}
+
+	if (ui == ui_create_bot)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_LCLICK_DOWN) :
+			app->entity_manager->create_SCV = true;
+			break;
+
+		case(MOUSE_LCLICK_DOWN_REPEAT) :
+			app->entity_manager->create_SCV = true;
+			break;
+		}
+	}
+}
+
 void Gui::drawHudSelection(SPECIALIZATION  selection)
 {
 	switch (selection)
@@ -120,7 +155,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  //Activate new images
 		      ui_create_bot->draw_element = true; 
+			  ui_create_bot->interactive = true;
 			  ui_create_builds->draw_element = true;
+			  ui_create_builds->interactive = true;
 
 
 		      break;
@@ -128,6 +165,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 		  case (NOTYPE) :
 			  //Desactivate all the options of Entities
 			  ui_create_bot->draw_element = false;
+			  ui_create_bot->interactive = false;
+			  ui_create_builds->draw_element = false;
 			  ui_create_builds->draw_element = false;
 
 			  //Activate default entities

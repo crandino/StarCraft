@@ -79,6 +79,8 @@ public:
 
 	SDL_Rect mouseQuad(iPoint init_mouse);
 
+	void onGui(GuiElements* ui, GUI_EVENTS event);
+
 	// Variables for Cursor
 	GuiCursor *cursor;
 	iPoint cursor_offset;
@@ -91,9 +93,12 @@ public:
 	GuiImage* rectangle_command = nullptr;
 	GuiImage* rectangle_command_2 = nullptr;
 
+
 	//Command Center HUD
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
+
+
 
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling

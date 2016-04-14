@@ -131,6 +131,10 @@ public:
 	//Frag count
 	bool enemyJustDied = false;
 
+	//GUI
+	bool create_bunker = false;
+	bool create_SCV = false;
+
 
 
 	/* -------- Methods for building -----------------------*/

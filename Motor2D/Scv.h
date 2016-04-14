@@ -47,7 +47,7 @@ public:
 		walk_left_up.frames.push_back({ 1008, 0, 72, 64 });
 		//----------------------------------------------
 
-		angle = -1;
+		angle = 225.f;
 		current_animation = &idle_up;
 		// Colliders
 		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);

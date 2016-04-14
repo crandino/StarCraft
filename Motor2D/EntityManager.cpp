@@ -56,16 +56,18 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e = new Bunker(pos);
 		building_to_place = (Building*)e;
 		building_mode = true;
+		create_bunker = false;
 		break;
 	case(ZERGLING) :
 		LOG("Creating Zergling");
-		e = new Zergling(pos);
+	/*	e = new Zergling(pos);
 		addInEnemyContainer(e);
-		AddEntityToWave(e->id, e);
+		AddEntityToWave(e->id, e);*/
 		break;
 	case(SCV) :
 		LOG("Creating SCV");
 		e = new Scv(pos);
+		create_SCV = false;
 		break;
 	}
 
@@ -128,10 +130,21 @@ bool EntityManager::preUpdate()
 		marine = addEntity(position, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
-	if (app->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (create_SCV)
 	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_commander;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == COMMANDCENTER)
+			{
+				pos_commander = it->second->pos;
+			}
+		}
+		position = app->render->screenToWorld(pos_commander.x, pos_commander.y);
+		position.x += 20;
+		position.y += 95;
 		addEntity(position, SCV);
 	}
 
@@ -141,7 +154,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, COMMANDCENTER);
 	}
-	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
+	if (create_bunker)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
