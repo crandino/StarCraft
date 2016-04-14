@@ -224,4 +224,17 @@ attack_left_up.speed = 0.01f;
 attack_left_up.loop = true;
 //----------------------------------------------
 
+//------------MARINE DEAD-----------------------
+dead.frames.push_back({ 0, 832, 64, 64 });
+dead.frames.push_back({ 64, 832, 64, 64 });
+dead.frames.push_back({ 128, 832, 64, 64 });
+dead.frames.push_back({ 192, 832, 64, 64 });
+dead.frames.push_back({ 256, 832, 64, 64 });
+dead.frames.push_back({ 320, 832, 64, 64 });
+dead.frames.push_back({ 384, 832, 64, 64 });
+dead.frames.push_back({ 448, 832, 64, 64 });
+dead.speed = 0.01f;
+//----------------------------------------------
+
+
 #endif // !__MARINE_ANIMATIONS_H__
