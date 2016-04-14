@@ -38,7 +38,7 @@ public:
 
 			if (total_pixels_to_move > 8)
 				pixels_to_move = total_pixels_to_move / 8;
-			do{
+			do{//CRITICAL BUG: PLEASE FIX THIS SOON. THE VECTOR IS OUT OF BOUNDS
 				if (total_pixels_moved + 8 > total_pixels_to_move)
 					pixels_to_move = total_pixels_to_move - total_pixels_moved;
 
