@@ -42,6 +42,8 @@ public:
 	Animation	attack_left;
 	Animation	attack_left_up;
 
+	Animation dead;
+
 	Marine(iPoint &p)
 	{
 		// Positions and dimensions
