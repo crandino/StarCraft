@@ -39,7 +39,7 @@ public:
 
 	// UI paramters
 	SDL_Rect        selection_type;
-	int				circle_selection_offset;
+	iPoint		    circle_selection_offset;
 	
 	SDL_Texture		*tex;   
 	Animation		*current_animation;

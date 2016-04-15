@@ -20,7 +20,6 @@ public:
 	Animation   walk_left;
 	Animation   walk_left_up;
 
-
 	Scv(iPoint &p)
 	{
 		// Positions and dimensions
@@ -49,11 +48,14 @@ public:
 
 		angle = 225.f;
 		current_animation = &idle_up;
+		selection_type = { 28, 9, 32, 19 };
+		circle_selection_offset = {-2, -8 };
+		offset_life = { -12, 30 };
 		// Colliders
 		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
-
+		specialization = SCV;
 		state = IDLE;
 		faction = PLAYER;
 		flying = false;

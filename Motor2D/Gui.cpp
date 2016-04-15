@@ -45,7 +45,6 @@ bool Gui::start()
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
 	ui_terran->interactive = false;
-	//ui_terran->setListener(this);
 	ui_terran->can_focus = true;
 
 	rectangle_map = app->gui->createImage(NULL, { 0, 0, 132, 132 });
@@ -57,13 +56,11 @@ bool Gui::start()
 	rectangle_command = app->gui->createImage(NULL, { 0, 152, 37, 34 });
 	rectangle_command->setLocalPos(505, 358);
 	rectangle_command->interactive = true;
-	//ui_terran->setListener(this);
 	rectangle_command->can_focus = true;
 
 	rectangle_command_2 = app->gui->createImage(NULL, { 48, 152, 37, 34 });
 	rectangle_command_2->setLocalPos(551, 358);
 	rectangle_command_2->interactive = true;
-	//ui_terran->setListener(this);
 	rectangle_command_2->can_focus = true;
 
 	// HUD Command Center
@@ -322,7 +319,11 @@ bool Gui::postUpdate()
 	{
 		// Circle selection blitting
 		Entity *e = it->second;
-		app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset, &e->selection_type);
+		if (e->specialization == SCV)
+			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2 - e->circle_selection_offset.x, e->center.y - e->circle_selection_offset.y, &e->selection_type);
+		else
+		   app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
+
 
 		// Life counter blitting
 		if (e->current_hp > 0)
@@ -338,8 +339,7 @@ bool Gui::postUpdate()
 		
 		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
 			drawHudSelection(COMMANDCENTER);
-		else
-			drawHudSelection(SPECIALIZATION::NOTYPE);
+		
 
 	}		
 

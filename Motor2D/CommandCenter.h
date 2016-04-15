@@ -42,7 +42,7 @@ public:
 		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 226, 66, 146, 88 };
-		circle_selection_offset = 34;
+		circle_selection_offset = { 0, 34 };
 		specialization = COMMANDCENTER;
 	}
 

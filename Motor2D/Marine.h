@@ -69,7 +69,7 @@ public:
 		faction = PLAYER;
 		selection_type = { 3, 4, 22, 13 };
 		specialization = MARINE;
-		circle_selection_offset = -1;
+		circle_selection_offset = { 0, -1 };
 		flying = false;
 
 		max_hp = 40;

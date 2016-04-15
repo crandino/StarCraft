@@ -37,13 +37,13 @@ public:
 		max_hp = 350;
 		current_hp = 350.0f;
 		max_hp_bars = 10;
-		offset_life = { -50, 50 };
+		offset_life = { -23, 35 };
 		capacity = 4;
 
 		state = IDLE;
 		faction = PLAYER;
-		selection_type = { 116, 2, 62, 37 };
-		circle_selection_offset = 34;
+		selection_type = { 261, 1, 94, 56 };
+		circle_selection_offset = { 0, 25 };
 	}
 };
 
