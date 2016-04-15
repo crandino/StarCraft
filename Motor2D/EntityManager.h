@@ -111,7 +111,6 @@ public:
 	void KillEntity(map<uint, Entity*> selection);
 	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
-	//map<uint, Entity*>     selection;
 
 	/*---------------Creating Waves-------------------*/
 	void createZergling(iPoint position, iPoint radius);
@@ -121,7 +120,6 @@ public:
 
 	/*---Utilities---*/ //Move to Globals when we have more time so it can be used by other modules
 	iPoint EntityManager::changeSign(iPoint point);
-
 
 	void logicChanged();
 

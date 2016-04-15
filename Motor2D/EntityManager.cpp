@@ -136,6 +136,7 @@ bool EntityManager::preUpdate()
 		marine = addEntity(position, MARINE);
 		//if (e != NULL) remove(e->id);		
 	}
+
 	if (create_SCV)
 	{
 		map<uint, Entity*>::iterator it = active_entities.begin();
@@ -146,6 +147,7 @@ bool EntityManager::preUpdate()
 			if (it->second->specialization == COMMANDCENTER)
 			{
 				pos_commander = it->second->pos;
+				break;
 			}
 		}
 	
@@ -314,17 +316,12 @@ bool EntityManager::preUpdate()
 		Entity *e = whichEntityOnMouse();
 		if (!selection.empty())
 		{
-			if (e != NULL && e->specialization == BUNKER) {
+			if (e != NULL && e->specialization == BUNKER)
 				GetInsideBunker((Bunker*)e);
-			}
 
 			if (e != NULL && e->type == BUILDING)
-			{
 				repairBuilding((Entity*)e);
-			}
 		}
-	
-
 	}
 	return true;
 }
@@ -366,12 +363,8 @@ bool EntityManager::postUpdate()
 	enemyJustDied = false;
 
 	// Entities Drawing
-	/*map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
-		it->second->draw(); //if you try the method, comment this line
-	}*/
+	// Look on Gui postUpdate()!
 
-		
 	// Drawing selector (green SDL_Rect)
 	if (selector_init && selector.w > 1 && selector.h > 1) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
 
@@ -644,7 +637,7 @@ void EntityManager::choosePlaceForBuilding()
 	iPoint center = app->render->screenToWorld(p.x, p.y);
 	building_to_place->center = { (float)center.x, (float)center.y };
 	
-	building_to_place->coll->setPos(building_to_place->pos.x - building_to_place->collider_offset.x, building_to_place->pos.y - building_to_place->collider_offset.y);
+	building_to_place->coll->setPos(building_to_place->pos.x + building_to_place->collider_offset.x, building_to_place->pos.y + building_to_place->collider_offset.y);
 
 	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y);
 	iPoint last_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x + building_to_place->coll->rect.w, building_to_place->coll->rect.y + building_to_place->coll->rect.h);

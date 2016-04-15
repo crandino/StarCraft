@@ -26,7 +26,7 @@ public:
 		center = { (float)p.x, (float)p.y };
 		tex_width = 72;
 		tex_height = 64;
-		collider_offset = { 10, 14 };
+		collider_offset = { -14, -16 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 		// Animations
@@ -49,10 +49,10 @@ public:
 		angle = 225.f;
 		current_animation = &idle_up;
 		selection_type = { 28, 9, 32, 19 };
-		circle_selection_offset = {-2, -8 };
-		offset_life = { -12, 30 };
+		circle_selection_offset = {-2, 0 };
+		offset_life = { -13, 20 };
 		// Colliders
-		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 30, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
 		specialization = SCV;
@@ -65,8 +65,7 @@ public:
 		max_hp_bars = 6;
 
 		speed = 10;
-
-
+		
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);
 	}
@@ -74,13 +73,11 @@ public:
 	//ROF method to check the orientation of the marine
 	void checkAngle()
 	{
-
 		if (angle > 360)
 		{
 			angle -= 360.f;
 		}
-
-			// From 0 to 180 degrees
+		// From 0 to 180 degrees
 
 			if (angle >= 0.f && angle < 22.5f)
 			{
@@ -131,7 +128,8 @@ public:
 
 	bool update(float dt)
 	{
-		coll->setPos(center.x - 10, center.y - 14);
+		checkAngle();
+		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 		if (has_target) move(dt);
 
 		return true;
