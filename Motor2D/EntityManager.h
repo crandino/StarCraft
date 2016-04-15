@@ -101,8 +101,8 @@ public:
 
 	void AddEntityToWave(uint n, Entity* e);
 	/*--------Methods for interact with buildings----------*/
-	void GetInsideBunker(Bunker* e);
-
+	void GetInsideBunker(Bunker* e);	
+	void repairBuilding(Entity* e);
 	bool searchNearEntity(Entity* e);
 
 

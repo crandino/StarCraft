@@ -317,7 +317,14 @@ bool EntityManager::preUpdate()
 			if (e != NULL && e->specialization == BUNKER) {
 				GetInsideBunker((Bunker*)e);
 			}
+
+			if (e != NULL && e->type == BUILDING)
+			{
+				repairBuilding((Entity*)e);
+			}
 		}
+	
+
 	}
 	return true;
 }
@@ -595,6 +602,23 @@ void EntityManager::GetInsideBunker(Bunker* e)
 		}
 		
 	}
+}
+
+void EntityManager::repairBuilding(Entity* e)
+{
+	map<uint, Entity*>::iterator it = selection.begin();
+	for (; it != selection.end(); it++)
+	{
+		if (it->second->specialization == SCV)
+		{
+				do
+				{
+					e->current_hp += e->repair_power;
+
+				} while (e->current_hp<e->max_hp);
+			
+			}
+		}	
 }
 
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)
