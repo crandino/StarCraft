@@ -89,7 +89,7 @@ public:
 
 	virtual bool update(float dt)
 	{
-		return true;
+ 		return true;
 	}
 
 	virtual bool searchNearestEnemy()

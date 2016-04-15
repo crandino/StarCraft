@@ -597,15 +597,19 @@ void EntityManager::GetInsideBunker(Bunker* e)
 	map<uint, Entity*>::iterator it = selection.begin();
 	if(e->capacity != 0)
 	{
-		for (; it != selection.end(); it++)
+		for (; it != selection.end();)
 		{
-			if (it->second->specialization == MARINE) 
+			if (it->second->specialization == MARINE)
 			{
 				e->units_inside.insert(pair<uint, Entity*>(it->first, it->second));
-				active_entities.erase(it->second->id);
-				it->second->coll->to_delete = true;
+				active_entities.erase(it->first);
+				it = selection.erase(it);
+				//it->second->to_delete = true;
+				//it->second->coll->to_delete = true;
 				--e->capacity;
 			}
+			else
+				++it;
 				
 			if (e->capacity == 0)
 			{
