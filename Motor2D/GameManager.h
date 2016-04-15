@@ -26,8 +26,7 @@ public:
 	/*---- Wave Creation ----*/
 	int center;
 	int radiusSpawnOffset = 30;
-	uint totalKillsGame = 0;
-	uint totalUnitsKilledCurrentFrame = 0;
+	uint totalKills = 0;
 
 public:
 
