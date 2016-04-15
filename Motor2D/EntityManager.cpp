@@ -348,7 +348,7 @@ bool EntityManager::update(float dt)
 	map<uint, Entity*>::iterator it2 = active_entities.begin();
 	for (; it2 != active_entities.end(); ++it2)
 	{
-		if (it2->second->current_hp <= 0.0f)
+		if (it2->second->marked_to_delete)
 			to_delete.insert(pair<uint, Entity*>(it2->first, it2->second));
 	}
 
