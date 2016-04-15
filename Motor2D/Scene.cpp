@@ -29,7 +29,8 @@ bool Scene::awake(pugi::xml_node &node)
 
 // Called before the first frame
 bool Scene::start()
-{
+{	
+	app->render->start_transition({ 880, 1974 });
    	int w, h;
 	uchar *buffer = NULL;
 	if(app->map->createWalkabilityMap(w, h, &buffer))
@@ -100,11 +101,11 @@ bool Scene::update(float dt)
 
 	// Paint Layers -- Draw or undraw the map
 	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
-		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
+		app->map->setLayerProperty("PROTOTYPE_LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
 
 	// Paint Layers -- Draw or undraw the map
 	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
-		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+		app->map->setLayerProperty("PROTOTYPE_LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
 
 	// Transition experiments
 	/*if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)

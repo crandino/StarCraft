@@ -49,7 +49,7 @@ public:
 		// Animation
 		tex = app->tex->loadTexture("Units/Zergling.png");
 		#include"Zergling_animations.h";
-		current_animation = &idle_up;
+		current_animation = &idle_down;
 
 		// Collider
 		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 24, 26 }, COLLIDER_BOMB);

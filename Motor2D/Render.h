@@ -61,7 +61,7 @@ public:
 	bool			transition_active;
 	iPoint			dest_pos;
 	iPoint			middle_pos;
-	float			lerp_value;
+	int			lerp_value;
 };
 
 #endif // __RENDER_H__

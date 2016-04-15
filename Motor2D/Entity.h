@@ -7,6 +7,7 @@
 #include "App.h"
 #include "Animation.h"
 #include "Collision.h"
+#include "GameManager.h"
 #include "SDL\include\SDL.h"
 
 #define TIME_TO_CHECK 100.0f

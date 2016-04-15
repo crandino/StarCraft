@@ -29,8 +29,8 @@ bool Map::awake(pugi::xml_node& config)
 }
 bool Map::start()
 {
-	app->map->load("TEST_MAP.tmx");
-	app->map->load("LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
+	app->map->load("PROTOTYPE_MAP.tmx");
+	app->map->load("PROTOTYPE_LOGIC_MAP.tmx"); // This is the logic map where the units will be moving
 
 	return true;
 }
@@ -195,7 +195,7 @@ bool Map::changeLogic(const SDL_Rect &rect, WALKABILITY walk_value)
 	list<MapData>::iterator map = data.begin();
 	while (map != data.end())
 	{
-		if (map->name == "LOGIC_MAP.tmx")
+		if (map->name == "PROTOTYPE_LOGIC_MAP.tmx")
 		{
 			list<MapLayer*>::iterator layer = map->layers.begin();
 			while (layer != map->layers.end())

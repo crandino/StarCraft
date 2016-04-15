@@ -8,10 +8,10 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
 #define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 10
 #define	SIZE1 1 // Changes number of zerglings per wave
+#define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
 #define ZERGLINGSCORE 20
 
 
@@ -38,7 +38,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("Wave time is over! prepare for the next wave!!!");
 			
-				app->entity_manager->createWave(SIZE1);
+			app->entity_manager->createWave(SIZE1, { 1500, 500 });
 				timeBetweenWaves.start();
 				currentWaves++;
 		}
