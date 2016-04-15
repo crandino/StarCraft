@@ -324,7 +324,6 @@ bool Gui::postUpdate()
 		else
 		   app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
 
-
 		// Life counter blitting
 		if (e->current_hp > 0)
 		{
@@ -335,15 +334,10 @@ bool Gui::postUpdate()
 			for (; bar <= e->max_hp_bars; ++bar)
 			    app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * white_life.w), e->center.y + e->offset_life.y, &white_life);
 		}
-
 		
 		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
 			drawHudSelection(COMMANDCENTER);
-		
-
-	}		
-
-	
+	}			
 
 	list<GuiElements*>::iterator item;
 

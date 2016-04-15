@@ -51,25 +51,21 @@ public:
 				{
 					center.x -= pixels_to_move / 2;
 					center.y += pixels_to_move / 2;
-
 				}
 				else if (path.begin()->x > tile_pos.x && path.begin()->y > tile_pos.y)
 				{
 					center.x += pixels_to_move / 2;
 					center.y += pixels_to_move / 2;
-
 				}
 				else if (path.begin()->x > tile_pos.x && path.begin()->y < tile_pos.y)
 				{
 					center.x += pixels_to_move / 2;
 					center.y -= pixels_to_move / 2;
-
 				}
 				else if (path.begin()->y == tile_pos.y)
 				{
 					if (path.begin()->x < tile_pos.x)
 						center.x -= pixels_to_move;
-
 					else
 						center.x += pixels_to_move;
 				}
@@ -109,7 +105,6 @@ public:
 
 	void checkUnitDirection()
 	{
-
 		if (state == ATTACK)
 		{
 			if (target_to_attack->tile_pos.x == tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
@@ -223,6 +218,7 @@ public:
 
 	bool update(float dt)
 	{
+		checkAngle();   // This sets animation according to their angle direction
 		coll->setPos(center.x - 10, center.y - 14);
 		LOG("%f", timer_to_check);
 
