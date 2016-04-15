@@ -122,6 +122,8 @@ public:
 	iPoint EntityManager::changeSign(iPoint point);
 
 
+	void logicChanged();
+
 public:
 	//Frag count
 	bool enemyJustDied = false;

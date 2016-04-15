@@ -281,24 +281,7 @@ bool EntityManager::preUpdate()
 			building_mode = false;
 
 			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			int w, h;
-			uchar *buffer = NULL;
-			if (app->map->createWalkabilityMap(w, h, &buffer))
-			{
-				app->path->setMap(w, h, buffer);
-				map<uint, Entity*>::iterator it = active_entities.begin();
-				for (; it != active_entities.end(); ++it)
-				{
-					if (it->second->type == UNIT)
-					{
-						Unit *unit = (Unit*)it->second;
-
-						if (unit->path.size() > 0)
-							if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-								unit->path = app->path->getLastPath();
-					}
-				}
-			}
+			logicChanged();
 		}
 	}
 
@@ -667,4 +650,26 @@ void EntityManager::choosePlaceForBuilding()
 		}
 	}
 	app->render->blit(building_to_place->tex, building_to_place->pos.x, building_to_place->pos.y, &building_to_place->current_animation->getCurrentFrame());
+}
+
+void EntityManager::logicChanged()
+{
+	int w, h;
+	uchar *buffer = NULL;
+	if (app->map->createWalkabilityMap(w, h, &buffer))
+	{
+		app->path->setMap(w, h, buffer);
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->type == UNIT)
+			{
+				Unit *unit = (Unit*)it->second;
+
+				if (unit->path.size() > 0)
+				if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+					unit->path = app->path->getLastPath();
+			}
+		}
+	}
 }
