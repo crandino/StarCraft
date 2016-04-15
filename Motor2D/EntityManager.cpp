@@ -61,8 +61,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(ZERGLING) :
 		LOG("Creating Zergling");
 		e = new Zergling(pos);
-		addInEnemyContainer(e);
-		AddEntityToWave(e->id, e);
+		
+		
 		break;
 	case(SCV) :
 		LOG("Creating SCV");
@@ -75,6 +75,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+		AddEntityToWave(e->id, e);
+		addInEnemyContainer(e);
 	}
 
 	return e;
