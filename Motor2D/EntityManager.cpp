@@ -61,8 +61,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(ZERGLING) :
 		LOG("Creating Zergling");
 		e = new Zergling(pos);
-		addInEnemyContainer(e);
-		AddEntityToWave(e->id, e);
 		break;
 	case(SCV) :
 		LOG("Creating SCV");
@@ -75,6 +73,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+		AddEntityToWave(e->id, e);
+		addInEnemyContainer(e);
 	}
 
 	return e;
@@ -107,6 +107,13 @@ bool EntityManager::preUpdate()
 	{
 		if (it->second->to_delete)
 		{
+			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
+			for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
+			{
+				if (it->second == it2->second->target_to_attack)
+					it2->second->target_to_attack = NULL;
+			}
+
 			selection.erase(it->first);
 			RELEASE(it->second);
 			it = active_entities.erase(it);
@@ -453,7 +460,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 
 	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
 	{
-		
 		if (it->second != e && e->faction != it->second->faction && it->second->to_delete == false)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
@@ -471,22 +477,25 @@ bool EntityManager::searchNearEntity(Entity* e)
 			}
 		}
 	}
-	if (e->target_to_attack != NULL)//Second it does the calculus and changes the IA states
+
+	if (e->target_to_attack != NULL) //Second it does the calculus and changes the IA states
 	{
 		Unit* unit = (Unit*)e;
 		unit->has_target = false;
-		if (value <= e->range_to_attack)//If the entity isn't in the range of attack it changes the direction and state
+		if (value <= e->range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
 		{
 			unit->checkUnitDirection();
 			e->state = ATTACK;
 		}
 		else
+		{
 			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1) //the path to the selected entity is constructed
 			{
 				unit->has_target = true;
 				unit->path = app->path->getLastPath();
 				e->state = MOVE_ALERT;
 			}
+		}
 	}
 
 	return ret;
@@ -677,9 +686,7 @@ void EntityManager::logicChanged()
 			if (it->second->type == UNIT)
 			{
 				Unit *unit = (Unit*)it->second;
-
-				if (unit->path.size() > 0)
-				if (app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+				if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
 					unit->path = app->path->getLastPath();
 			}
 		}

@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Timer.h"
-
+#include "Point2d.h"
 
 using namespace std;
 
@@ -22,12 +22,15 @@ public:
 	uint killCount = 0;
 	bool isFinished = false;
 	bool gameOver = false;
+	iPoint initialPosition;
+
 
 	/*---- Wave Creation ----*/
 	int center;
 	int radiusSpawnOffset = 30;
 	uint totalKillsGame = 0;
 	uint totalUnitsKilledCurrentFrame = 0;
+
 
 public:
 
@@ -60,6 +63,10 @@ public:
 
 private:
 	uint previousUnitKilled = 0;
+
+	bool startGame = false;
+
+
 
 
 	uint32 WaveTime1 = 300;//120 = 2 minutes per wave in the future or some other game designish number
