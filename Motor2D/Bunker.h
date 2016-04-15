@@ -19,7 +19,7 @@ public:
 
 		tex_width = 96;
 		tex_height = 128;
-		collider_offset.set(-1, -38);
+		collider_offset.set(0, 36);
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
@@ -31,7 +31,7 @@ public:
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ pos.x - collider_offset.x, pos.y - collider_offset.y, 96, 59 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ pos.x + collider_offset.x, pos.y + collider_offset.y, 96, 59 }, COLLIDER_BOMB);
 
 		// Another stuff
 		specialization = BUNKER;

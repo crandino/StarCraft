@@ -163,6 +163,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, COMMANDCENTER);
 	}
+
 	if (create_bunker)
 	{
 		app->input->getMousePosition(position);

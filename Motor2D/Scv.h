@@ -52,7 +52,7 @@ public:
 		circle_selection_offset = {-2, 0 };
 		offset_life = { -13, 20 };
 		// Colliders
-		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 30, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 30, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
 		specialization = SCV;

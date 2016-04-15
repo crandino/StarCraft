@@ -52,7 +52,7 @@ public:
 		current_animation = &idle_down;
 
 		// Collider
-		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 24, 26 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 24, 26 }, COLLIDER_BOMB);
 
 		// Another stuff
 		type = UNIT;

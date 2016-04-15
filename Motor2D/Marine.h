@@ -61,7 +61,7 @@ public:
 
 
 		// Colliders
-		coll = app->collision->addCollider({ center.x - collider_offset.x, center.y - collider_offset.y, 22, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_BOMB);
 
 		// Another stuff
 		
@@ -86,7 +86,6 @@ public:
 		
 		speed = 10.0f;
 		
-
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);
 	}

@@ -98,8 +98,6 @@ bool Gui::start()
 	red_life = { 501, 3, 4, 5 };
 	white_life = { 491, 3, 4, 5 };	
 
-
-
 	// To show walkability on building mode
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
@@ -117,9 +115,9 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			app->entity_manager->create_bunker = true;
 			break;
 
-		case(MOUSE_LCLICK_DOWN_REPEAT) :
+		/*case(MOUSE_LCLICK_DOWN_REPEAT) :
 			app->entity_manager->create_bunker = true;
-			break;
+			break;*/
 		}
 	}
 
@@ -132,9 +130,9 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			app->entity_manager->create_SCV = true;
 			break;
 
-		case(MOUSE_LCLICK_DOWN_REPEAT) :
+		/*case(MOUSE_LCLICK_DOWN_REPEAT) :
 			app->entity_manager->create_SCV = true;
-			break;
+			break;*/
 		}
 	}
 }
@@ -217,9 +215,7 @@ bool Gui::update(float dt)
 	if (mouse_hover &&
 		mouse_hover->can_focus == true &&
 		app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-		focus = mouse_hover;
-
-	
+		focus = mouse_hover;	
 	
 	// Now the iteration for input and update
 	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)
@@ -243,8 +239,6 @@ bool Gui::update(float dt)
 	return true;
 }
 
-
-
 // Called after all Updates
 bool Gui::postUpdate()
 {
@@ -263,14 +257,9 @@ bool Gui::postUpdate()
 		else
 			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
 	}
-
-
+	
 	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
-	{
 		it->second->draw();
-	}
-
-
 
 	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 	{
