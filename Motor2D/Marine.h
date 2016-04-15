@@ -2,6 +2,7 @@
 #define __MARINE_H__
 
 #include "Unit.h"
+#include "Audio.h"
 
 class Marine : public Unit
 {
@@ -44,6 +45,9 @@ public:
 
 	Animation dead;
 
+	// SFX
+	 unsigned int marine_attack_fx;
+
 	Marine(iPoint &p)
 	{
 		// Positions and dimensions
@@ -53,13 +57,15 @@ public:
 		collider_offset = { -10, -14 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y); 
-		// Animations
+
+		// Animations and FX
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
+		marine_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+		
 		#include "Marine_animations.h";
 		angle = 0;
 		current_animation = &idle_up;
-
-
+	
 		// Colliders
 		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_BOMB);
 
@@ -81,6 +87,7 @@ public:
 		range_to_attack = 100;
 		damage = 5.0f;
 		attack_delay = 200.0f;
+		time_to_die = 500.0f;
 		
 		//current_hp_bars = 6;
 		
@@ -93,145 +100,172 @@ public:
 	//ROF method to check the orientation of the marine
 	void checkAngle()
 	{
-		
-		if (angle > 360)
+		if (state == DYING)
 		{
-			angle -= 360.f;
+			current_animation = &dead;
 		}
-
-		if (has_target)
+		else
 		{
-			// From 0 to 180 degrees
-			if (angle >= 0.f && angle < 22.5f)
+			if (angle > 360)
 			{
-				current_animation = &walk_up;
-			}
-			else if (angle >= 22.5f && angle < 45.f)
-			{
-				current_animation = &one;
-			}
-			else if (angle >= 45.f && angle < 67.5f)
-			{
-				current_animation = &walk_right_up;
-			}
-			else if (angle >= 67.5f && angle < 90.f)
-			{
-				current_animation = &three;
-			}
-			else if (angle >= 90.f && angle < 112.5f)
-			{
-				current_animation = &walk_right;
-			}
-			else if (angle >= 112.5f && angle < 135.f)
-			{
-				current_animation = &five;
-			}
-			else if (angle >= 135.f && angle < 157.5f)
-			{
-				current_animation = &walk_right_down;
-			}
-			else if (angle >= 157.5f && angle < 180.f)
-			{
-				current_animation = &seven;
-			}
-			// From 180 to 360 degrees
-			else if (angle >= 180.f && angle < 202.5f)
-			{
-				current_animation = &walk_down;
-			}
-			else if (angle >= 202.5f && angle < 225.f)
-			{
-				current_animation = &nine;
-			}
-			else if (angle >= 225.f && angle < 247.5f)
-			{
-				current_animation = &walk_left_down;
-			}
-			else if (angle >= 247.5f && angle < 270.f)
-			{
-				current_animation = &eleven;
-			}
-			else if (angle >= 270.f && angle < 292.5f)
-			{
-				current_animation = &walk_left;
-			}
-			else if (angle >= 292.5f && angle < 315.f)
-			{
-				current_animation = &thirdteen;
-			}
-			else if (angle >= 315.f && angle < 337.5f)
-			{
-				current_animation = &walk_left_up;
-			}
-			else if (angle >= 337.5f && angle < 360.f)
-			{
-				current_animation = &fifteen;
-			}
-		}
-		else 
-		{ //TODO IPL: ALL ANGLE ATTACK.
-			if (angle >= 0.f && angle < 22.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_up;
-				else
-					current_animation = &idle_up;
+				angle -= 360.f;
 			}
 
-			else if (angle >= 45.f && angle < 67.5f)
+			if (has_target)
 			{
-				if (state == ATTACK)
-					current_animation = &attack_right_up;
-				else
-					current_animation = &idle_right_up;
+				// From 0 to 180 degrees
+				if (angle >= 0.f && angle < 22.5f)
+				{
+					current_animation = &walk_up;
+				}
+				else if (angle >= 22.5f && angle < 45.f)
+				{
+					current_animation = &one;
+				}
+				else if (angle >= 45.f && angle < 67.5f)
+				{
+					current_animation = &walk_right_up;
+				}
+				else if (angle >= 67.5f && angle < 90.f)
+				{
+					current_animation = &three;
+				}
+				else if (angle >= 90.f && angle < 112.5f)
+				{
+					current_animation = &walk_right;
+				}
+				else if (angle >= 112.5f && angle < 135.f)
+				{
+					current_animation = &five;
+				}
+				else if (angle >= 135.f && angle < 157.5f)
+				{
+					current_animation = &walk_right_down;
+				}
+				else if (angle >= 157.5f && angle < 180.f)
+				{
+					current_animation = &seven;
+				}
+				// From 180 to 360 degrees
+				else if (angle >= 180.f && angle < 202.5f)
+				{
+					current_animation = &walk_down;
+				}
+				else if (angle >= 202.5f && angle < 225.f)
+				{
+					current_animation = &nine;
+				}
+				else if (angle >= 225.f && angle < 247.5f)
+				{
+					current_animation = &walk_left_down;
+				}
+				else if (angle >= 247.5f && angle < 270.f)
+				{
+					current_animation = &eleven;
+				}
+				else if (angle >= 270.f && angle < 292.5f)
+				{
+					current_animation = &walk_left;
+				}
+				else if (angle >= 292.5f && angle < 315.f)
+				{
+					current_animation = &thirdteen;
+				}
+				else if (angle >= 315.f && angle < 337.5f)
+				{
+					current_animation = &walk_left_up;
+				}
+				else if (angle >= 337.5f && angle < 360.f)
+				{
+					current_animation = &fifteen;
+				}
 			}
-			else if (angle >= 90.f && angle < 112.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_right;
-				else
-					current_animation = &idle_right;
+			else
+			{ //TODO IPL: ALL ANGLE ATTACK.
+				if (angle >= 0.f && angle < 22.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_up;
+					}
+					else
+						current_animation = &idle_up;
+				}
+
+				else if (angle >= 45.f && angle < 67.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_right_up;
+					}
+					else
+						current_animation = &idle_right_up;
+				}
+				else if (angle >= 90.f && angle < 112.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_right;
+					}
+					else
+						current_animation = &idle_right;
+				}
+				else if (angle >= 135.f && angle < 157.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_right_down;
+					}
+					else
+						current_animation = &idle_right_down;
+				}
+				else if (angle >= 180.f && angle < 202.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_down;
+					}
+					else
+						current_animation = &idle_down;
+				}
+				else if (angle >= 225.f && angle < 247.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_left_down;
+					}
+					else
+						current_animation = &idle_left_down;
+				}
+				else if (angle >= 270.f && angle < 292.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_left;
+					}
+					else
+						current_animation = &idle_left;
+				}
+				else if (angle >= 315.f && angle < 337.5f)
+				{
+					if (state == ATTACK)
+					{
+						app->audio->playFx(marine_attack_fx);
+						current_animation = &attack_left_up;
+					}
+					else
+						current_animation = &idle_left_up;
+				}
 			}
-			else if (angle >= 135.f && angle < 157.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_right_down;
-				else
-					current_animation = &idle_right_down;
-			}
-			else if (angle >= 180.f && angle < 202.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_down;
-				else
-					current_animation = &idle_down;
-			}
-			else if (angle >= 225.f && angle < 247.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_left_down;
-				else
-					current_animation = &idle_left_down;
-			}
-			else if (angle >= 270.f && angle < 292.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_left;
-				else
-					current_animation = &idle_left;
-			}
-			else if (angle >= 315.f && angle < 337.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_left_up;
-				else
-					current_animation = &idle_left_up;
-			}
-			
-		}		
-		
+		}
 	}
-
 	void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));

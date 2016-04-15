@@ -171,7 +171,11 @@ bool Audio::playFx(unsigned int id, int repeat)
 
 	if(id > 0 && id <= fx.size())
 	{
-		//Mix_PlayChannel(-1, fx[id - 1], repeat); //Error a resoldre
+		list<Mix_Chunk*>::iterator i = fx.begin();
+		advance(i, id - 1);
+		Mix_PlayChannel(-1, (*i), repeat);
+
+		ret = true;
 	}
 
 	return ret;
