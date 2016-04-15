@@ -142,6 +142,7 @@ public:
 private:
 
 	map<uint, Entity*>					active_entities;
+	map<uint, Entity*>					hiding_entities;
 	map<uint, Entity*>					to_delete;
 	map<uint, Entity*>					enemyWave;
 	uint								next_ID;	

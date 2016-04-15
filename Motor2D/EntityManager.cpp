@@ -322,7 +322,6 @@ bool EntityManager::preUpdate()
 	{
 		//Getting inside Bunker
 		Entity *e = whichEntityOnMouse();
-
 		if (!selection.empty())
 		{
 			if (e != NULL && e->specialization == BUNKER) {
@@ -392,7 +391,7 @@ bool EntityManager::postUpdate()
 	// Entities Drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
-	{		
+	{
 		it->second->draw(); //if you try the method, comment this line
 	}
 		
@@ -603,9 +602,11 @@ void EntityManager::GetInsideBunker(Building* e)
 	if(e->capacity != 0){
 		for (; it != selection.end(); it++)
 		{
-			--e->capacity;
 			if (it->second->specialization == MARINE) {
-				KillEntity(it->second);
+				hiding_entities.insert(pair<uint, Entity*>(it->first, it->second));
+				active_entities.erase(it->second->id);
+				it->second->coll->to_delete = true;
+				--e->capacity;
 			}
 				
 			if (e->capacity == 0)
@@ -613,7 +614,7 @@ void EntityManager::GetInsideBunker(Building* e)
 				break;
 			}
 		}
-		selection.clear();
+		
 	}
 }
 
