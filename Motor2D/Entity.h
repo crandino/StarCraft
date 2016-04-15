@@ -101,7 +101,7 @@ public:
 
 	virtual void attack()
 	{
-		if (target_to_attack->to_delete == false)
+		if (target_to_attack != NULL)
 		{
 			int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
 			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
@@ -111,7 +111,7 @@ public:
 				{
 					if (target_to_attack->type == BUILDING)
 					{
-						app->map->changeLogic(target_to_attack->coll->rect, LOW_GROUND);//We need to verify if is LOW_GROUND or HIGH_GROUND
+						app->map->changeLogic(target_to_attack->coll->rect, LOW_GROUND); // We need to verify if is LOW_GROUND or HIGH_GROUND
 						app->entity_manager->logicChanged();
 					}
 
@@ -125,7 +125,6 @@ public:
 					{
 						app->game_manager->totalUnitsKilledCurrentFrame++;
 					}
-
 				}
 			}
 			else
