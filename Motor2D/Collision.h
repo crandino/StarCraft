@@ -19,6 +19,7 @@ enum COLLIDER_TYPE
 	COLLIDER_PLAYER_ATTACK,
 	COLLIDER_ENEMY_ATTACK,
 	COLLIDER_BOMB,
+	COLLIDER_SCREEN_BUTTON,//RIE: Future WARNING, this will be removed and we will be using an UI element in the future
 
 	COLLIDER_MAX
 };

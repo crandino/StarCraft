@@ -4,7 +4,10 @@
 #include "Module.h"
 #include "Timer.h"
 #include "Point2d.h"
+#include "Collision.h"
+#include "Gui.h"
 
+class GuiImage;
 using namespace std;
 
 //Class that manages the game. The win lose cycle, the points earned, the resources, waves etc..
@@ -15,21 +18,21 @@ Place a timer, entity manager communicate zerg list/map etc..
 class GameManager : public Module
 {
 public:
-	int currentWaves = 0;
-	int totalWaves = 2;
+	int current_waves = 0;
+	int total_waves = 2;
 	int score = 0;
-	int enemyCount = 0;
-	uint killCount = 0;
-	bool isFinished = false;
-	bool gameOver = false;
-	iPoint initialPosition;
+	int enemy_count = 0;
+	uint kill_count = 0;
+	bool is_finished = false;
+	bool game_over = false;
+	iPoint initial_position;
 
 
 	/*---- Wave Creation ----*/
 	int center;
-	int radiusSpawnOffset = 30;
-	uint totalKillsGame = 0;
-	uint totalUnitsKilledCurrentFrame = 0;
+	int radius_spawn_offset = 30;
+	uint total_kills_game = 0;
+	uint total_units_killed_currentFrame = 0;
 
 
 public:
@@ -40,7 +43,7 @@ public:
 	}
 
 
-	bool Victory = false;
+	bool victory = false;
 
 	void addPoints(uint points);
 
@@ -50,27 +53,25 @@ public:
 	
 	bool postUpdate();
 
+	bool cleanUp();
 
 public:
 	//Time Management attributes
-	Timer GeneralTime;
-	Timer timeBetweenWaves;
-	Timer RandomGenerator;
+	Timer general_time;
+	Timer time_between_waves;
+	Timer random_generator;
 
 	//Score system attributes
-	uint scoreCurrentWave = 0;
-	uint totalScore = 0;
+	uint score_current_wave = 0;
+	uint total_score = 0;
+
+	//Start Button
+	GuiImage* start_button = nullptr;
 
 private:
-	uint previousUnitKilled = 0;
+	uint previous_unit_killed = 0;
 
-	bool startGame = false;
-
-
-
-
-	uint32 WaveTime1 = 300;//120 = 2 minutes per wave in the future or some other game designish number
-	uint size1 = 0; // Changes number of zerglings per wave
+	bool start_game = false;
 };
 
 #endif

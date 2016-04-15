@@ -5,7 +5,10 @@
 #include "p2Log.h"
 #include <time.h>
 #include "SDL\include\SDL_mouse.h"
+#include "Render.h"
+#include "Gui.h"
 
+#include "GuiImage.h"
 
 //Author: RIE code.
 
@@ -22,11 +25,13 @@ bool GameManager::start()
 {
 	bool ret = true;
 
-
 	LOG("LAST HOPE GAME STARTS!");
-
-	//app->entity_manager->createWave(size1);//First wave that is created
 	
+	start_button = app->gui->createImage(NULL, { 298, 28, 37, 34 });
+	start_button->setLocalPos(0, 292);
+	start_button->interactive = true;
+	start_button->can_focus = true;
+
 	return ret;
 }
 
@@ -36,48 +41,49 @@ bool GameManager::update(float dt)
 
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		startGame = true;
-		timeBetweenWaves.start();
+		start_game = true;
+		time_between_waves.start();
 	}
 
-	if (startGame)
+
+	if (start_game)
 	{
 
-		if (currentWaves <= TOTALWAVES)
+		if (current_waves <= TOTALWAVES)
 		{
-			if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
+			if (time_between_waves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 			{
 				LOG("Wave time is over! prepare for the next wave!!!");
 
 				app->entity_manager->createWave(SIZE1, { 1500, 500 });
 				
-				currentWaves++;
+				current_waves++;
 			}
 
 
 			//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
-			if (totalUnitsKilledCurrentFrame > 0)
+			if (total_units_killed_currentFrame > 0)
 			{
-				killCount += totalUnitsKilledCurrentFrame;
-				addPoints(killCount);
-				totalUnitsKilledCurrentFrame = 0;
+				kill_count += total_units_killed_currentFrame;
+				addPoints(kill_count);
+				total_units_killed_currentFrame = 0;
 
-				LOG("Score: %d", totalScore);
+				LOG("Score: %d", total_score);
 
-				if (killCount >= SIZE1)
+				if (kill_count >= SIZE1)
 				{
-					totalKillsGame += killCount;
-					killCount = 0;
-					addPoints(killCount);
+					total_kills_game += kill_count;
+					kill_count = 0;
+					addPoints(kill_count);
 
 					LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
-					LOG("Total Score: %d", totalScore);
+					LOG("Total Score: %d", total_score);
 				}
 			}
 			//timer
 			//++unitKillCount;
 
-			if (totalKillsGame == TOTALUNITSALLWAVES)
+			if (total_kills_game == TOTALUNITSALLWAVES)
 			{
 				//Victory Text
 				//If all waves are defeated/or waves are infinite (we'll see)
@@ -86,17 +92,17 @@ bool GameManager::update(float dt)
 				ret = false;
 			}
 
-			if (gameOver)
+			if (game_over)
 			{
 				//Display message of game over
 				LOG("GAME OVER");
 				//Display Score
-				LOG("Score: %d", scoreCurrentWave);
+				LOG("Score: %d", score_current_wave);
 				//End game loop
-				GeneralTime.start();
+				general_time.start();
 				/*1: Whether the player has died*/
 				ret = false;
-				startGame = false;
+				start_game = false;
 			}
 		}
 
@@ -107,11 +113,21 @@ bool GameManager::update(float dt)
 
 bool GameManager::postUpdate()
 {
+
 	return true;
 }
 
 
 void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 {
-	totalScore += ZERGLINGSCORE * totalUnitsKilledCurrentFrame;
+	total_score += ZERGLINGSCORE * totalUnitsKilledCurrentFrame;
+}
+
+bool GameManager::cleanUp()
+{
+	bool ret = false;
+
+	RELEASE(start_button);
+
+	return ret;
 }

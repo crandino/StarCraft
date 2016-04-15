@@ -123,7 +123,7 @@ public:
 
 					if (faction == PLAYER )
 					{
-						app->game_manager->totalUnitsKilledCurrentFrame++;
+						app->game_manager->total_units_killed_currentFrame++;
 					}
 				}
 			}

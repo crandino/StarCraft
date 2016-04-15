@@ -61,8 +61,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(ZERGLING) :
 		LOG("Creating Zergling");
 		e = new Zergling(pos);
-		
-		
 		break;
 	case(SCV) :
 		LOG("Creating SCV");
