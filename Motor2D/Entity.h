@@ -61,7 +61,6 @@ public:
 	float			damage;
 	float			attack_delay;
 	float			timer_attack_delay = 0.0f;
-	
 
 	Collider*       coll;
 	
@@ -70,12 +69,14 @@ public:
 	SDL_Texture     *tile_path;
 	bool            end_path = false;
 
-	bool			marked_to_delete = false;
+	bool			to_delete;
 
 
 	// Constructors
 	Entity()
-	{};
+	{
+		to_delete = false;
+	};
 
 	// Destructor
 	~Entity()
@@ -83,15 +84,12 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
+	virtual void checkAngle()
+	{ }
+
 	virtual bool update(float dt)
 	{
 		return true;
-	}
-
-	//This name could be changed
-	virtual void checkAngle()
-	{
-
 	}
 
 	virtual bool searchNearestEnemy()
@@ -101,12 +99,11 @@ public:
 
 	virtual void attack()
 	{
-		if ((abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y)) <= range_to_attack && target_to_attack->marked_to_delete == false)
+		if ((abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y)) <= range_to_attack && target_to_attack->to_delete == false)
 		{
 			if ((target_to_attack->current_hp -= damage) <= 0.0f)
 			{
 				state = IDLE;
-				target_to_attack->markToDelete();
 				app->entity_manager->enemyJustDied = true;
 				target_to_attack = NULL;
 			}
@@ -121,13 +118,6 @@ public:
 	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
-	}
-
-	void markToDelete()
-	{
-
-		marked_to_delete = true;
-
 	}
 
 };

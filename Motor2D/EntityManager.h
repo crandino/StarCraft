@@ -59,6 +59,7 @@ enum UNIT_DIRECTION
 class Entity;
 class Unit;
 class Building;
+class Bunker;
 using namespace std;
 
 class EntityManager : public Module
@@ -100,7 +101,7 @@ public:
 
 	void AddEntityToWave(uint n, Entity* e);
 	/*--------Methods for interact with buildings----------*/
-	void GetInsideBunker(Building* e);
+	void GetInsideBunker(Bunker* e);
 
 	bool searchNearEntity(Entity* e);
 

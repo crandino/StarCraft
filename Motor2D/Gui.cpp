@@ -264,6 +264,7 @@ bool Gui::postUpdate()
 			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
 	}
 
+
 	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
 	{
 		it->second->draw();
@@ -273,6 +274,7 @@ bool Gui::postUpdate()
 
 	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 	{
+
 		// Life counter blitting
 		Entity *e = it->second;
 		if (e->current_hp > 0)
@@ -286,11 +288,14 @@ bool Gui::postUpdate()
 		}
 
 
+
 		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
 			drawHudSelection(COMMANDCENTER);
 	}
 		
-	
+			
+
+
 	list<GuiElements*>::iterator item;
 
 	for (item = elements.begin(); item != elements.end(); item++)
