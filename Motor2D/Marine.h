@@ -2,7 +2,6 @@
 #define __MARINE_H__
 
 #include "Unit.h"
-#include "Audio.h"
 
 class Marine : public Unit
 {
@@ -45,9 +44,6 @@ public:
 
 	Animation dead;
 
-	// SFX
-	 unsigned int marine_attack_fx;
-
 	Marine(iPoint &p)
 	{
 		// Positions and dimensions
@@ -57,15 +53,13 @@ public:
 		collider_offset = { -10, -14 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y); 
-
-		// Animations and FX
+		// Animations
 		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
-		marine_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
-		
 		#include "Marine_animations.h";
 		angle = 0;
 		current_animation = &idle_up;
-	
+
+
 		// Colliders
 		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_BOMB);
 
@@ -78,7 +72,7 @@ public:
 		circle_selection_offset = { 0, -1 };
 		flying = false;
 
-		max_hp = 40.f;
+		max_hp = 40;
 		current_hp = 40.0f;
 		max_hp_bars = 6;
 		offset_life = { -16, 16 };
@@ -179,10 +173,7 @@ public:
 			if (angle >= 0.f && angle < 22.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_up;
-				}
 				else
 					current_animation = &idle_up;
 			}
@@ -190,70 +181,49 @@ public:
 			else if (angle >= 45.f && angle < 67.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_right_up;
-				}
 				else
 					current_animation = &idle_right_up;
 			}
 			else if (angle >= 90.f && angle < 112.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_right;
-				}
 				else
 					current_animation = &idle_right;
 			}
 			else if (angle >= 135.f && angle < 157.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_right_down;
-				}
 				else
 					current_animation = &idle_right_down;
 			}
 			else if (angle >= 180.f && angle < 202.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_down;
-				}
 				else
 					current_animation = &idle_down;
 			}
 			else if (angle >= 225.f && angle < 247.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_left_down;
-				}
 				else
 					current_animation = &idle_left_down;
 			}
 			else if (angle >= 270.f && angle < 292.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_left;
-				}
 				else
 					current_animation = &idle_left;
 			}
 			else if (angle >= 315.f && angle < 337.5f)
 			{
 				if (state == ATTACK)
-				{
-					app->audio->playFx(marine_attack_fx);
 					current_animation = &attack_left_up;
-				}
 				else
 					current_animation = &idle_left_up;
 			}
