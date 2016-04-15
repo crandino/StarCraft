@@ -1,8 +1,11 @@
 #include "App.h"
 #include "GameManager.h"
 #include "EntityManager.h"
+#include "Input.h"
 #include "p2Log.h"
 #include <time.h>
+#include "SDL\include\SDL_mouse.h"
+
 
 //Author: RIE code.
 
@@ -19,11 +22,10 @@ bool GameManager::start()
 {
 	bool ret = true;
 
-	timeBetweenWaves.start();
-	GeneralTime.start();
+
 	LOG("LAST HOPE GAME STARTS!");
 
-	//app->entity_manager->createWave(size1);//First wave that is created
+	app->entity_manager->createWave(size1);//First wave that is created
 	
 	return ret;
 }
@@ -31,52 +33,61 @@ bool GameManager::start()
 bool GameManager::update(float dt)
 {
 	bool ret = true;
-	
-	if (currentWaves <= TOTALWAVES)
+
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
-		{
-			LOG("Wave time is over! prepare for the next wave!!!");
-			
-			app->entity_manager->createWave(SIZE1, { 1500, 500 });
-				timeBetweenWaves.start();
-				currentWaves++;
-		}
-		
+		startGame = true;
+		timeBetweenWaves.start();
+	}
 
-		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
-		if (totalUnitsKilledCurrentFrame > 0)
-		{
-			killCount += totalUnitsKilledCurrentFrame;
-			addPoints(killCount);
-			totalUnitsKilledCurrentFrame = 0;
+	if (startGame)
+	{
 
-			LOG("Score: %d", totalScore);
-			
-			if (killCount >= SIZE1)
+		if (currentWaves <= TOTALWAVES)
+		{
+			if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 			{
-				totalKillsGame += killCount;
-				killCount = 0;
-				addPoints(killCount);
+				LOG("Wave time is over! prepare for the next wave!!!");
 
-				LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
-				LOG("Total Score: %d", totalScore);
+				app->entity_manager->createWave(SIZE1, { 1500, 500 });
+				
+				currentWaves++;
 			}
-		}
-		//timer
-		//++unitKillCount;
-	
-		if (totalKillsGame == TOTALUNITSALLWAVES)
-		{
-			//Victory Text
-			//If all waves are defeated/or waves are infinite (we'll see)
-			LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
 
-			ret = false;
-		}
 
-		else if (gameOver)
-		{
+			//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
+			if (totalUnitsKilledCurrentFrame > 0)
+			{
+				killCount += totalUnitsKilledCurrentFrame;
+				addPoints(killCount);
+				totalUnitsKilledCurrentFrame = 0;
+
+				LOG("Score: %d", totalScore);
+
+				if (killCount >= SIZE1)
+				{
+					totalKillsGame += killCount;
+					killCount = 0;
+					addPoints(killCount);
+
+					LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
+					LOG("Total Score: %d", totalScore);
+				}
+			}
+			//timer
+			//++unitKillCount;
+
+			if (totalKillsGame == TOTALUNITSALLWAVES)
+			{
+				//Victory Text
+				//If all waves are defeated/or waves are infinite (we'll see)
+				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
+
+				ret = false;
+			}
+
+			else if (gameOver)
+			{
 				//Display message of game over
 				LOG("GAME OVER");
 				//Display Score
@@ -85,11 +96,12 @@ bool GameManager::update(float dt)
 				GeneralTime.start();
 				/*1: Whether the player has died*/
 				ret = false;
+				startGame = false;
+			}
 		}
 
-		
 	}
-	
+
 	return ret;
 }
 
