@@ -25,7 +25,7 @@ bool GameManager::start()
 
 	LOG("LAST HOPE GAME STARTS!");
 
-	app->entity_manager->createWave(size1);//First wave that is created
+	//app->entity_manager->createWave(size1);//First wave that is created
 	
 	return ret;
 }
@@ -86,7 +86,7 @@ bool GameManager::update(float dt)
 				ret = false;
 			}
 
-			else if (gameOver)
+			if (gameOver)
 			{
 				//Display message of game over
 				LOG("GAME OVER");
