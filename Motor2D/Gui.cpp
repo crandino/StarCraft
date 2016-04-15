@@ -401,14 +401,13 @@ const GuiElements* Gui::findMouseHover()
 			SDL_Rect r = gui_test->getScreenRect();
 			if (mouse.x >= r.x && mouse.x <= r.x + r.w && mouse.y >= r.y && mouse.y <= r.y + r.y)
 			{
-				elements.reverse();
+				//elements.reverse();
                 return gui_test;
-			}
-				
+			}	
 		}
 	}
 
-	elements.reverse();
+	//elements.reverse();
 	return nullptr;
 }
 
