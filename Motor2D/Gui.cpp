@@ -220,68 +220,7 @@ bool Gui::update(float dt)
 		focus = mouse_hover;
 
 	
-	// if TAB find the next item and give it the focus
-	/*if (app->input->getKey(SDL_SCANCODE_TAB) == KeyState::KEY_DOWN)
-	{   list<GuiElements*>* item = NULL;
-		//int pos = elements.find((GuiElements*)focus);
-		int pos = 0;
-		for (list<GuiElements*>::iterator node = elements.begin(); *node && *node != (GuiElements*)focus; node++)
-		{
-			pos++;
-		}
-
-		if (pos > 0)
-		{
-			focus = nullptr;
-			//item = elements.At(pos);
-			int i = 0;
-			for (list<GuiElements*>::iterator node = elements.begin(); *node && i <= pos; node++, i++)
-			{
-				if (i == pos)
-				{
-					i = 0;
-					GuiElements* gui_test = *node;
-					item->push_back(gui_test);
-				}
-			}
-
-			if (item)
-			{
-				for (list<GuiElements*>::iterator node = item->begin(); *node; node++, i++)
-				{
-					if (i == pos)
-					{
-						node++;
-						item->push_back(*node);
-					}
-				}
-			}
-
-			for (list<GuiElements*>::iterator node = item->begin(); *node; node++)
-			{
-				GuiElements* gui_test = *node;
-				if (gui_test->can_focus == true)
-				{
-					focus = gui_test;
-					break;
-				}
-			}
-				
-		}
-		if (focus == nullptr)
-		{
-			for (list<GuiElements*>::iterator node = elements.begin(); *node; node++)
-			{
-				GuiElements* gui_test = *node;
-				if (gui_test->can_focus == true)
-				{
-					focus = gui_test;
-					break;
-				}
-			}
-		}
-	}*/
-
+	
 	// Now the iteration for input and update
 	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)
 	{
@@ -322,10 +261,22 @@ bool Gui::postUpdate()
 		if (e->specialization == SCV)
 			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2 - e->circle_selection_offset.x, e->center.y - e->circle_selection_offset.y, &e->selection_type);
 		else
-		   app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
+			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
+	}
 
+
+	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
+	{
+		it->second->draw();
+	}
+
+
+
+	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+	{
 
 		// Life counter blitting
+		Entity *e = it->second;
 		if (e->current_hp > 0)
 		{
 			uint bars_to_draw = ceil((e->max_hp_bars * ((float)e->current_hp / (float)e->max_hp)) + 1);
@@ -333,17 +284,17 @@ bool Gui::postUpdate()
 			for (; bar < bars_to_draw; ++bar)
 				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * green_life.w), e->center.y + e->offset_life.y, &green_life);
 			for (; bar <= e->max_hp_bars; ++bar)
-			    app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * white_life.w), e->center.y + e->offset_life.y, &white_life);
+				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * white_life.w), e->center.y + e->offset_life.y, &white_life);
 		}
 
-		
+
+
 		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
 			drawHudSelection(COMMANDCENTER);
+	}
 		
+			
 
-	}		
-
-	
 
 	list<GuiElements*>::iterator item;
 
@@ -360,8 +311,7 @@ bool Gui::postUpdate()
 			gui->debugDraw();
 	}
 
-	//if (cursor->draw_element == true)
-		cursor->draw();
+	cursor->draw();
 
 	if (debug)
 	{

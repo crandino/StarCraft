@@ -101,6 +101,19 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
+	// We delete the entities marked with to_delete
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end();)
+	{
+		if (it->second->to_delete)
+		{
+			selection.erase(it->first);
+			RELEASE(it->second);
+			it = active_entities.erase(it);
+		}
+		else
+			++it;
+	}
 
 	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
@@ -110,13 +123,6 @@ bool EntityManager::preUpdate()
 
 		LOG("Marine angle: %f", m->angle);
 		LOG("Marine hp: %f", m->current_hp);
-	}
-
-	//ROF Iterate all entities to check their angle
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
-	{
-		it->second->checkAngle();
 	}
 
 	iPoint position;
@@ -306,11 +312,10 @@ bool EntityManager::preUpdate()
 	{
 		//Getting inside Bunker
 		Entity *e = whichEntityOnMouse();
-
 		if (!selection.empty())
 		{
 			if (e != NULL && e->specialization == BUNKER) {
-				GetInsideBunker((Building*)e);
+				GetInsideBunker((Bunker*)e);
 			}
 		}
 	}
@@ -344,14 +349,6 @@ bool EntityManager::update(float dt)
 			}
 		}*/
 	}
-
-	map<uint, Entity*>::iterator it2 = active_entities.begin();
-	for (; it2 != active_entities.end(); ++it2)
-	{
-		if (it2->second->marked_to_delete)
-			to_delete.insert(pair<uint, Entity*>(it2->first, it2->second));
-	}
-
 	return true;
 }
 
@@ -361,24 +358,12 @@ bool EntityManager::postUpdate()
 	/*Resetting bool for Game Manager*/
 	enemyJustDied = false;
 
-	if (to_delete.size() > 0)
-	{
-		map<uint, Entity*>::iterator it = to_delete.begin();
-		for (; it != to_delete.end(); ++it)
-		{
-			it->second->coll->to_delete = true;
-			active_entities.erase(active_entities.find(it->second->id));
-			delete it->second;
-		}
-		to_delete.clear();
-	}
-
 	// Entities Drawing
-	map<uint, Entity*>::iterator it = active_entities.begin();
+	/*map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
-	{		
 		it->second->draw(); //if you try the method, comment this line
-	}
+	}*/
+
 		
 	// Drawing selector (green SDL_Rect)
 	if (selector_init && selector.w > 1 && selector.h > 1) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
@@ -413,6 +398,7 @@ Entity *EntityManager::getEntity(uint id)
 Entity *EntityManager::whichEntityOnMouse()
 {
 	iPoint p; app->input->getMousePosition(p);
+	p = app->render->screenToWorld(p.x, p.y);
 
 	map<uint, Entity*>::reverse_iterator rit = active_entities.rbegin();
 	for (; rit != active_entities.rend(); ++rit)
@@ -467,7 +453,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
 	{
 		
-		if (it->second != e && e->faction != it->second->faction && it->second->marked_to_delete == false)
+		if (it->second != e && e->faction != it->second->faction && it->second->to_delete == false)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			uint maxHP = it->second->current_hp;
@@ -583,23 +569,31 @@ void EntityManager::KillEntity(Entity* e)
 	deleteEntityKilled(e);
 }
 
-void EntityManager::GetInsideBunker(Building* e)
+void EntityManager::GetInsideBunker(Bunker* e)
 {
 	map<uint, Entity*>::iterator it = selection.begin();
-	if(e->capacity != 0){
-		for (; it != selection.end(); it++)
+	if(e->capacity != 0)
+	{
+		for (; it != selection.end();)
 		{
-			--e->capacity;
-			if (it->second->specialization == MARINE) {
-				KillEntity(it->second);
+			if (it->second->specialization == MARINE)
+			{
+				e->units_inside.insert(pair<uint, Entity*>(it->first, it->second));
+				active_entities.erase(it->first);
+				it = selection.erase(it);
+				//it->second->to_delete = true;
+				//it->second->coll->to_delete = true;
+				--e->capacity;
 			}
+			else
+				++it;
 				
 			if (e->capacity == 0)
 			{
 				break;
 			}
 		}
-		selection.clear();
+		
 	}
 }
 

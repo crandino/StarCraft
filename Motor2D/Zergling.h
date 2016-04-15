@@ -186,7 +186,6 @@ public:
 				else
 					current_animation = &idle_left_up;
 			}
-
 		}
 	}
 
