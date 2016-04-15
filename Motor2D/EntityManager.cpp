@@ -423,6 +423,7 @@ Entity *EntityManager::getEntity(uint id)
 Entity *EntityManager::whichEntityOnMouse()
 {
 	iPoint p; app->input->getMousePosition(p);
+	p = app->render->screenToWorld(p.x, p.y);
 
 	map<uint, Entity*>::reverse_iterator rit = active_entities.rbegin();
 	for (; rit != active_entities.rend(); ++rit)
