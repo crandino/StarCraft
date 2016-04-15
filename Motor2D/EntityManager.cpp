@@ -276,6 +276,7 @@ bool EntityManager::preUpdate()
 		if (app->map->isAreaWalkable(building_to_place->coll->rect))
 		{
 			building_to_place->id = ++next_ID;
+			building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
 			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
 			building_mode = false;
 
@@ -488,6 +489,8 @@ bool EntityManager::searchNearEntity(Entity* e)
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			uint maxHP = it->second->current_hp;
 			
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+
 			if (d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
 			{
 				(e->target_to_attack) = &(*it->second);
