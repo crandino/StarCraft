@@ -118,6 +118,12 @@ public:
 					target_to_attack->coll->to_delete = true;
 					app->entity_manager->enemyJustDied = true;
 					target_to_attack = NULL;
+
+					if (faction == PLAYER )
+					{
+						app->game_manager->totalUnitsKilledCurrentFrame++;
+					}
+
 				}
 			}
 			else
