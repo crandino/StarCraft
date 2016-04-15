@@ -259,7 +259,10 @@ bool Gui::postUpdate()
 	}
 	
 	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
-		it->second->draw();
+	{
+			it->second->draw();
+	}
+		
 
 	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 	{

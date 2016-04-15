@@ -259,6 +259,9 @@ bool EntityManager::preUpdate()
 		target_position = app->render->screenToWorld(target_position.x, target_position.y);
 		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
 
+		//Bunker stuff
+		Entity* e = whichEntityOnMouse();
+
 		map<uint, Entity*>::iterator it = selection.begin();
 		for (; it != selection.end(); ++it)
 		{
@@ -272,6 +275,8 @@ bool EntityManager::preUpdate()
 					{
 						unit->path = app->path->getLastPath();
 						unit->state = MOVE;
+						if(e != NULL && e->specialization == BUNKER)
+							unit->target_to_reach = e;
 					}
 				}
 				else
@@ -281,6 +286,8 @@ bool EntityManager::preUpdate()
 					{
 						unit->path = app->path->getLastPath();
 						unit->state = MOVE;
+						if (e != NULL && e->specialization == BUNKER)
+							unit->target_to_reach = e;
 					}
 				}
 			}
@@ -324,7 +331,7 @@ bool EntityManager::preUpdate()
 		Entity *e = whichEntityOnMouse();
 		if (!selection.empty())
 		{
-			if (e != NULL && e->specialization == BUNKER)
+			if (e != NULL && e->specialization == BUNKER && searchNearEntity(e))
 				GetInsideBunker((Bunker*)e);
 
 			if (e != NULL && e->type == BUILDING)
@@ -345,7 +352,7 @@ bool EntityManager::update(float dt)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		it->second->update(dt);
+			it->second->update(dt);
 
 		//Debug: To draw the path finding that the entity is following
 		/*if (app->entity_manager->debug)
@@ -589,10 +596,8 @@ void EntityManager::GetInsideBunker(Bunker* e)
 			if (it->second->specialization == MARINE)
 			{
 				e->units_inside.insert(pair<uint, Entity*>(it->first, it->second));
-				active_entities.erase(it->first);
+				it->second->to_delete = true;
 				it = selection.erase(it);
-				//it->second->to_delete = true;
-				//it->second->coll->to_delete = true;
 				--e->capacity;
 			}
 			else

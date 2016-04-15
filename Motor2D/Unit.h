@@ -87,6 +87,12 @@ public:
 						path.clear();
 						has_target = false;
 						state = IDLE;
+						//Bunker Stuff
+						if (target_to_reach != NULL && target_to_reach->specialization == BUNKER)
+						{
+							app->entity_manager->GetInsideBunker((Bunker*)target_to_reach);
+							target_to_reach = NULL;
+						}
 						break;
 					}
 					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)

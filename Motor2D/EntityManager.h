@@ -132,8 +132,6 @@ public:
 	bool create_bunker = false;
 	bool create_SCV = false;
 
-
-
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
 
