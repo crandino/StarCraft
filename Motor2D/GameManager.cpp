@@ -8,10 +8,10 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define TOTALUNITSALLWAVES SIZE1*2
+#define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
 #define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 10
-#define	SIZE1 5 // Changes number of zerglings per wave
+#define	SIZE1 1 // Changes number of zerglings per wave
 #define ZERGLINGSCORE 20
 
 
@@ -34,7 +34,7 @@ bool GameManager::update(float dt)
 	
 	if (currentWaves <= TOTALWAVES)
 	{
-		if (timeBetweenWaves.readSec() >= WAVETIME1) //We check how much time do we have left before releasing a new wave
+		if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 		{
 			LOG("Wave time is over! prepare for the next wave!!!");
 			
@@ -42,26 +42,31 @@ bool GameManager::update(float dt)
 				timeBetweenWaves.start();
 				currentWaves++;
 		}
+		
 
 		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
-		if (app->entity_manager->enemyJustDied)
+		if (totalUnitsKilledCurrentFrame > 0)
 		{
-			addPoints(scoreCurrentWave);
-			killCount++;
-			LOG("Score: %d", scoreCurrentWave);
+			killCount += totalUnitsKilledCurrentFrame;
+			addPoints(killCount);
+			totalUnitsKilledCurrentFrame = 0;
+
+			LOG("Score: %d", totalScore);
 			
 			if (killCount >= SIZE1)
 			{
-				LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
+				totalKillsGame += killCount;
 				killCount = 0;
-				totalKills += killCount;
-				totalScore += scoreCurrentWave;
+				addPoints(killCount);
+
+				LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
+				LOG("Total Score: %d", totalScore);
 			}
 		}
 		//timer
 		//++unitKillCount;
 	
-		if (totalKills == TOTALUNITSALLWAVES)
+		if (totalKillsGame == TOTALUNITSALLWAVES)
 		{
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)
@@ -94,7 +99,7 @@ bool GameManager::postUpdate()
 }
 
 
-void GameManager::addPoints(uint points)
+void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 {
-	totalScore += ZERGLINGSCORE;
+	totalScore += ZERGLINGSCORE * totalUnitsKilledCurrentFrame;
 }

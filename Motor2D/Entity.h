@@ -99,31 +99,17 @@ public:
 
 	virtual void attack()
 	{
-		if (target_to_attack->to_delete == false)
+		if ((abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y)) <= range_to_attack && target_to_attack->to_delete == false)
 		{
-			int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
-			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
-			if (d <= range_to_attack)
-			{
-				if ((target_to_attack->current_hp -= damage) <= 0.0f)
-				{
-					if (target_to_attack->type == BUILDING)
-					{
-						app->map->changeLogic(target_to_attack->coll->rect, LOW_GROUND);//We need to verify if is LOW_GROUND or HIGH_GROUND
-						app->entity_manager->logicChanged();
-					}
-
-					state = IDLE;
-					target_to_attack->to_delete = true;
-					target_to_attack->coll->to_delete = true;
-					app->entity_manager->enemyJustDied = true;
-					target_to_attack = NULL;
-				}
-			}
-			else
+			if ((target_to_attack->current_hp -= damage) <= 0.0f)
 			{
 				state = IDLE;
-				searchNearestEnemy();
+				app->entity_manager->enemyJustDied = true;
+				target_to_attack = NULL;
+
+				if (faction == PLAYER )
+					app->game_manager->totalUnitsKilledCurrentFrame++;
+
 			}
 		}
 		else
