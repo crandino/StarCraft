@@ -475,6 +475,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 {
 	bool ret = false;
 
+	e->target_to_attack = NULL;
 	float value = e->range_to_view;
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	uint previousMaxHP = 10000;
@@ -482,7 +483,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
 	{
 		
-		if (it->second != e && e->faction != it->second->faction)
+		if (it->second != e && e->faction != it->second->faction && it->second->marked_to_delete == false)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			uint maxHP = it->second->current_hp;
