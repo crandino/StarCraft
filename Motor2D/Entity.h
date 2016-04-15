@@ -63,7 +63,7 @@ public:
 	unsigned int	range_to_attack;
 	unsigned int	range_to_view;
 	float			damage;
-	int				repair_power = 1;
+	int				repair_power = 10;
 	float			attack_delay;
 	float			timer_attack_delay = 0.0f;
 

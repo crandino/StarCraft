@@ -157,7 +157,7 @@ bool EntityManager::preUpdate()
 				break;
 			}
 		}
-	
+
 		position.x = pos_commander.x + 20;
 		position.y = pos_commander.y + 100;
 
@@ -312,16 +312,16 @@ bool EntityManager::preUpdate()
 	//------------------------ATTACK MECHANICS------------------------------------//
 	/*if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		Entity* e = whichEntityOnMouse();
-		LOG("Hostility ON");
-		if (!selection.empty())
-		{
-			if (e != NULL && e->specialization == ZERGLING)
-			{
-				KillEntity(e);
-				enemyJustDied = true;
-			}
-		}
+	Entity* e = whichEntityOnMouse();
+	LOG("Hostility ON");
+	if (!selection.empty())
+	{
+	if (e != NULL && e->specialization == ZERGLING)
+	{
+	KillEntity(e);
+	enemyJustDied = true;
+	}
+	}
 	}*/
 
 	//--------------------------GETTING INSIDE BUNKERS------------------------------//
@@ -335,8 +335,11 @@ bool EntityManager::preUpdate()
 				GetInsideBunker((Bunker*)e);
 
 			if (e != NULL && e->type == BUILDING)
-				repairBuilding((Entity*)e);
+			{
+				repairBuilding((Entity*)e);		
+			}
 		}
+
 	}
 	return true;
 }
@@ -368,6 +371,7 @@ bool EntityManager::update(float dt)
 			}
 		}*/
 	}
+
 	return true;
 }
 
@@ -619,14 +623,13 @@ void EntityManager::repairBuilding(Entity* e)
 	{
 		if (it->second->specialization == SCV)
 		{
-				do
-				{
-					e->current_hp += e->repair_power;
-
-				} while (e->current_hp<e->max_hp);
-			
+			e->current_hp += e->repair_power;
+			if (e->current_hp >= e->max_hp)
+			{
+				e->current_hp = e->max_hp;
 			}
-		}	
+		}
+	}
 }
 
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)
