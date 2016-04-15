@@ -72,6 +72,7 @@ public:
 		range_to_attack = 32;
 		damage = 3.0f;
 		attack_delay = 200.0f;
+		time_to_die = 500.0f;
 	}
 
 	void checkAngle()

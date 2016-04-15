@@ -251,6 +251,13 @@ public:
 				timer_attack_delay = 0.0f;
 			}
 			break;
+		case DYING:
+			if ((timer_to_check += dt) >= time_to_die)
+			{
+				to_delete = true;
+				coll->to_delete = true;
+			}
+			break;
 		}
 		return true;
 	}

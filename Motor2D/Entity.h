@@ -17,7 +17,8 @@ enum STATE
 	IDLE,
 	MOVE,
 	MOVE_ALERT,
-	ATTACK
+	ATTACK,
+	DYING
 };
 
 class Entity
@@ -49,6 +50,7 @@ public:
 	Vector2D<int>   direction;
 	float			angle;
 	float			speed;
+	float			time_to_die;
 
 	// Lifes attributes
 	uint			max_hp;
@@ -101,7 +103,7 @@ public:
 
 	virtual void attack()
 	{
-		if (target_to_attack->to_delete == false)
+		if (target_to_attack->state != DYING)
 		{
 			int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
 			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
@@ -116,8 +118,7 @@ public:
 					}
 
 					state = IDLE;
-					target_to_attack->to_delete = true;
-					target_to_attack->coll->to_delete = true;
+					target_to_attack->state = DYING;
 					app->entity_manager->enemyJustDied = true;
 					target_to_attack = NULL;
 
