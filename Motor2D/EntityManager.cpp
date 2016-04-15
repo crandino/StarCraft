@@ -390,11 +390,11 @@ bool EntityManager::postUpdate()
 	}
 
 	// Entities Drawing
-	map<uint, Entity*>::iterator it = active_entities.begin();
+	/*map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{		
 		it->second->draw(); //if you try the method, comment this line
-	}
+	}*/
 		
 	// Drawing selector (green SDL_Rect)
 	if (selector_init && selector.w > 1 && selector.h > 1) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
