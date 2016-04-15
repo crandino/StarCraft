@@ -224,12 +224,14 @@ public:
 	bool update(float dt)
 	{
 		coll->setPos(center.x - 10, center.y - 14);
+		LOG("%f", timer_to_check);
 
 		switch (state)
 		{
 		case IDLE:
 			if ((timer_to_check += dt) >= TIME_TO_CHECK)
 			{
+				LOG("%s", "Checking IA");
 				if (searchNearestEnemy())
 					LOG("Enemy found");
 				timer_to_check = 0.0f;

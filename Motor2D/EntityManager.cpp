@@ -402,9 +402,6 @@ bool EntityManager::postUpdate()
 	if (building_mode)
 		choosePlaceForBuilding();
 
-	
-
-
 	return true;
 }
 
@@ -464,12 +461,11 @@ void EntityManager::createWave(uint size, iPoint position/*zergling num, hidrali
 	{
 		iPoint radius;
 		radius.x = rand() % 30 + 1;
-		radius.y = rand() % 30 + 1;//RIE: Things to Improve in the future make it responsive to tile system?
+		radius.y = rand() % 30 + 1; //RIE: Things to Improve in the future make it responsive to tile system?
 		
 		int sign = rand() % 3;
 
-		radius = changeSign(radius);
-		
+		radius = changeSign(radius);		
 		
 		createZergling(position, radius);
 	}
@@ -483,7 +479,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	uint previousMaxHP = 10000;
 
-	for (; it != active_entities.end(); ++it)//First and foremost the unit looks for the closest and weakest enemy
+	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
 	{
 		
 		if (it->second != e && e->faction != it->second->faction)
@@ -499,8 +495,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 				previousMaxHP = maxHP;
 				ret = true;
 			}
-			
-
 		}
 	}
 	if (e->target_to_attack != NULL)//Second it does the calculus and changes the IA states
@@ -513,7 +507,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 			e->state = ATTACK;
 		}
 		else
-			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)//the path to the selected entity is constructed
+			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1) //the path to the selected entity is constructed
 			{
 				unit->has_target = true;
 				unit->path = app->path->getLastPath();
@@ -523,9 +517,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 
 	return ret;
 }
-
-
-
 
 iPoint EntityManager::changeSign(iPoint point)
 {

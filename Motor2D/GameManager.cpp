@@ -34,7 +34,7 @@ bool GameManager::update(float dt)
 	
 	if (currentWaves <= TOTALWAVES)
 	{
-		if (timeBetweenWaves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
+		if (timeBetweenWaves.readSec() >= WAVETIME1) //We check how much time do we have left before releasing a new wave
 		{
 			LOG("Wave time is over! prepare for the next wave!!!");
 			
@@ -42,13 +42,10 @@ bool GameManager::update(float dt)
 				timeBetweenWaves.start();
 				currentWaves++;
 		}
-		
-
 
 		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
 		if (app->entity_manager->enemyJustDied)
 		{
-			
 			addPoints(scoreCurrentWave);
 			killCount++;
 			LOG("Score: %d", scoreCurrentWave);

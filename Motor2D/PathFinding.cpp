@@ -341,16 +341,17 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &
 						if (open_list.find(item->pos) == open_list.list_of_nodes.end())
 							open_list.list_of_nodes.push_back(*item);
 					}
-
 					++item;
 				}
 			}
-
 			++pnode;
-
 		}
 	}
-	pathList open_list, close_list;
+
+	return{ -1, -1 };
+	
+	// Coded commented for debugging purposes
+	/*pathList open_list, close_list;
 
 	open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
 	while (open_list.list_of_nodes.size() > 0)
@@ -397,8 +398,7 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &
 				++item;
 			}
 		}
-	}
-
+	}*/
 }
 
 const vector<iPoint> &PathFinding::getLastPath() const

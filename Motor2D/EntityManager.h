@@ -56,11 +56,6 @@ enum UNIT_DIRECTION
 	LEFT_UP_337
 };
 
-enum SELECTION_TYPE // Which kind of selection must wear, according to its width
-{
-	W_22, W_32, W_48, W_62, W_72, W_94, W_110, W_122, W_146, W_222
-};
-
 class Entity;
 class Unit;
 class Building;
