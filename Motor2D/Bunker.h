@@ -8,6 +8,7 @@ class Bunker : public Building
 public:
 
 	Animation idle;
+	map<uint, Entity*>					units_inside;
 
 public:
 

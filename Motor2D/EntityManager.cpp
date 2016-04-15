@@ -331,7 +331,7 @@ bool EntityManager::preUpdate()
 		if (!selection.empty())
 		{
 			if (e != NULL && e->specialization == BUNKER) {
-				GetInsideBunker((Building*)e);
+				GetInsideBunker((Bunker*)e);
 			}
 		}
 	}
@@ -592,14 +592,16 @@ void EntityManager::KillEntity(Entity* e)
 	deleteEntityKilled(e);
 }
 
-void EntityManager::GetInsideBunker(Building* e)
+void EntityManager::GetInsideBunker(Bunker* e)
 {
 	map<uint, Entity*>::iterator it = selection.begin();
-	if(e->capacity != 0){
+	if(e->capacity != 0)
+	{
 		for (; it != selection.end(); it++)
 		{
-			if (it->second->specialization == MARINE) {
-				hiding_entities.insert(pair<uint, Entity*>(it->first, it->second));
+			if (it->second->specialization == MARINE) 
+			{
+				e->units_inside.insert(pair<uint, Entity*>(it->first, it->second));
 				active_entities.erase(it->second->id);
 				it->second->coll->to_delete = true;
 				--e->capacity;
