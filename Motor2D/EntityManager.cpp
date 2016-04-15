@@ -101,6 +101,19 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
+	// We delete the entities marked with to_delete
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end();)
+	{
+		if (it->second->to_delete)
+		{
+			selection.erase(it->first);
+			RELEASE(it->second);
+			it = active_entities.erase(it);
+		}
+		else
+			++it;
+	}
 
 	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
@@ -110,13 +123,6 @@ bool EntityManager::preUpdate()
 
 		LOG("Marine angle: %f", m->angle);
 		LOG("Marine hp: %f", m->current_hp);
-	}
-
-	//ROF Iterate all entities to check their angle
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
-	{
-		it->second->checkAngle();
 	}
 
 	iPoint position;
@@ -365,7 +371,10 @@ bool EntityManager::update(float dt)
 	for (; it2 != active_entities.end(); ++it2)
 	{
 		if (it2->second->current_hp <= 0.0f)
-			to_delete.insert(pair<uint, Entity*>(it2->first, it2->second));
+		{
+			it2->second->coll->to_delete = true;
+			it2->second->to_delete = true;	
+		}			
 	}
 
 	return true;
@@ -377,24 +386,10 @@ bool EntityManager::postUpdate()
 	/*Resetting bool for Game Manager*/
 	enemyJustDied = false;
 
-	if (to_delete.size() > 0)
-	{
-		map<uint, Entity*>::iterator it = to_delete.begin();
-		for (; it != to_delete.end(); ++it)
-		{
-			it->second->coll->to_delete = true;
-			active_entities.erase(active_entities.find(it->second->id));
-			delete it->second;
-		}
-		to_delete.clear();
-	}
-
 	// Entities Drawing
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
-	{		
 		it->second->draw(); //if you try the method, comment this line
-	}
 		
 	// Drawing selector (green SDL_Rect)
 	if (selector_init && selector.w > 1 && selector.h > 1) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
@@ -483,7 +478,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
 	{
 		
-		if (it->second != e && e->faction != it->second->faction && it->second->marked_to_delete == false)
+		if (it->second != e && e->faction != it->second->faction && it->second->to_delete == false)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			uint maxHP = it->second->current_hp;
