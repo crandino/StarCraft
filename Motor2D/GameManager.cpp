@@ -98,62 +98,108 @@ bool GameManager::update(float dt)
 		{
 			if (time_between_waves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 			{
-				LOG("Wave time is over! prepare for the next wave!!!");
-
-				app->entity_manager->createWave(SIZE1, { 1500, 1500 });
-				
-				current_waves++;
-			}
-
-
-			//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
-			if (total_units_killed_currentFrame > 0)
-			{
-				kill_count += total_units_killed_currentFrame;
-				addPoints(kill_count);
-				total_units_killed_currentFrame = 0;
-
-				LOG("Score: %d", total_score);
-
-				if (kill_count >= SIZE1)
+				if (current_waves == 0)
 				{
-					total_kills_game += kill_count;
-					kill_count = 0;
-					addPoints(kill_count);
+					LOG("Wave time is over! prepare for the next wave!!!");
 
-					LOG("You successfully wiped a wave good job! NOW THE NEXT ONE >:]");
-					LOG("Total Score: %d", total_score);
+					app->entity_manager->createWave(SIZE1, { 1500, 1500 });
+
+					current_waves++;
+
+					time_between_waves.start();
 				}
 			}
-			//timer
-			//++unitKillCount;
-
-			if (total_kills_game == TOTALUNITSALLWAVES)
+			if (time_between_waves.readSec() >= WAVETIME)//We check how much time do we have left before releasing a new wave
 			{
-				//Victory Text
-				//If all waves are defeated/or waves are infinite (we'll see)
-				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
+				if (current_waves == 1)
+				{
 
-				ret = false;
-			}
+					LOG("Wave time is over! prepare for the next wave!!!");
 
-			if (game_over)
-			{
-				//Display message of game over
-				LOG("GAME OVER");
-				//Display Score
-				LOG("Score: %d", score_current_wave);
-				//End game loop
-				general_time.start();
-				/*1: Whether the player has died*/
+					app->entity_manager->createWave(SIZE2, { 1500, 1500 });
 
-				start_game = false;
-				
-				ret = false;
-				
+					current_waves++;
+
+					time_between_waves.start();
+				}
+				else if (current_waves == 2)
+				{
+
+					LOG("Last wave time is over!");
+
+					app->entity_manager->createWave(SIZE3, { 1500, 1500 });
+
+					current_waves++;
+
+					time_between_waves.start();
+				}
 			}
 		}
 
+		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
+		if (total_units_killed_currentFrame > 0)
+		{
+			kill_count += total_units_killed_currentFrame;
+			addPoints(kill_count);
+			total_units_killed_currentFrame = 0;
+
+			LOG("Score: %d", total_score);
+
+			if (current_waves == 1 && kill_count >= SIZE1)
+			{
+				total_kills_game += kill_count;
+				kill_count = 0;
+				addPoints(kill_count);
+
+				LOG("You successfully wiped the first wave good job! NOW THE NEXT ONE >:]");
+				LOG("Total Score: %d", total_score);
+			}
+			else if (current_waves == 2 && kill_count >= SIZE2)
+			{
+				total_kills_game += kill_count;
+				kill_count = 0;
+				addPoints(kill_count);
+
+				LOG("You successfully wiped the second wave good job! NOW THE NEXT ONE >:]");
+				LOG("Total Score: %d", total_score);
+			}
+			else if (current_waves == 3 && kill_count >= SIZE3)
+			{
+				total_kills_game += kill_count;
+				kill_count = 0;
+				addPoints(kill_count);
+
+				LOG("You successfully wiped the last wave good job!!!!!");
+				LOG("Total Score: %d", total_score);
+			}
+		}
+		//timer
+		//++unitKillCount;
+
+		if (total_kills_game == TOTALUNITSALLWAVES)
+		{
+			//Victory Text
+			//If all waves are defeated/or waves are infinite (we'll see)
+			LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
+
+			ret = false;
+		}
+
+		if (game_over)
+		{
+			//Display message of game over
+			LOG("GAME OVER");
+			//Display Score
+			LOG("Score: %d", score_current_wave);
+			//End game loop
+			general_time.start();
+			/*1: Whether the player has died*/
+
+			start_game = false;
+
+			ret = false;
+
+		}
 	}
 
 	return ret;

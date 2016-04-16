@@ -95,6 +95,7 @@ public:
 				state = IDLE;
 			break;
 		case DYING:
+			//current_animation = &dead;
 			if ((timer_to_check += dt) >= time_to_die)
 			{
 				to_delete = true;
