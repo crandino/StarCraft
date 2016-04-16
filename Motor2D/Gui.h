@@ -103,7 +103,7 @@ public:
 
 	//Bunkers HUD
 	GuiImage* ui_leave_bunker = nullptr;
-
+	Bunker* bunker_to_leave;
 
 
 	//Variables for CircleSelection. There are 10 size selection

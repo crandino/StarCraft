@@ -294,8 +294,11 @@ bool EntityManager::preUpdate()
 					{
 						unit->path = app->path->getLastPath();
 						unit->state = MOVE;
-						if(e != NULL && e->specialization == BUNKER)
+						if (e != NULL && e->specialization == BUNKER)
+						{
 							unit->target_to_reach = e;
+							app->gui->bunker_to_leave = (Bunker*)e;
+						}
 					}
 				}
 				else
@@ -306,7 +309,10 @@ bool EntityManager::preUpdate()
 						unit->path = app->path->getLastPath();
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
+						{
 							unit->target_to_reach = e;
+							app->gui->bunker_to_leave = (Bunker*)e;
+						}
 					}
 				}
 			}

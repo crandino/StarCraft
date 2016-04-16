@@ -152,8 +152,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 			//Method to leave the bunker
 		case(MOUSE_LCLICK_DOWN) :
-			Bunker* e = (Bunker*)app->entity_manager->whichEntityOnMouse();
-			e->leave_bunker();
+			bunker_to_leave->leave_bunker();
 			break;
 		}
 	}
