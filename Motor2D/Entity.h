@@ -60,8 +60,8 @@ public:
 
 	Entity			*target_to_attack;
 	Entity			*target_to_reach;
-	unsigned int	range_to_attack;
-	unsigned int	range_to_view;
+	int				range_to_attack;
+	int				range_to_view;
 	float			damage;
 	int				repair_power = 10;
 	float			attack_delay;
