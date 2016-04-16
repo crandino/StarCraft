@@ -202,6 +202,9 @@
     <ClInclude Include="Motor2D\Fonts.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Scv_animations.h">
+      <Filter>Entities\Animations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">
