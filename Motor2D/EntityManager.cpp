@@ -71,6 +71,15 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+
+		// Command center creation, special treatment
+		if (e->specialization == COMMANDCENTER)
+		{
+			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
+			logicChanged();
+		}
+
+		// For Waves system, only including Computer entities
 		if (e->faction == COMPUTER)
 		{
 			AddEntityToWave(e->id, e);
@@ -106,11 +115,6 @@ void EntityManager::SetEnemyWaveToAttackCommandCenter()
 
 
 }
-
-
-
-
-
 
 // Called each loop iteration
 bool EntityManager::preUpdate()
