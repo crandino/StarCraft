@@ -89,8 +89,6 @@ public:
 		attack_delay = 200.0f;
 		time_to_die = 500.0f;
 		
-		//current_hp_bars = 6;
-		
 		speed = 10.0f;
 		
 		direction.create(1, 1, p.x, p.y);

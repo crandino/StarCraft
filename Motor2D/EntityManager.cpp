@@ -70,7 +70,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	if (e != NULL && building_mode != true)
 	{
 		e->id = ++next_ID;
-		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
 		// Command center creation, special treatment
 		if (e->specialization == COMMANDCENTER)
@@ -112,8 +112,6 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 //DECOY
 void EntityManager::SetEnemyWaveToAttackCommandCenter()
 {
-
-
 }
 
 // Called each loop iteration
