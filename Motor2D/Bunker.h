@@ -10,7 +10,8 @@ public:
 	Animation idle;
 	map<uint, Entity*>					units_inside;
 
-public:
+	// SFX
+	unsigned int bunker_attack_fx;
 
 	Bunker(iPoint &p)
 	{
@@ -23,8 +24,9 @@ public:
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
-		// Animations
+		// Animations and FX
 		tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
+		bunker_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 		idle.frames.push_back({ 0, 0, 96, 128 });
 		idle.speed = 1.0f;
 		idle.loop = false;
@@ -81,6 +83,7 @@ public:
 				Bunker* bunker = (Bunker*)this;
 				if (bunker->units_inside.size() > 0)
 				{
+					app->audio->playFx(bunker_attack_fx);
 					damage = bunker->units_inside.size() * 4;
 					if ((timer_attack_delay += dt) >= attack_delay)
 					{

@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "App.h"
 #include "Animation.h"
+#include "Audio.h"
 #include "Collision.h"
 #include "GameManager.h"
 #include "SDL\include\SDL.h"
