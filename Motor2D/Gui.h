@@ -9,6 +9,7 @@
 
 class GuiCursor;
 class GuiImage;
+class GuiLabel;
 using namespace std;
 
 
@@ -36,6 +37,7 @@ enum GUI_TYPES
 	UNKNOWN,
 	IMAGE,
 	CURSOR,
+	LABEL
 };
 
 
@@ -73,6 +75,7 @@ public:
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
+	GuiLabel* createLabel(const char* text, const int x, const int y);
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;

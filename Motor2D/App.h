@@ -20,6 +20,7 @@ class FileSystem;
 class Scene;
 class Map;
 class PathFinding;
+class Fonts;
 class Gui;
 class EntityManager;
 class Collision;
@@ -98,6 +99,7 @@ public:
 	FileSystem*			fs;
 	Map*				map;
 	PathFinding*		path;
+	Fonts*              fonts;
 	Gui*				gui;
 	EntityManager*		entity_manager;
 	Collision*			collision;

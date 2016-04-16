@@ -12,6 +12,7 @@
 
 #include "GuiImage.h"
 #include "GuiCursor.h"
+#include "GuiLabel.h"
 
 #include "Bunker.h"
 
@@ -407,6 +408,14 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 	elements.push_back(ret);
 
 	return ret;
+}
+// Create a simple label
+GuiLabel* Gui::createLabel(const char* text, const int x, const int y)
+{
+	GuiLabel* label = new GuiLabel(text, x, y);
+	elements.push_back(label);
+
+	return label;
 }
 
 //Create cursor

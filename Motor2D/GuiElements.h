@@ -43,9 +43,10 @@ protected:
 	GUI_TYPES type = UNKNOWN;
 	Module* listener = nullptr;
 	bool have_focus = false;
+	SDL_Rect rect;
 private:
 	bool mouse_inside = false;
-	SDL_Rect rect;
+
 };
 
 #endif !__GUIELEMENTS_H__

@@ -68,6 +68,12 @@
     <ClCompile Include="Motor2D\AI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\GuiLabel.cpp">
+      <Filter>UI_elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Fonts.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -189,6 +195,12 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Zergling_animations.h">
       <Filter>Entities\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\GuiLabel.h">
+      <Filter>UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Fonts.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

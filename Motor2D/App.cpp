@@ -14,6 +14,7 @@
 #include "App.h"
 #include "Gui.h"
 #include "Collision.h"
+#include "Fonts.h"
 //Gameplay
 #include "GameManager.h"
 #include "AI.h"
@@ -36,6 +37,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fs = new FileSystem();
 	path = new PathFinding();
 	map = new Map();
+	fonts = new Fonts();
 	gui = new Gui();
 	entity_manager = new EntityManager();
 	collision = new Collision();
@@ -50,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(audio);
 	addModule(map);
 	addModule(path);
+	addModule(fonts);
 	addModule(gui);
 	addModule(entity_manager);
 	addModule(scene);

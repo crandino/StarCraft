@@ -8,6 +8,7 @@ using namespace std;
 
 struct SDL_Texture;
 class GuiImage;
+class GuiLabel;
 
 class Scene : public Module
 {
@@ -47,6 +48,9 @@ private:
 	GuiImage* rectangle_map_camera = nullptr;
 	GuiImage* rectangle_map = nullptr;
 	GuiImage* start_menu = nullptr;
+
+	//MSC
+	GuiLabel* test = nullptr;
 
 	//ROF
 	SDL_Texture* start_menu_img = nullptr;

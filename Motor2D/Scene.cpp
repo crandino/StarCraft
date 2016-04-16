@@ -9,6 +9,7 @@
 #include "Scene.h"
 
 #include "GuiImage.h"
+#include "GuiLabel.h"
 
 Scene::Scene() : Module()
 {
@@ -41,6 +42,7 @@ bool Scene::start()
 	start_position.setZero();
 	final_position.setZero();*/
 
+	test = app->gui->createLabel("This is a sample text", 300, 300);
 	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
 	rectangle_map_camera->setLocalPos(3, 3);
@@ -48,6 +50,8 @@ bool Scene::start()
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
 	rectangle_map_camera->draw_element = false;
+	
+
 
 	////ROF Start menu without interaction, it will be disabeled till it fully works
 	//start_menu_img = app->tex->loadTexture("Screens/Start_Image.png");
@@ -76,7 +80,7 @@ bool Scene::update(float dt)
 {
 	float cam_speed = 1.0f;
 
-
+	test->print("YOOO");
 	// Debug ---
 	//if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	//{

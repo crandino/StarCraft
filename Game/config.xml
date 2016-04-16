@@ -25,9 +25,16 @@
     <path>Terran.zip</path>
     <path>UI.zip</path>
     <path>Audio.zip</path>
+	<path>starcraft_font.zip</path>
+	
     
   </file_system>
+-<fonts>
 
+<default_font size="50" file="Starcraft_Normal.ttf"/>
+
+</fonts>
+  
   <map>
     <folder>maps/</folder>
   </map>
