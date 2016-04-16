@@ -521,7 +521,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 			}
 		}
 
-		if (e->specialization == SCV && it->second->type == BUILDING)
+		if (e->specialization == SCV && it->second->type == BUILDING && (it->second->current_hp < it->second->max_hp))// we check if we are a SCV, the objective is a building and needs to be repared
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -554,7 +554,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 		}
 	}
 
-	if (e->target_to_repair != NULL)
+	if (e->target_to_repair != NULL)// if we have a building that needs to be repaired
 	{
 		Unit* unit = (Unit*)e;
 		unit->has_target = false;

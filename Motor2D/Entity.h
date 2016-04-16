@@ -155,20 +155,14 @@ public:
 			{
 				if ((target_to_repair->current_hp) < target_to_repair->max_hp)
 				{
-					if (target_to_repair->type == BUILDING)
-					{
-						target_to_repair->current_hp += damage;
-						/*if (target_to_repair->current_hp >= target_to_repair->max_hp)
-						{
-						
-						}*/
-					}
+					target_to_repair->current_hp += damage;		
 				}
 				else
 				{
-					state = IDLE;
 					target_to_repair->current_hp = target_to_repair->max_hp;
-					target_to_repair = NULL;
+					state = IDLE;
+					searchNearestEnemy();
+					target_to_repair = NULL;	
 				}
 			}
 			else
