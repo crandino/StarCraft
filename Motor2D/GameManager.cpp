@@ -49,7 +49,6 @@ bool GameManager::start()
 	exit_button->interactive = true;
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
-	
 
 	return ret;
 }

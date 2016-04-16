@@ -46,6 +46,20 @@ public:
 		selection_type = { 261, 1, 94, 56 };
 		circle_selection_offset = { 0, 25 };
 	}
+
+	void leave_bunker() {
+		if (!units_inside.empty())
+		{
+			map<uint, Entity*>::iterator it = units_inside.begin();
+			for (; it != units_inside.end(); ++it)
+			{
+				app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->first, it->second));
+				it->second->to_delete = true;
+				++capacity;
+			}
+		}
+
+	}
 };
 
 #endif !__BUNKER_H__
