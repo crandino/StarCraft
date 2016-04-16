@@ -118,7 +118,9 @@ bool EntityManager::preUpdate()
 			}
 
 			selection.erase(it->first);
-			RELEASE(it->second);
+			if(!it->second->inside_bunker)
+				RELEASE(it->second);
+
 			it = active_entities.erase(it);
 		}
 		else
@@ -288,6 +290,8 @@ bool EntityManager::preUpdate()
 							unit->target_to_reach = e;
 							app->gui->bunker_to_leave = (Bunker*)e;
 						}
+						else
+							unit->target_to_reach = nullptr;
 					}
 				}
 				else
@@ -302,6 +306,9 @@ bool EntityManager::preUpdate()
 							unit->target_to_reach = e;
 							app->gui->bunker_to_leave = (Bunker*)e;
 						}
+						else
+							unit->target_to_reach = nullptr;
+
 					}
 				}
 			}
@@ -337,18 +344,6 @@ bool EntityManager::preUpdate()
 	}
 	}
 	}*/
-
-	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-	{
-		Entity *e = whichEntityOnMouse();
-		if (!selection.empty())
-		{
-
-			if (e != NULL && e->specialization == BUNKER && searchNearEntity(e))
-				GetInsideBunker((Bunker*)e);
-		}
-
-	}
 	return true;
 }
 
@@ -639,29 +634,27 @@ void EntityManager::KillEntity(Entity* e)
 	deleteEntityKilled(e);
 }
 
-void EntityManager::GetInsideBunker(Bunker* e)
+void EntityManager::GetInsideBunker(Entity* e)
 {
-	map<uint, Entity*>::iterator it = selection.begin();
-	if(e->capacity != 0)
+	Bunker* bunker = (Bunker*)e->target_to_reach;
+	if (bunker->capacity != 0)
 	{
-		for (; it != selection.end();)
+		if (e->specialization == MARINE)
 		{
-			if (it->second->specialization == MARINE)
-			{
-				e->units_inside.insert(pair<uint, Entity*>(it->first, it->second));
-				it->second->to_delete = true;
-				it = selection.erase(it);
-				--e->capacity;
-			}
-			else
-				++it;
-				
-			if (e->capacity == 0)
-			{
-				break;
-			}
+			bunker->units_inside.insert(pair<uint, Entity*>(e->id, e));
+			e->inside_bunker = true;
+			e->to_delete = true;
+			selection.erase(e->id);
+			--bunker->capacity;
 		}
-		
+	}
+	else if(bunker->capacity == 0)
+	{
+		for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
+		{
+			if (bunker == it2->second->target_to_reach)
+				it2->second->target_to_reach = nullptr;
+		}
 	}
 }
 

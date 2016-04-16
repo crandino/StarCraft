@@ -80,13 +80,13 @@ bool Gui::start()
 	ui_create_builds->setListener(this);
 	ui_create_builds->draw_element = false;
 	
-	// HUD Bunker //IPL: COMMENTED FOR RELEASE 0.4-----------------------------
+	
 	ui_leave_bunker = app->gui->createImage(NULL, { 256, 94, 36, 33 });
 	ui_leave_bunker->setLocalPos(505, 358);
-	//ui_leave_bunker->setListener(this);
-	//ui_leave_bunker->interactive = false;
-	//ui_leave_bunker->can_focus = true;
-	//ui_leave_bunker->draw_element = false;
+	ui_leave_bunker->setListener(this);
+	ui_leave_bunker->interactive = false;
+	ui_leave_bunker->can_focus = true;
+	ui_leave_bunker->draw_element = false;
 
 	//HUD Label---------------------------------------------------------------
 	test = app->gui->createLabel("1");

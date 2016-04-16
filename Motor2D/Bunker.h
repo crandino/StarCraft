@@ -114,12 +114,13 @@ public:
 			map<uint, Entity*>::iterator it = units_inside.begin();
 			for (; it != units_inside.end(); ++it)
 			{
+				it->second->inside_bunker = false;
+				it->second->to_delete = false;
 				app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->first, it->second));
-				it->second->to_delete = true;
 				++capacity;
 			}
+			units_inside.clear();
 		}
-
 	}
 };
 

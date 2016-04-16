@@ -59,9 +59,9 @@ public:
 	uint            max_hp_bars;
 	iPoint			offset_life;
 
-	Entity			*target_to_attack;
-	Entity			*target_to_repair;
-	Entity			*target_to_reach;
+	Entity			*target_to_attack = nullptr;
+	Entity			*target_to_repair = nullptr;
+	Entity			*target_to_reach = nullptr;
 	int				range_to_attack;
 	int				range_to_view;
 	float			damage;
@@ -77,7 +77,7 @@ public:
 	bool            end_path = false;
 
 	bool			to_delete;
-	bool            hiding;
+	bool            inside_bunker = false;
 
 
 	// Constructors
