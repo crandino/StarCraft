@@ -20,6 +20,7 @@
 #define	SIZE1 1 // Changes number of zerglings per wave
 #define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
 #define ZERGLINGSCORE 20
+#define COMMANDCENTERPOSITION {1500, 2250}
 
 
 bool GameManager::start()
@@ -50,7 +51,7 @@ bool GameManager::start()
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
 
-	iPoint p = {1500, 3000};
+	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);
 
 	return ret;
