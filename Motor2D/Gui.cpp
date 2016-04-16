@@ -13,6 +13,8 @@
 #include "GuiImage.h"
 #include "GuiCursor.h"
 
+#include "Bunker.h"
+
 using namespace std;
 
 Gui::Gui() : Module()
@@ -70,14 +72,22 @@ bool Gui::start()
 	ui_create_bot->interactive = false;
 	ui_create_bot->can_focus = true;
 	ui_create_bot->draw_element = false;
-
+	
 	ui_create_builds = app->gui->createImage(NULL, { 298, 28, 37, 34 });
 	ui_create_builds->setLocalPos(551, 358);
 	ui_create_builds->interactive = false;
 	ui_create_builds->can_focus = true;
 	ui_create_builds->setListener(this);
 	ui_create_builds->draw_element = false;
-
+	/*
+	// HUD Bunker
+	ui_leave_bunker = app->gui->createImage(NULL, { 256, 94, 37, 34 });
+	ui_leave_bunker->setLocalPos(506, 358);
+	ui_leave_bunker->setListener(this);
+	ui_leave_bunker->interactive = false;
+	ui_leave_bunker->can_focus = true;
+	ui_leave_bunker->draw_element = false;
+	*/
 	// CURSOR
 	SDL_ShowCursor(SDL_DISABLE);
 	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
@@ -135,6 +145,19 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;*/
 		}
 	}
+	/*
+	if (ui == ui_leave_bunker)
+	{
+		switch (event)
+		{
+			//Method to leave the bunker
+		case(MOUSE_LCLICK_DOWN) :
+			Bunker* e = (Bunker*)app->entity_manager->whichEntityOnMouse();
+			e->leave_bunker();
+			break;
+		}
+	}
+	*/
 }
 
 void Gui::drawHudSelection(SPECIALIZATION  selection)
@@ -153,16 +176,37 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_bot->interactive = true;
 			  ui_create_builds->draw_element = true;
 			  ui_create_builds->interactive = true;
-
+			  
+			  //ui_leave_bunker->draw_element = false;
+			  //ui_leave_bunker->interactive = false;
 
 		      break;
+			  /*
+		  case (BUNKER) :
+			  //Desactivate quad background
+			  rectangle_command->draw_element = false;
+			  rectangle_command->interactive = false;
+			  rectangle_command->can_focus = false;
+			  rectangle_command_2->draw_element = true;
 
+			  //Activate new images
+			  ui_create_bot->draw_element = false;
+			  ui_create_bot->interactive = false;
+			  ui_leave_bunker->draw_element = true;
+			  ui_leave_bunker->interactive = true;
+			  ui_create_builds->draw_element = false;
+			  ui_create_builds->interactive = false;
+
+			  break;
+			  */
 		  case (NOTYPE) :
 			  //Desactivate all the options of Entities
 			  ui_create_bot->draw_element = false;
 			  ui_create_bot->interactive = false;
 			  ui_create_builds->draw_element = false;
 			  ui_create_builds->draw_element = false;
+			  //ui_leave_bunker->draw_element = false;
+			  //ui_leave_bunker->interactive = false;
 
 			  //Activate default entities
 			  rectangle_command->draw_element = true;
@@ -279,10 +323,12 @@ bool Gui::postUpdate()
 				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * white_life.w), e->center.y + e->offset_life.y, &white_life);
 		}
 
-
-
 		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
 			drawHudSelection(COMMANDCENTER);
+		/*
+		if (it->second->specialization == SPECIALIZATION::BUNKER)
+			drawHudSelection(BUNKER);
+			*/
 	}
 		
 			

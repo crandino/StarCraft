@@ -98,6 +98,9 @@ public:
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
 
+	//Bunkers HUD
+	GuiImage* ui_leave_bunker = nullptr;
+
 
 
 	//Variables for CircleSelection. There are 10 size selection
