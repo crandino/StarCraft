@@ -245,8 +245,13 @@ bool EntityManager::preUpdate()
 					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
 					selection.insert(pair<uint, Entity*>(it->first, it->second));
 				}
-				if (it->second->type == BUILDING && !units_only)
+
+				if (!units_only && it->second->type == BUILDING)
+				{
 					selection.insert(pair<uint, Entity*>(it->first, it->second));
+					break;
+				}
+					
 			}
 		}
 	}
