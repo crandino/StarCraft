@@ -353,16 +353,11 @@ bool EntityManager::preUpdate()
 	}
 	}*/
 
-	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		//Getting inside Bunker
 		Entity *e = whichEntityOnMouse();
 		if (!selection.empty())
 		{
-			if (e != NULL && e->specialization == BUNKER && searchNearEntity(e))
-				GetInsideBunker((Bunker*)e);
-
 			if (e != NULL && e->type == BUILDING)
 			{
 				repairBuilding((Entity*)e);		
