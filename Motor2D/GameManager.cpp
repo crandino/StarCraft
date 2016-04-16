@@ -31,6 +31,7 @@ bool GameManager::start()
 	start_button->setLocalPos(0, 292);
 	start_button->interactive = true;
 	start_button->can_focus = true;
+	start_button->draw_element = false;
 
 	return ret;
 }
