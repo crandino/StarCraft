@@ -7,9 +7,9 @@
 
 
 // class GuiLabel ---------------------------------------------------
-GuiLabel::GuiLabel(const char* text) : GuiElements()
+GuiLabel::GuiLabel(const char* text, int kind_of_font) : GuiElements()
 {
-	setText(text);
+	setText(text,kind_of_font);
 	type = LABEL;
 }
 
@@ -23,12 +23,12 @@ GuiLabel::~GuiLabel()
 
 
 // --------------------------
-void GuiLabel::setText(const char* text)
+void GuiLabel::setText(const char* text, int font)
 {
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);
 
-	texture = app->fonts->print(text);
+	texture = app->fonts->print(text, { 255, 255, 255, 255 },font);
 	int w, h;
 	app->tex->GetSize(texture, (uint&)w, (uint&)h);
 	setSize(w, h);

@@ -89,11 +89,30 @@ bool Gui::start()
 	ui_leave_bunker->draw_element = false;
 
 	//HUD Label---------------------------------------------------------------
-	test = app->gui->createLabel("1");
-	test->center();
-	test->setLocalPos(test->getScreenPos().x, test->getScreenPos().y - 220);
-	test->interactive = true;
-	test->draggable = true;
+	number_of_wave = app->gui->createLabel("1", 1);
+	number_of_wave->center();
+	number_of_wave->setLocalPos(number_of_wave->getScreenPos().x, number_of_wave->getScreenPos().y - 220);
+	number_of_wave->interactive = false;
+
+
+	//HUD  Mineral and Gass
+	//Image
+	ui_mineral = app->gui->createImage(NULL, { 7, 202, 15, 13 });
+	ui_mineral->setLocalPos(490, 6);
+
+	//Number of minerals
+	number_of_minerals = app->gui->createLabel("100", 2);
+	number_of_minerals->setLocalPos(508, 4);
+	number_of_minerals->interactive = false;
+
+	//Image
+	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });
+	ui_gas->setLocalPos(550, 6);
+	//Label gass
+	number_of_gass = app->gui->createLabel("100", 2);
+	number_of_gass->setLocalPos(568, 4);
+	number_of_gass->interactive = false;
+
 	
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
@@ -424,13 +443,13 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 	return label;
 }*/
 
-GuiLabel* Gui::createLabel(const char* text)
+GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
 {
 	GuiLabel* ret = NULL;
 
 	if (text != NULL)
 	{
-		ret = new GuiLabel(text);
+		ret = new GuiLabel(text,kind_of_font);
 		elements.push_back(ret);
 	}
 

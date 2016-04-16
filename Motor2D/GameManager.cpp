@@ -249,7 +249,13 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+
 		case(MOUSE_LCLICK_DOWN) :
+			start_button->setSection({ 339, 103, 141, 38 });
+			break;
+
+		case(MOUSE_LCLICK_UP) :
+			start_button->setSection({ 339, 229, 141, 39 });
 			start_game = true;
 			title_screen->draw_element = false;
 			
@@ -269,9 +275,17 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+
 		case(MOUSE_LCLICK_DOWN) :
-			game_over = true;
+			exit_button->setSection({ 338, 279, 141, 38 });
+			break;
+
+		case(MOUSE_LCLICK_UP) :
 			app->audio->playFx(fx_click, 0);
+			exit_button->setSection({ 339, 229, 141, 39 });
+			
+			game_over = true;
+			
 			break;
 		}
 	}

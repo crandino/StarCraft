@@ -75,8 +75,8 @@ public:
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
-	
-	GuiLabel* createLabel(const char* text);
+	GuiLabel* createLabel(const char* text, int kind_of_font);
+
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
 
@@ -106,7 +106,13 @@ public:
 	Bunker* bunker_to_leave;
 
 	//HUD Label-----------------------------
-	GuiLabel* test = nullptr;
+	GuiLabel* number_of_wave = nullptr;
+
+	//HUD  Mineral and Gass
+	GuiImage* ui_mineral = nullptr;
+	GuiLabel* number_of_minerals = nullptr;
+	GuiImage* ui_gas = nullptr;
+	GuiLabel* number_of_gass = nullptr;
 
 
 
