@@ -92,15 +92,12 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
-	Entity* const addInEnemyContainer(Entity* e);
 	Entity* getEntity(uint id);
 	
 	void deleteEntity(map<uint, Entity*> selection);
 	void deleteEntityKilled(Entity* e);
 	void deleteAllEntities();
-	uint getWaveZerglingSize();
 
-	void AddEntityToWave(uint n, Entity* e);
 	void SetEnemyToAttackCommandCenter(Entity* e);
 
 
@@ -142,7 +139,6 @@ public:
 	void choosePlaceForBuilding();
 
 public:
-	map<uint, Entity*>					waveZerglings;
 	map<uint, Entity*>                  selection; 
 	map<uint, Entity*>					active_entities;
 
@@ -150,7 +146,6 @@ private:
 
 
 	map<uint, Entity*>					to_delete;
-	map<uint, Entity*>					enemyWave;
 	uint								next_ID;	
 
 	bool debug = false;

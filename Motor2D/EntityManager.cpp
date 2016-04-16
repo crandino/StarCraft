@@ -79,40 +79,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			logicChanged();
 		}
-
-		// For Waves system, only including Computer entities
-		if (e->faction == COMPUTER)
-		{
-			AddEntityToWave(e->id, e);
-			addInEnemyContainer(e);
-		}
-		
 	}
 
 	return e;
 }
 
-uint EntityManager::getWaveZerglingSize()
-{
-	return waveZerglings.size();
-}
-
-Entity* const EntityManager::addInEnemyContainer(Entity* e)//Maybe return type should be void?
-{
-	waveZerglings.insert(pair<uint,Entity*>(e->id,e));
-	LOG("Enemy added in wave. Number of enemies %d", waveZerglings.size());
-	return e;
-}
-
-/*Method that adds zerglings into a map called enemyWave 
-(where all zerglings of the wave are stored)*/
-void EntityManager::AddEntityToWave(uint id,Entity* e)
-{
-	enemyWave.insert(pair<uint, Entity*>(id, e));
-}
-
 /*Method that makes the enemyWave attack the commandCenter*/
-//DECOY
 void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 {
 	if (e->type == UNIT)
@@ -640,8 +612,6 @@ void EntityManager::deleteEntity(map<uint, Entity*> selection)
 		std::map<uint, Entity*>::iterator itdel;
 		itdel = active_entities.find(it->first);
 		active_entities.erase(itdel);
-		itdel = waveZerglings.find(it->first);
-		waveZerglings.erase(itdel);
 	}
 
 	selection.clear();
