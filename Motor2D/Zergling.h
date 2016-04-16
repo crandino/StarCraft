@@ -49,7 +49,7 @@ public:
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animation
-		tex = app->tex->loadTexture("Units/Zergling.png");
+		tex = app->tex->loadTexture("Units/New_Zergling.png");
 		#include"Zergling_animations.h";
 		current_animation = &idle_down;
 

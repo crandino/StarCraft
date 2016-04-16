@@ -42,7 +42,7 @@ public:
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 		// Animations
-		tex = app->tex->loadTexture("Units/Scv2.png"); //Sprites/Animations etc..
+		tex = app->tex->loadTexture("Units/Blue_Scv.png"); //Sprites/Animations etc..
 		scv_repair_fx = app->audio->loadFx("Audio/FX/SCV/Scv_repair.wav");
 
 		//---------------Idle Animation-----------------

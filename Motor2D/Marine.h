@@ -59,7 +59,7 @@ public:
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y); 
 
 		// Animations and FX
-		tex = app->tex->loadTexture("Units/Marine.png"); //Sprites/Animations etc..
+		tex = app->tex->loadTexture("Units/Blue_Marine.png"); //Sprites/Animations etc..
 		marine_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 		
 		#include "Marine_animations.h";
