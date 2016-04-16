@@ -101,7 +101,7 @@ public:
 	uint getWaveZerglingSize();
 
 	void AddEntityToWave(uint n, Entity* e);
-	void SetEnemyWaveToAttackCommandCenter();
+	void SetEnemyToAttackCommandCenter(Entity* e);
 
 
 

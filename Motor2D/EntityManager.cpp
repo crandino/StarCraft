@@ -85,16 +85,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		{
 			AddEntityToWave(e->id, e);
 			addInEnemyContainer(e);
-
-			iPoint p = COMMANDCENTERPOSITION;
-			p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
-			Unit* unit = (Unit*)e;
-			if (app->path->createPath(e->tile_pos, p))
-			{
-				unit->path = app->path->getLastPath();
-				unit->has_target = true;
-				unit->state = MOVE_ALERT;
-			}
 		}
 		
 	}
@@ -113,6 +103,7 @@ Entity* const EntityManager::addInEnemyContainer(Entity* e)//Maybe return type s
 	LOG("Enemy added in wave. Number of enemies %d", waveZerglings.size());
 	return e;
 }
+
 /*Method that adds zerglings into a map called enemyWave 
 (where all zerglings of the wave are stored)*/
 void EntityManager::AddEntityToWave(uint id,Entity* e)
@@ -122,8 +113,20 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 
 /*Method that makes the enemyWave attack the commandCenter*/
 //DECOY
-void EntityManager::SetEnemyWaveToAttackCommandCenter()
+void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 {
+	if (e->type == UNIT)
+	{
+		iPoint p = COMMANDCENTERPOSITION;
+		p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
+		Unit* unit = (Unit*)e;
+		if (app->path->createPath(e->tile_pos, p))
+		{
+			unit->path = app->path->getLastPath();
+			unit->has_target = true;
+			unit->state = MOVE_ALERT;
+		}
+	}
 }
 
 // Called each loop iteration
@@ -536,21 +539,32 @@ bool EntityManager::searchNearEntity(Entity* e)
 
 	if (e->target_to_attack != NULL) //Second it does the calculus and changes the IA states
 	{
-		Unit* unit = (Unit*)e;
-		unit->has_target = false;
-		if (value <= e->range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
+		if (e->type == UNIT)
 		{
-			unit->checkUnitDirection();
-			e->state = ATTACK;
+			Unit* unit = (Unit*)e;
+			unit->has_target = false;
+			if (value <= e->range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
+			{
+				unit->checkUnitDirection();
+				e->state = ATTACK;
+			}
+			else
+			{
+				if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1) //the path to the selected entity is constructed
+				{
+					unit->has_target = true;
+					unit->path = app->path->getLastPath();
+					e->state = MOVE_ALERT;
+				}
+			}
 		}
 		else
 		{
-			if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1) //the path to the selected entity is constructed
-			{
-				unit->has_target = true;
-				unit->path = app->path->getLastPath();
-				e->state = MOVE_ALERT;
-			}
+			if (value <= e->range_to_attack)
+				e->state = ATTACK;
+
+			else
+				e->state = IDLE;
 		}
 	}
 

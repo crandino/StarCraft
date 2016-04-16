@@ -51,7 +51,7 @@ public:
 	Vector2D<int>   direction;
 	float			angle;
 	float			speed;
-	float			time_to_die;
+	float			time_to_die = 500.0f;
 
 	// Lifes attributes
 	uint			max_hp;

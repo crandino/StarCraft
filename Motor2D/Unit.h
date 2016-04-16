@@ -272,6 +272,8 @@ public:
 			{
 				if (searchNearestEnemy())
 					LOG("Enemy found");
+				else if (faction == COMPUTER)
+					app->entity_manager->SetEnemyToAttackCommandCenter(this);
 				timer_to_check = 0.0f;
 			}
 			break;

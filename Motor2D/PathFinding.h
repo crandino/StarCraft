@@ -8,9 +8,9 @@ struct pathList;
 
 struct pathNode
 {
-	iPoint pos;  // Tile info
-	int g, h;    // Score, cost
-	const pathNode *parent;
+	iPoint			pos;  // Tile info
+	int				g, h;    // Score, cost
+	const pathNode	*parent;
 
 	pathNode();
 	pathNode(int score_g, int score_h, iPoint pos, const pathNode *parent_node);
@@ -47,9 +47,9 @@ class PathFinding : public Module
 
 private:
 
-	vector<iPoint>    path_found;
+	vector<iPoint>		path_found;
 	uchar*			    map_data;
-	uint	       width, height;
+	uint				width, height;
 
 public:
 

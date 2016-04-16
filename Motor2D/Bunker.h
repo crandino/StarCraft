@@ -41,10 +41,70 @@ public:
 		offset_life = { -23, 35 };
 		capacity = 4;
 
+		range_to_view = 150;
+		range_to_attack = 150;
+		damage = 0; //we change it according to the amount of marines inside;
+		attack_delay = 200.0f;
+
 		state = IDLE;
 		faction = PLAYER;
 		selection_type = { 261, 1, 94, 56 };
 		circle_selection_offset = { 0, 25 };
+	}
+
+	bool update(float dt)
+	{
+		switch (state)
+		{
+		case IDLE:
+			if (specialization == BUNKER)
+			{
+				Bunker* bunker = (Bunker*)this;
+				if (bunker->units_inside.size() > 0)
+				{
+					if ((timer_to_check += dt) >= TIME_TO_CHECK)
+					{
+						if (searchNearestEnemy())
+							LOG("Enemy found");
+						timer_to_check = 0.0f;
+					}
+				}
+			}
+			break;
+		case MOVE:
+			break;
+		case MOVE_ALERT:
+			break;
+		case ATTACK:
+			if (specialization == BUNKER)
+			{
+				Bunker* bunker = (Bunker*)this;
+				if (bunker->units_inside.size() > 0)
+				{
+					damage = bunker->units_inside.size() * 4;
+					if ((timer_attack_delay += dt) >= attack_delay)
+					{
+						attack();
+						timer_attack_delay = 0.0f;
+					}
+				}
+				else
+					state = IDLE;
+			}
+			else
+				state = IDLE;
+			break;
+		case DYING:
+			if ((timer_to_check += dt) >= time_to_die)
+			{
+				to_delete = true;
+				coll->to_delete = true;
+			}
+			break;
+		case REPAIR:
+			break;
+			return true;
+		}
 	}
 
 	void leave_bunker() {
