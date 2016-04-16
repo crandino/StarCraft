@@ -48,8 +48,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
 		e = new CommandCenter(pos);
-		building_to_place = (Building*)e;
-		building_mode = true;
+		/*building_to_place = (Building*)e;
+		building_mode = true;*/
 		break;
 	case(BUNKER) :
 		LOG("Creating Bunker");
@@ -69,7 +69,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		break;
 	}
 
-	if (e != NULL && e->type == UNIT)
+	if (e != NULL && building_mode != true)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(next_ID, e));

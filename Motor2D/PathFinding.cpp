@@ -3,6 +3,10 @@
 #include "PathFinding.h"
 #include "EntityManager.h"
 
+// CRZ for Rect Line, delete if this doesn't work
+#include "Vector2D.h"
+#include "p2Log.h"
+
 
 // Two interesting links about PathFinding
 // Introduction: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
@@ -240,7 +244,24 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 
 	iPoint new_dest = findNearestWalkableTile(destination, origin, 5);
 	if (new_dest == iPoint(-1, -1))
-		return -1;		
+		return -1;	
+
+	// We try a simple rect line, from origin to destination.
+	Vector2D<int> dir(destination.x - origin.x, destination.y - origin.y);
+	dir.normalize();
+	fPoint tile_movement;
+	tile_movement.set((float)origin.x, (float)origin.y);
+
+	LOG("Origin: %d, %d   ---  Destination: %d, %d", origin.x, origin.y, destination.x, destination.y);
+
+	for (uint i = 0; i < 100; i++)
+	{
+		tile_movement.x += dir.x;
+		tile_movement.y += dir.y;
+		LOG("Movement: %f, %f", tile_movement.x, tile_movement.y);
+	}
+
+
 
 	path_found.clear();
 	// Open and close list
