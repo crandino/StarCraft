@@ -86,13 +86,6 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		start_game = true;
-		time_between_waves.start();
-	}
-
-
 	if (start_game)
 	{
 
@@ -257,6 +250,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_UP) :
 			start_button->setSection({ 339, 229, 141, 39 });
 			start_game = true;
+			time_between_waves.start();
 			title_screen->draw_element = false;
 			
 			start_button->draw_element = false;
