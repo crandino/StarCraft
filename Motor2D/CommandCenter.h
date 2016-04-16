@@ -20,7 +20,7 @@ public:
 		tex_height = 100;
 		collider_offset.setZero();
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
-		tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animations
 		tex = app->tex->loadTexture("Building/CommandCenter.png"); //Sprites/Animations etc..

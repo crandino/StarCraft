@@ -71,7 +71,16 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	if (e != NULL && building_mode != true)
 	{
 		e->id = ++next_ID;
-		active_entities.insert(pair<uint, Entity*>(next_ID, e));
+		active_entities.insert(pair<uint, Entity*>(e->id, e));
+
+		// Command center creation, special treatment
+		if (e->specialization == COMMANDCENTER)
+		{
+			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
+			logicChanged();
+		}
+
+		// For Waves system, only including Computer entities
 		if (e->faction == COMPUTER)
 		{
 			AddEntityToWave(e->id, e);
@@ -109,14 +118,7 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 //DECOY
 void EntityManager::SetEnemyWaveToAttackCommandCenter()
 {
-
-
 }
-
-
-
-
-
 
 // Called each loop iteration
 bool EntityManager::preUpdate()
@@ -355,20 +357,14 @@ bool EntityManager::preUpdate()
 	}
 	}*/
 
-	//--------------------------GETTING INSIDE BUNKERS------------------------------//
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		//Getting inside Bunker
 		Entity *e = whichEntityOnMouse();
 		if (!selection.empty())
 		{
+
 			if (e != NULL && e->specialization == BUNKER && searchNearEntity(e))
 				GetInsideBunker((Bunker*)e);
-
-			if (e != NULL && e->type == BUILDING)
-			{
-				repairBuilding((Entity*)e);		
-			}
 		}
 
 	}
@@ -518,6 +514,18 @@ bool EntityManager::searchNearEntity(Entity* e)
 				ret = true;
 			}
 		}
+
+		if (e->specialization == SCV && it->second->type == BUILDING)
+		{
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			if (d <= value)
+			{
+				(e->target_to_repair) = &(*it->second);
+				value = d;
+				ret = true;
+			}
+		}
 	}
 
 	if (e->target_to_attack != NULL) //Second it does the calculus and changes the IA states
@@ -538,6 +546,26 @@ bool EntityManager::searchNearEntity(Entity* e)
 				e->state = MOVE_ALERT;
 			}
 		}
+	}
+
+	if (e->target_to_repair != NULL)
+	{
+		Unit* unit = (Unit*)e;
+		unit->has_target = false;
+		if (value <= e->range_to_attack)
+		{
+			unit->checkUnitDirection();
+			e->state = REPAIR;
+		}
+		//else
+		//{
+		//	if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)
+		//	{
+		//		unit->has_target = true;
+		//		unit->path = app->path->getLastPath();
+		//		e->state = MOVE_ALERT;
+		//	}
+		//}
 	}
 
 	return ret;
