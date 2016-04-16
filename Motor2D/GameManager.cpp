@@ -180,8 +180,15 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_DOWN) :
 			start_game = true;
 			title_screen->draw_element = false;
+			
 			start_button->draw_element = false;
+			start_button->interactive = false;
+			start_button->can_focus = false;
+
 			exit_button->draw_element = false;
+			exit_button->interactive = false;
+			exit_button->can_focus = false;
+
 			break;
 		}
 	}
