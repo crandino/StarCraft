@@ -29,6 +29,9 @@ public:
 	Animation	repair_left;
 	Animation	repair_left_up;
 
+	//SFX-------
+	unsigned int scv_repair_fx;
+
 	Scv(iPoint &p)
 	{
 		// Positions and dimensions
@@ -40,6 +43,7 @@ public:
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 		// Animations
 		tex = app->tex->loadTexture("Units/Scv2.png"); //Sprites/Animations etc..
+		scv_repair_fx = app->audio->loadFx("Audio/FX/SCV/Scv_repair.wav");
 
 		//---------------Idle Animation-----------------
 		idle_up.frames.push_back({ 0, 0, 72, 64 });
@@ -96,6 +100,7 @@ public:
 		repair_left_up.speed = 0.01f;
 		repair_left_up.loop = true;
 		//----------------------------------------------
+
 
 		angle = 225.f;
 		//current_animation = &idle_up;
@@ -185,6 +190,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_up;
 					}
 					else
@@ -195,6 +201,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_right_up;
 					}
 					else
@@ -205,6 +212,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_right;
 					}
 					else
@@ -215,6 +223,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_right_down;
 					}
 					else
@@ -226,6 +235,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_down;
 					}
 					else
@@ -236,6 +246,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_left_down;
 					}
 					else
@@ -246,6 +257,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_left;
 					}
 					else
@@ -256,6 +268,7 @@ public:
 				{
 					if (state == REPAIR)
 					{
+						app->audio->playFx(scv_repair_fx);
 						current_animation = &repair_left_up;
 					}
 					else
