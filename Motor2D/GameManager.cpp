@@ -40,24 +40,26 @@ bool GameManager::start()
 	//----------------------------------------------------------------------
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
-	title_screen = app->gui->createImage(start_image, { 0, 0, 296, 336 });
+	title_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
 	title_screen->center();
 	title_screen->setLocalPos(title_screen->getLocalPos().x - 5, title_screen->getLocalPos().y - 50);
 
-	start_button = app->gui->createImage(start_image, { 296, 0, 141, 39 });
+	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
 	start_button->parent = title_screen;
-	start_button->setLocalPos(75, 164);
+	start_button->center();
 	start_button->interactive = true;
 	start_button->can_focus = true;
 	start_button->setListener(this);
 	
 
-	exit_button = app->gui->createImage(start_image, { 296, 0, 141, 39 });
+	exit_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
 	exit_button->parent = title_screen;
-	exit_button->setLocalPos(75, 228);
+	exit_button->center();
+	exit_button->setLocalPos(exit_button->getLocalPos().x, exit_button->getLocalPos().y + 80);
 	exit_button->interactive = true;
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
+
 	//---------------------------------------------
 
 	iPoint p = COMMANDCENTERPOSITION;

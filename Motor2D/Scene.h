@@ -49,9 +49,6 @@ private:
 	GuiImage* rectangle_map = nullptr;
 	GuiImage* start_menu = nullptr;
 
-	//MSC
-	GuiLabel* test = nullptr;
-
 	//ROF
 	SDL_Texture* start_menu_img = nullptr;
 

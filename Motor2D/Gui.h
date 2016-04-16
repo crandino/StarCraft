@@ -75,8 +75,8 @@ public:
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
-	GuiLabel* createLabel(const char* text, const int x, const int y);
-
+	
+	GuiLabel* createLabel(const char* text);
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
 
@@ -84,26 +84,30 @@ public:
 
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
-	// Variables for Cursor
+	// Variables for Cursor-------------------
 	GuiCursor *cursor;
 	iPoint cursor_offset;
 	iPoint map_limits;
 	float scroll_speed;
 
-	//HUD 
+	//HUD Ingame----------------------------- 
 	GuiImage* ui_terran = nullptr;
 	GuiImage* rectangle_map = nullptr;
 	GuiImage* rectangle_command = nullptr;
 	GuiImage* rectangle_command_2 = nullptr;
 
 
-	//Command Center HUD
+	//Command Center HUD--------------------
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
 
-	//Bunkers HUD
+	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
 	Bunker* bunker_to_leave;
+
+	//HUD Label-----------------------------
+	GuiLabel* test = nullptr;
+
 
 
 	//Variables for CircleSelection. There are 10 size selection

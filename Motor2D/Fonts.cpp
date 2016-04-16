@@ -11,7 +11,7 @@
 
 Fonts::Fonts() : Module()
 {
-	name.append("fonts");
+	name.assign("fonts");
 }
 
 // Destructor
