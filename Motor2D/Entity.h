@@ -117,6 +117,8 @@ public:
 				{
 					if (target_to_attack->type == BUILDING)
 					{
+						if (target_to_attack->specialization == COMMANDCENTER)
+							app->game_manager->game_over = true;
 						app->map->changeLogic(target_to_attack->coll->rect, LOW_GROUND); // We need to verify if is LOW_GROUND or HIGH_GROUND
 						app->entity_manager->logicChanged();
 					}
