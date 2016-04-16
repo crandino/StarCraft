@@ -17,6 +17,7 @@ private:
 
 	SDL_Rect section;
 	const SDL_Texture* texture = nullptr;
+
 };
 
 #endif __GUIIMAGE_H__

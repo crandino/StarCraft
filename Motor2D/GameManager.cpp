@@ -7,6 +7,7 @@
 #include "SDL\include\SDL_mouse.h"
 #include "Render.h"
 #include "Gui.h"
+#include "Textures.h"
 
 #include "GuiImage.h"
 
@@ -27,10 +28,28 @@ bool GameManager::start()
 
 	LOG("LAST HOPE GAME STARTS!");
 	
-	start_button = app->gui->createImage(NULL, { 298, 28, 37, 34 });
-	start_button->setLocalPos(0, 292);
+	//Play Screen
+	start_image = app->tex->loadTexture("Screens/Start_Image.png");
+
+	title_screen = app->gui->createImage(start_image, { 0, 0, 296, 336 });
+	title_screen->center();
+	title_screen->setLocalPos(title_screen->getLocalPos().x - 5, title_screen->getLocalPos().y - 50);
+
+	start_button = app->gui->createImage(start_image, { 296, 0, 141, 39 });
+	start_button->parent = title_screen;
+	start_button->setLocalPos(75, 164);
 	start_button->interactive = true;
 	start_button->can_focus = true;
+	start_button->setListener(this);
+	
+
+	exit_button = app->gui->createImage(start_image, { 296, 0, 141, 39 });
+	exit_button->parent = title_screen;
+	exit_button->setLocalPos(75, 228);
+	exit_button->interactive = true;
+	exit_button->can_focus = true;
+	exit_button->setListener(this);
+	
 
 	return ret;
 }
@@ -101,8 +120,11 @@ bool GameManager::update(float dt)
 				//End game loop
 				general_time.start();
 				/*1: Whether the player has died*/
-				ret = false;
+
 				start_game = false;
+				
+				ret = false;
+				
 			}
 		}
 
@@ -113,7 +135,6 @@ bool GameManager::update(float dt)
 
 bool GameManager::postUpdate()
 {
-
 	return true;
 }
 
@@ -128,6 +149,48 @@ bool GameManager::cleanUp()
 	bool ret = false;
 
 	RELEASE(start_button);
+	RELEASE(title_screen);
+	RELEASE(exit_button);
 
 	return ret;
+}
+
+void GameManager::startGame()
+{
+		start_game = true;
+		time_between_waves.start();
+}
+
+bool GameManager::quitGame()
+{
+		game_over = true;
+		start_game = false;
+
+		return false;
+}
+
+void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
+{
+	if (ui == start_button)
+	{
+		switch (event)
+		{
+		case(MOUSE_LCLICK_DOWN) :
+			start_game = true;
+			title_screen->draw_element = false;
+			start_button->draw_element = false;
+			exit_button->draw_element = false;
+			break;
+		}
+	}
+
+	if (ui == exit_button)
+	{
+		switch (event)
+		{
+		case(MOUSE_LCLICK_DOWN) :
+			game_over = true;
+			break;
+		}
+	}
 }

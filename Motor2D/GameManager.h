@@ -45,6 +45,10 @@ public:
 
 	bool victory = false;
 
+	void startGame();
+
+	bool quitGame();
+
 	void addPoints(uint points);
 
 	bool start();
@@ -55,18 +59,28 @@ public:
 
 	bool cleanUp();
 
+	void onGui(GuiElements* ui, GUI_EVENTS event);
+
 public:
 	//Time Management attributes
 	Timer general_time;
 	Timer time_between_waves;
 	Timer random_generator;
+	Timer stop_timer;
+
+
 
 	//Score system attributes
 	uint score_current_wave = 0;
 	uint total_score = 0;
 
-	//Start Button
+	//Start/Exit Button
+	SDL_Texture* start_image = nullptr;
+
+	GuiImage* title_screen = nullptr;
 	GuiImage* start_button = nullptr;
+	GuiImage* exit_button = nullptr;
+
 
 private:
 	uint previous_unit_killed = 0;
