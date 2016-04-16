@@ -7,6 +7,16 @@
 #include "Collision.h"
 #include "Gui.h"
 
+//Number to change the number of waves
+#define TOTALWAVES 2
+#define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME2 10
+#define	SIZE1 1 // Changes number of zerglings per wave
+#define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
+#define ZERGLINGSCORE 20
+#define COMMANDCENTERPOSITION {1500, 2250}
+
+
 class GuiImage;
 using namespace std;
 
@@ -77,7 +87,15 @@ public:
 	GuiImage* title_screen = nullptr;
 	GuiImage* start_button = nullptr;
 	GuiImage* exit_button = nullptr;
+	
+	SDL_Texture* victory_img = nullptr;
+	SDL_Texture* defeat_img = nullptr;
 
+
+
+
+	//Sound
+	unsigned int fx_click;
 
 private:
 	uint previous_unit_killed = 0;

@@ -9,6 +9,7 @@
 #include "Scv.h"
 #include "CommandCenter.h"
 #include "Bunker.h"
+#include "GameManager.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -75,7 +76,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		{
 			AddEntityToWave(e->id, e);
 			addInEnemyContainer(e);
+			
+			/*RIE BUG PFOR ALEIXBV
+			e->state = MOVE_ALERT;
+			app->path->createPath(e->tile_pos, COMMANDCENTERPOSITION);*/
 		}
+		
 	}
 
 	return e;

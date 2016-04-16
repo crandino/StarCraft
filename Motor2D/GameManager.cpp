@@ -8,19 +8,11 @@
 #include "Render.h"
 #include "Gui.h"
 #include "Textures.h"
+#include "Audio.h"
 
 #include "GuiImage.h"
 
 //Author: RIE code.
-
-//Number to change the number of waves
-#define TOTALWAVES 2
-#define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
-#define WAVETIME2 10
-#define	SIZE1 1 // Changes number of zerglings per wave
-#define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
-#define ZERGLINGSCORE 20
-#define COMMANDCENTERPOSITION {1500, 2250}
 
 
 bool GameManager::start()
@@ -28,8 +20,14 @@ bool GameManager::start()
 	bool ret = true;
 
 	LOG("LAST HOPE GAME STARTS!");
-	
+	//audio
+	fx_click = app->audio->loadFx("Audio/FX/UI/UI_Click.wav");
+
+	victory_img = app->tex->loadTexture("Screens/victory_screen.png");
+	defeat_img = app->tex->loadTexture("Screens/defeat_screen.png");
+
 	//Play Screen
+	//----------------------------------------------------------------------
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
 	title_screen = app->gui->createImage(start_image, { 0, 0, 296, 336 });
@@ -50,9 +48,24 @@ bool GameManager::start()
 	exit_button->interactive = true;
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
+	//---------------------------------------------
 
 	iPoint p = COMMANDCENTERPOSITION;
-	app->entity_manager->addEntity(p, COMMANDCENTER);
+	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
+
+	/*
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	app->entity_manager->addEntity(p, MARINE);
+	*/
+
 
 	return ret;
 }
@@ -77,7 +90,7 @@ bool GameManager::update(float dt)
 			{
 				LOG("Wave time is over! prepare for the next wave!!!");
 
-				app->entity_manager->createWave(SIZE1, { 1500, 1500 });
+				app->entity_manager->createWave(SIZE1, { 1500, 2150 });
 				
 				current_waves++;
 			}
@@ -189,7 +202,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			exit_button->draw_element = false;
 			exit_button->interactive = false;
 			exit_button->can_focus = false;
-
+			app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
@@ -200,6 +213,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			game_over = true;
+			app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}

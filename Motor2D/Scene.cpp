@@ -60,7 +60,7 @@ bool Scene::start()
 	//start_menu->setLocalPos(start_menu->getLocalPos().x-5, start_menu->getLocalPos().y - 60);
 	
 	//Backgorund audio (DEBUG include)
-	app->audio->playMusic("Audio/Music/Background_Theme_1.mp3", 3.f);
+	app->audio->playMusic("Audio/Music/Background_Music.mp3", 3.f);
 	for (unsigned int i = 0; i <= 4; i++)
 	{
 		app->audio->volumeDown();
