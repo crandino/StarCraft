@@ -145,9 +145,47 @@ public:
 			{
 				unit_direction = LEFT_UP;
 			}
+
+
+		}
+
+		else if (state == REPAIR)
+		{
+			if (target_to_repair->tile_pos.x == tile_pos.x && target_to_repair->tile_pos.y < tile_pos.y)
+			{
+				unit_direction = UP;
+			}
+			else if (target_to_repair->tile_pos.x > tile_pos.x && target_to_repair->tile_pos.y < tile_pos.y)
+			{
+				unit_direction = RIGHT_UP;
+			}
+			else if (target_to_repair->tile_pos.x > tile_pos.x && target_to_repair->tile_pos.y == tile_pos.y)
+			{
+				unit_direction = RIGHT;
+			}
+			else if (target_to_repair->tile_pos.x > tile_pos.x && target_to_repair->tile_pos.y > tile_pos.y)
+			{
+				unit_direction = RIGHT_DOWN;
+			}
+			else if (target_to_repair->tile_pos.x == tile_pos.x && target_to_repair->tile_pos.y > tile_pos.y)
+			{
+				unit_direction = DOWN;
+			}
+			else if (target_to_repair->tile_pos.x < tile_pos.x && target_to_repair->tile_pos.y > tile_pos.y)
+			{
+				unit_direction = LEFT_DOWN;
+			}
+			else if (target_to_repair->tile_pos.x < tile_pos.x && target_to_repair->tile_pos.y == tile_pos.y)
+			{
+				unit_direction = LEFT;
+			}
+			else if (target_to_repair->tile_pos.x < tile_pos.x && target_to_repair->tile_pos.y < tile_pos.y)
+			{
+				unit_direction = LEFT_UP;
+			}
 		}
 		else
-		{
+			{
 			if (path.size()>0)
 			{
 				iPoint pos_path = *path.begin();
@@ -264,6 +302,13 @@ public:
 				coll->to_delete = true;
 			}
 			break;
+		case REPAIR:
+			if ((timer_attack_delay += dt) >= attack_delay)
+			{
+				repair();
+				checkUnitDirection();
+				timer_attack_delay = 0.0f;
+			}
 		}
 		return true;
 	}

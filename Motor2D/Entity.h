@@ -18,6 +18,7 @@ enum STATE
 	MOVE,
 	MOVE_ALERT,
 	ATTACK,
+	REPAIR,
 	DYING
 };
 
@@ -59,6 +60,7 @@ public:
 	iPoint			offset_life;
 
 	Entity			*target_to_attack;
+	Entity			*target_to_repair;
 	Entity			*target_to_reach;
 	int				range_to_attack;
 	int				range_to_view;
@@ -128,6 +130,45 @@ public:
 					{
 						app->game_manager->total_units_killed_currentFrame++;
 					}
+				}
+			}
+			else
+			{
+				state = IDLE;
+				searchNearestEnemy();
+			}
+		}
+		else
+		{
+			state = IDLE;
+			searchNearestEnemy();
+		}
+	}
+
+	virtual void repair()
+	{
+		if (target_to_repair != NULL)
+		{
+			int d = abs(center.x - target_to_repair->center.x) + abs(center.y - target_to_repair->center.y);
+			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_repair->coll->rect.w / 2 + target_to_repair->coll->rect.h / 2) / 2);
+			if (d <= range_to_attack)
+			{
+				if ((target_to_repair->current_hp) < target_to_repair->max_hp)
+				{
+					if (target_to_repair->type == BUILDING)
+					{
+						target_to_repair->current_hp += damage;
+						/*if (target_to_repair->current_hp >= target_to_repair->max_hp)
+						{
+						
+						}*/
+					}
+				}
+				else
+				{
+					state = IDLE;
+					target_to_repair->current_hp = target_to_repair->max_hp;
+					target_to_repair = NULL;
 				}
 			}
 			else
