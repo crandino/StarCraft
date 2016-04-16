@@ -66,9 +66,6 @@ public:
 	Timer general_time;
 	Timer time_between_waves;
 	Timer random_generator;
-	Timer stop_timer;
-
-
 
 	//Score system attributes
 	uint score_current_wave = 0;

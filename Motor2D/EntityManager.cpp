@@ -99,6 +99,19 @@ void EntityManager::AddEntityToWave(uint id,Entity* e)
 	enemyWave.insert(pair<uint, Entity*>(id, e));
 }
 
+/*Method that makes the enemyWave attack the commandCenter*/
+//DECOY
+void EntityManager::SetEnemyWaveToAttackCommandCenter()
+{
+
+
+}
+
+
+
+
+
+
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {

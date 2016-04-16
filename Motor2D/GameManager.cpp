@@ -50,6 +50,9 @@ bool GameManager::start()
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
 
+	iPoint p = {1500, 3000};
+	app->entity_manager->addEntity(p, COMMANDCENTER);
+
 	return ret;
 }
 
@@ -73,7 +76,7 @@ bool GameManager::update(float dt)
 			{
 				LOG("Wave time is over! prepare for the next wave!!!");
 
-				app->entity_manager->createWave(SIZE1, { 1500, 500 });
+				app->entity_manager->createWave(SIZE1, { 1500, 1500 });
 				
 				current_waves++;
 			}

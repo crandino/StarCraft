@@ -101,6 +101,12 @@ public:
 	uint getWaveZerglingSize();
 
 	void AddEntityToWave(uint n, Entity* e);
+	void SetEnemyWaveToAttackCommandCenter();
+
+
+
+
+
 	/*--------Methods for interact with buildings----------*/
 	void GetInsideBunker(Bunker* e);	
 	void repairBuilding(Entity* e);
