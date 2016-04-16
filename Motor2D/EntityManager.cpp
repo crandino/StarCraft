@@ -85,10 +85,16 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		{
 			AddEntityToWave(e->id, e);
 			addInEnemyContainer(e);
-			
-			/*RIE BUG PFOR ALEIXBV
-			e->state = MOVE_ALERT;
-			app->path->createPath(e->tile_pos, COMMANDCENTERPOSITION);*/
+
+			iPoint p = COMMANDCENTERPOSITION;
+			p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
+			Unit* unit = (Unit*)e;
+			if (app->path->createPath(e->tile_pos, p))
+			{
+				unit->path = app->path->getLastPath();
+				unit->has_target = true;
+				unit->state = MOVE_ALERT;
+			}
 		}
 		
 	}

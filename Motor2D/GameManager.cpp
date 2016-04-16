@@ -100,7 +100,7 @@ bool GameManager::update(float dt)
 			{
 				LOG("Wave time is over! prepare for the next wave!!!");
 
-				app->entity_manager->createWave(SIZE1, { 1500, 2000 });
+				app->entity_manager->createWave(SIZE1, { 1500, 1500 });
 				
 				current_waves++;
 			}
