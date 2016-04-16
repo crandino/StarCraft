@@ -34,6 +34,8 @@ public:
 	Animation attack_left;
 	Animation attack_left_up;
 
+	Animation dead;
+
 	
 
 	Zergling(iPoint &p)
@@ -77,116 +79,124 @@ public:
 
 	void checkAngle()
 	{
-
-		if (angle > 360)
+		if (state == DYING)
 		{
-			angle -= 360.f;
-		}
-
-		if (has_target)
-		{
-			// From 0 to 180 degrees
-			if (angle >= 0.f && angle < 22.5f)
-			{
-				current_animation = &walk_up;
-			}
-
-			if (angle >= 45.f && angle < 67.5f)
-			{
-				current_animation = &walk_right_up;
-			}
-
-			if (angle >= 90.f && angle < 112.5f)
-			{
-				current_animation = &walk_right;
-			}
-
-			if (angle >= 135.f && angle < 157.5f)
-			{
-				current_animation = &walk_right_down;
-			}
-
-			// From 180 to 360 degrees
-			if (angle >= 180.f && angle < 202.5f)
-			{
-				current_animation = &walk_down;
-			}
-
-			if (angle >= 225.f && angle < 247.5f)
-			{
-				current_animation = &walk_left_down;
-			}
-
-			if (angle >= 270.f && angle < 292.5f)
-			{
-				current_animation = &walk_left;
-			}
-
-			if (angle >= 315.f && angle < 337.5f)
-			{
-				current_animation = &walk_left_up;
-			}
-
+			current_animation = &dead;
 		}
 		else
 		{
-			if (angle >= 0.f && angle < 22.5f)
+			if (angle > 360)
 			{
-				if (state == ATTACK)
-					current_animation = &attack_up;
-				else
-					current_animation = &idle_up;
+				angle -= 360.f;
 			}
 
-			else if (angle >= 45.f && angle < 67.5f)
+			if (has_target)
 			{
-				if (state == ATTACK)
-					current_animation = &attack_right_up;
-				else
-					current_animation = &idle_right_up;
+				// From 0 to 180 degrees
+				if (angle >= 0.f && angle < 22.5f)
+				{
+					current_animation = &walk_up;
+				}
+
+				if (angle >= 45.f && angle < 67.5f)
+				{
+					current_animation = &walk_right_up;
+				}
+
+				if (angle >= 90.f && angle < 112.5f)
+				{
+					current_animation = &walk_right;
+				}
+
+				if (angle >= 135.f && angle < 157.5f)
+				{
+					current_animation = &walk_right_down;
+				}
+
+				// From 180 to 360 degrees
+				if (angle >= 180.f && angle < 202.5f)
+				{
+					current_animation = &walk_down;
+				}
+
+				if (angle >= 225.f && angle < 247.5f)
+				{
+					current_animation = &walk_left_down;
+				}
+
+				if (angle >= 270.f && angle < 292.5f)
+				{
+					current_animation = &walk_left;
+				}
+
+				if (angle >= 315.f && angle < 337.5f)
+				{
+					current_animation = &walk_left_up;
+				}
+
 			}
-			else if (angle >= 90.f && angle < 112.5f)
+			else
 			{
-				if (state == ATTACK)
-					current_animation = &attack_right;
-				else
-					current_animation = &idle_right;
-			}
-			else if (angle >= 135.f && angle < 157.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_right_down;
-				else
-					current_animation = &idle_right_down;
-			}
-			else if (angle >= 180.f && angle < 202.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_down;
-				else
-					current_animation = &idle_down;
-			}
-			else if (angle >= 225.f && angle < 247.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_left_down;
-				else
-					current_animation = &idle_left_down;
-			}
-			else if (angle >= 270.f && angle < 292.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_left;
-				else
-					current_animation = &idle_left;
-			}
-			else if (angle >= 315.f && angle < 337.5f)
-			{
-				if (state == ATTACK)
-					current_animation = &attack_left_up;
-				else
-					current_animation = &idle_left_up;
-			}
+				if (angle >= 0.f && angle < 22.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_up;
+					else
+						current_animation = &idle_up;
+				}
+
+				else if (angle >= 45.f && angle < 67.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_right_up;
+					else
+						current_animation = &idle_right_up;
+				}
+				else if (angle >= 90.f && angle < 112.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_right;
+					else
+						current_animation = &idle_right;
+				}
+				else if (angle >= 135.f && angle < 157.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_right_down;
+					else
+						current_animation = &idle_right_down;
+				}
+				else if (angle >= 180.f && angle < 202.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_down;
+					else
+						current_animation = &idle_down;
+				}
+				else if (angle >= 225.f && angle < 247.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_left_down;
+					else
+						current_animation = &idle_left_down;
+				}
+				else if (angle >= 270.f && angle < 292.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_left;
+					else
+						current_animation = &idle_left;
+				}
+				else if (angle >= 315.f && angle < 337.5f)
+				{
+					if (state == ATTACK)
+						current_animation = &attack_left_up;
+					else
+						current_animation = &idle_left_up;
+				}
+		}
+
+		
 		}
 	}
 

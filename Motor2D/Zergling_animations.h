@@ -149,11 +149,13 @@ attack_left_up.frames.push_back({ 1792, 384, 128, 128 });
 attack_left_up.speed = 0.008f;
 attack_left_up.loop = true;
 
-
-
-
-
-
-
-
+//-----------------Death Animation---------------
+dead.frames.push_back({ 0, 2176, 128, 128 });
+dead.frames.push_back({ 128, 2176, 128, 128 });
+dead.frames.push_back({ 256, 2176, 128, 128 });
+dead.frames.push_back({ 384, 2176, 128, 128 });
+dead.frames.push_back({ 512, 2176, 128, 128 });
+dead.frames.push_back({ 640, 2176, 128, 128 });
+dead.frames.push_back({ 768, 2176, 128, 128 });
+dead.speed = 0.01f;
 #endif
