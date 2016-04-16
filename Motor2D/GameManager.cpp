@@ -53,18 +53,18 @@ bool GameManager::start()
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
 
-	/*
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	app->entity_manager->addEntity(p, MARINE);
-	*/
+	
+	app->entity_manager->addEntity(iPoint({ 1500, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1520, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1480, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1540, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1460, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1520, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1480, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1540, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1460, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1500, 2130 }), MARINE);
+	
 
 
 	return ret;
@@ -90,7 +90,7 @@ bool GameManager::update(float dt)
 			{
 				LOG("Wave time is over! prepare for the next wave!!!");
 
-				app->entity_manager->createWave(SIZE1, { 1500, 2150 });
+				app->entity_manager->createWave(SIZE1, { 1500, 2000 });
 				
 				current_waves++;
 			}
