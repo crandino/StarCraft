@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "Point2d.h"
 #include "Collision.h"
+#include "Textures.h"
 #include "Gui.h"
 
 //Number to change the number of waves
@@ -25,7 +26,23 @@
 #define SIZEMARINESX 1
 #define SIZEMARINESY 1
 
+//Resources
+struct Resources
+{
+	int amount = 0;
+	SDL_Texture *texture = nullptr;
+	GuiImage* image = nullptr;
+	Collider *coll = nullptr;
 
+	Resources(int amount_, const char* texture_,const SDL_Rect& section):amount(amount_)
+	{
+		texture = app->tex->loadTexture(texture_);
+		image = app->gui->createImage(texture, section);
+		coll = app->collision->addCollider({ section.x, section.y , section.w ,section.h}, COLLIDER_BOMB);
+		app->map->changeLogic(coll->rect, NO_WALKABLE);
+		app->entity_manager->logicChanged();
+	}
+};
 
 
 
