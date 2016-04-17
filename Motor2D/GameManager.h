@@ -133,7 +133,8 @@ public:
 	//close bool
 	bool close = false;
 
-
+	//commandCenterDestroyed
+	bool command_center_destroyed = false;
 	//Sound
 	unsigned int fx_click;
 	bool isGameStarted() const;
