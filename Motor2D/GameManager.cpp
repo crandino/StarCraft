@@ -490,6 +490,7 @@ void GameManager::displayVictoryScreen()
 	retry_button->interactive = true;
 	retry_button->can_focus = true;
 	retry_button->setListener(this);
+	retry_button->draw_element = true;
 
 	close_button = app->gui->createImage(victory_img, { 121, 213, 105, 28 });
 	close_button->parent = victory_screen;
