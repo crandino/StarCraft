@@ -431,6 +431,7 @@ void GameManager::restartGame()
 	app->audio->playFx(fx_click, 0);
 
 	start();
+	startGame();
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.
