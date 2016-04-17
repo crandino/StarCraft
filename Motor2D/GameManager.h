@@ -9,15 +9,16 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number
-#define WAVETIME 15
+#define WAVETIME1 5.0f//120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME2 15.0f
 #define	SIZE1 3 // Changes number of zerglings per wave
 #define	SIZE2 5 // Changes number of zerglings per wave
 #define	SIZE3 10 // Changes number of zerglings per wave
 #define TOTALUNITSALLWAVES (SIZE1 + SIZE2 + SIZE3)
 #define ZERGLINGSCORE 20
 #define COMMANDCENTERPOSITION {1500, 2250}
-
+#define ENDINGTIME 5.0f
+#define VICTORYTIME 5.0f
 
 class GuiImage;
 using namespace std;
@@ -46,6 +47,7 @@ public:
 	uint total_kills_game = 0;
 	uint total_units_killed_currentFrame = 0;
 
+	uint marineCounterDeath = 0;
 
 public:
 
@@ -54,10 +56,17 @@ public:
 		name.assign("GameManager");
 	}
 
+	void displayVictoryScreen();
+
+	void displayDefeatScreen();
+
+	bool checkGameOver();
 
 	bool victory = false;
 
 	void startGame();
+
+	void restartGame();
 
 	bool quitGame();
 
@@ -78,6 +87,8 @@ public:
 	Timer general_time;
 	Timer time_between_waves;
 	Timer random_generator;
+	Timer ending_game;
+	Timer winning_game;
 
 	//Score system attributes
 	uint score_current_wave = 0;
@@ -90,10 +101,24 @@ public:
 	GuiImage* start_button = nullptr;
 	GuiImage* exit_button = nullptr;
 	
+
+	//Victory Screen
 	SDL_Texture* victory_img = nullptr;
+	GuiImage* victory_screen = nullptr;
+
+	bool won = false;
+
+	//Defeat Screen
+	GuiImage* defeat_screen = nullptr;
 	SDL_Texture* defeat_img = nullptr;
+	bool is_defeat_screen_on = false;
 
+	//Ending Buttons
+	GuiImage* retry_button = nullptr;
+	GuiImage* close_button = nullptr;
 
+	//close bool
+	bool close = false;
 
 
 	//Sound
@@ -103,6 +128,7 @@ private:
 	uint previous_unit_killed = 0;
 
 	bool start_game = false;
+	
 };
 
 #endif
