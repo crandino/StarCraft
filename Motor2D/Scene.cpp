@@ -51,8 +51,9 @@ bool Scene::start()
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
 	rectangle_map_camera->draw_element = false;
-	Resources mineral(100, "TemporaryTextures/mineral3.png", { 0,16,64,55 });
-	mineral.image->setLocalPos(200, 200);
+
+//	Resources mineral(100, "TemporaryTextures/mineral3.png", { 0,16,64,55 });
+	//mineral.image->setLocalPos(200, 200);
 	////ROF Start menu without interaction, it will be disabeled till it fully works
 	//start_menu_img = app->tex->loadTexture("Screens/Start_Image.png");
 	//start_menu = app->gui->createImage(start_menu_img, { 0, 0, 296, 336 });

@@ -85,7 +85,17 @@ bool GameManager::update(float dt)
 	{
 		if (current_waves <= TOTALWAVES)
 		{
-			if (time_between_waves.readSec() >= WAVETIME1) //We check how much time do we have left before releasing a new wave
+			bool all_zerlings_dead = true;
+			for (map<uint, Entity*>::iterator it2 = app->entity_manager->active_entities.begin(); it2 != app->entity_manager->active_entities.end(); ++it2)
+			{
+				if (it2->second->specialization == ZERGLING)
+				{
+					all_zerlings_dead = false;
+					break;
+				}
+			}
+
+			if (time_between_waves.readSec() >= WAVETIME1 && all_zerlings_dead) //We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 0)
 				{
