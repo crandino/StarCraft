@@ -145,7 +145,7 @@ bool EntityManager::preUpdate()
 		addEntity(position, MARINE);		
 	}
 
-	if (create_SCV)
+	if (create_SCV && app->game_manager->mineral_resources >= 50)
 	{
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		fPoint pos_commander;
@@ -159,6 +159,7 @@ bool EntityManager::preUpdate()
 			}
 		}
 
+		app->game_manager->mineral_resources -= 50;
 		position.x = pos_commander.x + 20;
 		position.y = pos_commander.y + 100;
 
@@ -172,10 +173,12 @@ bool EntityManager::preUpdate()
 		addEntity(position, COMMANDCENTER);
 	}
 
-	if (create_bunker)
+	if (create_bunker && app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
+		app->game_manager->mineral_resources -= 25;
+		app->game_manager->gas_resources -= 50;
 		addEntity(position, BUNKER);
 	}
 
@@ -274,12 +277,12 @@ bool EntityManager::preUpdate()
 			if (it->second->type == UNIT)
 			{
 				Unit *unit = (Unit*)it->second;
-				unit->has_target = true;
 				if (selection.size() == 1)
 				{
 					if (app->path->createPath(unit->tile_pos, target_position) != -1)
 					{
 						unit->path = app->path->getLastPath();
+						unit->has_target = true;
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
 						{
@@ -296,6 +299,7 @@ bool EntityManager::preUpdate()
 					if (app->path->createPath(unit->tile_pos, target) != -1)
 					{
 						unit->path = app->path->getLastPath();
+						unit->has_target = true;
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
 						{
@@ -728,14 +732,24 @@ void EntityManager::logicChanged()
 
 void EntityManager::onCollision(Collider* c1, Collider* c2)
 {
-	//Entity *e1, *e2;
+	Entity *e1, *e2;
+	e1 = e2 = NULL;
 
-	//map<uint, Entity*>::iterator it = active_entities.begin();
-	//for (; it != active_entities.end(); ++it)
-	//{
-	//	if (it->second->coll == c1) e1 = it->second; 
-	//	else if (it->second->coll == c2) e2 = it->second;
-	//}
-
-	//Vector2D<int> dir = 
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second->coll == c1) e1 = it->second;
+		else if (it->second->coll == c2) e2 = it->second;
+	}
+	
+	if (e1 != NULL && e2 != NULL && e1->type == UNIT && e1->state == IDLE && e2->type == UNIT && e2->state == IDLE)
+	{
+		if (app->path->createPathToAdjacent(e2->tile_pos, 2) != -1)
+		{
+			Unit *unit = (Unit*)e2;
+			unit->path = app->path->getLastPath();
+			unit->has_target = true;
+			unit->state = MOVE;
+		}
+	}
 }

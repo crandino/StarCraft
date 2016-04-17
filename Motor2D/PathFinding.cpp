@@ -243,6 +243,9 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 		return -1;
 
 	iPoint new_dest = findNearestWalkableTile(destination, origin, 5);
+	iPoint tile_error = { -1, -1 };
+	if (new_dest == tile_error)
+		return -1;
 
 	path_found.clear();
 	// Open and close list
@@ -313,6 +316,33 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 	path_found.erase(path_found.begin()); //we don't need the tile which is stepping
 
 	return path_found.size();
+}
+
+int PathFinding::createPathToAdjacent(const iPoint& origin, uint distance)
+{
+	// Origin are walkable?
+	if (!isWalkable(origin))
+		return -1;
+
+	pathNode pnode(0, 0, origin, NULL);
+	pathList candidate_nodes;
+	int items_added = pnode.findWalkableAdjacents(candidate_nodes, true);
+
+	if (items_added > 0)
+	{
+		uint direction = rand() % items_added;
+
+		list<pathNode>::iterator target = candidate_nodes.list_of_nodes.begin();
+		for (uint i = 0; i < direction; i++)
+			target++;
+		iPoint it = target->pos - origin;
+		it.x *= distance;
+		it.y *= distance;
+		target->pos += it;
+
+		return createPath(origin, target->pos);
+	}
+	return -1;
 }
 
 iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &destination, uint radius) const
@@ -400,6 +430,8 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &
 			}
 		}
 	}
+
+	return { -1, -1 };
 }
 
 const vector<iPoint> &PathFinding::getLastPath() const
