@@ -90,7 +90,7 @@ bool GameManager::update(float dt)
 				{
 					LOG("Wave 1 is over get prepared!!!!");
 
-					app->entity_manager->createWave(SIZE1, { 1500, 1500 });
+					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1500, 1500 });
 
 					current_waves++;
 				}
@@ -101,7 +101,7 @@ bool GameManager::update(float dt)
 				{
 
 					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(SIZE2, { 1500, 1500 });
+					app->entity_manager->createWave(SIZE2X,SIZE2Y, { 1500, 1500 });
 
 					current_waves++;
 
@@ -112,7 +112,7 @@ bool GameManager::update(float dt)
 
 					LOG("Last wave!!!");
 
-					app->entity_manager->createWave(SIZE3, { 1500, 1500 });
+					app->entity_manager->createWave(SIZE3X,SIZE3Y, { 1500, 1500 });
 
 					current_waves++;
 
@@ -130,7 +130,7 @@ bool GameManager::update(float dt)
 
 			LOG("Score: %d", total_score);
 
-			if (current_waves == 1 && kill_count >= SIZE1)
+			if (current_waves == 1 && kill_count >= (SIZE1X*SIZE1Y))
 			{
 				total_kills_game += kill_count;
 				kill_count = 0;
@@ -139,7 +139,7 @@ bool GameManager::update(float dt)
 				LOG("You successfully wiped the first wave good job! NOW THE NEXT ONE >:]");
 				LOG("Total Score: %d", total_score);
 			}
-			else if (current_waves == 2 && kill_count >= SIZE2)
+			else if (current_waves == 2 && kill_count >= SIZE2X*SIZE2Y)
 			{
 				total_kills_game += kill_count;
 				kill_count = 0;
@@ -148,7 +148,7 @@ bool GameManager::update(float dt)
 				LOG("You successfully wiped the second wave good job! NOW THE NEXT ONE >:]");
 				LOG("Total Score: %d", total_score);
 			}
-			else if (current_waves == 3 && kill_count >= SIZE3)
+			else if (current_waves == 3 && kill_count >= SIZE3X*SIZE3Y)
 			{
 				total_kills_game += kill_count;
 				kill_count = 0;
@@ -390,11 +390,8 @@ void GameManager::createInitialMarines(unsigned int sizex, unsigned int sizey)
 			int posx = 1500 + (sizex * i * 10);
 			int posy = 2150 + (sizey * j * 10);
 
-			app->entity_manager->addEntity(iPoint({posx, posy}), MARINE);
+			app->entity_manager->addEntity(iPoint({ posx, posy }), MARINE);
 		}
-
-		
-
 	}
 	/*
 	app->entity_manager->addEntity(iPoint({ 1520, 2150 }), MARINE);

@@ -443,27 +443,30 @@ void EntityManager::calculateSelector()
 
 /*------------------WAVE RELATED METHODS--------------------------*/
 
-void EntityManager::createWave(uint size, iPoint position/*zergling num, hidralisk....num*/)
+void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 {
+
+		for (int i = 0; i < sizex; i++)
+		{
+			for (int j = 0; j < sizey; j++)
+			{
+				int posx = 1500 + (sizex * i * 10);
+				int posy = 2150 + (sizey * j * 10);
+
+				iPoint position = {posx, posy};
+
+				createZergling(position);
+			}
+		}
 	Timer test;
 	test.start();
 
-	for (uint i = 0; i < size; i++)
-	{
-		iPoint radius;
-		radius.x = rand() % 30 + 1;
-		radius.y = rand() % 30 + 1; //RIE: Things to Improve in the future make it responsive to tile system?
-		
-		int sign = rand() % 3;
 
-		radius = changeSign(radius);	
-
-		position = { position.x + radius.x, position.y + radius.y };
-		addEntity(position, ZERGLING);
-	}
 
 	LOG("Creating this wave has taken %d", test.read());
+
 }
+
 
 bool EntityManager::searchNearEntity(Entity* e)
 {
@@ -560,26 +563,14 @@ bool EntityManager::searchNearEntity(Entity* e)
 	return ret;
 }
 
-iPoint EntityManager::changeSign(iPoint point)
-{
-	int sign = rand() % 4;
 
-		switch (sign)
-		{
-			case (1) :
-		
-						 point.x = point.x*-1;
-						 break;
-		
-			case(2) :	
-						point.y = point.y*-1;
-						break;
-		
-			default: 
-			break;
-	}
-		return point;
+
+void EntityManager::createZergling(iPoint position)
+{
+	addEntity(position, ZERGLING);
 }
+
+
 
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)
