@@ -10,8 +10,12 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "map.h"
+#include <map>
+#include "Entity.h"
 
 #include "GuiImage.h"
+
+using namespace std;
 
 //Author: RIE code.
 
@@ -63,17 +67,11 @@ bool GameManager::start()
 
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
-	
-	app->entity_manager->addEntity(iPoint({ 1500, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1520, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1480, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1540, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1460, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1520, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1480, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1540, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1460, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1500, 2130 }), MARINE);
+
+	unsigned int size_marines_x = 1;
+	unsigned int size_marines_y = 1;
+
+	createInitialMarines(size_marines_x, size_marines_y);
 	
 	return ret;
 }
@@ -251,7 +249,7 @@ bool GameManager::checkGameOver()
 
 	if (!(ret = game_over))
 	{ //game not over
-		if (marineCounterDeath == 10)
+		if (marineCounterDeath == size_marines_x * size_marines_y)
 		{
 			ending_game.start();
 			start_game = false;
@@ -337,6 +335,26 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 
 void GameManager::restartGame()
 {
+
+	/*Copy paste and adaptation from entity preUpdate to erase everything 
+	it may drop framerate but it's the loading of the other scene so it is justified (temporarily)*/
+	
+	//CRZ: 
+	map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin();
+	for (; it != app->entity_manager->active_entities.end();)
+	{
+			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
+			for (map<uint, Entity*>::iterator it2 = app->entity_manager->active_entities.begin(); it2 != app->entity_manager->active_entities.end(); ++it2)
+			{
+					it2->second->target_to_attack = NULL;
+
+			}
+
+			it = app->entity_manager->active_entities.erase(it);
+		++it;
+	}
+	//---------------------------------------------------------
+	
 	current_waves = 0;
 	total_waves = 2;
 	score = 0;
@@ -355,7 +373,40 @@ void GameManager::restartGame()
 	close_button->draw_element = false;
 	close_button->interactive = false;
 	close_button->can_focus = false;
-	//app->audio->playFx(fx_click, 0);
+
+	app->audio->playFx(fx_click, 0);
+
+	start();
+}
+
+//unsigned int is intended ask me WHY I do it instead of uint.
+void GameManager::createInitialMarines(unsigned int sizex, unsigned int sizey)
+{
+
+	for (int i = 0; i < sizex; i++)
+	{
+		for (int j = 0; j < sizey; j++)
+		{
+			int posx = 1500 + (sizex * i * 10);
+			int posy = 2150 + (sizey * j * 10);
+
+			app->entity_manager->addEntity(iPoint({posx, posy}), MARINE);
+		}
+
+		
+
+	}
+	/*
+	app->entity_manager->addEntity(iPoint({ 1520, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1480, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1540, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1460, 2150 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1520, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1480, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1540, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1460, 2130 }), MARINE);
+	app->entity_manager->addEntity(iPoint({ 1500, 2130 }), MARINE);
+	*/
 }
 
 void GameManager::displayVictoryScreen()

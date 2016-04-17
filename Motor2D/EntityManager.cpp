@@ -96,6 +96,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 	{
 		iPoint p = COMMANDCENTERPOSITION;
 		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
+
 		Unit* unit = (Unit*)e;
 		if (app->path->createPath(e->tile_pos, p) != -1)
 		{
