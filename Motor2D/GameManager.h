@@ -9,7 +9,7 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define WAVETIME1 5.0f//120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME1 5.0f //120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 15.0f
 #define	SIZE1 3 // Changes number of zerglings per wave
 #define	SIZE2 5 // Changes number of zerglings per wave
@@ -39,7 +39,6 @@ public:
 	bool is_finished = false;
 	bool game_over = false;
 	iPoint initial_position;
-
 
 	/*---- Wave Creation ----*/
 	int center;

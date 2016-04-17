@@ -47,8 +47,7 @@ bool GameManager::start()
 	start_button->center();
 	start_button->interactive = true;
 	start_button->can_focus = true;
-	start_button->setListener(this);
-	
+	start_button->setListener(this);	
 
 	exit_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
 	exit_button->parent = title_screen;
@@ -62,11 +61,8 @@ bool GameManager::start()
 	
 	defeat_img = app->tex->loadTexture("Screens/defeat_screen.png");
 
-
-
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
-
 	
 	app->entity_manager->addEntity(iPoint({ 1500, 2150 }), MARINE);
 	app->entity_manager->addEntity(iPoint({ 1520, 2150 }), MARINE);
@@ -79,8 +75,6 @@ bool GameManager::start()
 	app->entity_manager->addEntity(iPoint({ 1460, 2130 }), MARINE);
 	app->entity_manager->addEntity(iPoint({ 1500, 2130 }), MARINE);
 	
-
-
 	return ret;
 }
 
@@ -90,11 +84,9 @@ bool GameManager::update(float dt)
 
 	if (start_game)
 	{
-
 		if (current_waves <= TOTALWAVES)
 		{
-			
-			if (time_between_waves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
+			if (time_between_waves.readSec() >= WAVETIME1) //We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 0)
 				{
@@ -103,7 +95,6 @@ bool GameManager::update(float dt)
 					app->entity_manager->createWave(SIZE1, { 1500, 1500 });
 
 					current_waves++;
-
 				}
 			}
 			if (time_between_waves.readSec() >= WAVETIME2)//We check how much time do we have left before releasing a new wave
@@ -305,7 +296,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			exit_button->draw_element = false;
 			exit_button->interactive = false;
 			exit_button->can_focus = false;
-			app->audio->playFx(fx_click, 0);
+			//app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
@@ -316,7 +307,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			quitGame();
-			app->audio->playFx(fx_click, 0);
+			//app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
@@ -334,7 +325,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_UP) :
-			app->audio->playFx(fx_click, 0);
+			//app->audio->playFx(fx_click, 0);
 			exit_button->setSection({ 339, 229, 141, 39 });
 			
 			game_over = true;
@@ -342,7 +333,6 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 		}
 	}
-
 }
 
 void GameManager::restartGame()
@@ -365,14 +355,11 @@ void GameManager::restartGame()
 	close_button->draw_element = false;
 	close_button->interactive = false;
 	close_button->can_focus = false;
-	app->audio->playFx(fx_click, 0);
-
-
+	//app->audio->playFx(fx_click, 0);
 }
 
 void GameManager::displayVictoryScreen()
 {
-	
 	//Victory Screen
 	//----------------------------------------------------------------------
 
@@ -391,7 +378,6 @@ void GameManager::displayVictoryScreen()
 	retry_button->can_focus = true;
 	retry_button->setListener(this);
 
-
 	close_button = app->gui->createImage(defeat_img, { 121, 213, 105, 28 });
 	close_button->parent = defeat_screen;
 	close_button->setLocalPos(121, 211);
@@ -404,11 +390,10 @@ void GameManager::displayVictoryScreen()
 void GameManager::displayDefeatScreen()
 {
 	is_defeat_screen_on = true;
+
 	//Defeat
 	//----------------------------------------------------------------------
-	defeat_img = app->tex->loadTexture("Screens/defeat screen.png");
-
-	
+	defeat_img = app->tex->loadTexture("Screens/defeat screen.png");	
 
 	defeat_screen = app->gui->createImage(defeat_img, { 0, 0, 640, 480 });
 	defeat_screen->center();

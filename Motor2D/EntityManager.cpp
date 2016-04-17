@@ -84,7 +84,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		{
 			player_units.insert(pair<uint, Entity*>(e->id, e));
 		}
-
 	}
 
 	return e;
@@ -96,9 +95,9 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 	if (e->type == UNIT)
 	{
 		iPoint p = COMMANDCENTERPOSITION;
-		p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
+		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
 		Unit* unit = (Unit*)e;
-		if (app->path->createPath(e->tile_pos, p))
+		if (app->path->createPath(e->tile_pos, p) != -1)
 		{
 			unit->path = app->path->getLastPath();
 			unit->has_target = true;
@@ -121,7 +120,6 @@ bool EntityManager::preUpdate()
 			{
 				if (it->second == it2->second->target_to_attack)
 					it2->second->target_to_attack = NULL;
-
 			}
 
 			if (it->second->specialization == MARINE)
@@ -459,7 +457,10 @@ void EntityManager::calculateSelector()
 
 void EntityManager::createWave(uint size, iPoint position/*zergling num, hidralisk....num*/)
 {
-	for (int i = 0; i < size; i++)
+	Timer test;
+	test.start();
+
+	for (uint i = 0; i < size; i++)
 	{
 		iPoint radius;
 		radius.x = rand() % 30 + 1;
@@ -467,10 +468,13 @@ void EntityManager::createWave(uint size, iPoint position/*zergling num, hidrali
 		
 		int sign = rand() % 3;
 
-		radius = changeSign(radius);		
-		
-		createZergling(position, radius);
+		radius = changeSign(radius);	
+
+		position = { position.x + radius.x, position.y + radius.y };
+		addEntity(position, ZERGLING);
 	}
+
+	LOG("Creating this wave has taken %d", test.read());
 }
 
 bool EntityManager::searchNearEntity(Entity* e)
@@ -588,16 +592,6 @@ iPoint EntityManager::changeSign(iPoint point)
 	}
 		return point;
 }
-void EntityManager::createZergling(iPoint position, iPoint radius)
-{
-
-	//Point to check if the cursor is on a walkable tile
-	//Check that the radius doesn't touch the logic of the map
-	position = { position.x + radius.x, position.y + radius.y };
-
-	addEntity(position, ZERGLING);
-}
-
 
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)
