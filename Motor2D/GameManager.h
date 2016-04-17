@@ -19,6 +19,12 @@
 #define COMMANDCENTERPOSITION {1500, 2250}
 #define ENDINGTIME 5.0f
 #define VICTORYTIME 5.0f
+#define SIZEMARINESX 1
+#define SIZEMARINESY 1
+
+
+
+
 
 class GuiImage;
 using namespace std;
@@ -131,6 +137,8 @@ private:
 
 	bool start_game = false;
 	
+	unsigned int size_marines_x = SIZEMARINESX;
+	unsigned int size_marines_y = SIZEMARINESY;
 };
 
 #endif

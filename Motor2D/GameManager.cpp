@@ -71,8 +71,10 @@ bool GameManager::start()
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
 
-	
-	createInitialMarines(1,1);
+	unsigned int size_marines_x = 1;
+	unsigned int size_marines_y = 1;
+
+	createInitialMarines(size_marines_x, size_marines_y);
 	
 
 
@@ -255,7 +257,7 @@ bool GameManager::checkGameOver()
 
 	if (!(ret = game_over))
 	{ //game not over
-		if (marineCounterDeath == 10)
+		if (marineCounterDeath == size_marines_x * size_marines_y)
 		{
 			ending_game.start();
 			start_game = false;
