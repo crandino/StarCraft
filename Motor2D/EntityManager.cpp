@@ -136,26 +136,13 @@ bool EntityManager::preUpdate()
 			++it;
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
-	{
-		Marine *m = (Marine*)marine;
-		//m->angle += 0.5f;
-		m->current_hp -= 1.0f;
-
-		LOG("Marine angle: %f", m->angle);
-		LOG("Marine hp: %f", m->current_hp);
-	}
-
 	iPoint position;
 
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		//addEntity(position, MARINE);
-
-		marine = addEntity(position, MARINE);
-		//if (e != NULL) remove(e->id);		
+		addEntity(position, MARINE);		
 	}
 
 	if (create_SCV)
@@ -737,4 +724,18 @@ void EntityManager::logicChanged()
 			}
 		}
 	}
+}
+
+void EntityManager::onCollision(Collider* c1, Collider* c2)
+{
+	//Entity *e1, *e2;
+
+	//map<uint, Entity*>::iterator it = active_entities.begin();
+	//for (; it != active_entities.end(); ++it)
+	//{
+	//	if (it->second->coll == c1) e1 = it->second; 
+	//	else if (it->second->coll == c2) e2 = it->second;
+	//}
+
+	//Vector2D<int> dir = 
 }

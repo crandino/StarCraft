@@ -7,8 +7,6 @@
 #include "Map.h"
 #include "PathFinding.h"
 #include "Scene.h"
-//#include "Textures.h"
-#include "GameManager.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -44,6 +42,9 @@ bool Scene::start()
 	start_position.setZero();
 	final_position.setZero();*/
 
+
+
+
 	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
 	rectangle_map_camera->setLocalPos(3, 3);
@@ -52,8 +53,11 @@ bool Scene::start()
 	rectangle_map_camera->can_focus = true;
 	rectangle_map_camera->draw_element = false;
 
-//	Resources mineral(100, "TemporaryTextures/mineral3.png", { 0,16,64,55 });
-	//mineral.image->setLocalPos(200, 200);
+
+
+
+	
+
 	////ROF Start menu without interaction, it will be disabeled till it fully works
 	//start_menu_img = app->tex->loadTexture("Screens/Start_Image.png");
 	//start_menu = app->gui->createImage(start_menu_img, { 0, 0, 296, 336 });
