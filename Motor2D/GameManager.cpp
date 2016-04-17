@@ -309,7 +309,7 @@ bool GameManager::checkGameOver()
 
 	if (!(ret = game_over))
 	{ //game not over
-		if (marineCounterDeath == size_marines_x * size_marines_y || command_center_destroyed)
+		if (command_center_destroyed)
 		{
 			ending_game.start();
 			start_game = false;
@@ -418,7 +418,10 @@ void GameManager::restartGame()
 	score_current_wave = 0;
 	total_score = 0;
 	is_finished = false;
-	command_center_destroyed = true;
+
+	if (command_center_destroyed)
+		command_center_destroyed = false;
+	
 
 	mineral_resources = 0;
 	gas_resources = 0;
