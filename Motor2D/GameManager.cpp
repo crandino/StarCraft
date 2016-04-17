@@ -92,9 +92,10 @@ bool GameManager::update(float dt)
 			{
 				if (it2->second->specialization == ZERGLING)
 				{
-					all_zerlings_dead = false;
+					all_zerlings_dead = false;			
 					break;
 				}
+
 			}
 
 			if (time_between_waves.readSec() >= WAVETIME1 && all_zerlings_dead) //We check how much time do we have left before releasing a new wave
@@ -106,10 +107,19 @@ bool GameManager::update(float dt)
 
 						app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1500, 1500 });
 						current_waves++;
-										
+						all_zerlings_dead = false;
+						resources++;
 					}
 				
 			}
+			if (current_waves == 1 && all_zerlings_dead && resources == 1)
+			{   
+				//Get Resources
+				mineral_resources += 50;
+				gas_resources += 50;
+				resources ++;
+			}
+
 			if (time_between_waves.readSec() >= WAVETIME2 && all_zerlings_dead)//We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 1)
@@ -117,11 +127,8 @@ bool GameManager::update(float dt)
 
 					LOG("Wave 2 is over prepare for the next wave!!");
 					app->entity_manager->createWave(SIZE2X,SIZE2Y, { 1500, 1500 });
-
-					//Get Resources
-					mineral_resources += 50;
-					gas_resources += 50;
 					current_waves++;
+					all_zerlings_dead = false;
 
 					time_between_waves.start();
 				}
@@ -131,14 +138,27 @@ bool GameManager::update(float dt)
 					LOG("Last wave!!!");
 
 					app->entity_manager->createWave(SIZE3X,SIZE3Y, { 1500, 1500 });
-
-					//Get Resources
-					mineral_resources += 75;
-					gas_resources += 75;
 					current_waves++;
+					all_zerlings_dead = false;
 
 					time_between_waves.start();
 				}
+			}
+
+			if (current_waves == 2 && all_zerlings_dead && resources == 2)
+			{
+				//Get Resources
+				mineral_resources += 75;
+				gas_resources += 75;
+				resources++;
+			}
+
+			if (current_waves == 3 && all_zerlings_dead && resources == 3)
+			{
+				//Get Resources
+				mineral_resources += 75;
+				gas_resources += 75;
+				resources++;
 			}
 		}
 

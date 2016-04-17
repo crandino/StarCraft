@@ -58,6 +58,7 @@ public:
 	//-------------Resources------------------
 	int       mineral_resources = 0;
 	int       gas_resources = 0;
+	int      resources = 0;
 
 public:
 
