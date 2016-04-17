@@ -126,9 +126,9 @@ bool EntityManager::preUpdate()
 			if (it->second->specialization == MARINE)
 				app->game_manager->marineCounterDeath++;
 
-			if (it->second->specialization == COMMANDCENTER)
-				app->game_manager->command_center_destroyed = true;
-
+			if (it->second->specialization == BUNKER || it->second->specialization == COMMANDCENTER)
+				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
+			
 			selection.erase(it->first);
 			if(!it->second->inside_bunker)
 				RELEASE(it->second);
