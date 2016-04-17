@@ -199,7 +199,6 @@ bool GameManager::update(float dt)
 			LOG("GAME OVER");
 			//Display Score
 			LOG("Score: %d", score_current_wave);
-
 		}
 
 
@@ -226,17 +225,12 @@ bool GameManager::update(float dt)
 
 		}	
 
-	
-
 	if (game_over && !start_game)
 	{
 		if (ending_game.readSec() >= ENDINGTIME)
 		{
 			if (!is_defeat_screen_on)
 				displayDefeatScreen();
-
-			if (close)
-				ret = false;
 		}
 	}
 
@@ -251,6 +245,9 @@ bool GameManager::update(float dt)
 				ret = false;
 		}
 	}
+
+	if (close)
+		ret = false;
 
 	return ret;
 }
@@ -451,17 +448,7 @@ void GameManager::createInitialMarines(unsigned int sizex, unsigned int sizey)
 			app->entity_manager->addEntity(iPoint({ posx, posy }), MARINE);
 		}
 	}
-	/*
-	app->entity_manager->addEntity(iPoint({ 1520, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1480, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1540, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1460, 2150 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1520, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1480, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1540, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1460, 2130 }), MARINE);
-	app->entity_manager->addEntity(iPoint({ 1500, 2130 }), MARINE);
-	*/
+
 }
 
 void GameManager::displayVictoryScreen()
