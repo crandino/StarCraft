@@ -25,14 +25,6 @@
 #define SIZEMARINESX 1
 #define SIZEMARINESY 1
 
-
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> origin/master
 class GuiImage;
 using namespace std;
 
