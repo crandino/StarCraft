@@ -287,12 +287,12 @@ bool EntityManager::preUpdate()
 			if (it->second->type == UNIT)
 			{
 				Unit *unit = (Unit*)it->second;
-				unit->has_target = true;
 				if (selection.size() == 1)
 				{
 					if (app->path->createPath(unit->tile_pos, target_position) != -1)
 					{
 						unit->path = app->path->getLastPath();
+						unit->has_target = true;
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
 						{
@@ -309,6 +309,7 @@ bool EntityManager::preUpdate()
 					if (app->path->createPath(unit->tile_pos, target) != -1)
 					{
 						unit->path = app->path->getLastPath();
+						unit->has_target = true;
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
 						{
@@ -368,6 +369,24 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 	{
 			it->second->update(dt);
+
+			if (it->second->type == UNIT && it->second->state == IDLE)
+			{
+				map<uint, Entity*>::iterator it2 = active_entities.begin();
+				for (; it2 != active_entities.end(); ++it2)
+				{
+					if (it2->second->type == UNIT && it2->second->state == IDLE && it2 != it && it2->second->coll->checkCollision(it->second->coll->rect))
+					{
+						if (app->path->createPathToAdjacent(it2->second->tile_pos, 2) != -1)
+						{
+							Unit *unit = (Unit*)it2->second;
+							unit->path = app->path->getLastPath();
+							unit->has_target = true;
+							unit->state = MOVE;
+						}
+					}
+				}
+			}
 
 		//Debug: To draw the path finding that the entity is following
 		/*if (app->entity_manager->debug)
