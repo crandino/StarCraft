@@ -321,8 +321,8 @@ void GameManager::startGame()
 bool GameManager::checkGameOver()
 {
 	if (game_over)
-	{ 
-		if(!is_defeat_screen_on) displayDefeatScreen();
+	{
+		if (!is_defeat_screen_on) displayDefeatScreen();
 		start_game = false;
 		return true;
 	}
@@ -476,6 +476,7 @@ void GameManager::displayVictoryScreen()
 	close_button->draw_element = true;
 	close_button->interactive = true;
 	close_button->can_focus = true;
+
 }
 
 void GameManager::displayDefeatScreen()
@@ -490,7 +491,6 @@ void GameManager::displayDefeatScreen()
 	close_button->draw_element = true;
 	close_button->interactive = true;
 	close_button->can_focus = true;
-
 }
 
 bool GameManager::isGameStarted() const

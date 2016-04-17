@@ -95,7 +95,7 @@ bool Gui::start()
 	number_of_wave->interactive = false;
 
 
-	//HUD  Mineral and Gass
+	//HUD  Mineral and Gass-------------------------------------------------
 	//Image
 	ui_mineral = app->gui->createImage(NULL, { 7, 202, 15, 13 });
 	ui_mineral->setLocalPos(490, 6);
@@ -113,6 +113,18 @@ bool Gui::start()
 	number_of_gass = app->gui->createLabel("0", 2);
 	number_of_gass->setLocalPos(568, 4);
 	number_of_gass->interactive = false;
+
+
+	//HUD Info SCV and Bunker------------------------------------------------
+	info_scv = app->gui->createImage(NULL, { 440, 4, 77, 36 });
+	info_scv->setLocalPos(505, 320);
+	info_scv->interactive = false;
+	info_scv->draw_element = false;
+
+	info_bunker = app->gui->createImage(NULL, { 440, 43, 126, 33 });
+	info_bunker->setLocalPos(545, 323);
+	info_bunker->interactive = false;
+	info_bunker->draw_element = false;
 
 	
 	// CURSOR-----------------------------------------------------------------
@@ -148,6 +160,14 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		switch (event)
 		{
 
+		case(MOUSE_ENTERS) :
+			info_bunker->draw_element = true;
+			break;
+
+		case(MOUSE_LEAVES) :
+			info_bunker->draw_element = false;
+			break;
+
 		case(MOUSE_LCLICK_DOWN) :
 			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
 			app->entity_manager->create_bunker = true;
@@ -163,6 +183,13 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+		case(MOUSE_ENTERS) :
+			info_scv->draw_element = true;
+			break;
+
+		case(MOUSE_LEAVES) :
+			info_scv->draw_element = false;
+			break;
 
 		case(MOUSE_LCLICK_DOWN) :
 			if (app->game_manager->mineral_resources >= 50)
