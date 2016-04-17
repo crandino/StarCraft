@@ -193,29 +193,29 @@ bool GameManager::update(float dt)
 
 	
 	}
-	//if (game_over && !start_game)
-	//{
-	//	if (ending_game.readSec() >= ENDINGTIME)
-	//	{
-	//		if (!is_defeat_screen_on)
-	//			displayDefeatScreen();
+	if (game_over && !start_game)
+	{
+		if (ending_game.readSec() >= ENDINGTIME)
+		{
+			if (!is_defeat_screen_on)
+				displayDefeatScreen();
 
-	//		if (close)
-	//			ret = false;
-	//	}
-	//}
+			if (close)
+				ret = false;
+		}
+	}
 
-	//if (won && !start_game)
-	//{
-	//	if (winning_game.readSec() >= ENDINGTIME)
-	//	{
-	//		if (!is_defeat_screen_on)
-	//			displayVictoryScreen();
+	if (won && !start_game)
+	{
+		if (winning_game.readSec() >= ENDINGTIME)
+		{
+			if (!is_defeat_screen_on)
+				displayVictoryScreen();
 
-	//		if (close)
-	//			ret = false;
-	//	}
-	//}
+			if (close)
+				ret = false;
+		}
+	}
 
 	return ret;
 }
