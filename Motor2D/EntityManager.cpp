@@ -171,12 +171,12 @@ bool EntityManager::preUpdate()
 		addEntity(position, SCV);
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, COMMANDCENTER);
-	}
+	//if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+	//{
+	//	app->input->getMousePosition(position);
+	//	position = app->render->screenToWorld(position.x, position.y);
+	//	addEntity(position, COMMANDCENTER);
+	//}
 
 	if (create_bunker)
 	{
@@ -194,11 +194,11 @@ bool EntityManager::preUpdate()
 		addEntity(position, ZERGLING);
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
-		deleteAllEntities();
+	//if (app->input->getKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	//	deleteAllEntities();
 
-	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
-		deleteEntity(selection);
+	//if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+	//	deleteEntity(selection);
 
 	//------------------------ATTACK MECHANICS------------------------------------//
 	/*if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -463,8 +463,8 @@ void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 	{
 		for (int j = 0; j < sizey; j++)
 		{
-			int posx = 1500 + (sizex * i * 10);
-			int posy = 2150 + (sizey * j * 10);
+			int posx = 1036 + (sizex * i * 2);
+			int posy = 35 + (sizey * j * 2);
 
 			iPoint position = {posx, posy};
 

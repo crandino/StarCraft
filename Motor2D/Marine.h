@@ -183,7 +183,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_up;
 					}
 					else
@@ -194,7 +194,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_right_up;
 					}
 					else
@@ -204,7 +204,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_right;
 					}
 					else
@@ -214,7 +214,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_right_down;
 					}
 					else
@@ -224,7 +224,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_down;
 					}
 					else
@@ -234,7 +234,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_left_down;
 					}
 					else
@@ -244,7 +244,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_left;
 					}
 					else
@@ -254,7 +254,7 @@ public:
 				{
 					if (state == ATTACK)
 					{
-						//app->audio->playFx(marine_attack_fx);
+						app->audio->playFx(marine_attack_fx);
 						current_animation = &attack_left_up;
 					}
 					else

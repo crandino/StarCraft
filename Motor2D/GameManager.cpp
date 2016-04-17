@@ -119,7 +119,7 @@ bool GameManager::update(float dt)
 				{
 					LOG("Wave 1 is over get prepared!!!!");
 
-					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1500, 1500 });
+					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1419, 800 });
 					current_waves++;
 					all_zerlings_dead = false;
 					resources++;
@@ -129,8 +129,8 @@ bool GameManager::update(float dt)
 			if (current_waves == 1 && all_zerlings_dead && resources == 1)
 			{   
 				//Get Resources
-				mineral_resources += 1000;
-				gas_resources += 1000;
+				mineral_resources += 50;
+				gas_resources += 50;
 				resources ++;
 			}
 
@@ -140,7 +140,7 @@ bool GameManager::update(float dt)
 				{
 
 					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(SIZE2X,SIZE2Y, { 1500, 1500 });
+					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1414, 127 });
 					current_waves++;
 					all_zerlings_dead = false;
 
@@ -151,7 +151,7 @@ bool GameManager::update(float dt)
 
 					LOG("Last wave!!!");
 
-					app->entity_manager->createWave(SIZE3X,SIZE3Y, { 1500, 1500 });
+					app->entity_manager->createWave(SIZE3X, SIZE3Y, { 1414, 127 });
 					current_waves++;
 					all_zerlings_dead = false;
 

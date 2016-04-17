@@ -133,7 +133,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_up;
 				}
 				else
@@ -144,7 +144,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_right_up;
 				}
 				else
@@ -155,7 +155,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_right;
 				}
 				else
@@ -166,7 +166,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_right_down;
 				}
 				else
@@ -178,7 +178,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_down;
 				}
 				else
@@ -189,7 +189,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_left_down;
 				}
 				else
@@ -200,7 +200,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_left;
 				}
 				else
@@ -211,7 +211,7 @@ public:
 			{
 				if (state == REPAIR)
 				{
-					//app->audio->playFx(scv_repair_fx);
+					app->audio->playFx(scv_repair_fx);
 					current_animation = &repair_left_up;
 				}
 				else

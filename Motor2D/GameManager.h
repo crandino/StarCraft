@@ -10,10 +10,10 @@
 //Number to change the number of waves
 #define TOTALWAVES 2
 #define WAVETIME1 5.0f //120 = 2 minutes per wave in the future or some other game designish number
-#define WAVETIME2 15.0f
-#define	SIZE1X 3 // Changes number of zerglings per wave
+#define WAVETIME2 50.0f
+#define	SIZE1X 8 // Changes number of zerglings per wave
 #define SIZE1Y 1
-#define	SIZE2X 5 // Changes number of zerglings per wave
+#define	SIZE2X 10 // Changes number of zerglings per wave
 #define SIZE2Y 1
 #define	SIZE3X 5 // Changes number of zerglings per wave
 #define SIZE3Y 2
