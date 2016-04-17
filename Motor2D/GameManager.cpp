@@ -373,8 +373,10 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		switch (event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
-			quitGame();
 			app->audio->playFx(fx_click, 0);
+			break;
+		case(MOUSE_LCLICK_UP) :
+			quitGame();
 			break;
 		}
 	}
@@ -441,8 +443,6 @@ void GameManager::restartGame()
 	close_button->draw_element = false;
 	close_button->interactive = false;
 	close_button->can_focus = false;
-
-	app->audio->playFx(fx_click, 0);
 
 	startGame();
 }
