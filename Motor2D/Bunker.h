@@ -101,6 +101,7 @@ public:
 			//current_animation = &dead;
 			if ((timer_to_check += dt) >= time_to_die)
 			{
+				leave_bunker();
 				to_delete = true;
 				coll->to_delete = true;
 			}
