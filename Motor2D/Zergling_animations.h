@@ -151,11 +151,11 @@ attack_left_up.loop = true;
 
 //-----------------Death Animation---------------
 dead.frames.push_back({ 0, 1088, 64, 64 });
-dead.frames.push_back({ 64, 2176, 64, 64 });
-dead.frames.push_back({ 128, 2176, 64, 64 });
-dead.frames.push_back({ 192, 2176, 64, 64 });
-dead.frames.push_back({ 256, 2176, 64, 64 });
-dead.frames.push_back({ 320, 2176, 64, 64 });
-dead.frames.push_back({ 384, 2176, 64, 64 });
+dead.frames.push_back({ 64, 1088, 64, 64 });
+dead.frames.push_back({ 128, 1088, 64, 64 });
+dead.frames.push_back({ 192, 1088, 64, 64 });
+dead.frames.push_back({ 256, 1088, 64, 64 });
+dead.frames.push_back({ 320, 1088, 64, 64 });
+dead.frames.push_back({ 384, 1088, 64, 64 });
 dead.speed = 0.01f;
 #endif
