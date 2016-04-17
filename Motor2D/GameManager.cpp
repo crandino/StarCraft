@@ -346,6 +346,7 @@ void GameManager::restartGame()
 	/*Copy paste and adaptation from entity preUpdate to erase everything 
 	it may drop framerate but it's the loading of the other scene so it is justified (temporarily)*/
 	
+	//CRZ: 
 	map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin();
 	for (; it != app->entity_manager->active_entities.end();)
 	{
