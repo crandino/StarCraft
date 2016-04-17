@@ -89,7 +89,7 @@ bool Gui::start()
 	ui_leave_bunker->draw_element = false;
 
 	//HUD Label---------------------------------------------------------------
-	number_of_wave = app->gui->createLabel("1", 1);
+	number_of_wave = app->gui->createLabel("0", 1);
 	number_of_wave->center();
 	number_of_wave->setLocalPos(number_of_wave->getScreenPos().x, number_of_wave->getScreenPos().y - 220);
 	number_of_wave->interactive = false;
@@ -108,6 +108,7 @@ bool Gui::start()
 	//Image
 	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });
 	ui_gas->setLocalPos(550, 6);
+
 	//Label gass
 	number_of_gass = app->gui->createLabel("100", 2);
 	number_of_gass->setLocalPos(568, 4);

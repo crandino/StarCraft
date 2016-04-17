@@ -28,6 +28,7 @@ void GuiLabel::setText(const char* text, int font)
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);
 
+
 	texture = app->fonts->print(text, { 255, 255, 255, 255 },font);
 	int w, h;
 	app->tex->GetSize(texture, (uint&)w, (uint&)h);

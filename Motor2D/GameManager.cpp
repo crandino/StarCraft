@@ -14,6 +14,7 @@
 #include "Entity.h"
 
 #include "GuiImage.h"
+#include "GuiLabel.h"
 
 using namespace std;
 
@@ -93,6 +94,13 @@ bool GameManager::update(float dt)
 					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1500, 1500 });
 
 					current_waves++;
+
+					//Change the number of wave HUD ingame-----------------------
+					char n[20];
+					sprintf_s(n, 20, "%d", current_waves);
+					app->gui->number_of_wave->setText(n,1);
+
+					//-----------------------------------------------------------
 				}
 			}
 			if (time_between_waves.readSec() >= WAVETIME2)//We check how much time do we have left before releasing a new wave
