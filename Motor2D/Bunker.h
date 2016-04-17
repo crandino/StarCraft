@@ -87,9 +87,11 @@ public:
 					damage = bunker->units_inside.size() * 4;
 					if ((timer_attack_delay += dt) >= attack_delay)
 					{
-						if (searchNearestEnemy())
-							attack();
+						attack();
 						timer_attack_delay = 0.0f;
+
+						if (state == ATTACK)
+							searchNearestEnemy();
 					}
 				}
 				else
