@@ -83,7 +83,7 @@ public:
 				Bunker* bunker = (Bunker*)this;
 				if (bunker->units_inside.size() > 0)
 				{
-					app->audio->playFx(bunker_attack_fx);
+					//app->audio->playFx(bunker_attack_fx);
 					damage = bunker->units_inside.size() * 4;
 					if ((timer_attack_delay += dt) >= attack_delay)
 					{

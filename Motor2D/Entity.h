@@ -148,39 +148,6 @@ public:
 		}
 	}
 
-	virtual void repair()
-	{
-		if (target_to_repair != NULL)
-		{
-			int d = abs(center.x - target_to_repair->center.x) + abs(center.y - target_to_repair->center.y);
-			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_repair->coll->rect.w / 2 + target_to_repair->coll->rect.h / 2) / 2);
-			if (d <= range_to_attack)
-			{
-				if ((target_to_repair->current_hp) < target_to_repair->max_hp)
-				{
-					target_to_repair->current_hp += damage;		
-				}
-				else
-				{
-					target_to_repair->current_hp = target_to_repair->max_hp;
-					state = IDLE;
-					searchNearestEnemy();
-					target_to_repair = NULL;	
-				}
-			}
-			else
-			{
-				state = IDLE;
-				searchNearestEnemy();
-			}
-		}
-		else
-		{
-			state = IDLE;
-			searchNearestEnemy();
-		}
-	}
-
 	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));

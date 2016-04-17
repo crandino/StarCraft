@@ -5,7 +5,6 @@
 #include "Vector2D.h"
 #include "SDL\include\SDL_rect.h"
 #include "SDL\include\SDL_render.h"
-//#include "Window.h"
 #include <map>
 #include <vector>
 
@@ -117,8 +116,12 @@ public:
 	Entity* whichEntityOnMouse();
 
 	/*---------------Creating Waves-------------------*/
+<<<<<<< HEAD
 	void createZergling(iPoint position);
 	void createWave(uint sizex, uint sizey, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
+=======
+	void createWave(uint size, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
+>>>>>>> origin/master
 
 public:
 
