@@ -22,8 +22,8 @@
 #define COMMANDCENTERPOSITION {1500, 2250}
 #define ENDINGTIME 5.0f
 #define VICTORYTIME 5.0f
-#define SIZEMARINESX 1
-#define SIZEMARINESY 1
+#define SIZEMARINESX 5
+#define SIZEMARINESY 2
 
 
 class GuiImage;

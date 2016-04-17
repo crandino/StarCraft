@@ -69,8 +69,8 @@ bool GameManager::start()
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
 
-	unsigned int size_marines_x = 1;
-	unsigned int size_marines_y = 1;
+	unsigned int size_marines_x = 5;
+	unsigned int size_marines_y = 2;
 
 	createInitialMarines(size_marines_x, size_marines_y);
 	
@@ -183,7 +183,7 @@ bool GameManager::update(float dt)
 		//timer
 		//++unitKillCount;
 
-		if (current_waves == 4)
+		if (current_waves == 3)
 		{
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)
@@ -200,7 +200,6 @@ bool GameManager::update(float dt)
 			//Display Score
 			LOG("Score: %d", score_current_wave);
 
-			
 		}
 
 
@@ -418,7 +417,11 @@ void GameManager::restartGame()
 	app->render->start_transition({ 900, 3000 });
 	start_game = true;
 
-	defeat_screen->draw_element = false;
+	if (defeat_screen != NULL)
+		defeat_screen->draw_element = false;
+
+	if (victory_screen != NULL)
+		victory_screen->draw_element = false;
 
 	retry_button->draw_element = false;
 	retry_button->interactive = false;
