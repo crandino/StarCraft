@@ -477,20 +477,21 @@ bool EntityManager::searchNearEntity(Entity* e)
 	bool ret = false;
 
 	e->target_to_attack = NULL;
+	e->target_to_repair = NULL;
 	float value = e->range_to_view;
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	uint previousMaxHP = 10000;
 
 	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
 	{
-		if (it->second != e && e->faction != it->second->faction && it->second->to_delete == false)
+		if (e->specialization != SCV && it->second != e && e->faction != it->second->faction && it->second->to_delete == false)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			uint maxHP = it->second->current_hp;
 			
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 
-			if (d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
+			if (e->target_to_attack == NULL && d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
 			{
 				(e->target_to_attack) = &(*it->second);
 				LOG("BUG NET");
@@ -498,9 +499,20 @@ bool EntityManager::searchNearEntity(Entity* e)
 				previousMaxHP = maxHP;
 				ret = true;
 			}
+			else if (e->target_to_attack != NULL)
+			{
+				if (e->target_to_attack->type == it->second->type || d <= value && maxHP <= previousMaxHP || e->target_to_attack->type == BUILDING && it->second->type == UNIT)
+				{
+					(e->target_to_attack) = &(*it->second);
+					LOG("BUG NET");
+					value = d;
+					previousMaxHP = maxHP;
+					ret = true;
+				}
+			}
 		}
 
-		if (e->specialization == SCV && it->second != NULL && it->second->type == BUILDING && (it->second->current_hp < it->second->max_hp))// we check if we are a SCV, the objective is a building and needs to be repared
+		else if (e->specialization == SCV && it->second != NULL && it->second->type == BUILDING && (it->second->current_hp < it->second->max_hp))// we check if we are a SCV, the objective is a building and needs to be repared
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -543,8 +555,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 				e->state = IDLE;
 		}
 	}
-
-	if (e->target_to_repair != NULL)// if we have a building that needs to be repaired
+	else if (e->target_to_repair != NULL)// if we have a building that needs to be repaired
 	{
 		Unit* unit = (Unit*)e;
 		unit->has_target = false;
@@ -563,6 +574,8 @@ bool EntityManager::searchNearEntity(Entity* e)
 		//	}
 		//}
 	}
+	else
+		e->state = IDLE;
 
 	return ret;
 }

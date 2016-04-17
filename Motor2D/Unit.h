@@ -291,8 +291,11 @@ public:
 		case ATTACK:
 			if ((timer_attack_delay += dt) >= attack_delay)
 			{
-				attack();
-				checkUnitDirection();
+				if (searchNearestEnemy())
+				{
+					attack();
+					checkUnitDirection();
+				}
 				timer_attack_delay = 0.0f;
 			}
 			break;
