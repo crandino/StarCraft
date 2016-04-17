@@ -484,23 +484,25 @@ void GameManager::displayVictoryScreen()
 
 	victory_img = app->tex->loadTexture("Screens/victory screen.png");
 
-	victory_screen = app->gui->createImage(victory_img, { 0, 0, 640, 480 });
-	victory_screen->center();
-	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y);
-
-	retry_button = app->gui->createImage(defeat_img, { 121, 170, 105, 28 });
-	retry_button->parent = defeat_screen;
+	retry_button = app->gui->createImage(victory_img, { 121, 170, 105, 28 });
+	retry_button->parent = victory_screen;
 	retry_button->setLocalPos(121, 170);
 	retry_button->interactive = true;
 	retry_button->can_focus = true;
 	retry_button->setListener(this);
 
-	close_button = app->gui->createImage(defeat_img, { 121, 213, 105, 28 });
-	close_button->parent = defeat_screen;
+	close_button = app->gui->createImage(victory_img, { 121, 213, 105, 28 });
+	close_button->parent = victory_screen;
 	close_button->setLocalPos(121, 211);
 	close_button->interactive = true;
 	close_button->can_focus = true;
 	close_button->setListener(this);
+
+	victory_screen = app->gui->createImage(victory_img, { 0, 0, 640, 480 });
+	victory_screen->center();
+	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y);
+
+
 	//---------------------------------------------
 }
 
