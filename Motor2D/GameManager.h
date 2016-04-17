@@ -23,9 +23,6 @@
 #define SIZEMARINESY 1
 
 
-
-
-
 class GuiImage;
 using namespace std;
 

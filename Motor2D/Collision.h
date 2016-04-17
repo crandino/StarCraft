@@ -13,13 +13,9 @@ enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
 
-	COLLIDER_WALL,
-	COLLIDER_PLAYER,
-	COLLIDER_ENEMY,
-	COLLIDER_PLAYER_ATTACK,
-	COLLIDER_ENEMY_ATTACK,
-	COLLIDER_BOMB,
-	COLLIDER_SCREEN_BUTTON,//RIE: Future WARNING, this will be removed and we will be using an UI element in the future
+	COLLIDER_UNIT,
+	COLLIDER_BUILDING,
+	//COLLIDER_SCREEN_BUTTON,//RIE: Future WARNING, this will be removed and we will be using an UI element in the future
 
 	COLLIDER_MAX
 };

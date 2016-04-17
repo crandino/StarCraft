@@ -154,21 +154,13 @@ private:
 	Building*		building_to_place;
 	SDL_Texture*	building_tile;
 
-	//ROF
-	Entity* marine;
-	float	angle;
-
 	SDL_Rect		selector;
 	bool			selector_init;
 	iPoint			initial_selector_pos;
 	iPoint			final_selector_pos;
 
 	void			calculateSelector();
-
-	//Textures
-	SDL_Texture* hp_tex;
-
-	
+	void			onCollision(Collider* c1, Collider* c2);	
 	
 };
 
