@@ -136,6 +136,8 @@ bool EntityManager::preUpdate()
 			++it;
 	}
 
+	if (app->game_manager->isGameStarted()) handleSelection();
+
 	iPoint position;
 
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
@@ -194,141 +196,6 @@ bool EntityManager::preUpdate()
 
 	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		deleteEntity(selection);
-
-	// Clicking and holding left button, starts a selection
-	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		selection.clear();
-		app->input->getMousePosition(initial_selector_pos);
-		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
-
-		//Click and select unit	
-		selector_init = true;
-		Entity *e = whichEntityOnMouse();
-
-		if (e != NULL)
-			selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };
-		else
-			selector = { 0, 0, 0, 0 };
-	}
-
-	// Holding left button, updates selector dimensions
-	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
-	{
-		app->input->getMousePosition(final_selector_pos);
-		final_selector_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
-
-		calculateSelector();
-	}
-
-	// Once released left button, the selection is computed
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-	{
-		selector_init = false;
-		bool units_only = false;    // If only one unit is on selection, buildings will be excluded
-		map<uint, Entity*>::iterator it = active_entities.begin();
-
-		// First, we need to know if any unit has been selected. 
-		for (; it != active_entities.end(); ++it)
-		{
-			if (it->second->coll->checkCollision(selector))
-			{
-				if (it->second->type == UNIT)
-					units_only = true;
-			}
-		}
-
-		// Now, we include the entities according to the only_units boolean variable.
-		for (it = active_entities.begin(); it != active_entities.end(); ++it)
-		{
-			if (it->second->coll->checkCollision(selector))
-			{
-				if (it->second->type == UNIT)
-				{
-					Unit *u = (Unit*)it->second;
-					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-				}
-
-				if (!units_only && it->second->type == BUILDING)
-				{
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-					break;
-				}
-					
-			}
-		}
-	}
-
-	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-	{
-		// Target position is where the player has clicked to move his units.
-		iPoint target_position;
-		app->input->getMousePosition(target_position);
-		target_position = app->render->screenToWorld(target_position.x, target_position.y);
-		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
-
-		//Bunker stuff
-		Entity* e = whichEntityOnMouse();
-
-		map<uint, Entity*>::iterator it = selection.begin();
-		for (; it != selection.end(); ++it)
-		{
-			if (it->second->type == UNIT)
-			{
-				Unit *unit = (Unit*)it->second;
-				if (selection.size() == 1)
-				{
-					if (app->path->createPath(unit->tile_pos, target_position) != -1)
-					{
-						unit->path = app->path->getLastPath();
-						unit->has_target = true;
-						unit->state = MOVE;
-						if (e != NULL && e->specialization == BUNKER)
-						{
-							unit->target_to_reach = e;
-							app->gui->bunker_to_leave = (Bunker*)e;
-						}
-						else
-							unit->target_to_reach = nullptr;
-					}
-				}
-				else
-				{
-					iPoint target = target_position + unit->distance_to_center_selector;
-					if (app->path->createPath(unit->tile_pos, target) != -1)
-					{
-						unit->path = app->path->getLastPath();
-						unit->has_target = true;
-						unit->state = MOVE;
-						if (e != NULL && e->specialization == BUNKER)
-						{
-							unit->target_to_reach = e;
-							app->gui->bunker_to_leave = (Bunker*)e;
-						}
-						else
-							unit->target_to_reach = nullptr;
-
-					}
-				}
-			}
-		}
-	}
-
-	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (app->map->isAreaWalkable(building_to_place->coll->rect))
-		{
-			building_to_place->id = ++next_ID;
-			building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
-			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-			building_mode = false;
-
-			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			logicChanged();
-		}
-	}
-
 
 	//------------------------ATTACK MECHANICS------------------------------------//
 	/*if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -445,32 +312,163 @@ void EntityManager::calculateSelector()
 	selector = { selector_pos_x, selector_pos_y, selector_width, selector_height };
 }
 
-/*------------------WAVE RELATED METHODS--------------------------*/
-
-void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
+void EntityManager::handleSelection()
 {
+	// Clicking and holding left button, starts a selection
+	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		selection.clear();
+		app->input->getMousePosition(initial_selector_pos);
+		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
 
-		for (int i = 0; i < sizex; i++)
+		//Click and select unit	
+		selector_init = true;
+		Entity *e = whichEntityOnMouse();
+
+		if (e != NULL)
+			selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };
+		else
+			selector = { 0, 0, 0, 0 };
+	}
+
+	// Holding left button, updates selector dimensions with calculateSelector
+	if (selector_init && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		app->input->getMousePosition(final_selector_pos);
+		final_selector_pos = app->render->screenToWorld(final_selector_pos.x, final_selector_pos.y);
+
+		calculateSelector();
+	}
+
+	// Once released left button, the selection is computed. This selection doesn't take buildings and units
+	// there are both present. Or buildings (only one) or units (all of them)
+	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		selector_init = false;
+		bool units_only = false;    // If only one unit is on selection, buildings will be excluded
+		map<uint, Entity*>::iterator it = active_entities.begin();
+
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
 		{
-			for (int j = 0; j < sizey; j++)
+			if (it->second->coll->checkCollision(selector))
 			{
-				int posx = 1500 + (sizex * i * 10);
-				int posy = 2150 + (sizey * j * 10);
-
-				iPoint position = {posx, posy};
-
-				createZergling(position);
+				if (it->second->type == UNIT)
+					units_only = true;
 			}
 		}
-	Timer test;
-	test.start();
 
+		// Now, we include the entities according to the only_units boolean variable.
+		for (it = active_entities.begin(); it != active_entities.end(); ++it)
+		{
+			if (it->second->coll->checkCollision(selector) && it->second->faction == PLAYER)
+			{
+				if (it->second->type == UNIT)
+				{
+					Unit *u = (Unit*)it->second;
+					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
+					selection.insert(pair<uint, Entity*>(it->first, it->second));
+				}
 
+				if (!units_only && it->second->type == BUILDING)
+				{
+					selection.insert(pair<uint, Entity*>(it->first, it->second));
+					break;
+				}
 
-	LOG("Creating this wave has taken %d", test.read());
+			}
+		}
+	}
 
+	// Now, we give destination for the entities englobed by selection.
+	if (!selection.empty() && app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		// Target position is where the player has clicked to move his units.
+		iPoint target_position;
+		app->input->getMousePosition(target_position);
+		target_position = app->render->screenToWorld(target_position.x, target_position.y);
+		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
+
+		//Bunker stuff
+		Entity* e = whichEntityOnMouse();
+
+		map<uint, Entity*>::iterator it = selection.begin();
+		for (; it != selection.end(); ++it)
+		{
+			if (it->second->type == UNIT)
+			{
+				Unit *unit = (Unit*)it->second;
+				if (selection.size() == 1)
+				{
+					if (app->path->createPath(unit->tile_pos, target_position) != -1)
+					{
+						unit->path = app->path->getLastPath();
+						unit->has_target = true;
+						unit->state = MOVE;
+						if (e != NULL && e->specialization == BUNKER)
+						{
+							unit->target_to_reach = e;
+							app->gui->bunker_to_leave = (Bunker*)e;
+						}
+						else
+							unit->target_to_reach = nullptr;
+					}
+				}
+				else
+				{
+					iPoint target = target_position + unit->distance_to_center_selector;
+					if (app->path->createPath(unit->tile_pos, target) != -1)
+					{
+						unit->path = app->path->getLastPath();
+						unit->has_target = true;
+						unit->state = MOVE;
+						if (e != NULL && e->specialization == BUNKER)
+						{
+							unit->target_to_reach = e;
+							app->gui->bunker_to_leave = (Bunker*)e;
+						}
+						else
+							unit->target_to_reach = nullptr;
+
+					}
+				}
+			}
+		}
+	}
+
+	// When we are in building mode, clicking left mouse button put the building on the clicked position.
+	// The logic is modified to not walk over building.
+	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (app->map->isAreaWalkable(building_to_place->coll->rect))
+		{
+			building_to_place->id = ++next_ID;
+			building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
+			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
+			building_mode = false;
+
+			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+			logicChanged();
+		}
+	}
 }
 
+/*------------------WAVE RELATED METHODS--------------------------*/
+void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
+{
+	for (int i = 0; i < sizex; i++)
+	{
+		for (int j = 0; j < sizey; j++)
+		{
+			int posx = 1500 + (sizex * i * 10);
+			int posy = 2150 + (sizey * j * 10);
+
+			iPoint position = {posx, posy};
+
+			createZergling(position);
+		}
+	}
+}
 
 bool EntityManager::searchNearEntity(Entity* e)
 {

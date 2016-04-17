@@ -136,6 +136,7 @@ public:
 
 	//Sound
 	unsigned int fx_click;
+	bool isGameStarted() const;
 
 private:
 	uint previous_unit_killed = 0;

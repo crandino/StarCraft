@@ -529,4 +529,9 @@ void GameManager::displayDefeatScreen()
 	//---------------------------------------------
 }
 
+bool GameManager::isGameStarted() const
+{
+	return start_game;
+}
+
 
