@@ -82,6 +82,8 @@ public:
 
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
+	void createInitialMarines(unsigned int sizex, unsigned int sizey);
+
 public:
 	//Time Management attributes
 	Timer general_time;

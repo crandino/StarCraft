@@ -96,7 +96,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 	if (e->type == UNIT)
 	{
 		iPoint p = COMMANDCENTERPOSITION;
-		p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
+		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100);
 		Unit* unit = (Unit*)e;
 		if (app->path->createPath(e->tile_pos, p))
 		{
