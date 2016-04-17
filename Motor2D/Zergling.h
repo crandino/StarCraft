@@ -43,13 +43,13 @@ public:
 		// Positions and dimensions
 		center = { (float)p.x, (float)p.y };
 
-		tex_width = tex_height = 128;
+		tex_width = tex_height = 64;
 		collider_offset = { -12, -14 };
 		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Animation
-		tex = app->tex->loadTexture("Units/New_Zergling.png");
+		tex = app->tex->loadTexture("Units/New_Zergling64.png");
 		#include"Zergling_animations.h";
 		current_animation = &idle_down;
 

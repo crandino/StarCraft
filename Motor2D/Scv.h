@@ -228,6 +228,12 @@ public:
 		switch (state)
 		{
 		case IDLE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
 			break;
 		case MOVE:
 			if (has_target) move(dt);
@@ -266,8 +272,9 @@ public:
 				{
 					target_to_repair->current_hp = target_to_repair->max_hp;
 					state = IDLE;
-					searchNearestEnemy();
 					target_to_repair = NULL;
+					searchNearestEnemy();
+					
 				}
 			}
 			else
