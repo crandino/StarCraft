@@ -369,6 +369,21 @@ void GameManager::restartGame()
 	score = 0;
 	enemy_count = 0;
 	kill_count = 0;
+	score_current_wave = 0;
+	total_score = 0;
+	is_finished = false;
+
+	mineral_resources = 0;
+	gas_resources = 0;
+	total_units_killed_currentFrame = 0;
+
+	marineCounterDeath = 0;
+
+	won = false;
+	close = false;
+	start_game = false;
+
+
 	game_over = false;
 	app->render->start_transition({ 900, 3000 });
 	start_game = true;
