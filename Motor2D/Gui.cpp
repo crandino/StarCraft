@@ -101,7 +101,7 @@ bool Gui::start()
 	ui_mineral->setLocalPos(490, 6);
 
 	//Number of minerals
-	number_of_minerals = app->gui->createLabel("100", 2);
+	number_of_minerals = app->gui->createLabel("0", 2);
 	number_of_minerals->setLocalPos(508, 4);
 	number_of_minerals->interactive = false;
 
@@ -110,7 +110,7 @@ bool Gui::start()
 	ui_gas->setLocalPos(550, 6);
 
 	//Label gass
-	number_of_gass = app->gui->createLabel("100", 2);
+	number_of_gass = app->gui->createLabel("0", 2);
 	number_of_gass->setLocalPos(568, 4);
 	number_of_gass->interactive = false;
 

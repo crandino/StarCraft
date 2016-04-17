@@ -145,7 +145,7 @@ bool EntityManager::preUpdate()
 		addEntity(position, MARINE);		
 	}
 
-	if (create_SCV)
+	if (create_SCV && app->game_manager->mineral_resources >= 50)
 	{
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		fPoint pos_commander;
@@ -159,6 +159,7 @@ bool EntityManager::preUpdate()
 			}
 		}
 
+		app->game_manager->mineral_resources -= 50;
 		position.x = pos_commander.x + 20;
 		position.y = pos_commander.y + 100;
 
@@ -172,10 +173,12 @@ bool EntityManager::preUpdate()
 		addEntity(position, COMMANDCENTER);
 	}
 
-	if (create_bunker)
+	if (create_bunker && app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
+		app->game_manager->mineral_resources -= 25;
+		app->game_manager->gas_resources -= 50;
 		addEntity(position, BUNKER);
 	}
 

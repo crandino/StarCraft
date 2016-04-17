@@ -85,6 +85,8 @@ bool GameManager::update(float dt)
 	{
 		if (current_waves <= TOTALWAVES)
 		{
+			//ADRI
+			//Check if we have killed all the zerlings to begin a new wave
 			bool all_zerlings_dead = true;
 			for (map<uint, Entity*>::iterator it2 = app->entity_manager->active_entities.begin(); it2 != app->entity_manager->active_entities.end(); ++it2)
 			{
@@ -97,23 +99,18 @@ bool GameManager::update(float dt)
 
 			if (time_between_waves.readSec() >= WAVETIME1 && all_zerlings_dead) //We check how much time do we have left before releasing a new wave
 			{
-				if (current_waves == 0)
-				{
-					LOG("Wave 1 is over get prepared!!!!");
+				
+					if (current_waves == 0)
+					{
+						LOG("Wave 1 is over get prepared!!!!");
 
-					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1500, 1500 });
-
-					current_waves++;
-
-					//Change the number of wave HUD ingame-----------------------
-					char n[20];
-					sprintf_s(n, 20, "%d", current_waves);
-					app->gui->number_of_wave->setText(n,1);
-
-					//-----------------------------------------------------------
-				}
+						app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1500, 1500 });
+						current_waves++;
+										
+					}
+				
 			}
-			if (time_between_waves.readSec() >= WAVETIME2)//We check how much time do we have left before releasing a new wave
+			if (time_between_waves.readSec() >= WAVETIME2 && all_zerlings_dead)//We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 1)
 				{
@@ -121,6 +118,9 @@ bool GameManager::update(float dt)
 					LOG("Wave 2 is over prepare for the next wave!!");
 					app->entity_manager->createWave(SIZE2X,SIZE2Y, { 1500, 1500 });
 
+					//Get Resources
+					mineral_resources += 50;
+					gas_resources += 50;
 					current_waves++;
 
 					time_between_waves.start();
@@ -132,6 +132,9 @@ bool GameManager::update(float dt)
 
 					app->entity_manager->createWave(SIZE3X,SIZE3Y, { 1500, 1500 });
 
+					//Get Resources
+					mineral_resources += 75;
+					gas_resources += 75;
 					current_waves++;
 
 					time_between_waves.start();
@@ -201,7 +204,27 @@ bool GameManager::update(float dt)
 			
 		}
 
-	
+
+		//ADRI
+		//-------------------------UI-----------------------------
+		//Change the number of WAVE HUD ingame-----------------------
+		char n[20];
+		sprintf_s(n, 20, "%d", current_waves);
+		app->gui->number_of_wave->setText(n, 1);
+
+
+		//Change the number of RESOURCES HUD ingame-----------------------
+		char n2[20];
+		sprintf_s(n2, 20, "%i", mineral_resources);
+		app->gui->number_of_minerals->setText(n2, 2);
+
+
+		//Change the number of RESOURCES HUD ingame-----------------------
+		char n3[20];
+		sprintf_s(n3, 20, "%i", gas_resources);
+		app->gui->number_of_gass->setText(n3, 2);
+
+		//-----------------------------------------------------------
 	}
 	if (game_over && !start_game)
 	{
