@@ -9,6 +9,7 @@
 #include "Gui.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "map.h"
 
 #include "GuiImage.h"
 
@@ -33,9 +34,6 @@ bool GameManager::start()
 	//audio
 	fx_click = app->audio->loadFx("Audio/FX/UI/UI_Click.wav");
 
-	victory_img = app->tex->loadTexture("Screens/victory_screen.png");
-	defeat_img = app->tex->loadTexture("Screens/defeat_screen.png");
-
 	//Play Screen
 	//----------------------------------------------------------------------
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
@@ -59,6 +57,10 @@ bool GameManager::start()
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
 	//---------------------------------------------
+	
+	defeat_img = app->tex->loadTexture("Screens/defeat_screen.png");
+
+
 
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
@@ -84,38 +86,30 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 
-	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		start_game = true;
-		time_between_waves.start();
-	}
-
-
 	if (start_game)
 	{
 
 		if (current_waves <= TOTALWAVES)
 		{
+			
 			if (time_between_waves.readSec() >= WAVETIME1)//We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 0)
 				{
-					LOG("Wave time is over! prepare for the next wave!!!");
+					LOG("Wave 1 is over get prepared!!!!");
 
 					app->entity_manager->createWave(SIZE1, { 1500, 1500 });
 
 					current_waves++;
 
-					time_between_waves.start();
 				}
 			}
-			if (time_between_waves.readSec() >= WAVETIME)//We check how much time do we have left before releasing a new wave
+			if (time_between_waves.readSec() >= WAVETIME2)//We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 1)
 				{
 
-					LOG("Wave time is over! prepare for the next wave!!!");
-
+					LOG("Wave 2 is over prepare for the next wave!!");
 					app->entity_manager->createWave(SIZE2, { 1500, 1500 });
 
 					current_waves++;
@@ -125,7 +119,7 @@ bool GameManager::update(float dt)
 				else if (current_waves == 2)
 				{
 
-					LOG("Last wave time is over!");
+					LOG("Last wave!!!");
 
 					app->entity_manager->createWave(SIZE3, { 1500, 1500 });
 
@@ -171,34 +165,56 @@ bool GameManager::update(float dt)
 
 				LOG("You successfully wiped the last wave good job!!!!!");
 				LOG("Total Score: %d", total_score);
+				current_waves = 4;
 			}
 		}
 		//timer
 		//++unitKillCount;
 
-		if (total_kills_game == TOTALUNITSALLWAVES)
+		if (current_waves == 4)
 		{
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)
-			LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
 
-			ret = false;
+
+				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
+				displayVictoryScreen();
+				won = true;
+				start_game = false;
 		}
 
-		if (game_over)
+		if (checkGameOver())
 		{
 			//Display message of game over
 			LOG("GAME OVER");
 			//Display Score
 			LOG("Score: %d", score_current_wave);
-			//End game loop
-			general_time.start();
-			/*1: Whether the player has died*/
+			
+		}
 
-			start_game = false;
+	
+	}
+	if (game_over && !start_game)
+	{
+		if (ending_game.readSec() >= ENDINGTIME)
+		{
+			if (!is_defeat_screen_on)
+				displayDefeatScreen();
 
-			ret = false;
+			if (close)
+				ret = false;
+		}
+	}
 
+	if (won && !start_game)
+	{
+		if (winning_game.readSec() >= ENDINGTIME)
+		{
+			if (!is_defeat_screen_on)
+				displayVictoryScreen();
+
+			if (close)
+				ret = false;
 		}
 	}
 
@@ -223,6 +239,9 @@ bool GameManager::cleanUp()
 	RELEASE(start_button);
 	RELEASE(title_screen);
 	RELEASE(exit_button);
+	RELEASE(close_button);
+	RELEASE(victory_screen);
+	RELEASE(retry_button);
 
 	return ret;
 }
@@ -233,9 +252,27 @@ void GameManager::startGame()
 		time_between_waves.start();
 }
 
+bool GameManager::checkGameOver()
+{
+	bool ret = false;
+
+	if (!(ret = game_over))
+	{ //game not over
+		if (marineCounterDeath == 10)
+		{
+			ending_game.start();
+			start_game = false;
+			ret = game_over = true;
+		}
+	}
+
+	return ret;
+}
+
+
 bool GameManager::quitGame()
 {
-		game_over = true;
+		close = true;
 		start_game = false;
 
 		return false;
@@ -249,6 +286,8 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			start_game = true;
+			time_between_waves.start();
+
 			title_screen->draw_element = false;
 			
 			start_button->draw_element = false;
@@ -263,14 +302,116 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		}
 	}
 
-	if (ui == exit_button)
+	if (ui == exit_button || ui == close_button)
 	{
 		switch (event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
-			game_over = true;
+			quitGame();
 			app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
+
+	if (ui == retry_button)
+	{
+		switch (event)
+		{
+		case(MOUSE_LCLICK_DOWN) :
+			
+			//Restart game
+			restartGame();
+			app->audio->playFx(fx_click, 0);
+			break;
+		}
+	}
+
 }
+
+void GameManager::restartGame()
+{
+	current_waves = 0;
+	total_waves = 2;
+	score = 0;
+	enemy_count = 0;
+	kill_count = 0;
+	game_over = false;
+	app->render->start_transition({ 900, 3000 });
+	start_game = true;
+
+	defeat_screen->draw_element = false;
+
+	retry_button->draw_element = false;
+	retry_button->interactive = false;
+	retry_button->can_focus = false;
+
+	close_button->draw_element = false;
+	close_button->interactive = false;
+	close_button->can_focus = false;
+	app->audio->playFx(fx_click, 0);
+
+
+}
+
+void GameManager::displayVictoryScreen()
+{
+	
+	//Victory Screen
+	//----------------------------------------------------------------------
+
+	winning_game.start();
+
+	victory_img = app->tex->loadTexture("Screens/victory screen.png");
+
+	victory_screen = app->gui->createImage(victory_img, { 0, 0, 640, 480 });
+	victory_screen->center();
+	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y);
+
+	retry_button = app->gui->createImage(defeat_img, { 121, 170, 105, 28 });
+	retry_button->parent = defeat_screen;
+	retry_button->setLocalPos(121, 170);
+	retry_button->interactive = true;
+	retry_button->can_focus = true;
+	retry_button->setListener(this);
+
+
+	close_button = app->gui->createImage(defeat_img, { 121, 213, 105, 28 });
+	close_button->parent = defeat_screen;
+	close_button->setLocalPos(121, 211);
+	close_button->interactive = true;
+	close_button->can_focus = true;
+	close_button->setListener(this);
+	//---------------------------------------------
+}
+
+void GameManager::displayDefeatScreen()
+{
+	is_defeat_screen_on = true;
+	//Defeat
+	//----------------------------------------------------------------------
+	defeat_img = app->tex->loadTexture("Screens/defeat screen.png");
+
+	
+
+	defeat_screen = app->gui->createImage(defeat_img, { 0, 0, 640, 480 });
+	defeat_screen->center();
+	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y);
+
+	retry_button = app->gui->createImage(defeat_img, { 121, 170, 105, 28 });
+	retry_button->parent = defeat_screen;
+	retry_button->setLocalPos(121, 170);
+	retry_button->interactive = true;
+	retry_button->can_focus = true;
+	retry_button->setListener(this);
+
+
+	close_button = app->gui->createImage(defeat_img, { 121, 213, 105, 28 });
+	close_button->parent = defeat_screen;
+	close_button->setLocalPos(121, 211);
+	close_button->interactive = true;
+	close_button->can_focus = true;
+	close_button->setListener(this);
+	//---------------------------------------------
+}
+
+

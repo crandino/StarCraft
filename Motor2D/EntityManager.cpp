@@ -79,6 +79,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			logicChanged();
 		}
+
+		if (e->specialization == MARINE)
+		{
+			player_units.insert(pair<uint, Entity*>(e->id, e));
+		}
+
 	}
 
 	return e;
@@ -115,7 +121,11 @@ bool EntityManager::preUpdate()
 			{
 				if (it->second == it2->second->target_to_attack)
 					it2->second->target_to_attack = NULL;
+
 			}
+
+			if (it->second->specialization == MARINE)
+				app->game_manager->marineCounterDeath++;
 
 			selection.erase(it->first);
 			RELEASE(it->second);

@@ -141,6 +141,7 @@ public:
 public:
 	map<uint, Entity*>                  selection; 
 	map<uint, Entity*>					active_entities;
+	map<uint, Entity*>					player_units;
 
 private:
 
