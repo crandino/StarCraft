@@ -36,10 +36,11 @@ public:
 			float total_pixels_moved = 0;
 			float total_pixels_to_move = speed / 100 * dt;
 
-			if (total_pixels_to_move > 8)
-				pixels_to_move = total_pixels_to_move / 8;
+			if (total_pixels_to_move >= 4)
+				pixels_to_move = 4;
+
 			do{
-				if (total_pixels_moved + 8 > total_pixels_to_move)
+				if (total_pixels_moved + 4 > total_pixels_to_move)
 					pixels_to_move = total_pixels_to_move - total_pixels_moved;
 
 				if (path.begin()->x < tile_pos.x && path.begin()->y < tile_pos.y)
