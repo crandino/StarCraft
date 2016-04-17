@@ -502,7 +502,8 @@ bool EntityManager::searchNearEntity(Entity* e)
 			}
 			else if (e->target_to_attack != NULL)
 			{
-				if (e->target_to_attack->type == it->second->type || d <= value && maxHP <= previousMaxHP || e->target_to_attack->type == BUILDING && it->second->type == UNIT)
+				if ((e->target_to_attack->type == it->second->type && d <= value && maxHP <= previousMaxHP) || 
+					(e->target_to_attack->type == BUILDING && it->second->type == UNIT && d <= e->range_to_view && maxHP <= previousMaxHP))
 				{
 					(e->target_to_attack) = &(*it->second);
 					LOG("BUG NET");
