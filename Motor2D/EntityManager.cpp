@@ -126,7 +126,7 @@ bool EntityManager::preUpdate()
 			if (it->second->specialization == MARINE)
 				app->game_manager->marineCounterDeath++;
 
-			if (it->second->specialization == BUNKER || it->second->specialization == COMMANDCENTER)
+			if (it->second->specialization == BUNKER)
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 			
 			selection.erase(it->first);

@@ -222,7 +222,6 @@ bool GameManager::update(float dt)
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)
 			LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
-			displayVictoryScreen();
 			won = true;
 			start_game = false;
 		}
