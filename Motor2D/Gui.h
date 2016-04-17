@@ -108,11 +108,16 @@ public:
 	//HUD Label-----------------------------
 	GuiLabel* number_of_wave = nullptr;
 
-	//HUD  Mineral and Gass
+	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;
 	GuiLabel* number_of_minerals = nullptr;
 	GuiImage* ui_gas = nullptr;
 	GuiLabel* number_of_gass = nullptr;
+
+
+	//HUD Info SCV and Bunker-----------------
+	GuiImage* info_scv = nullptr;
+	GuiImage* info_bunker = nullptr;
 
 
 
