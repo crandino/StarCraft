@@ -90,7 +90,7 @@ public:
 						//Bunker Stuff
 						if (target_to_reach != NULL && target_to_reach->specialization == BUNKER)
 						{
-							app->entity_manager->GetInsideBunker((Bunker*)target_to_reach);
+							app->entity_manager->GetInsideBunker(this);
 							target_to_reach = NULL;
 						}
 						break;

@@ -42,7 +42,9 @@ bool Scene::start()
 	start_position.setZero();
 	final_position.setZero();*/
 
-	test = app->gui->createLabel("This is a sample text", 300, 300);
+
+
+
 	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
 	rectangle_map_camera->setLocalPos(3, 3);
@@ -80,7 +82,7 @@ bool Scene::update(float dt)
 {
 	float cam_speed = 1.0f;
 
-	test->print("YOOO");
+	//test->print("YOOO");
 	// Debug ---
 	//if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	//{

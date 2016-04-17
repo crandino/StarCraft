@@ -11,7 +11,7 @@
 
 Fonts::Fonts() : Module()
 {
-	name.append("fonts");
+	name.assign("fonts");
 }
 
 // Destructor
@@ -34,6 +34,14 @@ bool Fonts::awake(pugi::xml_node& conf)
 		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
 		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
 		default = load(path, size);
+
+		pugi::xml_node		node = conf.child("default_font");
+		node = node.next_sibling("default_font");
+
+		const char* path2 = node.attribute("file").as_string(DEFAULT_FONT);
+		int size2 = node.attribute("size").as_int(DEFAULT_FONT_SIZE);
+		default_2 = load(path2, size2);
+
 	}
 
 	return ret;
@@ -79,11 +87,15 @@ TTF_Font* const Fonts::load(const char* path, int size)
 }
 
 // Print text using font
-SDL_Texture* Fonts::print(const char* text, SDL_Color color, TTF_Font* font)
+SDL_Texture* Fonts::print(const char* text, SDL_Color color, int kind_of_font, TTF_Font* font)
 {
-
 	SDL_Texture* ret = NULL;
-	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);
+	SDL_Surface* surface;
+
+	if (kind_of_font == 1)
+		surface = TTF_RenderText_Blended(default, text, color);
+	else
+		surface = TTF_RenderText_Blended(default_2, text, color);
 
 	if (surface == NULL)
 	{

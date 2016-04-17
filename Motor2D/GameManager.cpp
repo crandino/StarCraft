@@ -38,24 +38,26 @@ bool GameManager::start()
 	//----------------------------------------------------------------------
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
-	title_screen = app->gui->createImage(start_image, { 0, 0, 296, 336 });
+	title_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
 	title_screen->center();
 	title_screen->setLocalPos(title_screen->getLocalPos().x - 5, title_screen->getLocalPos().y - 50);
 
-	start_button = app->gui->createImage(start_image, { 296, 0, 141, 39 });
+	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
 	start_button->parent = title_screen;
-	start_button->setLocalPos(75, 164);
+	start_button->center();
 	start_button->interactive = true;
 	start_button->can_focus = true;
 	start_button->setListener(this);
 	
 
-	exit_button = app->gui->createImage(start_image, { 296, 0, 141, 39 });
+	exit_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
 	exit_button->parent = title_screen;
-	exit_button->setLocalPos(75, 228);
+	exit_button->center();
+	exit_button->setLocalPos(exit_button->getLocalPos().x, exit_button->getLocalPos().y + 80);
 	exit_button->interactive = true;
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
+
 	//---------------------------------------------
 	
 	defeat_img = app->tex->loadTexture("Screens/defeat_screen.png");
@@ -284,7 +286,13 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+
 		case(MOUSE_LCLICK_DOWN) :
+			start_button->setSection({ 339, 103, 141, 38 });
+			break;
+
+		case(MOUSE_LCLICK_UP) :
+			start_button->setSection({ 339, 229, 141, 39 });
 			start_game = true;
 			time_between_waves.start();
 
@@ -317,11 +325,20 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+
 		case(MOUSE_LCLICK_DOWN) :
 			
 			//Restart game
 			restartGame();
+			exit_button->setSection({ 338, 279, 141, 38 });
+			break;
+
+		case(MOUSE_LCLICK_UP) :
 			app->audio->playFx(fx_click, 0);
+			exit_button->setSection({ 339, 229, 141, 39 });
+			
+			game_over = true;
+			
 			break;
 		}
 	}

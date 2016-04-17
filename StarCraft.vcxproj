@@ -103,6 +103,7 @@
     <ClInclude Include="Motor2D\Scene.h" />
     <ClInclude Include="Motor2D\Gui.h" />
     <ClInclude Include="Motor2D\Scv.h" />
+    <ClInclude Include="Motor2D\Scv_animations.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
     <ClInclude Include="Motor2D\Unit.h" />

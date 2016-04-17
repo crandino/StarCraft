@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "App.h"
 #include "Animation.h"
+#include "Audio.h"
 #include "Collision.h"
 #include "GameManager.h"
 #include "SDL\include\SDL.h"
@@ -59,9 +60,9 @@ public:
 	uint            max_hp_bars;
 	iPoint			offset_life;
 
-	Entity			*target_to_attack;
-	Entity			*target_to_repair;
-	Entity			*target_to_reach;
+	Entity			*target_to_attack = nullptr;
+	Entity			*target_to_repair = nullptr;
+	Entity			*target_to_reach = nullptr;
 	int				range_to_attack;
 	int				range_to_view;
 	float			damage;
@@ -77,7 +78,7 @@ public:
 	bool            end_path = false;
 
 	bool			to_delete;
-	bool            hiding;
+	bool            inside_bunker = false;
 
 
 	// Constructors
@@ -117,6 +118,8 @@ public:
 				{
 					if (target_to_attack->type == BUILDING)
 					{
+						if (target_to_attack->specialization == COMMANDCENTER)
+							app->game_manager->game_over = true;
 						app->map->changeLogic(target_to_attack->coll->rect, LOW_GROUND); // We need to verify if is LOW_GROUND or HIGH_GROUND
 						app->entity_manager->logicChanged();
 					}

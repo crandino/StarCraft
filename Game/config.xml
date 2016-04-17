@@ -26,14 +26,13 @@
     <path>UI.zip</path>
     <path>Audio.zip</path>
 	<path>starcraft_font.zip</path>
-	
-    
+	    
   </file_system>
--<fonts>
 
-<default_font size="50" file="Starcraft_Normal.ttf"/>
-
-</fonts>
+  <fonts>
+    <default_font size="24" file="Starcraft_Normal.ttf"/>
+    <default_font size="12" file="OpenSans-Regular.ttf"/>
+  </fonts>
   
   <map>
     <folder>maps/</folder>

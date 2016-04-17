@@ -105,7 +105,7 @@ public:
 
 
 	/*--------Methods for interact with buildings----------*/
-	void GetInsideBunker(Bunker* e);	
+	void GetInsideBunker(Entity* e);	
 	void repairBuilding(Entity* e);
 	bool searchNearEntity(Entity* e);
 

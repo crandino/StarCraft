@@ -44,7 +44,7 @@ bool Gui::start()
 	atlas = app->tex->loadTexture(atlas_file_name.data());
 	//terran_console = app->tex->loadTexture("TerranConsole/tconsole.png");
 	
-	// HUD
+	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
 	ui_terran->interactive = false;
@@ -65,7 +65,7 @@ bool Gui::start()
 	rectangle_command_2->interactive = false;
 	rectangle_command_2->can_focus = false;
 
-	// HUD Command Center
+	// HUD Command Center------------------------------------------------------
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });
 	ui_create_bot->setLocalPos(505, 358);
 	ui_create_bot->setListener(this);
@@ -80,15 +80,41 @@ bool Gui::start()
 	ui_create_builds->setListener(this);
 	ui_create_builds->draw_element = false;
 	
-	// HUD Bunker //IPL: COMMENTED FOR RELEASE 0.4
+	
 	ui_leave_bunker = app->gui->createImage(NULL, { 256, 94, 36, 33 });
 	ui_leave_bunker->setLocalPos(505, 358);
-	//ui_leave_bunker->setListener(this);
-	//ui_leave_bunker->interactive = false;
-	//ui_leave_bunker->can_focus = true;
-	//ui_leave_bunker->draw_element = false;
+	ui_leave_bunker->setListener(this);
+	ui_leave_bunker->interactive = false;
+	ui_leave_bunker->can_focus = true;
+	ui_leave_bunker->draw_element = false;
+
+	//HUD Label---------------------------------------------------------------
+	number_of_wave = app->gui->createLabel("1", 1);
+	number_of_wave->center();
+	number_of_wave->setLocalPos(number_of_wave->getScreenPos().x, number_of_wave->getScreenPos().y - 220);
+	number_of_wave->interactive = false;
+
+
+	//HUD  Mineral and Gass
+	//Image
+	ui_mineral = app->gui->createImage(NULL, { 7, 202, 15, 13 });
+	ui_mineral->setLocalPos(490, 6);
+
+	//Number of minerals
+	number_of_minerals = app->gui->createLabel("100", 2);
+	number_of_minerals->setLocalPos(508, 4);
+	number_of_minerals->interactive = false;
+
+	//Image
+	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });
+	ui_gas->setLocalPos(550, 6);
+	//Label gass
+	number_of_gass = app->gui->createLabel("100", 2);
+	number_of_gass->setLocalPos(568, 4);
+	number_of_gass->interactive = false;
+
 	
-	// CURSOR
+	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
 	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
 	uint w, h; app->win->getWindowSize(w, h);
@@ -99,7 +125,7 @@ bool Gui::start()
 	map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
 		app->map->data.front().height * app->map->data.front().tile_height };
 
-	// CIRCLES OF SELECTIOM
+	// CIRCLES OF SELECTIOM----------------------------------------------------
 	circles_of_selection = app->tex->loadTexture("Selection/Selection_circles.png");
 	lifes_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
 
@@ -108,7 +134,7 @@ bool Gui::start()
 	red_life = { 501, 3, 4, 5 };
 	white_life = { 491, 3, 4, 5 };	
 
-	// To show walkability on building mode
+	// To show walkability on building mode-------------------------
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	return true;
@@ -409,12 +435,25 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 	return ret;
 }
 // Create a simple label
-GuiLabel* Gui::createLabel(const char* text, const int x, const int y)
+/*GuiLabel* Gui::createLabel(const char* text, const int x, const int y)
 {
 	GuiLabel* label = new GuiLabel(text, x, y);
 	elements.push_back(label);
 
 	return label;
+}*/
+
+GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
+{
+	GuiLabel* ret = NULL;
+
+	if (text != NULL)
+	{
+		ret = new GuiLabel(text,kind_of_font);
+		elements.push_back(ret);
+	}
+
+	return ret;
 }
 
 //Create cursor

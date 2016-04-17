@@ -10,32 +10,18 @@ struct SDL_Texture;
 class GuiLabel : public GuiElements
 {
 public:
+	GuiLabel(const char* text, int kind_of_font);
+	~GuiLabel();
 
-	GuiLabel();
+	void setText(const char* text, int font);
+	const SDL_Texture* getTexture() const;
+	void draw() const;
 
-	GuiLabel(const char* txt, const int x, const int y);
-
-	// Destructor
-	virtual ~GuiLabel();
-
-	bool update(float dt);
-
-	void print(string _text, bool isPassword = false);
-
-	// Called before quitting
-	bool cleanUp();
-
-	string getText(bool get_password = false) const;
 
 private:
 
-	string	text;
-	string	password;
-
-public:
-
-	SDL_Texture* texture;
-
+	SDL_Texture* texture = nullptr;
 };
+
 
 #endif __GUILABEL_H__
