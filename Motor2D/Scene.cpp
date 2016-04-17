@@ -52,8 +52,11 @@ bool Scene::start()
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
 	rectangle_map_camera->draw_element = false;
-	
 
+
+
+
+	
 
 	////ROF Start menu without interaction, it will be disabeled till it fully works
 	//start_menu_img = app->tex->loadTexture("Screens/Start_Image.png");

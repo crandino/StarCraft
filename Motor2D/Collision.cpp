@@ -8,47 +8,11 @@ Collision::Collision() : Module()
 {
 	name.assign("collision");
 
-	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_WALL][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER_ATTACK] = true;
-	matrix[COLLIDER_WALL][COLLIDER_ENEMY_ATTACK] = true;
-	matrix[COLLIDER_WALL][COLLIDER_BOMB] = false;
+	matrix[COLLIDER_UNIT][COLLIDER_UNIT] = true; 
+	matrix[COLLIDER_UNIT][COLLIDER_BUILDING] = false;
 
-	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_ATTACK] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_ATTACK] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_BOMB] = true;
-
-	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_ATTACK] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_ATTACK] = false;
-	matrix[COLLIDER_ENEMY][COLLIDER_BOMB] = false;
-
-	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_WALL] = false;
-	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_PLAYER_ATTACK] = false;
-	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_ENEMY_ATTACK] = false;
-	matrix[COLLIDER_PLAYER_ATTACK][COLLIDER_BOMB] = false;
-
-	matrix[COLLIDER_ENEMY_ATTACK][COLLIDER_WALL] = false;
-	matrix[COLLIDER_ENEMY_ATTACK][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_ENEMY_ATTACK][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_ENEMY_ATTACK][COLLIDER_PLAYER_ATTACK] = false;
-	matrix[COLLIDER_ENEMY_ATTACK][COLLIDER_ENEMY_ATTACK] = false;
-	matrix[COLLIDER_ENEMY_ATTACK][COLLIDER_BOMB] = false;
-
-	matrix[COLLIDER_BOMB][COLLIDER_WALL] = false;
-	matrix[COLLIDER_BOMB][COLLIDER_PLAYER] = true;
-	matrix[COLLIDER_BOMB][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_BOMB][COLLIDER_PLAYER_ATTACK] = false;
-	matrix[COLLIDER_BOMB][COLLIDER_ENEMY_ATTACK] = false;
-	matrix[COLLIDER_BOMB][COLLIDER_BOMB] = true;
+	matrix[COLLIDER_BUILDING][COLLIDER_UNIT] = false;
+	matrix[COLLIDER_BUILDING][COLLIDER_BUILDING] = false;	
 }
 
 Collision::~Collision()
@@ -133,22 +97,10 @@ void Collision::drawDebug(Collider *col)
 	case COLLIDER_NONE:
 		app->render->DrawQuad(col->rect, 255, 255, 255, alpha, false);
 		break;
-	case COLLIDER_WALL:
-		app->render->DrawQuad(col->rect, 0, 0, 255, alpha);
-		break;
-	case COLLIDER_PLAYER:
-		app->render->DrawQuad(col->rect, 255, 0, 0, alpha, false);
-		break;
-	case COLLIDER_ENEMY:
-		app->render->DrawQuad(col->rect, 255, 100, 0, alpha, false);
-		break;
-	case COLLIDER_PLAYER_ATTACK:
-		app->render->DrawQuad(col->rect, 255, 255, 0, alpha, false);
-		break;
-	case COLLIDER_ENEMY_ATTACK:
+	case COLLIDER_BUILDING:
 		app->render->DrawQuad(col->rect, 0, 255, 255, alpha, false);
 		break;
-	case COLLIDER_BOMB:
+	case COLLIDER_UNIT:
 		app->render->DrawQuad(col->rect, 255, 0, 255, alpha, false);
 		break;
 	}

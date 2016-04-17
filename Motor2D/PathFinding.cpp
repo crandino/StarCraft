@@ -298,6 +298,7 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 		}
 	}
 
+
 	const pathNode *final_path = &close_list.list_of_nodes.back();
 	vector<iPoint> tmp;
 	while (final_path != NULL)
@@ -307,8 +308,11 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
 	}
 
 	for (vector<iPoint>::reverse_iterator rit = tmp.rbegin(); rit != tmp.rend(); ++rit)
-	     path_found.push_back(*rit);
-	
+	{
+		path_found.push_back(*rit);
+	}
+
+
 	path_found.erase(path_found.begin()); //we don't need the tile which is stepping
 
 	return path_found.size();

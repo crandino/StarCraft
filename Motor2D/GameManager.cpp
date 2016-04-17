@@ -85,7 +85,17 @@ bool GameManager::update(float dt)
 	{
 		if (current_waves <= TOTALWAVES)
 		{
-			if (time_between_waves.readSec() >= WAVETIME1) //We check how much time do we have left before releasing a new wave
+			bool all_zerlings_dead = true;
+			for (map<uint, Entity*>::iterator it2 = app->entity_manager->active_entities.begin(); it2 != app->entity_manager->active_entities.end(); ++it2)
+			{
+				if (it2->second->specialization == ZERGLING)
+				{
+					all_zerlings_dead = false;
+					break;
+				}
+			}
+
+			if (time_between_waves.readSec() >= WAVETIME1 && all_zerlings_dead) //We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 0)
 				{
@@ -174,8 +184,6 @@ bool GameManager::update(float dt)
 		{
 			//Victory Text
 			//If all waves are defeated/or waves are infinite (we'll see)
-
-
 				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
 				displayVictoryScreen();
 				won = true;
@@ -188,11 +196,9 @@ bool GameManager::update(float dt)
 			LOG("GAME OVER");
 			//Display Score
 			LOG("Score: %d", score_current_wave);
-			
-		}
-
-	
+		}	
 	}
+
 	if (game_over && !start_game)
 	{
 		if (ending_game.readSec() >= ENDINGTIME)
@@ -291,10 +297,9 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_UP) :
 			start_button->setSection({ 339, 229, 141, 39 });
 			start_game = true;
-			time_between_waves.start();
 
 			title_screen->draw_element = false;
-			
+
 			start_button->draw_element = false;
 			start_button->interactive = false;
 			start_button->can_focus = false;
@@ -302,7 +307,10 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			exit_button->draw_element = false;
 			exit_button->interactive = false;
 			exit_button->can_focus = false;
-			//app->audio->playFx(fx_click, 0);
+
+			time_between_waves.start();
+			
+			app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
@@ -349,17 +357,10 @@ void GameManager::restartGame()
 	
 	//CRZ: 
 	map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin();
-	for (; it != app->entity_manager->active_entities.end();)
+	for (; it != app->entity_manager->active_entities.end(); ++it)
 	{
-			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
-			for (map<uint, Entity*>::iterator it2 = app->entity_manager->active_entities.begin(); it2 != app->entity_manager->active_entities.end(); ++it2)
-			{
-					it2->second->target_to_attack = NULL;
-
-			}
-
-			it = app->entity_manager->active_entities.erase(it);
-		++it;
+		it->second->coll->to_delete = true;
+		it->second->to_delete = true;
 	}
 	//---------------------------------------------------------
 	

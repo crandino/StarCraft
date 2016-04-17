@@ -66,7 +66,7 @@ public:
 		current_animation = &idle_up;
 	
 		// Colliders
-		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
 
 		// Another stuff
 		

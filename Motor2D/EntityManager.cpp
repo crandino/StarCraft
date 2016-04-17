@@ -136,26 +136,13 @@ bool EntityManager::preUpdate()
 			++it;
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
-	{
-		Marine *m = (Marine*)marine;
-		//m->angle += 0.5f;
-		m->current_hp -= 1.0f;
-
-		LOG("Marine angle: %f", m->angle);
-		LOG("Marine hp: %f", m->current_hp);
-	}
-
 	iPoint position;
 
 	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		//addEntity(position, MARINE);
-
-		marine = addEntity(position, MARINE);
-		//if (e != NULL) remove(e->id);		
+		addEntity(position, MARINE);		
 	}
 
 	if (create_SCV)
@@ -369,24 +356,6 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 	{
 			it->second->update(dt);
-
-			if (it->second->type == UNIT && it->second->state == IDLE)
-			{
-				map<uint, Entity*>::iterator it2 = active_entities.begin();
-				for (; it2 != active_entities.end(); ++it2)
-				{
-					if (it2->second->type == UNIT && it2->second->state == IDLE && it2 != it && it2->second->coll->checkCollision(it->second->coll->rect))
-					{
-						if (app->path->createPathToAdjacent(it2->second->tile_pos, 2) != -1)
-						{
-							Unit *unit = (Unit*)it2->second;
-							unit->path = app->path->getLastPath();
-							unit->has_target = true;
-							unit->state = MOVE;
-						}
-					}
-				}
-			}
 
 		//Debug: To draw the path finding that the entity is following
 		/*if (app->entity_manager->debug)
@@ -754,6 +723,30 @@ void EntityManager::logicChanged()
 				if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
 					unit->path = app->path->getLastPath();
 			}
+		}
+	}
+}
+
+void EntityManager::onCollision(Collider* c1, Collider* c2)
+{
+	Entity *e1, *e2;
+	e1 = e2 = NULL;
+
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second->coll == c1) e1 = it->second;
+		else if (it->second->coll == c2) e2 = it->second;
+	}
+	
+	if (e1 != NULL && e2 != NULL && e1->type == UNIT && e1->state == IDLE && e2->type == UNIT && e2->state == IDLE)
+	{
+		if (app->path->createPathToAdjacent(e2->tile_pos, 2) != -1)
+		{
+			Unit *unit = (Unit*)e2;
+			unit->path = app->path->getLastPath();
+			unit->has_target = true;
+			unit->state = MOVE;
 		}
 	}
 }

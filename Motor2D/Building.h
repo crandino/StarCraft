@@ -39,8 +39,8 @@ public:
 			break;
 		case REPAIR:
 			break;
-			return true;
 		}
+		return true;
 	}
 };
 

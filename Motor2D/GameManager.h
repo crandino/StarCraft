@@ -26,10 +26,6 @@
 #define SIZEMARINESY 1
 
 
-
-
-
-
 class GuiImage;
 using namespace std;
 
@@ -41,6 +37,7 @@ Place a timer, entity manager communicate zerg list/map etc..
 class GameManager : public Module
 {
 public:
+
 	int current_waves = 0;
 	int total_waves = 2;
 	int score = 0;
@@ -57,6 +54,10 @@ public:
 	uint total_units_killed_currentFrame = 0;
 
 	uint marineCounterDeath = 0;
+
+	//-------------Resources------------------
+	int       mineral_resources = 0;
+	int       gas_resources = 0;
 
 public:
 

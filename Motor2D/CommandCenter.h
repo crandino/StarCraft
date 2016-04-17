@@ -30,7 +30,7 @@ public:
 		current_animation = &idle;
 
 		// Colliders
-		coll = app->collision->addCollider({ pos.x + collider_offset.x, pos.y + collider_offset.y, 128, 100 }, COLLIDER_BOMB);
+		coll = app->collision->addCollider({ pos.x + collider_offset.x, pos.y + collider_offset.y, 128, 100 }, COLLIDER_BUILDING);
 
 		// Another stuff
 		specialization = COMMANDCENTER;
