@@ -576,8 +576,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 		//	}
 		//}
 	}
-	else
-		e->state = IDLE;
 
 	return ret;
 }
