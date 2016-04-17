@@ -116,12 +116,10 @@ public:
 	Entity* whichEntityOnMouse();
 
 	/*---------------Creating Waves-------------------*/
-<<<<<<< HEAD
+
 	void createZergling(iPoint position);
 	void createWave(uint sizex, uint sizey, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
-=======
-	void createWave(uint size, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
->>>>>>> origin/master
+
 
 public:
 
