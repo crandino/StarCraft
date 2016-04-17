@@ -3,7 +3,7 @@
 
 #include "p2Log.h"
 #include "App.h"
-#include "MemLeaks.h"
+//#include "MemLeaks.h"
 #include "Brofiler.h"
 
 #pragma comment (lib, "Motor2D/Brofiler/ProfilerCore32.lib")
@@ -79,7 +79,7 @@ App *app = NULL;
 
 int main(int argc, char** argv)
 {
-	ReportMemoryLeaks();
+	//ReportMemoryLeaks();
 
 	LOG("======> Application initiating <=======");
 

@@ -314,31 +314,20 @@ bool Gui::postUpdate()
 {
 	//Check if we have entities selected
 	if (app->entity_manager->selection.size() == 0)
-	{
 		drawHudSelection(SPECIALIZATION::NOTYPE);
-	}
-	// Blit of Selection Circles and Lifes
+
+	multimap<float, Entity*> to_draw_selection;
 	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+		to_draw_selection.insert(pair<float, Entity*>(it->second->center.y, it->second));
+
+	// Blit of Selection Circles and Lifes
+	for (multimap<float, Entity*>::iterator itm = to_draw_selection.begin(); itm != to_draw_selection.end(); ++itm)
 	{
 		// Circle selection blitting
-		Entity *e = it->second;
-		if (e->specialization == SCV)
-			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2 - e->circle_selection_offset.x, e->center.y - e->circle_selection_offset.y, &e->selection_type);
-		else
-			app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
-	}
-	
-	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
-	{
-			it->second->draw();
-	}
-		
+		Entity *e = itm->second;
+		app->render->blit(circles_of_selection, e->center.x - e->selection_type.w / 2, e->center.y - e->circle_selection_offset.y, &e->selection_type);
 
-	for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
-	{
-
-		// Life counter blitting
-		Entity *e = it->second;
+		// Life selection blitting
 		if (e->current_hp > 0)
 		{
 			uint bars_to_draw = ceil((e->max_hp_bars * ((float)e->current_hp / (float)e->max_hp)) + 1);
@@ -349,18 +338,22 @@ bool Gui::postUpdate()
 				app->render->blit(lifes_tex, e->center.x + e->offset_life.x + (bar * white_life.w), e->center.y + e->offset_life.y, &white_life);
 		}
 
-		if (it->second->specialization == SPECIALIZATION::COMMANDCENTER)
+		if (itm->second->specialization == SPECIALIZATION::COMMANDCENTER)
 			drawHudSelection(COMMANDCENTER);
-		if (it->second->specialization == SPECIALIZATION::BUNKER)
+		if (itm->second->specialization == SPECIALIZATION::BUNKER)
 			drawHudSelection(BUNKER);
 	}
-		
-			
+	
+	// CRZ -> possibilty of blitting according to Y value.
+	// Entity drawing
+	multimap<float, Entity*> to_draw;
+	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
+		to_draw.insert(pair<float, Entity*>(it->second->center.y, it->second));	
 
+	for (multimap<float, Entity*>::iterator itm = to_draw.begin(); itm != to_draw.end(); ++itm)
+		itm->second->draw();
 
-	list<GuiElements*>::iterator item;
-
-	for (item = elements.begin(); item != elements.end(); item++)
+	for (list<GuiElements*>::iterator item = elements.begin(); item != elements.end(); item++)
 	{
 		GuiElements* gui = *item;
 		if (gui->draw_element == true)
