@@ -105,7 +105,6 @@ public:
 	//Score system attributes
 	uint score_current_wave = 0;
 	uint total_score = 0;
-
 	//Start/Exit Button
 	SDL_Texture* start_image = nullptr;
 

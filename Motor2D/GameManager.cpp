@@ -129,8 +129,8 @@ bool GameManager::update(float dt)
 			if (current_waves == 1 && all_zerlings_dead && resources == 1)
 			{   
 				//Get Resources
-				mineral_resources += 50;
-				gas_resources += 50;
+				mineral_resources += 1000;
+				gas_resources += 1000;
 				resources ++;
 			}
 
@@ -416,13 +416,13 @@ void GameManager::restartGame()
 	kill_count = 0;
 	score_current_wave = 0;
 	total_score = 0;
-
+	
+	resources = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
 	total_units_killed_currentFrame = 0;
 
 	marineCounterDeath = 0;
-
 	won = false;
 	close = false;
 	start_game = true;

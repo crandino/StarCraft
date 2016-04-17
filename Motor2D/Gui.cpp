@@ -171,6 +171,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_DOWN) :
 			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
 			app->entity_manager->create_bunker = true;
+			info_bunker->draw_element = false;
 			break;
 
 		/*case(MOUSE_LCLICK_DOWN_REPEAT) :
@@ -194,6 +195,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_DOWN) :
 			if (app->game_manager->mineral_resources >= 50)
 			app->entity_manager->create_SCV = true;
+			info_scv->draw_element = false;
 			break;
 
 		/*case(MOUSE_LCLICK_DOWN_REPEAT) :
