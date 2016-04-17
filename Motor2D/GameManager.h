@@ -11,16 +11,20 @@
 #define TOTALWAVES 2
 #define WAVETIME1 5.0f//120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 15.0f
-#define	SIZE1 3 // Changes number of zerglings per wave
-#define	SIZE2 5 // Changes number of zerglings per wave
-#define	SIZE3 10 // Changes number of zerglings per wave
-#define TOTALUNITSALLWAVES (SIZE1 + SIZE2 + SIZE3)
+#define	SIZE1X 3 // Changes number of zerglings per wave
+#define SIZE1Y 1
+#define	SIZE2X 5 // Changes number of zerglings per wave
+#define SIZE2Y 1
+#define	SIZE3X 5 // Changes number of zerglings per wave
+#define SIZE3Y 2
+#define TOTALUNITSALLWAVES (SIZE1X*SIZE1Y + SIZE2X*SIZE2Y + SIZE3X*SIZE2Y)
 #define ZERGLINGSCORE 20
 #define COMMANDCENTERPOSITION {1500, 2250}
 #define ENDINGTIME 5.0f
 #define VICTORYTIME 5.0f
 #define SIZEMARINESX 1
 #define SIZEMARINESY 1
+
 
 
 

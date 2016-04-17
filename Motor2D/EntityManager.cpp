@@ -457,21 +457,23 @@ void EntityManager::calculateSelector()
 
 /*------------------WAVE RELATED METHODS--------------------------*/
 
-void EntityManager::createWave(uint size, iPoint position/*zergling num, hidralisk....num*/)
+void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 {
-	for (int i = 0; i < size; i++)
-	{
-		iPoint radius;
-		radius.x = rand() % 30 + 1;
-		radius.y = rand() % 30 + 1; //RIE: Things to Improve in the future make it responsive to tile system?
-		
-		int sign = rand() % 3;
+		for (int i = 0; i < sizex; i++)
+		{
+			for (int j = 0; j < sizey; j++)
+			{
+				int posx = 1500 + (sizex * i * 10);
+				int posy = 2150 + (sizey * j * 10);
 
-		radius = changeSign(radius);		
-		
-		createZergling(position, radius);
-	}
+				iPoint position = {posx, posy};
+
+				createZergling(position);
+			}
+		}
+
 }
+
 
 bool EntityManager::searchNearEntity(Entity* e)
 {
@@ -568,33 +570,9 @@ bool EntityManager::searchNearEntity(Entity* e)
 	return ret;
 }
 
-iPoint EntityManager::changeSign(iPoint point)
+
+void EntityManager::createZergling(iPoint position)
 {
-	int sign = rand() % 4;
-
-		switch (sign)
-		{
-			case (1) :
-		
-						 point.x = point.x*-1;
-						 break;
-		
-			case(2) :	
-						point.y = point.y*-1;
-						break;
-		
-			default: 
-			break;
-	}
-		return point;
-}
-void EntityManager::createZergling(iPoint position, iPoint radius)
-{
-
-	//Point to check if the cursor is on a walkable tile
-	//Check that the radius doesn't touch the logic of the map
-	position = { position.x + radius.x, position.y + radius.y };
-
 	addEntity(position, ZERGLING);
 }
 
