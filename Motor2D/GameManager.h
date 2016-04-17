@@ -20,8 +20,8 @@
 #define TOTALUNITSALLWAVES (SIZE1X*SIZE1Y + SIZE2X*SIZE2Y + SIZE3X*SIZE2Y)
 #define ZERGLINGSCORE 20
 #define COMMANDCENTERPOSITION {1500, 2250}
-#define ENDINGTIME 5.0f
-#define VICTORYTIME 5.0f
+#define ENDINGTIME 2.5f
+#define VICTORYTIME 2.5f
 #define SIZEMARINESX 5
 #define SIZEMARINESY 2
 
@@ -43,7 +43,6 @@ public:
 	int score = 0;
 	int enemy_count = 0;
 	uint kill_count = 0;
-	bool is_finished = false;
 	bool game_over = false;
 	iPoint initial_position;
 
@@ -118,6 +117,7 @@ public:
 	//Victory Screen
 	SDL_Texture* victory_img = nullptr;
 	GuiImage* victory_screen = nullptr;
+	bool is_victory_screen_on = false;
 
 	bool won = false;
 

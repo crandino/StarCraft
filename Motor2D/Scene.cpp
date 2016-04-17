@@ -31,7 +31,7 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {	
-	app->render->start_transition({ 880, 1974 });
+	//app->render->start_transition({ 880, 1974 });
    	int w, h;
 	uchar *buffer = NULL;
 	if(app->map->createWalkabilityMap(w, h, &buffer))
@@ -41,9 +41,6 @@ bool Scene::start()
 	/*path_tile = app->tex->loadTexture("temporaryTextures/path_tile.png");
 	start_position.setZero();
 	final_position.setZero();*/
-
-
-
 
 	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
