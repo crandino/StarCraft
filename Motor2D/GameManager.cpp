@@ -165,6 +165,10 @@ bool GameManager::update(float dt)
 				mineral_resources += 75;
 				gas_resources += 75;
 				resources++;
+
+				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
+				won = true;
+				start_game = false;
 			}
 
 			if (current_waves == 3 && all_zerlings_dead && resources == 3)
@@ -172,7 +176,7 @@ bool GameManager::update(float dt)
 				//Get Resources
 				mineral_resources += 75;
 				gas_resources += 75;
-				resources++;
+				resources++;				
 			}
 		}
 
@@ -216,15 +220,6 @@ bool GameManager::update(float dt)
 		}
 		//timer
 		//++unitKillCount;
-
-		if (current_waves == 3)
-		{
-			//Victory Text
-			//If all waves are defeated/or waves are infinite (we'll see)
-			LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
-			won = true;
-			start_game = false;
-		}
 
 		if (checkGameOver())
 		{
