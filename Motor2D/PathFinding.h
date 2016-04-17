@@ -62,9 +62,12 @@ public:
 	// CreatePath: Request to have a path from A to B
 	int createPath(const iPoint& origin, const iPoint& destination);
 
+	// CreatePath: Request to have a path from A to adjacent
+	int createPathToAdjacent(const iPoint& origin, uint distance);
+
 	// findNearestWalkableTile: Returns the position of the nearest walkable tile
 	// Radius set the maximum distance from the origin to success.
-	iPoint findNearestWalkableTile(const iPoint &origin, const iPoint &destination, uint radius) const;
+	iPoint findNearestWalkableTile(const iPoint &origin, const iPoint &destination, uint radius = 0) const;
 
 	// GetLastPath: Returns order path step by step
 	const vector<iPoint> &getLastPath() const;

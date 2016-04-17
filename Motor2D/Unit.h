@@ -262,6 +262,47 @@ public:
 
 	virtual bool update(float dt) 
 	{ 
+		checkAngle();   // This sets animation according to their angle direction
+		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+
+		switch (state)
+		{
+		case IDLE:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			break;
+		case MOVE:
+			if (has_target) move(dt);
+			break;
+		case MOVE_ALERT:
+			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			{
+				if (searchNearestEnemy())
+					LOG("Enemy found");
+				timer_to_check = 0.0f;
+			}
+			if (has_target) move(dt);
+			break;
+		case ATTACK:
+			if ((timer_attack_delay += dt) >= attack_delay)
+			{
+				attack();
+				checkUnitDirection();
+				timer_attack_delay = 0.0f;
+			}
+			break;
+		case DYING:
+			if ((timer_to_check += dt) >= time_to_die)
+			{
+				to_delete = true;
+				coll->to_delete = true;
+			}
+			break;
+		}
 		return true;
 	}
 };

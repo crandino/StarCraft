@@ -277,12 +277,12 @@ bool EntityManager::preUpdate()
 			if (it->second->type == UNIT)
 			{
 				Unit *unit = (Unit*)it->second;
-				unit->has_target = true;
 				if (selection.size() == 1)
 				{
 					if (app->path->createPath(unit->tile_pos, target_position) != -1)
 					{
 						unit->path = app->path->getLastPath();
+						unit->has_target = true;
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
 						{
@@ -299,6 +299,7 @@ bool EntityManager::preUpdate()
 					if (app->path->createPath(unit->tile_pos, target) != -1)
 					{
 						unit->path = app->path->getLastPath();
+						unit->has_target = true;
 						unit->state = MOVE;
 						if (e != NULL && e->specialization == BUNKER)
 						{
@@ -731,14 +732,24 @@ void EntityManager::logicChanged()
 
 void EntityManager::onCollision(Collider* c1, Collider* c2)
 {
-	//Entity *e1, *e2;
+	Entity *e1, *e2;
+	e1 = e2 = NULL;
 
-	//map<uint, Entity*>::iterator it = active_entities.begin();
-	//for (; it != active_entities.end(); ++it)
-	//{
-	//	if (it->second->coll == c1) e1 = it->second; 
-	//	else if (it->second->coll == c2) e2 = it->second;
-	//}
-
-	//Vector2D<int> dir = 
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second->coll == c1) e1 = it->second;
+		else if (it->second->coll == c2) e2 = it->second;
+	}
+	
+	if (e1 != NULL && e2 != NULL && e1->type == UNIT && e1->state == IDLE && e2->type == UNIT && e2->state == IDLE)
+	{
+		if (app->path->createPathToAdjacent(e2->tile_pos, 2) != -1)
+		{
+			Unit *unit = (Unit*)e2;
+			unit->path = app->path->getLastPath();
+			unit->has_target = true;
+			unit->state = MOVE;
+		}
+	}
 }
