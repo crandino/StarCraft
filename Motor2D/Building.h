@@ -2,13 +2,17 @@
 #define __BUILDING_H__
 
 #include "Entity.h"
+#include "queue"
 
 class Building : public Entity
 {
 public:
 
-	uint capacity;
-	bool storage;
+	uint				capacity;
+	bool				storage;
+	//AleixBV Research
+	queue<Entity*>		queue;
+	Timer				creation_timer;
 
 	Building() 
 	{

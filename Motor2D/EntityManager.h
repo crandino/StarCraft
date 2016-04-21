@@ -91,6 +91,7 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
+	Entity* const createUnit(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
 	
 	void deleteEntity(map<uint, Entity*> selection);

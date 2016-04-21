@@ -40,6 +40,8 @@ public:
 	SPECIALIZATION  specialization;
 	STATE			state;
 	float			timer_to_check = 0.0f;
+	//AleixBV Research
+	float			time_to_create;
 
 	// UI paramters
 	SDL_Rect        selection_type;

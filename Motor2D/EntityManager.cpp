@@ -64,7 +64,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(SCV) :
 		LOG("Creating SCV");
 		e = new Scv(pos);
-		create_SCV = false;
 		break;
 	}
 
@@ -88,6 +87,32 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 
 	return e;
 }
+
+//AleixBV Research
+Entity* const EntityManager::createUnit(iPoint &pos, SPECIALIZATION type)
+{
+	Entity *e = NULL;
+
+	switch (type)
+	{
+	case(MARINE) :
+		LOG("Creating Marine");
+		e = new Marine(pos);
+		break;
+	case(ZERGLING) :
+		LOG("Creating Zergling");
+		e = new Zergling(pos);
+		break;
+	case(SCV) :
+		LOG("Creating SCV");
+		e = new Scv(pos);
+		create_SCV = false;
+		break;
+	}
+
+	return e;
+}
+//AleixBV /Research
 
 /*Method that makes the enemyWave attack the commandCenter*/
 void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
@@ -159,16 +184,21 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == COMMANDCENTER)
 			{
+				//AleixBV Research
 				pos_commander = it->second->pos;
+				app->game_manager->mineral_resources -= 50;
+				position.x = pos_commander.x + 20;
+				position.y = pos_commander.y + 100;
+
+				Building* building = (Building*)it->second;
+				building->queue.push(createUnit(position, SCV));
+				if (building->queue.size() == 1)
+					building->creation_timer.start();
+				//AleixBV /Research
+
 				break;
 			}
 		}
-
-		app->game_manager->mineral_resources -= 50;
-		position.x = pos_commander.x + 20;
-		position.y = pos_commander.y + 100;
-
-		addEntity(position, SCV);
 	}
 
 	//if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
@@ -229,6 +259,25 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 	{
 			it->second->update(dt);
+			//AleixBV Research
+			if (it->second->type == BUILDING)
+			{
+				Building* building = (Building*)it->second;
+				if (building->queue.size() > 0 && building->creation_timer.readSec() >= building->queue.front()->time_to_create)
+				{
+					Entity *e = building->queue.front();
+					e->id = ++next_ID;
+					active_entities.insert(pair<uint, Entity*>(e->id, e));
+
+					if (e->specialization == MARINE)
+					{
+						player_units.insert(pair<uint, Entity*>(e->id, e));
+					}
+					building->queue.pop();
+					building->creation_timer.start();
+				}
+				//AleixBV /Research
+			}
 
 		//Debug: To draw the path finding that the entity is following
 		/*if (app->entity_manager->debug)

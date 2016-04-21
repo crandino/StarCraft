@@ -70,6 +70,8 @@ public:
 		time_to_die = 500.0f;
 
 		speed = 10;
+		//AleixBV Research
+		time_to_create = 5.0f;
 		
 		direction.create(1, 1, p.x, p.y);
 		direction.setAngle(0.f);
