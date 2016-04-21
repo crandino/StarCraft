@@ -2,6 +2,7 @@
 #define __UNIT_H__
 
 #include "Entity.h"
+#include "queue"
 
 class Unit: public Entity
 {
@@ -14,6 +15,8 @@ public:
 	Vector2D<int>   direction;
 	float			speed;
 	UNIT_DIRECTION	unit_direction;
+	//AleixBV Research
+	queue<iPoint>	queue;
 
 	Unit()
 	{

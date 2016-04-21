@@ -91,6 +91,7 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
+	Entity* const addEntity(Entity* e);
 	Entity* const createUnit(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
 	

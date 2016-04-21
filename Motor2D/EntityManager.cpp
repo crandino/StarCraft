@@ -89,6 +89,29 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 }
 
 //AleixBV Research
+Entity* const EntityManager::addEntity(Entity* e)
+{
+	if (e != NULL && building_mode != true)
+	{
+		e->id = ++next_ID;
+		active_entities.insert(pair<uint, Entity*>(e->id, e));
+
+		// Command center creation, special treatment
+		if (e->specialization == COMMANDCENTER)
+		{
+			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
+			logicChanged();
+		}
+
+		if (e->specialization == MARINE)
+		{
+			player_units.insert(pair<uint, Entity*>(e->id, e));
+		}
+	}
+
+	return e;
+}
+
 Entity* const EntityManager::createUnit(iPoint &pos, SPECIALIZATION type)
 {
 	Entity *e = NULL;
@@ -259,25 +282,6 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 	{
 			it->second->update(dt);
-			//AleixBV Research
-			if (it->second->type == BUILDING)
-			{
-				Building* building = (Building*)it->second;
-				if (building->queue.size() > 0 && building->creation_timer.readSec() >= building->queue.front()->time_to_create)
-				{
-					Entity *e = building->queue.front();
-					e->id = ++next_ID;
-					active_entities.insert(pair<uint, Entity*>(e->id, e));
-
-					if (e->specialization == MARINE)
-					{
-						player_units.insert(pair<uint, Entity*>(e->id, e));
-					}
-					building->queue.pop();
-					building->creation_timer.start();
-				}
-				//AleixBV /Research
-			}
 
 		//Debug: To draw the path finding that the entity is following
 		/*if (app->entity_manager->debug)

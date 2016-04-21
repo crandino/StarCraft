@@ -26,6 +26,14 @@ public:
 		switch (state)
 		{
 		case IDLE:
+			//AleixBV Research
+			if (queue.size() > 0 && creation_timer.readSec() >= queue.front()->time_to_create)
+			{
+				Entity *e = queue.front();
+				app->entity_manager->addEntity(e);
+				queue.pop();
+				creation_timer.start();
+			}
 			break;
 		case MOVE:
 			break;
