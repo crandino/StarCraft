@@ -398,13 +398,6 @@ void EntityManager::handleSelection()
 						unit->path = app->path->getLastPath();
 						unit->has_target = true;
 						unit->state = MOVE;
-						if (e != NULL && e->specialization == BUNKER)
-						{
-							unit->target_to_reach = e;
-							app->gui->bunker_to_leave = (Bunker*)e;
-						}
-						else
-							unit->target_to_reach = nullptr;
 					}
 				}
 				else
@@ -415,16 +408,15 @@ void EntityManager::handleSelection()
 						unit->path = app->path->getLastPath();
 						unit->has_target = true;
 						unit->state = MOVE;
-						if (e != NULL && e->specialization == BUNKER)
-						{
-							unit->target_to_reach = e;
-							app->gui->bunker_to_leave = (Bunker*)e;
-						}
-						else
-							unit->target_to_reach = nullptr;
-
 					}
 				}
+				if (e != NULL && e->specialization == BUNKER)
+				{
+					unit->target_to_reach = e;
+					app->gui->bunker_to_leave = (Bunker*)e;
+				}
+				else
+					unit->target_to_reach = nullptr;
 			}
 		}
 	}
@@ -469,7 +461,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 
 	e->target_to_attack = NULL;
 	e->target_to_repair = NULL;
-	float value = e->range_to_view;
+	float value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	uint previousMaxHP = 10000;
 
@@ -494,7 +486,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 			else if (e->target_to_attack != NULL)
 			{
 				if ((e->target_to_attack->type == it->second->type && d <= value && maxHP <= previousMaxHP) || 
-					(e->target_to_attack->type == BUILDING && it->second->type == UNIT && d <= e->range_to_view && maxHP <= previousMaxHP))
+					(e->target_to_attack->type == BUILDING && it->second->type == UNIT && d <= e->range_of_vision && maxHP <= previousMaxHP))
 				{
 					(e->target_to_attack) = &(*it->second);
 					LOG("BUG NET");
@@ -518,7 +510,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 		}
 	}
 
-	if (e->target_to_attack != NULL) //Second it does the calculus and changes the IA states
+	if (e->target_to_attack != NULL) // Second it does the calculus and changes the IA states
 	{
 		if (e->type == UNIT)
 		{
@@ -526,7 +518,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 			unit->has_target = false;
 			if (value <= e->range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
 			{
-				unit->checkUnitDirection();
 				e->state = ATTACK;
 			}
 			else
@@ -554,7 +545,6 @@ bool EntityManager::searchNearEntity(Entity* e)
 		unit->has_target = false;
 		if (value <= e->range_to_attack)
 		{
-			unit->checkUnitDirection();
 			e->state = REPAIR;
 		}
 		//else
@@ -624,7 +614,7 @@ void EntityManager::KillEntity(Entity* e)
 void EntityManager::GetInsideBunker(Entity* e)
 {
 	Bunker* bunker = (Bunker*)e->target_to_reach;
-	if (bunker->capacity != 0)
+	if (bunker->max_capacity != 0)
 	{
 		if (e->specialization == MARINE)
 		{
@@ -632,10 +622,10 @@ void EntityManager::GetInsideBunker(Entity* e)
 			e->inside_bunker = true;
 			e->to_delete = true;
 			selection.erase(e->id);
-			--bunker->capacity;
+			--bunker->max_capacity;
 		}
 	}
-	else if(bunker->capacity == 0)
+	else if(bunker->max_capacity == 0)
 	{
 		for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
 		{

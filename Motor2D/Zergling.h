@@ -261,7 +261,7 @@ public:
 		flying = false;
 
 		speed = 8.0f;
-		range_to_view = 200;
+		range_of_vision = 200;
 		range_to_attack = 32;
 		damage = 3.0f;
 		attack_delay = 200.0f;
@@ -302,44 +302,46 @@ public:
 
 	bool update(float dt)
 	{
+		checkUnitDirection();
 		setAnimationFromDirection();   // This sets animation according to their angle direction
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 		switch (state)
 		{
 		case IDLE:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
 				if (!searchNearestEnemy())
 					app->entity_manager->SetEnemyToAttackCommandCenter(this);
-				timer_to_check = 0.0f;
+				timer_to_check.start();
 			}
 			break;
 		case MOVE:
-			if (has_target) move(dt);
+			if (has_target)
+				move(dt);
 			break;
 		case MOVE_ALERT:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
 				if (searchNearestEnemy())
 					LOG("Enemy found");
-				timer_to_check = 0.0f;
+				timer_to_check.start();
 			}
-			if (has_target) move(dt);
+			if (has_target)
+				move(dt);
 			break;
 		case ATTACK:
-			if ((timer_attack_delay += dt) >= attack_delay)
+			if (timer_attack_delay.read() >= attack_delay)
 			{
 				attack();
-				checkUnitDirection();
-				timer_attack_delay = 0.0f;
+				timer_attack_delay.start();
 
 				if (state == ATTACK)
 					searchNearestEnemy();
 			}
 			break;
 		case DYING:
-			if ((timer_to_check += dt) >= time_to_die)
+			if (timer_to_check.read() >= time_to_die)
 			{
 				to_delete = true;
 				coll->to_delete = true;

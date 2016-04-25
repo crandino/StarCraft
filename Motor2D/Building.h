@@ -7,14 +7,11 @@ class Building : public Entity
 {
 public:
 
-	uint capacity;
 	bool storage;
 
 	Building() 
 	{
 		type = BUILDING;
-		capacity = 0;
-		storage = false;
 	};
 
 	virtual bool update(float dt)
@@ -31,7 +28,7 @@ public:
 			break;
 		case DYING:
 			//current_animation = &dead;
-			if ((timer_to_check += dt) >= time_to_die)
+			if (timer_to_check.read() >= time_to_die)
 			{
 				to_delete = true;
 				coll->to_delete = true;

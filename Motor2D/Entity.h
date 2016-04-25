@@ -39,7 +39,7 @@ public:
 	ENTITY_TYPE		type;
 	SPECIALIZATION  specialization;
 	STATE			state;
-	float			timer_to_check = 0.0f;
+	Timer			timer_to_check;
 
 	// UI paramters
 	SDL_Rect        selection_type;				// Section of the texture that contains circle selections
@@ -64,11 +64,9 @@ public:
 	Entity			*target_to_repair = nullptr;
 	Entity			*target_to_reach = nullptr;
 	int				range_to_attack;
-	int				range_to_view;
+	int				range_of_vision;
 	float			damage;
 	int				repair_power = 10;
-	float			attack_delay;
-	float			timer_attack_delay = 0.0f;
 
 	Collider*       coll;
 	
@@ -79,6 +77,7 @@ public:
 	Entity()
 	{
 		to_delete = false;
+		timer_to_check.start();
 	};
 
 	// Destructor

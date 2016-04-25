@@ -13,11 +13,14 @@ public:
 	Vector2D<int>       direction;
 	float				speed;
 	UNIT_DIRECTION	    unit_direction;
+	float				attack_delay;
+	Timer				timer_attack_delay;
 
 	Unit()
 	{
 		type = UNIT;
 		has_target = false;
+		timer_attack_delay.start();
 	};
 
 	virtual void calculePos()
@@ -60,7 +63,6 @@ public:
 	{
 		if (path.size() > 0)
 		{
-			checkUnitDirection();
 			float pixels_to_move = 0;
 			float total_pixels_moved = 0;
 			float total_pixels_to_move = speed / 100 * dt;
@@ -163,44 +165,46 @@ public:
 
 	virtual bool update(float dt) 
 	{ 
+		checkUnitDirection();
 		setAnimationFromDirection();   // This sets animation according to their angle direction
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 		switch (state)
 		{
 		case IDLE:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
 				if (searchNearestEnemy())
 					LOG("Enemy found");
-				timer_to_check = 0.0f;
+				timer_to_check.start();
 			}
 			break;
 		case MOVE:
-			if (has_target) move(dt);
+			if (has_target)
+				move(dt);
 			break;
 		case MOVE_ALERT:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
 				if (searchNearestEnemy())
 					LOG("Enemy found");
-				timer_to_check = 0.0f;
+				timer_to_check.start();
 			}
-			if (has_target) move(dt);
+			if (has_target)
+				move(dt);
 			break;
 		case ATTACK:
-			if ((timer_attack_delay += dt) >= attack_delay)
+			if (timer_attack_delay.read() >= attack_delay)
 			{
 				attack();
-				checkUnitDirection();
-				timer_attack_delay = 0.0f;
+				timer_attack_delay.start();
 
 				if (state == ATTACK)
 					searchNearestEnemy();
 			}
 			break;
 		case DYING:
-			if ((timer_to_check += dt) >= time_to_die)
+			if (timer_to_check.read() >= time_to_die)
 			{
 				to_delete = true;
 				coll->to_delete = true;

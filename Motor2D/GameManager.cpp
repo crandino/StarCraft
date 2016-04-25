@@ -301,10 +301,10 @@ void GameManager::startGame()
 		time_between_waves.start();
 
 		iPoint p = COMMANDCENTERPOSITION;
-		app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
+		app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
 
-		unsigned int size_marines_x = 1;
-		unsigned int size_marines_y = 0;
+		unsigned int size_marines_x = SIZEMARINESX;
+		unsigned int size_marines_y = SIZEMARINESY;
 
 		createInitialMarines(size_marines_x, size_marines_y);
 		uint w, h; app->win->getWindowSize(w, h);

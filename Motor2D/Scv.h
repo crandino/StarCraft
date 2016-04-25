@@ -138,7 +138,7 @@ public:
 		max_hp = 40;
 		current_hp = 40.0f;
 		max_hp_bars = 6;
-		range_to_view = 300;
+		range_of_vision = 300;
 		range_to_attack = 50;
 
 		damage = 5.0f;
@@ -179,31 +179,31 @@ public:
 			
 	bool update(float dt)
 	{
+		checkUnitDirection();
 		setAnimationFromDirection();   // This sets animation according to their angle direction
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 		switch (state)
 		{
 		case IDLE:
-			if ((timer_to_check += dt) >= TIME_TO_CHECK)
+			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
 				if (searchNearestEnemy())
 					LOG("Enemy found");
-				timer_to_check = 0.0f;
+				timer_to_check.start();
 			}
 			break;
 		case MOVE:
 			if (has_target) move(dt);
 			break;
 		case REPAIR:
-			if ((timer_attack_delay += dt) >= attack_delay)
+			if (timer_attack_delay.read() >= attack_delay)
 			{
 				repair();
-				checkUnitDirection();
-				timer_attack_delay = 0.0f;
+				timer_attack_delay.start();
 			}
 		case DYING:
-			if ((timer_to_check += dt) >= time_to_die)
+			if (timer_to_check.read() >= time_to_die)
 			{
 				to_delete = true;
 				coll->to_delete = true;
@@ -243,11 +243,6 @@ public:
 		{
 			state = IDLE;
 		}
-	}
-
-	void draw()
-	{
-		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
 
 };

@@ -7,8 +7,9 @@ class Bunker : public Building
 {
 public:
 
-	Animation idle;
-	map<uint, Entity*>					units_inside;
+	Animation					idle;
+	map<uint, Entity*>			units_inside;
+	uint						max_capacity;
 
 	// SFX
 	unsigned int bunker_attack_fx;
@@ -41,12 +42,12 @@ public:
 		current_hp = 350.0f;
 		max_hp_bars = 10;
 		offset_life = { -23, 35 };
-		capacity = 4;
+		max_capacity = 4;
 
-		range_to_view = 150;
+		range_of_vision = 150;
 		range_to_attack = 150;
 		damage = 0; //we change it according to the amount of marines inside;
-		attack_delay = 200.0f;
+		//attack_delay = 200.0f;
 
 		state = IDLE;
 		faction = PLAYER;
@@ -64,11 +65,11 @@ public:
 				Bunker* bunker = (Bunker*)this;
 				if (bunker->units_inside.size() > 0)
 				{
-					if ((timer_to_check += dt) >= TIME_TO_CHECK)
+					if (timer_to_check.read() >= TIME_TO_CHECK)
 					{
 						if (searchNearestEnemy())
 							LOG("Enemy found");
-						timer_to_check = 0.0f;
+						timer_to_check.start();
 					}
 				}
 			}
@@ -85,10 +86,10 @@ public:
 				{
 					app->audio->playFx(bunker_attack_fx);
 					damage = bunker->units_inside.size() * 4;
-					if ((timer_attack_delay += dt) >= attack_delay)
+					if ((timer_attack_delay.read() >= attack_delay)
 					{
 						attack();
-						timer_attack_delay = 0.0f;
+						timer_attack_delay.start();
 
 						if (state == ATTACK)
 							searchNearestEnemy();
@@ -102,7 +103,7 @@ public:
 			break;*/
 		case DYING:
 			//current_animation = &dead;
-			if ((timer_to_check += dt) >= time_to_die)
+			if (timer_to_check.read() >= time_to_die)
 			{
 				leave_bunker();
 				to_delete = true;
@@ -124,7 +125,7 @@ public:
 				it->second->inside_bunker = false;
 				it->second->to_delete = false;
 				app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->first, it->second));
-				++capacity;
+				//++capacity;
 			}
 			units_inside.clear();
 		}
