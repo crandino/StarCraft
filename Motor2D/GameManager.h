@@ -9,7 +9,7 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define WAVETIME1 50.0f //120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME1 5.0f //120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 50.0f
 #define	SIZE1X 1 // Changes number of zerglings per wave
 #define SIZE1Y 1
@@ -89,7 +89,7 @@ public:
 
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
-	void createInitialMarines(unsigned int sizex, unsigned int sizey);
+	void createMarines(iPoint position,unsigned int sizex, unsigned int sizey);
 
 public:
 	//Time Management attributes

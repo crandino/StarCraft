@@ -493,8 +493,8 @@ void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 	{
 		for (int j = 0; j < sizey; j++)
 		{
-			int posx = 1036 + (sizex * i * 2);
-			int posy = 35 + (sizey * j * 2);
+			int posx = position.x + (sizex * i * 2);
+			int posy = position.y + (sizey * j * 2);
 
 			iPoint position = {posx, posy};
 

@@ -140,9 +140,9 @@ bool GameManager::update(float dt)
 			{
 				if (current_waves == 1)
 				{
-
+					
 					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1414, 127 });
+					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1036, 35 });
 					current_waves++;
 					all_zerlings_dead = false;
 
@@ -153,7 +153,7 @@ bool GameManager::update(float dt)
 
 					LOG("Last wave!!!");
 
-					app->entity_manager->createWave(SIZE3X, SIZE3Y, { 1414, 127 });
+					app->entity_manager->createWave(SIZE3X, SIZE3Y, { 1036, 35 });
 					current_waves++;
 					all_zerlings_dead = false;
 
@@ -308,7 +308,8 @@ void GameManager::startGame()
 		unsigned int size_marines_x = SIZEMARINESX;
 		unsigned int size_marines_y = SIZEMARINESY;
 
-		createInitialMarines(size_marines_x, size_marines_y);
+	
+		createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
 		uint w, h; app->win->getWindowSize(w, h);
 		app->render->camera.x = -p.x + (w/2); 
 		app->render->camera.y = -p.y + (h/2);
@@ -444,15 +445,16 @@ void GameManager::restartGame()
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.
-void GameManager::createInitialMarines(unsigned int sizex, unsigned int sizey)
+void GameManager::createMarines(iPoint position,unsigned int sizex, unsigned int sizey)
 {
+	
 
 	for (int i = 0; i < sizex; i++)
 	{
 		for (int j = 0; j < sizey; j++)
 		{
-			int posx = 1500 + (sizex * i * 10);
-			int posy = 2150 + (sizey * j * 10);
+			int posx = position.x + (sizex * i * 10);
+			int posy = position.y + (sizey * j * 10);
 
 			app->entity_manager->addEntity(iPoint({ posx, posy }), MARINE);
 		}
