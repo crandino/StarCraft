@@ -7,7 +7,7 @@
   
   <!-- Each module has its own node. Separate configuration -->
   <window>
-    <resolution width="640" height="480" scale="1"  />
+    <resolution width="1280" height="960" scale="2"  />
     <properties borderless='false'
                 fullscreen='false' 
                 resizable='false'

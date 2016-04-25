@@ -190,20 +190,11 @@
     <ClInclude Include="Motor2D\Bunker.h">
       <Filter>Entities\Terran_Buildings</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Marine_animations.h">
-      <Filter>Entities\Animations</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\Zergling_animations.h">
-      <Filter>Entities\Animations</Filter>
-    </ClInclude>
     <ClInclude Include="Motor2D\GuiLabel.h">
       <Filter>UI_elements</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Fonts.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\Scv_animations.h">
-      <Filter>Entities\Animations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +227,6 @@
     </Filter>
     <Filter Include="UI_elements">
       <UniqueIdentifier>{2e36ea98-665d-4212-9f2c-61d41d6cd8a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Animations">
-      <UniqueIdentifier>{164b44c7-0f29-48c2-aac4-2f76509f382e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

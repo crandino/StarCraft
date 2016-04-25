@@ -9,10 +9,6 @@ public:
 
 	Entity		*target_to_repair = nullptr;
 	
-	Animation	idle_up;
-	Animation   idle_right;
-	Animation	idle_down;
-	Animation	idle_left;
 	Animation	walk_up;
 	Animation   walk_right_up;
 	Animation   walk_right;
@@ -31,6 +27,9 @@ public:
 	Animation	repair_left;
 	Animation	repair_left_up;
 
+	vector<Animation*> move_animation_pack;
+	vector<Animation*> repair_animation_pack;
+
 	//SFX-------
 	unsigned int scv_repair_fx;
 
@@ -46,9 +45,84 @@ public:
 		// Animations
 		tex = app->tex->loadTexture("Units/Blue_Scv.png"); //Sprites/Animations etc..
 		scv_repair_fx = app->audio->loadFx("Audio/FX/SCV/Scv_repair.wav");
-		#include"Scv_animations.h";
+		
+		//---------------Idle and Walking Animation-----------------
+		walk_right.frames.push_back({ 288, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_right);
+
+		walk_right_up.frames.push_back({ 144, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_right_up);
+
+		walk_up.frames.push_back({ 0, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_up);
+
+		walk_left_up.frames.push_back({ 1008, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_left_up);
+
+		walk_left.frames.push_back({ 864, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_left);
+
+		walk_left_down.frames.push_back({ 720, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_left_down);
+
+		walk_down.frames.push_back({ 576, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_down);
+
+		walk_right_down.frames.push_back({ 432, 0, 72, 64 });
+		move_animation_pack.push_back(&walk_right_down);
+
+		//--------------Repair Animations---------------		
+		repair_right.frames.push_back({ 288, 64, 72, 64 });
+		repair_right.frames.push_back({ 288, 128, 72, 64 });
+		repair_right.speed = 0.01f;
+		repair_right.loop = true;
+		repair_animation_pack.push_back(&repair_right);
+
+		repair_right_up.frames.push_back({ 144, 64, 72, 64 });
+		repair_right_up.frames.push_back({ 144, 128, 72, 64 });
+		repair_right_up.speed = 0.01f;
+		repair_right_up.loop = true;
+		repair_animation_pack.push_back(&repair_right_up);
+
+		repair_up.frames.push_back({ 0, 64, 72, 64 });
+		repair_up.frames.push_back({ 0, 128, 72, 64 });
+		repair_up.speed = 0.01f;
+		repair_up.loop = true;
+		repair_animation_pack.push_back(&repair_up);
+
+		repair_left_up.frames.push_back({ 1008, 64, 72, 64 });
+		repair_left_up.frames.push_back({ 1008, 128, 72, 64 });
+		repair_left_up.speed = 0.01f;
+		repair_left_up.loop = true;
+		repair_animation_pack.push_back(&repair_left_up);
+
+		repair_left.frames.push_back({ 864, 64, 72, 64 });
+		repair_left.frames.push_back({ 864, 128, 72, 64 });
+		repair_left.speed = 0.01f;
+		repair_left.loop = true;
+		repair_animation_pack.push_back(&repair_left);
+
+		repair_left_down.frames.push_back({ 720, 64, 72, 64 });
+		repair_left_down.frames.push_back({ 720, 128, 72, 64 });
+		repair_left_down.speed = 0.01f;
+		repair_left_down.loop = true;
+		repair_animation_pack.push_back(&repair_left_down);
+
+		repair_down.frames.push_back({ 576, 64, 72, 64 });
+		repair_down.frames.push_back({ 576, 128, 72, 64 });
+		repair_down.speed = 0.01f;
+		repair_down.loop = true;
+		repair_animation_pack.push_back(&repair_down);
+
+		repair_right_down.frames.push_back({ 432, 64, 72, 64 });
+		repair_right_down.frames.push_back({ 432, 128, 72, 64 });
+		repair_right_down.speed = 0.01f;
+		repair_right_down.loop = true;
+		repair_animation_pack.push_back(&repair_right_down);		
+		//----------------------------------------------
+
 		angle = 225.f;
-		//current_animation = &idle_up;
+		current_animation = &walk_down;
 		selection_type = { 28, 9, 32, 19 };
 		circle_selection_offset = {-2, 0 };
 		offset_life = { -14, 22 };
@@ -77,149 +151,30 @@ public:
 		direction.setAngle(0.f);
 	}
 
-	//ROF method to check the orientation of the marine
 	void setAnimationFromDirection()
 	{
-		if (angle > 360)
+		switch (state)
 		{
-			angle -= 360.f;
+		case(IDLE) :
+		case(MOVE) :
+		{
+			int num_animation = angle / (360 / move_animation_pack.size());
+			current_animation = &(*move_animation_pack.at(num_animation));
+			break;
 		}
-		// From 0 to 180 degrees
-		if (has_target)
+		case(REPAIR) :
 		{
-			if (angle >= 0.f && angle < 22.5f)
-			{
-				current_animation = &idle_up;
-			}
-
-			else if (angle >= 45.f && angle < 67.5f)
-			{
-				current_animation = &walk_right_up;
-			}
-
-			else if(angle >= 90.f && angle < 112.5f)
-			{
-				current_animation = &idle_right;
-			}
-
-			else if (angle >= 135.f && angle < 157.5f)
-			{
-				current_animation = &walk_right_down;
-			}
-
-			// From 180 to 360 degrees
-			else if (angle >= 180.f && angle < 202.5f)
-			{
-				current_animation = &idle_down;
-			}
-
-			else if (angle >= 225.f && angle < 247.5f)
-			{
-				current_animation = &walk_left_down;
-			}
-
-			else if (angle >= 270.f && angle < 292.5f)
-			{
-				current_animation = &idle_left;
-			}
-
-			else if (angle >= 315.f && angle < 337.5f)
-			{
-				current_animation = &walk_left_up;
-			}
-				
+			int num_animation = angle / (360 / repair_animation_pack.size());
+			current_animation = &(*repair_animation_pack.at(num_animation));
+			break;
 		}
-		else
+		// WHERE is this animation?
+		/*case(DYING) :
 		{
-			if (angle >= 0.f && angle < 22.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_up;
-				}
-				else
-					current_animation = &idle_up;
-			}
-
-			else if (angle >= 45.f && angle < 67.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_right_up;
-				}
-				else
-					current_animation = &walk_right_up;
-			}
-
-			else if (angle >= 90.f && angle < 112.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_right;
-				}
-				else
-					current_animation = &idle_right;
-			}
-
-			else if (angle >= 135.f && angle < 157.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_right_down;
-				}
-				else
-					current_animation = &walk_right_down;
-			}
-
-			// From 180 to 360 degrees
-			else if (angle >= 180.f && angle < 202.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_down;
-				}
-				else
-					current_animation = &idle_down;
-			}
-
-			else if (angle >= 225.f && angle < 247.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_left_down;
-				}
-				else
-					current_animation = &walk_left_down;
-			}
-
-			else if (angle >= 270.f && angle < 292.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_left;
-				}
-				else
-					current_animation = &idle_left;
-			}
-
-			else if (angle >= 315.f && angle < 337.5f)
-			{
-				if (state == REPAIR)
-				{
-					app->audio->playFx(scv_repair_fx);
-					current_animation = &repair_left_up;
-				}
-				else
-				current_animation = &walk_left_up;
-			}
-		}	
+			current_animation = &dead;
+			break;
+		}*/
+		}
 	}
 			
 	bool update(float dt)

@@ -163,7 +163,7 @@ public:
 			angle -= 360;
 		if (angle != 0)
 			angle = -angle;
-		return (float)angle;
+		return angle;
 	}
 
 	Vector2D getNormal() const

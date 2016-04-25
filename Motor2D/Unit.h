@@ -6,13 +6,13 @@
 class Unit: public Entity
 {
 public:
-	bool			flying;
-	bool			has_target;
-	vector<iPoint>  path;
-	iPoint			distance_to_center_selector;
-	Vector2D<int>   direction;
-	float			speed;
-	UNIT_DIRECTION	unit_direction;
+	bool				flying;
+	bool				has_target;
+	vector<iPoint>		path;
+	iPoint				distance_to_center_selector;
+	Vector2D<int>       direction;
+	float				speed;
+	UNIT_DIRECTION	    unit_direction;
 
 	Unit()
 	{
@@ -139,153 +139,26 @@ public:
 		}
 	}
 
+	// Depending on its state, the entity obtains the corresponding angle // CRZ
 	void checkUnitDirection()
 	{
-		if (state == ATTACK)
+		if (state == ATTACK && target_to_attack != NULL)
 		{
-			if (target_to_attack->tile_pos.x == tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
-			{
-				unit_direction = UP;
-			}
-			else if (target_to_attack->tile_pos.x > tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
-			{
-				unit_direction = RIGHT_UP;
-			}
-			else if (target_to_attack->tile_pos.x > tile_pos.x && target_to_attack->tile_pos.y == tile_pos.y)
-			{
-				unit_direction = RIGHT;
-			}
-			else if (target_to_attack->tile_pos.x > tile_pos.x && target_to_attack->tile_pos.y > tile_pos.y)
-			{
-				unit_direction = RIGHT_DOWN;
-			}
-			else if (target_to_attack->tile_pos.x == tile_pos.x && target_to_attack->tile_pos.y > tile_pos.y)
-			{
-				unit_direction = DOWN;
-			}
-			else if (target_to_attack->tile_pos.x < tile_pos.x && target_to_attack->tile_pos.y > tile_pos.y)
-			{
-				unit_direction = LEFT_DOWN;
-			}
-			else if (target_to_attack->tile_pos.x < tile_pos.x && target_to_attack->tile_pos.y == tile_pos.y)
-			{
-				unit_direction = LEFT;
-			}
-			else if (target_to_attack->tile_pos.x < tile_pos.x && target_to_attack->tile_pos.y < tile_pos.y)
-			{
-				unit_direction = LEFT_UP;
-			}
+			direction = { (target_to_attack->tile_pos.x - tile_pos.x), (target_to_attack->tile_pos.y - tile_pos.y) };
 		}
-
 		else if (state == REPAIR)
 		{
-			if (target_to_repair->tile_pos.x == tile_pos.x && target_to_repair->tile_pos.y < tile_pos.y)
-			{
-				unit_direction = UP;
-			}
-			else if (target_to_repair->tile_pos.x > tile_pos.x && target_to_repair->tile_pos.y < tile_pos.y)
-			{
-				unit_direction = RIGHT_UP;
-			}
-			else if (target_to_repair->tile_pos.x > tile_pos.x && target_to_repair->tile_pos.y == tile_pos.y)
-			{
-				unit_direction = RIGHT;
-			}
-			else if (target_to_repair->tile_pos.x > tile_pos.x && target_to_repair->tile_pos.y > tile_pos.y)
-			{
-				unit_direction = RIGHT_DOWN;
-			}
-			else if (target_to_repair->tile_pos.x == tile_pos.x && target_to_repair->tile_pos.y > tile_pos.y)
-			{
-				unit_direction = DOWN;
-			}
-			else if (target_to_repair->tile_pos.x < tile_pos.x && target_to_repair->tile_pos.y > tile_pos.y)
-			{
-				unit_direction = LEFT_DOWN;
-			}
-			else if (target_to_repair->tile_pos.x < tile_pos.x && target_to_repair->tile_pos.y == tile_pos.y)
-			{
-				unit_direction = LEFT;
-			}
-			else if (target_to_repair->tile_pos.x < tile_pos.x && target_to_repair->tile_pos.y < tile_pos.y)
-			{
-				unit_direction = LEFT_UP;
-			}
+			direction = { (target_to_repair->tile_pos.x - tile_pos.x), (target_to_repair->tile_pos.y - tile_pos.y) };
 		}
 		else
-			{
+		{
 			if (path.size() > 0)
 			{
 				iPoint pos_path = *path.begin();
-				if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
-				{
-					unit_direction = UP;
-				}
-				else if (pos_path.x > tile_pos.x && pos_path.y < tile_pos.y)
-				{
-					unit_direction = RIGHT_UP;
-				}
-				else if (pos_path.x > tile_pos.x && pos_path.y == tile_pos.y)
-				{
-					unit_direction = RIGHT;
-				}
-				else if (pos_path.x > tile_pos.x && pos_path.y > tile_pos.y)
-				{
-					unit_direction = RIGHT_DOWN;
-				}
-				else if (pos_path.x == tile_pos.x && pos_path.y > tile_pos.y)
-				{
-					unit_direction = DOWN;
-				}
-				else if (pos_path.x < tile_pos.x && pos_path.y > tile_pos.y)
-				{
-					unit_direction = LEFT_DOWN;
-				}
-				else if (pos_path.x < tile_pos.x && pos_path.y == tile_pos.y)
-				{
-					unit_direction = LEFT;
-				}
-				else if (pos_path.x < tile_pos.x && pos_path.y < tile_pos.y)
-				{
-					unit_direction = LEFT_UP;
-				}
+				direction = { (pos_path.x - tile_pos.x), (pos_path.y - tile_pos.y) };
 			}	
 		}
-
-		switch (unit_direction)
-		{
-		case(UP) :
-			angle = 0.f;
-			break;
-
-		case(RIGHT_UP) :
-			angle = 45.f;
-			break;
-
-		case(RIGHT) :
-			angle = 90.f;
-			break;
-
-		case(RIGHT_DOWN) :
-			angle = 135.f;
-			break;
-
-		case(DOWN) :
-			angle = 180.f;
-			break;
-
-		case(LEFT_DOWN) :
-			angle = 225.f;
-			break;
-
-		case(LEFT) :
-			angle = 270.f;
-			break;
-
-		case(LEFT_UP) :
-			angle = 315.f;
-			break;
-		}
+		angle = round(direction.getAngle());
 	}
 
 	virtual bool update(float dt) 

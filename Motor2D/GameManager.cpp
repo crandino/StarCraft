@@ -303,8 +303,8 @@ void GameManager::startGame()
 		iPoint p = COMMANDCENTERPOSITION;
 		app->entity_manager->addEntity(p, COMMANDCENTER);//BASE CREATION
 
-		unsigned int size_marines_x = 5;
-		unsigned int size_marines_y = 2;
+		unsigned int size_marines_x = 1;
+		unsigned int size_marines_y = 0;
 
 		createInitialMarines(size_marines_x, size_marines_y);
 		uint w, h; app->win->getWindowSize(w, h);
