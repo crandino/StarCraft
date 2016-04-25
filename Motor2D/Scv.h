@@ -7,8 +7,6 @@ class Scv : public Unit
 {
 public:
 
-	Entity		*target_to_repair = nullptr;
-	
 	Animation	walk_up;
 	Animation   walk_right_up;
 	Animation   walk_right;
@@ -203,7 +201,9 @@ public:
 			{
 				repair();
 				timer_attack_delay.start();
+
 			}
+			break;
 		case DYING:
 			if (timer_to_check.read() >= time_to_die)
 			{
