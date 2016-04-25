@@ -36,26 +36,6 @@ enum SPECIALIZATION  // Second specialization
 	BUNKER,
 };
 
-enum UNIT_DIRECTION
-{
-	UP,
-	RIGHT_UP_22,
-	RIGHT_UP,
-	RIGHT_UP_66,
-	RIGHT,
-	RIGHT_DOWN_112,
-	RIGHT_DOWN,
-	RIGHT_DOWN_157,
-	DOWN,
-	LEFT_DOWN_202,
-	LEFT_DOWN,
-	LEFT_DOWN_247,
-	LEFT,
-	LEFT_UP_292,
-	LEFT_UP,
-	LEFT_UP_337
-};
-
 class Entity;
 class Unit;
 class Building;
@@ -91,6 +71,8 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
+	Entity* const addEntity(Entity* e);
+	Entity* const createUnit(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
 	
 	void deleteEntity(map<uint, Entity*> selection);

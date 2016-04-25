@@ -123,13 +123,15 @@ bool GameManager::update(float dt)
 					current_waves++;
 					all_zerlings_dead = false;
 					resources++;
+
+					time_between_waves.start();
 				}
 			}
 
 			if (current_waves == 1 && all_zerlings_dead && resources == 1)
 			{   
 				//Get Resources
-				mineral_resources += 50;
+				mineral_resources += 150;
 				gas_resources += 50;
 				resources ++;
 			}

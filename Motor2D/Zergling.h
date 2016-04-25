@@ -311,7 +311,20 @@ public:
 		case IDLE:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
+				//AleixBV Research
 				if (!searchNearestEnemy())
+					if (queue.size() > 0)
+					{
+						if (app->path->createPath(tile_pos, queue.front()))
+						{
+							path = app->path->getLastPath();
+							has_target = true;
+							state = MOVE_ALERT;
+							queue.push(queue.front());//for bucle
+							queue.pop();
+						}
+					}
+					else
 					app->entity_manager->SetEnemyToAttackCommandCenter(this);
 				timer_to_check.start();
 			}

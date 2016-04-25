@@ -2,19 +2,22 @@
 #define __UNIT_H__
 
 #include "Entity.h"
+#include "queue"
 
 class Unit: public Entity
 {
 public:
+
 	bool				flying;
 	bool				has_target;
 	vector<iPoint>		path;
 	iPoint				distance_to_center_selector;
 	Vector2D<int>       direction;
 	float				speed;
-	UNIT_DIRECTION	    unit_direction;
 	float				attack_delay;
 	Timer				timer_attack_delay;
+
+	queue<iPoint>	queue;
 
 	Unit()
 	{

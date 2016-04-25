@@ -64,7 +64,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(SCV) :
 		LOG("Creating SCV");
 		e = new Scv(pos);
-		create_SCV = false;
 		break;
 	}
 
@@ -83,6 +82,50 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 
 	return e;
 }
+
+//AleixBV Research
+Entity* const EntityManager::addEntity(Entity* e)
+{
+	if (e != NULL && building_mode != true)
+	{
+		e->id = ++next_ID;
+		active_entities.insert(pair<uint, Entity*>(e->id, e));
+
+		// Command center creation, special treatment
+		if (e->specialization == COMMANDCENTER)
+		{
+			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
+			recalculatePaths();
+		}
+	}
+
+	return e;
+}
+
+Entity* const EntityManager::createUnit(iPoint &pos, SPECIALIZATION type)
+{
+	Entity *e = NULL;
+
+	switch (type)
+	{
+	case(MARINE) :
+		LOG("Creating Marine");
+		e = new Marine(pos);
+		break;
+	case(ZERGLING) :
+		LOG("Creating Zergling");
+		e = new Zergling(pos);
+		break;
+	case(SCV) :
+		LOG("Creating SCV");
+		e = new Scv(pos);
+		create_SCV = false;
+		break;
+	}
+
+	return e;
+}
+//AleixBV /Research
 
 /*Method that makes the enemyWave attack the commandCenter*/
 void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
@@ -165,16 +208,21 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == COMMANDCENTER)
 			{
+				//AleixBV Research
 				pos_commander = it->second->pos;
+				app->game_manager->mineral_resources -= 50;
+				position.x = pos_commander.x + 20;
+				position.y = pos_commander.y + 100;
+
+				Building* building = (Building*)it->second;
+				building->queue.push(createUnit(position, SCV));
+				if (building->queue.size() == 1)
+					building->creation_timer.start();
+				//AleixBV /Research
+
 				break;
 			}
 		}
-
-		app->game_manager->mineral_resources -= 50;
-		position.x = pos_commander.x + 20;
-		position.y = pos_commander.y + 100;
-
-		addEntity(position, SCV);
 	}
 
 	//if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)

@@ -39,7 +39,9 @@ public:
 	ENTITY_TYPE		type;
 	SPECIALIZATION  specialization;
 	STATE			state;
+
 	Timer			timer_to_check;
+	float			time_to_create;
 
 	// UI paramters
 	SDL_Rect        selection_type;				// Section of the texture that contains circle selections
