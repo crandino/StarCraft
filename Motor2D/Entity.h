@@ -42,7 +42,7 @@ public:
 	float			timer_to_check = 0.0f;
 
 	// UI paramters
-	SDL_Rect        selection_type;
+	SDL_Rect        selection_type;				// Section of the texture that contains circle selections
 	iPoint		    circle_selection_offset;
 	
 	SDL_Texture		*tex;   
@@ -72,15 +72,9 @@ public:
 
 	Collider*       coll;
 	
-	bool			has_target;
-	iPoint			distance_to_center_selector;
-	SDL_Texture     *tile_path;
-	bool            end_path = false;
-
 	bool			to_delete;
 	bool            inside_bunker = false;
-
-
+	
 	// Constructors
 	Entity()
 	{
@@ -93,7 +87,7 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
-	virtual void checkAngle()
+	virtual void setAnimationFromDirection()
 	{ }
 
 	virtual bool update(float dt)
@@ -104,48 +98,6 @@ public:
 	virtual bool searchNearestEnemy()
 	{
 		return app->entity_manager->searchNearEntity(this);
-	}
-
-	virtual void attack()
-	{
-		if (target_to_attack != NULL && target_to_attack->state != DYING)
-		{
-			int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
-			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
-			if (d <= range_to_attack)
-			{
-				if ((target_to_attack->current_hp -= damage) <= 0.0f)
-				{
-					if (target_to_attack->type == BUILDING)
-					{
-						if (target_to_attack->specialization == COMMANDCENTER)
-							app->game_manager->game_over = true;
-						app->map->changeLogic(target_to_attack->coll->rect, LOW_GROUND); // We need to verify if is LOW_GROUND or HIGH_GROUND
-						app->entity_manager->logicChanged();
-					}
-
-					state = IDLE;
-					target_to_attack->state = DYING;
-					app->entity_manager->enemyJustDied = true;
-					target_to_attack = NULL;
-
-					if (faction == PLAYER )
-					{
-						app->game_manager->total_units_killed_currentFrame++;
-					}
-				}
-			}
-			else
-			{
-				state = IDLE;
-				searchNearestEnemy();
-			}
-		}
-		else
-		{
-			state = IDLE;
-			searchNearestEnemy();
-		}
 	}
 
 	virtual void draw()

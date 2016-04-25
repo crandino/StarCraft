@@ -6,6 +6,8 @@
 class Scv : public Unit
 {
 public:
+
+	Entity		*target_to_repair = nullptr;
 	
 	Animation	idle_up;
 	Animation   idle_right;
@@ -76,7 +78,7 @@ public:
 	}
 
 	//ROF method to check the orientation of the marine
-	void checkAngle()
+	void setAnimationFromDirection()
 	{
 		if (angle > 360)
 		{
@@ -222,7 +224,7 @@ public:
 			
 	bool update(float dt)
 	{
-		checkAngle();   // This sets animation according to their angle direction
+		setAnimationFromDirection();   // This sets animation according to their angle direction
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 		switch (state)
@@ -238,13 +240,6 @@ public:
 		case MOVE:
 			if (has_target) move(dt);
 			break;
-		case DYING:
-			if ((timer_to_check += dt) >= time_to_die)
-			{
-				to_delete = true;
-				coll->to_delete = true;
-			}
-			break;
 		case REPAIR:
 			if ((timer_attack_delay += dt) >= attack_delay)
 			{
@@ -252,6 +247,13 @@ public:
 				checkUnitDirection();
 				timer_attack_delay = 0.0f;
 			}
+		case DYING:
+			if ((timer_to_check += dt) >= time_to_die)
+			{
+				to_delete = true;
+				coll->to_delete = true;
+			}
+			break;
 		}
 		return true;
 	}

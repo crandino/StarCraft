@@ -101,10 +101,6 @@ public:
 
 	void SetEnemyToAttackCommandCenter(Entity* e);
 
-
-
-
-
 	/*--------Methods for interact with buildings----------*/
 	void GetInsideBunker(Entity* e);	
 	void repairBuilding(Entity* e);
@@ -127,7 +123,7 @@ public:
 	/*---Utilities---*/ //Move to Globals when we have more time so it can be used by other modules
 	iPoint EntityManager::changeSign(iPoint point);
 
-	void logicChanged();
+	void recalculatePaths();
 
 public:
 	//Frag count
@@ -143,7 +139,6 @@ public:
 public:
 	map<uint, Entity*>                  selection; 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					player_units;
 
 private:
 

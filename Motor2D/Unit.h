@@ -10,7 +10,6 @@ public:
 	bool			has_target;
 	vector<iPoint>  path;
 	iPoint			distance_to_center_selector;
-	SDL_Texture     *tile_path;
 	Vector2D<int>   direction;
 	float			speed;
 	UNIT_DIRECTION	unit_direction;
@@ -19,12 +18,42 @@ public:
 	{
 		type = UNIT;
 		has_target = false;
-		tile_path = app->tex->loadTexture("TemporaryTextures/path_tile.png");
 	};
 
 	virtual void calculePos()
 	{
 		pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };
+	}
+
+	virtual void attack()
+	{
+		if (target_to_attack != NULL && target_to_attack->state != DYING)
+		{
+			int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
+			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
+			if (d <= range_to_attack)
+			{
+				if ((target_to_attack->current_hp -= damage) <= 0.0f)
+				{
+					state = IDLE;
+					target_to_attack->state = DYING;
+					target_to_attack = NULL;
+
+					if (faction == PLAYER)
+						app->game_manager->total_units_killed_currentFrame++;
+				}
+			}
+			else
+			{
+				state = IDLE;
+				searchNearestEnemy();
+			}
+		}
+		else
+		{
+			state = IDLE;
+			searchNearestEnemy();
+		}
 	}
 
 	virtual void move(float dt)
@@ -146,8 +175,6 @@ public:
 			{
 				unit_direction = LEFT_UP;
 			}
-
-
 		}
 
 		else if (state == REPAIR)
@@ -187,7 +214,7 @@ public:
 		}
 		else
 			{
-			if (path.size()>0)
+			if (path.size() > 0)
 			{
 				iPoint pos_path = *path.begin();
 				if (pos_path.x == tile_pos.x && pos_path.y < tile_pos.y)
@@ -263,7 +290,7 @@ public:
 
 	virtual bool update(float dt) 
 	{ 
-		checkAngle();   // This sets animation according to their angle direction
+		setAnimationFromDirection();   // This sets animation according to their angle direction
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 		switch (state)

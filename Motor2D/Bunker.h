@@ -78,7 +78,7 @@ public:
 		case MOVE_ALERT:
 			break;
 		case ATTACK:
-			if (specialization == BUNKER)
+			/*if (specialization == BUNKER)
 			{
 				Bunker* bunker = (Bunker*)this;
 				if (bunker->units_inside.size() > 0)
@@ -99,7 +99,7 @@ public:
 			}
 			else
 				state = IDLE;
-			break;
+			break;*/
 		case DYING:
 			//current_animation = &dead;
 			if ((timer_to_check += dt) >= time_to_die)

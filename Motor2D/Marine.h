@@ -6,6 +6,7 @@
 class Marine : public Unit
 {
 public:
+
 	//ROF
 	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
 	Animation	idle_up;
@@ -45,7 +46,7 @@ public:
 	Animation dead;
 
 	// SFX
-	 unsigned int marine_attack_fx;
+	unsigned int marine_attack_fx;
 
 	Marine(iPoint &p)
 	{
@@ -95,7 +96,7 @@ public:
 	}
 
 	//ROF method to check the orientation of the marine
-	void checkAngle()
+	void setAnimationFromDirection()
 	{
 		if (state == DYING)
 		{

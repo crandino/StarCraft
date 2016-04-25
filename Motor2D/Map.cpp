@@ -192,34 +192,30 @@ bool Map::isAreaWalkable(const SDL_Rect &rect)
 
 bool Map::changeLogic(const SDL_Rect &rect, WALKABILITY walk_value)
 {
-	list<MapData>::iterator map = data.begin();
-	while (map != data.end())
+	// Right now, there is only one logic map and only one logic layer, so we must not iterate them.
+	list<MapLayer*>::iterator layer = app->map->data.back().layers.begin();
+	while (layer != app->map->data.back().layers.end())
 	{
-		if (map->name == "PROTOTYPE_LOGIC_MAP.tmx")
-		{
-			list<MapLayer*>::iterator layer = map->layers.begin();
-			while (layer != map->layers.end())
-			{
-				if ((*layer)->name == "Logic_Layer")
-				{
-					iPoint first_tile = app->map->worldToMap(app->map->data.back(), rect.x, rect.y);
-					iPoint last_tile = app->map->worldToMap(app->map->data.back(), rect.x + rect.w, rect.y + rect.h);
+		iPoint first_tile = app->map->worldToMap(app->map->data.back(), rect.x, rect.y);
+		iPoint last_tile = app->map->worldToMap(app->map->data.back(), rect.x + rect.w, rect.y + rect.h);
 
-					for (int y = first_tile.y; y < last_tile.y; ++y)
-					{
-						for (int x = first_tile.x; x < last_tile.x; ++x)
-						{
-							(*layer)->data[y * (*layer)->width + x] = walk_value;
-						}
-					}
-					return true;
-				}
-				++layer;
+		for (int y = first_tile.y; y < last_tile.y; ++y)
+		{
+			for (int x = first_tile.x; x < last_tile.x; ++x)
+			{
+				(*layer)->data[y * (*layer)->width + x] = walk_value;
 			}
 		}
-		++map;
+	++layer;
 	}
-	return false;
+
+	// We update the walkability map
+	int w, h;
+	uchar *buffer = NULL;
+	if (app->map->createWalkabilityMap(w, h, &buffer))
+		app->path->setMap(w, h, buffer);
+
+	return true;
 }
 
 int Properties::get(const char* value, int default_value) const

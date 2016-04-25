@@ -77,12 +77,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		if (e->specialization == COMMANDCENTER)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
-			logicChanged();
-		}
-
-		if (e->specialization == MARINE)
-		{
-			player_units.insert(pair<uint, Entity*>(e->id, e));
+			recalculatePaths();
 		}
 	}
 
@@ -110,6 +105,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 // Called each loop iteration
 bool EntityManager::preUpdate()
 {
+
 	// We delete the entities marked with to_delete
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end();)
@@ -127,7 +123,17 @@ bool EntityManager::preUpdate()
 				app->game_manager->marineCounterDeath++;
 
 			if (it->second->specialization == BUNKER)
+			{
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
+				app->entity_manager->recalculatePaths();
+			}
+
+			if (it->second->specialization == COMMANDCENTER)
+			{
+				app->game_manager->game_over = true;
+				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
+				app->entity_manager->recalculatePaths();
+			}
 			
 			selection.erase(it->first);
 			if(!it->second->inside_bunker)
@@ -227,23 +233,7 @@ bool EntityManager::update(float dt)
 
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
-	{
 			it->second->update(dt);
-
-		//Debug: To draw the path finding that the entity is following
-		/*if (app->entity_manager->debug)
-		{
-			Unit *unit = (Unit*)it->second;
-			if (unit->path.size() > 0)
-			{
-				for (vector<iPoint>::iterator it2 = unit->path.begin(); it2 != unit->path.end(); ++it2)
-				{
-					iPoint p = app->map->mapToWorld(app->map->data.back(), it2->x, it2->y);
-					app->render->blit(unit->tile_path, p.x, p.y);
-				}
-			}
-		}*/
-	}
 
 	return true;
 }
@@ -451,7 +441,7 @@ void EntityManager::handleSelection()
 			building_mode = false;
 
 			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			logicChanged();
+			recalculatePaths();
 		}
 	}
 }
@@ -492,7 +482,8 @@ bool EntityManager::searchNearEntity(Entity* e)
 			
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 
-			if (e->target_to_attack == NULL && d <= value && maxHP <= previousMaxHP)//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
+			//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
+			if (e->target_to_attack == NULL && d <= value && maxHP <= previousMaxHP)
 			{
 				(e->target_to_attack) = &(*it->second);
 				LOG("BUG NET");
@@ -513,8 +504,8 @@ bool EntityManager::searchNearEntity(Entity* e)
 				}
 			}
 		}
-
-		else if (e->specialization == SCV && it->second != NULL && it->second->type == BUILDING && (it->second->current_hp < it->second->max_hp))// we check if we are a SCV, the objective is a building and needs to be repared
+		// We check if we are a SCV, the objective is a building and needs to be repared
+		else if (e->specialization == SCV && it->second != NULL && it->second->type == BUILDING && (it->second->current_hp < it->second->max_hp))
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -580,14 +571,10 @@ bool EntityManager::searchNearEntity(Entity* e)
 	return ret;
 }
 
-
-
 void EntityManager::createZergling(iPoint position)
 {
 	addEntity(position, ZERGLING);
 }
-
-
 
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)
@@ -723,22 +710,16 @@ void EntityManager::choosePlaceForBuilding()
 	app->render->blit(building_to_place->tex, building_to_place->pos.x, building_to_place->pos.y, &building_to_place->current_animation->getCurrentFrame());
 }
 
-void EntityManager::logicChanged()
+void EntityManager::recalculatePaths()
 {
-	int w, h;
-	uchar *buffer = NULL;
-	if (app->map->createWalkabilityMap(w, h, &buffer))
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
 	{
-		app->path->setMap(w, h, buffer);
-		map<uint, Entity*>::iterator it = active_entities.begin();
-		for (; it != active_entities.end(); ++it)
+		if (it->second->type == UNIT)
 		{
-			if (it->second->type == UNIT)
-			{
-				Unit *unit = (Unit*)it->second;
-				if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-					unit->path = app->path->getLastPath();
-			}
+			Unit *unit = (Unit*)it->second;
+			if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
+				unit->path = app->path->getLastPath();
 		}
 	}
 }

@@ -77,7 +77,7 @@ public:
 		time_to_die = 500.0f;
 	}
 
-	void checkAngle()
+	void setAnimationFromDirection()
 	{
 		if (state == DYING)
 		{
@@ -200,7 +200,7 @@ public:
 
 	virtual bool update(float dt)
 	{
-		checkAngle();   // This sets animation according to their angle direction
+		setAnimationFromDirection();   // This sets animation according to their angle direction
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 		switch (state)
