@@ -419,7 +419,6 @@ void GameManager::restartGame()
 	gas_resources = 0;
 	total_units_killed_currentFrame = 0;
 
-	marineCounterDeath = 0;
 	won = false;
 	close = false;
 	start_game = true;

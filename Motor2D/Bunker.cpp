@@ -92,7 +92,7 @@ bool Bunker::update(float dt)
 		//current_animation = &dead;
 		if (timer_to_check.read() >= time_to_die)
 		{
-			//leave_bunker();
+			getEntitiesOutside();
 			to_delete = true;
 			coll->to_delete = true;
 		}
@@ -105,13 +105,35 @@ bool Bunker::update(float dt)
 
 bool Bunker::getEntityInside(Entity* entity)
 {
-	bool ret = false;
 
-	if (units_inside.size() <= max_capacity)
+	if (units_inside.size() < max_capacity)
 	{
 		units_inside.insert(pair<uint, Entity*>(entity->id, entity));
+		entity->to_delete = true;
 		Marine *m = (Marine*)entity;
-		m->inside_bunker = true;
+		m->inside_bunker = true;		
+		m->coll->disable();	
+		m->bunker_to_fill = NULL;
+		return true;
+	}
+
+	return false;
+}
+
+bool Bunker::getEntitiesOutside()
+{
+	bool ret = false;
+
+	for (map<uint, Entity*>::iterator it = units_inside.begin(); it != units_inside.end();)
+	{
+		app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->second->id, it->second));
+		
+		Marine *m = (Marine*)it->second;
+		m->coll->enable();
+		m->to_delete = false;
+		m->inside_bunker = false;		
+		it = units_inside.erase(it);
+		ret = true;
 	}
 
 	return ret;

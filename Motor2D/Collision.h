@@ -24,10 +24,11 @@ struct Collider
 {
 	SDL_Rect rect;
 	bool to_delete;
+	bool active;
 	COLLIDER_TYPE type;
 	Module *callback;
 
-	Collider(SDL_Rect SDL_Rect, COLLIDER_TYPE type, Module *callback = NULL) : rect(SDL_Rect), type(type), callback(callback), to_delete(false)
+	Collider(SDL_Rect SDL_Rect, COLLIDER_TYPE type, Module *callback = NULL) : rect(SDL_Rect), type(type), callback(callback), to_delete(false), active(true)
 	{ }
 
 	void setPos(int x, int y)
@@ -37,6 +38,10 @@ struct Collider
 	}
 
 	bool checkCollision(SDL_Rect &r) const;
+
+	void enable() { active = true; }
+	void disable() { active = false; }
+
 };
 
 class Collision : public Module

@@ -63,15 +63,23 @@ bool Collision::update(float dt)
 	while (it1 != colliders.end())
 	{
 		c1 = (*it1);
+		if (!c1->active)
+		{
+			++it1; continue;
+		}
 
 		// Debug ---
-		if (debug)
+		if (debug && c1->active)
 			drawDebug(c1);
 
 		it2 = next(it1);				 //avoid checking collisions already checked
 		while (it2 != colliders.end())
 		{
 			c2 = (*it2);
+			if (!c2->active)
+			{
+				++it2; continue;
+			}
 
 			if (c1->checkCollision(c2->rect) == true)
 			{

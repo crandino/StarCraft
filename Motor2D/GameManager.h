@@ -49,8 +49,6 @@ public:
 	uint total_kills_game = 0;
 	uint total_units_killed_currentFrame = 0;
 
-	uint marineCounterDeath = 0;
-
 	//-------------Resources------------------
 	int       mineral_resources = 1000;
 	int       gas_resources = 1000;

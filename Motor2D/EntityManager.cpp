@@ -162,26 +162,23 @@ bool EntityManager::preUpdate()
 					it2->second->target_to_attack = NULL;
 			}
 
-			if (it->second->specialization == MARINE)
-				app->game_manager->marineCounterDeath++;
-
-			if (it->second->specialization == BUNKER)
+			if (it->second->type == BUILDING)
 			{
-				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
-				app->entity_manager->recalculatePaths();
-			}
-
-			if (it->second->specialization == COMMANDCENTER)
-			{
-				app->game_manager->game_over = true;
+				if (it->second->specialization == COMMANDCENTER)
+					app->game_manager->game_over = true;
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths();
 			}
 			
 			selection.erase(it->first);
-			/*if(!it->second->inside_bunker)
-				RELEASE(it->second);*/
-
+			if (it->second->specialization == MARINE)
+			{
+				if (!((Marine*)it->second)->inside_bunker)
+					RELEASE(it->second);
+			}
+			else
+				RELEASE(it->second);			
+				
 			it = active_entities.erase(it);
 		}
 		else

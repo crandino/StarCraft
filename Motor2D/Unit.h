@@ -123,6 +123,7 @@ public:
 						path.clear();
 						has_target = false;
 						state = IDLE;
+						break;
 					}
 					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
 						path.erase(path.begin());
