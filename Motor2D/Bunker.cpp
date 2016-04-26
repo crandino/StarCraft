@@ -88,6 +88,10 @@ bool Bunker::update(float dt)
 			coll->to_delete = true;
 		}
 		break;
+	case WAITING_PATH_MOVE:
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		break;
 	}
 	return true;
 }

@@ -297,6 +297,18 @@ public:
 			current_animation = &dead;
 			break;
 		}
+		case(WAITING_PATH_MOVE) :
+		{
+			int num_animation = angle / (360 / idle_animation_pack.size());
+			current_animation = &(*idle_animation_pack.at(num_animation));
+			break;
+		}
+		case(WAITING_PATH_MOVE_ALERT) :
+		{
+			int num_animation = angle / (360 / idle_animation_pack.size());
+			current_animation = &(*idle_animation_pack.at(num_animation));
+			break;
+		}
 		}
 	}
 
@@ -314,16 +326,14 @@ public:
 				target_to_attack = searchNearestEnemy();
 				if (target_to_attack != NULL)
 					newNearestEntityFinded();
-				if (queue.size() > 0)//ABV: if we want pathfinding in parts
+				/*if (queue.size() > 0)//ABV: if we want pathfinding in parts
 				{
 					if (app->path->createPath(tile_pos, queue.front()))
 					{
-						path = app->path->getLastPath();
-						has_target = true;
-						state = MOVE_ALERT;
+						state = WAITING_PATH_MOVE_ALERT;
 						queue.pop();
 					}
-				}
+				}*/
 				else
 					app->entity_manager->SetEnemyToAttackCommandCenter(this);
 				timer_to_check.start();
@@ -363,6 +373,20 @@ public:
 			{
 				to_delete = true;
 				coll->to_delete = true;
+			}
+			break;
+		case WAITING_PATH_MOVE:
+			if (path.size() > 0)
+			{
+				has_target = true;
+				state = MOVE;
+			}
+			break;
+		case WAITING_PATH_MOVE_ALERT:
+			if (path.size() > 0)
+			{
+				has_target = true;
+				state = MOVE_ALERT;
 			}
 			break;
 		}

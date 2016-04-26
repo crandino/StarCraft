@@ -398,6 +398,19 @@ void Marine::setAnimationFromDirection()
 		current_animation = &dead;
 		break;
 	}
+	case(WAITING_PATH_MOVE) :
+	{
+		int num_animation = angle / (360 / idle_animation_pack.size());
+		current_animation = &(*idle_animation_pack.at(num_animation));
+		break;
+	}
+	case(WAITING_PATH_MOVE_ALERT) :
+	{
+		int num_animation = angle / (360 / idle_animation_pack.size());
+		current_animation = &(*idle_animation_pack.at(num_animation));
+		break;
+	}
+
 	}
 }
 

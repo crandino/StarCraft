@@ -165,6 +165,20 @@ bool Unit::update(float dt)
 			coll->to_delete = true;
 		}
 		break;
+	case WAITING_PATH_MOVE:
+		if (path.size() > 0)
+		{
+			has_target = true;
+			state = MOVE;
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		if (path.size() > 0)
+		{
+			has_target = true;
+			state = MOVE_ALERT;
+		}
+		break;
 	}
 	return true;
 }
