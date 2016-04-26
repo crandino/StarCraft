@@ -2,6 +2,7 @@
 #define __UNIT_H__
 
 #include "Entity.h"
+#include "p2Log.h"
 #include "queue"
 
 class Unit: public Entity
@@ -17,7 +18,7 @@ public:
 	float				attack_delay;
 	Timer				timer_attack_delay;
 
-	queue<iPoint>	queue;
+	queue<iPoint>		queue;
 
 	Unit()
 	{
@@ -122,13 +123,6 @@ public:
 						path.clear();
 						has_target = false;
 						state = IDLE;
-						//Bunker Stuff
-						if (target_to_reach != NULL && target_to_reach->specialization == BUNKER)
-						{
-							app->entity_manager->GetInsideBunker(this);
-							target_to_reach = NULL;
-						}
-						break;
 					}
 					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
 						path.erase(path.begin());

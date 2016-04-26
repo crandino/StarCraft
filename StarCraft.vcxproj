@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="Motor2D\App.cpp" />
     <ClCompile Include="Motor2D\Audio.cpp" />
+    <ClCompile Include="Motor2D\Bunker.cpp" />
     <ClCompile Include="Motor2D\Collision.cpp" />
     <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
@@ -125,6 +126,7 @@
     <ClCompile Include="Motor2D\Input.cpp" />
     <ClCompile Include="Motor2D\main.cpp" />
     <ClCompile Include="Motor2D\Map.cpp" />
+    <ClCompile Include="Motor2D\Marine.cpp" />
     <ClCompile Include="Motor2D\p2Log.cpp" />
     <ClCompile Include="Motor2D\PathFinding.cpp" />
     <ClCompile Include="Motor2D\PerfTimer.cpp" />

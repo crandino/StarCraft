@@ -74,6 +74,12 @@
     <ClCompile Include="Motor2D\Fonts.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Bunker.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Marine.cpp">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">

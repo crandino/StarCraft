@@ -64,7 +64,6 @@ public:
 
 	Entity			*target_to_attack = nullptr;
 	Entity			*target_to_repair = nullptr;
-	Entity			*target_to_reach = nullptr;
 	int				range_to_attack;
 	int				range_of_vision;
 	float			damage;
@@ -73,7 +72,6 @@ public:
 	Collider*       coll;
 	
 	bool			to_delete;
-	bool            inside_bunker = false;
 	
 	// Constructors
 	Entity()

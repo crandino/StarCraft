@@ -179,8 +179,8 @@ bool EntityManager::preUpdate()
 			}
 			
 			selection.erase(it->first);
-			if(!it->second->inside_bunker)
-				RELEASE(it->second);
+			/*if(!it->second->inside_bunker)
+				RELEASE(it->second);*/
 
 			it = active_entities.erase(it);
 		}
@@ -458,13 +458,15 @@ void EntityManager::handleSelection()
 						unit->state = MOVE;
 					}
 				}
-				if (e != NULL && e->specialization == BUNKER)
+
+				if (e != NULL)
 				{
-					unit->target_to_reach = e;
-					app->gui->bunker_to_leave = (Bunker*)e;
+					if (it->second->specialization == MARINE && e->specialization == BUNKER)
+					{
+						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
+						app->gui->bunker_to_leave = (Bunker*)e;
+					}
 				}
-				else
-					unit->target_to_reach = nullptr;
 			}
 		}
 	}
@@ -659,29 +661,29 @@ void EntityManager::KillEntity(Entity* e)
 	deleteEntityKilled(e);
 }
 
-void EntityManager::GetInsideBunker(Entity* e)
-{
-	Bunker* bunker = (Bunker*)e->target_to_reach;
-	if (bunker->max_capacity != 0)
-	{
-		if (e->specialization == MARINE)
-		{
-			bunker->units_inside.insert(pair<uint, Entity*>(e->id, e));
-			e->inside_bunker = true;
-			e->to_delete = true;
-			selection.erase(e->id);
-			--bunker->max_capacity;
-		}
-	}
-	else if(bunker->max_capacity == 0)
-	{
-		for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
-		{
-			if (bunker == it2->second->target_to_reach)
-				it2->second->target_to_reach = nullptr;
-		}
-	}
-}
+//void EntityManager::GetInsideBunker(Entity* e)
+//{
+//	Bunker* bunker = (Bunker*)e->bunker_to_fill;
+//	if (bunker->max_capacity != 0)
+//	{
+//		if (e->specialization == MARINE)
+//		{
+//			bunker->units_inside.insert(pair<uint, Entity*>(e->id, e));
+//			e->inside_bunker = true;
+//			e->to_delete = true;
+//			selection.erase(e->id);
+//			--bunker->max_capacity;
+//		}
+//	}
+//	else if(bunker->max_capacity == 0)
+//	{
+//		for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
+//		{
+//			if (bunker == it2->second->bunker_to_fill)
+//				it2->second->bunker_to_fill = nullptr;
+//		}
+//	}
+//}
 
 void EntityManager::repairBuilding(Entity* e)
 {
