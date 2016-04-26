@@ -83,50 +83,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	return e;
 }
 
-//AleixBV Research
-Entity* const EntityManager::addEntity(Entity* e)
-{
-	if (e != NULL && building_mode != true)
-	{
-		e->id = ++next_ID;
-		active_entities.insert(pair<uint, Entity*>(e->id, e));
-
-		// Command center creation, special treatment
-		if (e->specialization == COMMANDCENTER)
-		{
-			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
-			recalculatePaths();
-		}
-	}
-
-	return e;
-}
-
-Entity* const EntityManager::createUnit(iPoint &pos, SPECIALIZATION type)
-{
-	Entity *e = NULL;
-
-	switch (type)
-	{
-	case(MARINE) :
-		LOG("Creating Marine");
-		e = new Marine(pos);
-		break;
-	case(ZERGLING) :
-		LOG("Creating Zergling");
-		e = new Zergling(pos);
-		break;
-	case(SCV) :
-		LOG("Creating SCV");
-		e = new Scv(pos);
-		create_SCV = false;
-		break;
-	}
-
-	return e;
-}
-//AleixBV /Research
-
 /*Method that makes the enemyWave attack the commandCenter*/
 void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 {
@@ -170,6 +126,7 @@ bool EntityManager::preUpdate()
 				app->entity_manager->recalculatePaths();
 			}
 			
+			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
 			if (it->second->specialization == MARINE)
 			{
@@ -205,29 +162,17 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == COMMANDCENTER)
 			{
-				//AleixBV Research
 				pos_commander = it->second->pos;
 				app->game_manager->mineral_resources -= 50;
 				position.x = pos_commander.x + 20;
 				position.y = pos_commander.y + 100;
 
-				Building* building = (Building*)it->second;
-				building->queue.push(createUnit(position, SCV));
-				if (building->queue.size() == 1)
-					building->creation_timer.start();
-				//AleixBV /Research
-
+				addEntity(position, SCV);
+				create_SCV = false;
 				break;
 			}
 		}
 	}
-
-	//if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
-	//{
-	//	app->input->getMousePosition(position);
-	//	position = app->render->screenToWorld(position.x, position.y);
-	//	addEntity(position, COMMANDCENTER);
-	//}
 
 	if (create_bunker)
 	{
@@ -463,6 +408,11 @@ void EntityManager::handleSelection()
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
 						app->gui->bunker_to_leave = (Bunker*)e;
 					}
+					else if (it->second->specialization == SCV && e->type == BUILDING)
+					{
+						((Scv*)unit)->target_to_attack = (Building*)e;
+						unit->newNearestEntityFinded();
+					}
 				}
 			}
 		}
@@ -502,8 +452,27 @@ void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 	}
 }
 
-bool EntityManager::searchNearEntity(Entity* e)
+Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same_faction) //The method ONLY search and return the nearest entity
 {
+	Entity* ret = NULL;
+	float value = e->range_of_vision;
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second != e && it->second->state != DYING &&(search_in_same_faction || e->faction != it->second->faction))
+		{
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			if (d <= value)
+			{
+				ret = &(*it->second);
+				value = d;
+			}
+		}
+	}
+	return ret;
+}
+/*
 	bool ret = false;
 
 	e->target_to_attack = NULL;
@@ -606,7 +575,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	}
 
 	return ret;
-}
+}*/
 
 void EntityManager::createZergling(iPoint position)
 {
@@ -656,46 +625,6 @@ void EntityManager::KillEntity(map<uint, Entity*> selection)
 void EntityManager::KillEntity(Entity* e)
 {
 	deleteEntityKilled(e);
-}
-
-//void EntityManager::GetInsideBunker(Entity* e)
-//{
-//	Bunker* bunker = (Bunker*)e->bunker_to_fill;
-//	if (bunker->max_capacity != 0)
-//	{
-//		if (e->specialization == MARINE)
-//		{
-//			bunker->units_inside.insert(pair<uint, Entity*>(e->id, e));
-//			e->inside_bunker = true;
-//			e->to_delete = true;
-//			selection.erase(e->id);
-//			--bunker->max_capacity;
-//		}
-//	}
-//	else if(bunker->max_capacity == 0)
-//	{
-//		for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
-//		{
-//			if (bunker == it2->second->bunker_to_fill)
-//				it2->second->bunker_to_fill = nullptr;
-//		}
-//	}
-//}
-
-void EntityManager::repairBuilding(Entity* e)
-{
-	map<uint, Entity*>::iterator it = selection.begin();
-	for (; it != selection.end(); it++)
-	{
-		if (it->second->specialization == SCV)
-		{
-			e->current_hp += e->repair_power;
-			if (e->current_hp >= e->max_hp)
-			{
-				e->current_hp = e->max_hp;
-			}
-		}
-	}
 }
 
 //Deletes all the units in the screen (DEBUG PURPOSES ONLY)

@@ -7,6 +7,7 @@ class Zergling : public Unit
 {
 public:
 
+	// IDLE animations
 	Animation idle_up;
 	Animation idle_right_up;
 	Animation idle_right;
@@ -15,7 +16,9 @@ public:
 	Animation idle_left_down;
 	Animation idle_left;
 	Animation idle_left_up;
+	vector<Animation*> idle_animation_pack;
 
+	// MOVING animations
 	Animation walk_up;
 	Animation walk_right_up;
 	Animation walk_right;
@@ -24,7 +27,9 @@ public:
 	Animation walk_left_down;
 	Animation walk_left;
 	Animation walk_left_up;
+	vector<Animation*> move_animation_pack;
 
+	// ATTACK animations
 	Animation attack_up;
 	Animation attack_right_up;
 	Animation attack_right;
@@ -33,25 +38,16 @@ public:
 	Animation attack_left_down;
 	Animation attack_left;
 	Animation attack_left_up;
-
-	Animation dead;
-
-	vector<Animation*> idle_animation_pack;
-	vector<Animation*> move_animation_pack;
 	vector<Animation*> attack_animation_pack;
+
+	// Dead animation
+	Animation dead;
 
 	Zergling(iPoint &p)
 	{
-		// Positions and dimensions
-		center = { (float)p.x, (float)p.y };
-
-		tex_width = tex_height = 64;
-		collider_offset = { -12, -14 };
-		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
-		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
-
-		// Animation
+		// Graphics
 		tex = app->tex->loadTexture("Units/New_Zergling64.png");
+		tex_width = tex_height = 64;
 
 		//------------------Idle Animation------------------
 		idle_right.frames.push_back({ 256, 0, 64, 64 });
@@ -173,7 +169,7 @@ public:
 		walk_right_down.frames.push_back({ 384, 704, 64, 64 });
 		walk_right_down.speed = 0.02f;
 		walk_right_down.loop = true;
-		move_animation_pack.push_back(&walk_right_down);		
+		move_animation_pack.push_back(&walk_right_down);
 
 		//-----------------Attack Animation---------------
 		attack_right.frames.push_back({ 256, 64, 64, 64 });
@@ -230,7 +226,7 @@ public:
 		attack_right_down.frames.push_back({ 384, 192, 64, 64 });
 		attack_right_down.speed = 0.008f;
 		attack_right_down.loop = true;
-		attack_animation_pack.push_back(&attack_right_down);	
+		attack_animation_pack.push_back(&attack_right_down);
 
 		//-----------------Death Animation---------------
 		dead.frames.push_back({ 0, 1088, 64, 64 });
@@ -241,31 +237,42 @@ public:
 		dead.frames.push_back({ 320, 1088, 64, 64 });
 		dead.frames.push_back({ 384, 1088, 64, 64 });
 		dead.speed = 0.01f;
-
+		//------------------------------------------------
 		current_animation = &idle_down;
+
+		// Positions and information
+		pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
+		center = { (float)p.x, (float)p.y };
+		tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 		// Collider
 		coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 24, 26 }, COLLIDER_UNIT, app->entity_manager);
+		collider_offset = { -12, -14 };
 
-		// Another stuff
-		type = UNIT;
-		specialization = ZERGLING;
-		state = IDLE;
+		// Characterization and behaviour
 		faction = COMPUTER;
-		max_hp = 40;
-		current_hp = 40.0f;
-		max_hp_bars = 6;
+		specialization = ZERGLING;
+		flying = false;
+
+		// UI paramters
 		selection_type = { 3, 4, 22, 13 };
 		circle_selection_offset = { 0, -1 };
 		offset_life = { -19, 16 };
-		flying = false;
 
-		speed = 8.0f;
+		// Lifes attributes		
+		max_hp = 40;
+		current_hp = 40.0f;
+		max_hp_bars = 6;
+
+		// Attack values and properties
 		range_of_vision = 200;
 		range_to_attack = 32;
 		damage = 3.0f;
-		attack_delay = 200.0f;
+		attack_frequency = 500.0f;
 		time_to_die = 500.0f;
+
+		// PathFinding and movement variables
+		speed = 8.0f;
 	}
 
 	// Method that assign an animation according to its orientation
@@ -297,6 +304,18 @@ public:
 			current_animation = &dead;
 			break;
 		}
+		case(WAITING_PATH_MOVE) :
+		{
+			int num_animation = angle / (360 / idle_animation_pack.size());
+			current_animation = &(*idle_animation_pack.at(num_animation));
+			break;
+		}
+		case(WAITING_PATH_MOVE_ALERT) :
+		{
+			int num_animation = angle / (360 / idle_animation_pack.size());
+			current_animation = &(*idle_animation_pack.at(num_animation));
+			break;
+		}
 		}
 	}
 
@@ -311,20 +330,18 @@ public:
 		case IDLE:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
-				//AleixBV Research
-				if (!searchNearestEnemy())
-					if (queue.size() > 0)
+				target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL)
+					newNearestEntityFinded();
+				/*if (queue.size() > 0)//ABV: if we want pathfinding in parts
+				{
+					if (app->path->createPath(tile_pos, queue.front()))
 					{
-						if (app->path->createPath(tile_pos, queue.front()))
-						{
-							path = app->path->getLastPath();
-							has_target = true;
-							state = MOVE_ALERT;
-							queue.push(queue.front());//for bucle
-							queue.pop();
-						}
+						state = WAITING_PATH_MOVE_ALERT;
+						queue.pop();
 					}
-					else
+				}*/
+				else
 					app->entity_manager->SetEnemyToAttackCommandCenter(this);
 				timer_to_check.start();
 			}
@@ -336,28 +353,47 @@ public:
 		case MOVE_ALERT:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
-				if (searchNearestEnemy())
-					LOG("Enemy found");
+				target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL)
+					newNearestEntityFinded();
 				timer_to_check.start();
 			}
 			if (has_target)
 				move(dt);
 			break;
 		case ATTACK:
-			if (timer_attack_delay.read() >= attack_delay)
+			if (timer_attack.read() >= attack_frequency)
 			{
-				attack();
-				timer_attack_delay.start();
+				if (!attack())
+					state = IDLE;
+				timer_attack.start();
 
-				if (state == ATTACK)
-					searchNearestEnemy();
+				//ABV: for melee units we don't need this
+				/*Entity* last_target = target_to_attack;
+				target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL && last_target != target_to_attack)
+					newNearestEntityFinded();*/
 			}
 			break;
 		case DYING:
-			if (timer_to_check.read() >= time_to_die)
+			if (current_animation->finished())
 			{
 				to_delete = true;
 				coll->to_delete = true;
+			}
+			break;
+		case WAITING_PATH_MOVE:
+			if (path.size() > 0)
+			{
+				has_target = true;
+				state = MOVE;
+			}
+			break;
+		case WAITING_PATH_MOVE_ALERT:
+			if (path.size() > 0)
+			{
+				has_target = true;
+				state = MOVE_ALERT;
 			}
 			break;
 		}

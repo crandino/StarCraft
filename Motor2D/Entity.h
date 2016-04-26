@@ -19,8 +19,9 @@ enum STATE
 	MOVE,
 	MOVE_ALERT,
 	ATTACK,
-	REPAIR,
-	DYING
+	DYING,
+	WAITING_PATH_MOVE,
+	WAITING_PATH_MOVE_ALERT
 };
 
 class Entity
@@ -28,56 +29,60 @@ class Entity
 
 public:
 
+	// Positions and information
 	fPoint			pos;						// World position of Entity. Upper_left corner.
 	fPoint			center;						// World positoin of Entity. Center
 	iPoint			tile_pos;					// Map position (tiles) of Entity
+	uint			id;							// Identifier for Entity Manager
+	Vector2D<int>   direction;					// Where is the entity looking at?
+	float			angle;						// Looking right means 0 degrees, increasing counter-clock wise
+	bool			to_delete;					// Entity Manager will delete this entity if it's true
+
+	// Collider
+	Collider*       coll;
 	iPoint			collider_offset;			// Useful to correctly place the collider rect
-	
-	int		     	tex_width, tex_height;
 
-	FACTION			faction;
-	ENTITY_TYPE		type;
-	SPECIALIZATION  specialization;
-	STATE			state;
+	// Characterization and behaviour
+	FACTION			faction;					// Player or computer
+	ENTITY_TYPE		type;						// Unit or building	
+	SPECIALIZATION  specialization;				// Marines, zerglings, bunkers, ...
+	STATE			state;						// Idle, attack, move, ...
 
-	Timer			timer_to_check;
-	float			time_to_create;
+	// Graphics
+	SDL_Texture		*tex;
+	Animation		*current_animation;
+	int		     	tex_width, tex_height;		// Dimensions of the sections of the frames
 
 	// UI paramters
 	SDL_Rect        selection_type;				// Section of the texture that contains circle selections
-	iPoint		    circle_selection_offset;
+	iPoint		    circle_selection_offset;    // Useful to correctly place the circle selection
+	iPoint			offset_life;				// Useful to correctly place the life's bar
 	
-	SDL_Texture		*tex;   
-	Animation		*current_animation;
-	uint			id;
-	
-	Vector2D<int>   direction;
-	float			angle;
-	float			speed;
-	float			time_to_die = 500.0f;
-
 	// Lifes attributes
-	uint			max_hp;
-	int             current_hp;
-	uint            max_hp_bars;
-	iPoint			offset_life;
+	uint			max_hp;						// Max life value of this entity
+	int             current_hp;					// The current life of the entity
+	uint            max_hp_bars;				// How many green bars that current_hp represents?
 
-	Entity			*target_to_attack = nullptr;
-	Entity			*target_to_repair = nullptr;
-	int				range_to_attack;
-	int				range_of_vision;
-	float			damage;
-	int				repair_power = 10;
+	// Attack values and properties
+	Entity			*target_to_attack = NULL;		// Which entity to attack
+	float			damage;							// Value of its weapons
+	Timer			timer_attack;					// To check time between attacks
+	float			attack_frequency;				// How many miliseconds will wait to attack again?
+	int				range_of_vision;				// How far can this entity detect another entity?
+	int				range_to_attack;				// How far can this entity attack another entity?
 
-	Collider*       coll;
-	
-	bool			to_delete;
+	Timer			timer_to_check;					// Time between IA checking
+	float			time_to_die;
 	
 	// Constructors
 	Entity()
 	{
 		to_delete = false;
 		timer_to_check.start();
+		timer_attack.start();	
+		state = IDLE;
+		angle = 0.0f;
+		direction.setToZero();
 	};
 
 	// Destructor
@@ -87,19 +92,21 @@ public:
 	}
 
 	virtual void setAnimationFromDirection()
-	{ }
+	{
+
+	}
 
 	virtual bool update(float dt)
 	{
  		return true;
 	}
 
-	virtual bool searchNearestEnemy()
+	virtual Entity* searchNearestEnemy()
 	{
-		return app->entity_manager->searchNearEntity(this);
+		return app->entity_manager->searchNearestEntityInRange(this);
 	}
 
-	virtual void draw()
+	void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}

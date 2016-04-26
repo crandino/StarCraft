@@ -6,9 +6,8 @@
 class Marine : public Unit
 {
 public:
-
-	//ROF
-	// It must have a review to do spritesheets with render flip into Animation module https://wiki.libsdl.org/SDL_RendererFlip
+	
+	// IDLE animations
 	Animation	idle_up;
 	Animation	idle_right_up;
 	Animation   idle_right;
@@ -17,7 +16,9 @@ public:
 	Animation	idle_left_down;
 	Animation	idle_left;
 	Animation	idle_left_up;
+	vector<Animation*>   idle_animation_pack;
 	
+	// MOVING animations
 	Animation	walk_up;
 	Animation   walk_right_up;
 	Animation   walk_right;
@@ -26,7 +27,9 @@ public:
 	Animation   walk_left_down;
 	Animation   walk_left;
 	Animation   walk_left_up;
+	vector<Animation*>   move_animation_pack;
 
+	// ATTACK animations
 	Animation	attack_up;
 	Animation	attack_right_up;
 	Animation	attack_right;
@@ -35,17 +38,14 @@ public:
 	Animation	attack_left_down;
 	Animation	attack_left;
 	Animation	attack_left_up;
-
-	Animation	dead;
-
-	vector<Animation*>   idle_animation_pack;
-	vector<Animation*>   move_animation_pack;
 	vector<Animation*>   attack_animation_pack;
 
-	Bunker*			     bunker_to_fill = NULL;
-	bool			     inside_bunker = false;
+	// Dead animation
+	Animation	dead;	
 
-	// SFX
+	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the marine
+	bool			     inside_bunker = false;		// It's inside?
+
 	unsigned int marine_attack_fx;
 
 	Marine(iPoint &p);

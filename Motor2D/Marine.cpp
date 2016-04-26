@@ -3,18 +3,9 @@
 
 Marine::Marine(iPoint &p)
 {
-	// Positions and dimensions
-	center = { (float)p.x, (float)p.y };
-
+	//Graphics
+	tex = app->tex->loadTexture("Units/Blue_Marine.png");
 	tex_width = tex_height = 64;
-	collider_offset = { -10, -14 };
-	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
-	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
-
-	// Animations and FX
-	tex = app->tex->loadTexture("Units/Blue_Marine.png"); //Sprites/Animations etc..
-	marine_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
-
 	//---------------Idle Animation----------------
 	idle_right.frames.push_back({ 256, 0, 64, 64 });
 	idle_right.frames.push_back({ 256, 64, 64, 64 });
@@ -256,37 +247,44 @@ Marine::Marine(iPoint &p)
 	dead.frames.push_back({ 448, 832, 64, 64 });
 	dead.speed = 0.01f;
 	//----------------------------------------------
-
-	angle = 0;
 	current_animation = &idle_up;
+
+	// Positions and information
+	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
+	center = { (float)p.x, (float)p.y };
+	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
-
-	// Another stuff
-
-	state = IDLE;
+	collider_offset = { -10, -14 };
+	
+	// Characterization and behaviour
 	faction = PLAYER;
-	selection_type = { 3, 4, 22, 13 };
 	specialization = MARINE;
-	circle_selection_offset = { 0, -1 };
 	flying = false;
 
+	// Sounds
+	marine_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+
+	// UI paramters
+	selection_type = { 3, 4, 22, 13 };
+	circle_selection_offset = { 0, -1 };
+	offset_life = { -16, 16 };
+
+	// Lifes attributes
 	max_hp = 40;
 	current_hp = 40.0f;
 	max_hp_bars = 6;
-	offset_life = { -16, 16 };
-
+	
+	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
 	damage = 5.0f;
-	attack_delay = 200.0f;
+	attack_frequency = 200.0f;
 	time_to_die = 500.0f;
-
-	speed = 10.0f;
-
-	direction.create(1, 1, p.x, p.y);
-	direction.setAngle(0.f);
+	
+	// PathFinding and movement variables
+	speed = 10.0f;	
 }
 
 void Marine::move(float dt)
@@ -350,7 +348,8 @@ void Marine::move(float dt)
 					has_target = false;
 					state = IDLE;
 				
-					if (bunker_to_fill != NULL) bunker_to_fill->getEntityInside(this);
+					if (bunker_to_fill != NULL) 
+						bunker_to_fill->getEntityInside(this);
 					break;
 
 				}
@@ -397,6 +396,19 @@ void Marine::setAnimationFromDirection()
 		current_animation = &dead;
 		break;
 	}
+	case(WAITING_PATH_MOVE) :
+	{
+		int num_animation = angle / (360 / idle_animation_pack.size());
+		current_animation = &(*idle_animation_pack.at(num_animation));
+		break;
+	}
+	case(WAITING_PATH_MOVE_ALERT) :
+	{
+		int num_animation = angle / (360 / idle_animation_pack.size());
+		current_animation = &(*idle_animation_pack.at(num_animation));
+		break;
+	}
+
 	}
 }
 
