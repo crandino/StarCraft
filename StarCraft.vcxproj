@@ -136,6 +136,7 @@
     <ClCompile Include="Motor2D\Gui.cpp" />
     <ClCompile Include="Motor2D\Textures.cpp" />
     <ClCompile Include="Motor2D\Timer.cpp" />
+    <ClCompile Include="Motor2D\Unit.cpp" />
     <ClCompile Include="Motor2D\Window.cpp" />
   </ItemGroup>
   <ItemGroup>

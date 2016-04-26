@@ -47,8 +47,6 @@ public:
 				coll->to_delete = true;
 			}
 			break;
-		case REPAIR:
-			break;
 		}
 		return true;
 	}

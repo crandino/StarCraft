@@ -466,6 +466,11 @@ void EntityManager::handleSelection()
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
 						app->gui->bunker_to_leave = (Bunker*)e;
 					}
+					else if (it->second->specialization == SCV && e->type == BUILDING)
+					{
+						((Scv*)unit)->target_to_attack = (Building*)e;
+						unit->newNearestEntityFinded();
+					}
 				}
 			}
 		}
@@ -505,8 +510,27 @@ void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 	}
 }
 
-bool EntityManager::searchNearEntity(Entity* e)
+Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same_faction) //The method ONLY search and return the nearest entity
 {
+	Entity* ret = NULL;
+	float value = e->range_of_vision;
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second != e && it->second->state != DYING &&(search_in_same_faction || e->faction != it->second->faction))
+		{
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			if (d <= value)
+			{
+				ret = &(*it->second);
+				value = d;
+			}
+		}
+	}
+	return ret;
+}
+/*
 	bool ret = false;
 
 	e->target_to_attack = NULL;
@@ -609,7 +633,7 @@ bool EntityManager::searchNearEntity(Entity* e)
 	}
 
 	return ret;
-}
+}*/
 
 void EntityManager::createZergling(iPoint position)
 {

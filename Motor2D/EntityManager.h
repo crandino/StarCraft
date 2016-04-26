@@ -86,7 +86,7 @@ public:
 	/*--------Methods for interact with buildings----------*/
 	void GetInsideBunker(Entity* e);	
 	void repairBuilding(Entity* e);
-	bool searchNearEntity(Entity* e);
+	Entity* searchNearestEntityInRange(Entity* e, bool search_in_same_faction = false);
 
 
 	/*---------Methods for attacking other units------------*/

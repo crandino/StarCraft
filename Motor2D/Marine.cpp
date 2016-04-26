@@ -350,7 +350,8 @@ void Marine::move(float dt)
 					has_target = false;
 					state = IDLE;
 				
-					if (bunker_to_fill != NULL) bunker_to_fill->getEntityInside(this);
+					if (bunker_to_fill != NULL) 
+						bunker_to_fill->getEntityInside(this);
 					break;
 
 				}

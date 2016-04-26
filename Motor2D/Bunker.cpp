@@ -31,10 +31,9 @@ Bunker::Bunker(iPoint &p)
 	offset_life = { -23, 35 };
 	max_capacity = 4;
 
-	range_of_vision = 150;
-	range_to_attack = 150;
+	range_of_vision = range_to_attack = 150;
 	damage = 0; //we change it according to the amount of marines inside;
-	//attack_delay = 200.0f;
+	attack_delay = 200.0f;
 
 	state = IDLE;
 	faction = PLAYER;
@@ -54,8 +53,9 @@ bool Bunker::update(float dt)
 			{
 				if (timer_to_check.read() >= TIME_TO_CHECK)
 				{
-					if (searchNearestEnemy())
-						LOG("Enemy found");
+					target_to_attack = searchNearestEnemy();
+					if (target_to_attack != NULL)
+						state = ATTACK;
 					timer_to_check.start();
 				}
 			}
@@ -66,28 +66,19 @@ bool Bunker::update(float dt)
 	case MOVE_ALERT:
 		break;
 	case ATTACK:
-		/*if (specialization == BUNKER)
+		if (units_inside.size() > 0)
 		{
-		Bunker* bunker = (Bunker*)this;
-		if (bunker->units_inside.size() > 0)
-		{
-		app->audio->playFx(bunker_attack_fx);
-		damage = bunker->units_inside.size() * 4;
-		if ((timer_attack_delay.read() >= attack_delay)
-		{
-		attack();
-		timer_attack_delay.start();
+			app->audio->playFx(bunker_attack_fx);
+			damage = units_inside.size() * 4;
+			if ((timer_attack_delay.read() >= attack_delay))
+			{
+				if (!attack())
+					state = IDLE;
+				timer_attack_delay.start();
+				target_to_attack = searchNearestEnemy();
+			}
+		}
 
-		if (state == ATTACK)
-		searchNearestEnemy();
-		}
-		}
-		else
-		state = IDLE;
-		}
-		else
-		state = IDLE;
-		break;*/
 	case DYING:
 		//current_animation = &dead;
 		if (timer_to_check.read() >= time_to_die)
@@ -96,8 +87,6 @@ bool Bunker::update(float dt)
 			to_delete = true;
 			coll->to_delete = true;
 		}
-		break;
-	case REPAIR:
 		break;
 	}
 	return true;
@@ -132,3 +121,23 @@ bool Bunker::getEntityInside(Entity* entity)
 //	}
 //}
 
+bool Bunker::attack()
+{
+	bool ret = false;
+	if (target_to_attack != NULL && target_to_attack->state != DYING)
+	{
+		int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
+		d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
+		if (d <= range_to_attack)
+		{
+			if ((target_to_attack->current_hp -= damage) <= 0.0f)
+			{
+				state = IDLE;
+				target_to_attack->state = DYING;
+				target_to_attack = NULL;
+			}
+			ret = true;
+		}
+	}
+	return ret;
+}

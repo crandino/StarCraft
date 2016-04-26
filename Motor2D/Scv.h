@@ -162,7 +162,13 @@ public:
 			current_animation = &(*move_animation_pack.at(num_animation));
 			break;
 		}
-		case(REPAIR) :
+		case(MOVE_ALERT) :
+		{
+			int num_animation = angle / (360 / move_animation_pack.size());
+			current_animation = &(*move_animation_pack.at(num_animation));
+			break;
+		}
+		case(ATTACK) ://ATTACK == REPAIR for SCV
 		{
 			int num_animation = angle / (360 / repair_animation_pack.size());
 			current_animation = &(*repair_animation_pack.at(num_animation));
@@ -186,22 +192,19 @@ public:
 		switch (state)
 		{
 		case IDLE:
-			if (timer_to_check.read() >= TIME_TO_CHECK)
-			{
-				if (searchNearestEnemy())
-					LOG("Enemy found");
-				timer_to_check.start();
-			}
 			break;
 		case MOVE:
 			if (has_target) move(dt);
 			break;
-		case REPAIR:
+		case MOVE_ALERT:
+			if (has_target) move(dt);
+			break;
+		case ATTACK://ATTACK == REPAIR for SCV
 			if (timer_attack_delay.read() >= attack_delay)
 			{
-				repair();
+				if(!repair())
+					state = IDLE;
 				timer_attack_delay.start();
-
 			}
 			break;
 		case DYING:
@@ -215,35 +218,104 @@ public:
 		return true;
 	}
 
-	void repair()
+	bool repair()
 	{
-		if (target_to_repair != NULL)
+		bool ret = false;
+		if (target_to_attack != NULL)
 		{
-			int d = abs(center.x - target_to_repair->center.x) + abs(center.y - target_to_repair->center.y);
-			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_repair->coll->rect.w / 2 + target_to_repair->coll->rect.h / 2) / 2);
+			float d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
+			d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
 			if (d <= range_to_attack)
 			{
-				if ((target_to_repair->current_hp) < target_to_repair->max_hp)
+				if ((target_to_attack->current_hp += damage) >= target_to_attack->max_hp)
 				{
-					target_to_repair->current_hp += damage;
+					target_to_attack->current_hp = target_to_attack->max_hp;
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	void Scv::move(float dt)
+	{
+		if (path.size() > 0)
+		{
+			float pixels_to_move = 0;
+			float total_pixels_moved = 0;
+			float total_pixels_to_move = speed / 100 * dt;
+
+			if (total_pixels_to_move >= 4)
+				pixels_to_move = 4;
+
+			do{
+				if (total_pixels_moved + 4 > total_pixels_to_move)
+					pixels_to_move = total_pixels_to_move - total_pixels_moved;
+
+				if (path.begin()->x < tile_pos.x && path.begin()->y < tile_pos.y)
+				{
+					center.x -= pixels_to_move / 2;
+					center.y -= pixels_to_move / 2;
+				}
+				else if (path.begin()->x < tile_pos.x && path.begin()->y > tile_pos.y)
+				{
+					center.x -= pixels_to_move / 2;
+					center.y += pixels_to_move / 2;
+				}
+				else if (path.begin()->x > tile_pos.x && path.begin()->y > tile_pos.y)
+				{
+					center.x += pixels_to_move / 2;
+					center.y += pixels_to_move / 2;
+				}
+				else if (path.begin()->x > tile_pos.x && path.begin()->y < tile_pos.y)
+				{
+					center.x += pixels_to_move / 2;
+					center.y -= pixels_to_move / 2;
+				}
+				else if (path.begin()->y == tile_pos.y)
+				{
+					if (path.begin()->x < tile_pos.x)
+						center.x -= pixels_to_move;
+					else
+						center.x += pixels_to_move;
 				}
 				else
 				{
-					target_to_repair->current_hp = target_to_repair->max_hp;
-					state = IDLE;
-					target_to_repair = NULL;
-					searchNearestEnemy();
-					
+					if (path.begin()->y < tile_pos.y)
+						center.y -= pixels_to_move;
+
+					else
+						center.y += pixels_to_move;
 				}
-			}
-			else
-			{
-				state = IDLE;
-			}
+				calculePos();
+
+				if (app->map->worldToMap(app->map->data.back(), center.x, center.y) != tile_pos)
+				{
+					tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+					if (tile_pos == path.back())
+					{
+						path.clear();
+						has_target = false;
+						state = IDLE;
+
+						if (target_to_attack != NULL) 
+							state = ATTACK;//ATTACK == REPAIR for SCV
+						break;
+
+					}
+					else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
+						path.erase(path.begin());
+				}
+				total_pixels_moved += pixels_to_move;
+
+			} while (total_pixels_moved < total_pixels_to_move);
 		}
 		else
 		{
 			state = IDLE;
+			has_target = false;
 		}
 	}
 

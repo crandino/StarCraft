@@ -18,7 +18,7 @@ public:
 	Bunker(iPoint &p);
 	bool update(float dt);
 	bool getEntityInside(Entity* entity);
-
+	bool attack();
 };
 
 #endif !__BUNKER_H__

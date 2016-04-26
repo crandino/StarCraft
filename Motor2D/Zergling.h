@@ -311,20 +311,20 @@ public:
 		case IDLE:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
-				//AleixBV Research
-				if (!searchNearestEnemy())
-					if (queue.size() > 0)
+				target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL)
+					newNearestEntityFinded();
+				if (queue.size() > 0)//ABV: if we want pathfinding in parts
+				{
+					if (app->path->createPath(tile_pos, queue.front()))
 					{
-						if (app->path->createPath(tile_pos, queue.front()))
-						{
-							path = app->path->getLastPath();
-							has_target = true;
-							state = MOVE_ALERT;
-							queue.push(queue.front());//for bucle
-							queue.pop();
-						}
+						path = app->path->getLastPath();
+						has_target = true;
+						state = MOVE_ALERT;
+						queue.pop();
 					}
-					else
+				}
+				else
 					app->entity_manager->SetEnemyToAttackCommandCenter(this);
 				timer_to_check.start();
 			}
@@ -336,8 +336,9 @@ public:
 		case MOVE_ALERT:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
-				if (searchNearestEnemy())
-					LOG("Enemy found");
+				target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL)
+					newNearestEntityFinded();
 				timer_to_check.start();
 			}
 			if (has_target)
@@ -346,11 +347,15 @@ public:
 		case ATTACK:
 			if (timer_attack_delay.read() >= attack_delay)
 			{
-				attack();
+				if (!attack())
+					state = IDLE;
 				timer_attack_delay.start();
 
-				if (state == ATTACK)
-					searchNearestEnemy();
+				//ABV: for melee units we don't need this
+				/*Entity* last_target = target_to_attack;
+				target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL && last_target != target_to_attack)
+					newNearestEntityFinded();*/
 			}
 			break;
 		case DYING:

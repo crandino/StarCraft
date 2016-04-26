@@ -80,6 +80,9 @@
     <ClCompile Include="Motor2D\Marine.cpp">
       <Filter>Entities\Terran_Units</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Unit.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">

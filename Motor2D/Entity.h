@@ -19,7 +19,6 @@ enum STATE
 	MOVE,
 	MOVE_ALERT,
 	ATTACK,
-	REPAIR,
 	DYING
 };
 
@@ -55,6 +54,8 @@ public:
 	float			angle;
 	float			speed;
 	float			time_to_die = 500.0f;
+	float			attack_delay;
+	Timer			timer_attack_delay;
 
 	// Lifes attributes
 	uint			max_hp;
@@ -63,7 +64,6 @@ public:
 	iPoint			offset_life;
 
 	Entity			*target_to_attack = nullptr;
-	Entity			*target_to_repair = nullptr;
 	int				range_to_attack;
 	int				range_of_vision;
 	float			damage;
@@ -94,9 +94,9 @@ public:
  		return true;
 	}
 
-	virtual bool searchNearestEnemy()
+	virtual Entity* searchNearestEnemy()
 	{
-		return app->entity_manager->searchNearEntity(this);
+		return app->entity_manager->searchNearestEntityInRange(this);
 	}
 
 	virtual void draw()
