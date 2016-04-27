@@ -126,6 +126,8 @@ bool Unit::update(float dt)
 			target_to_attack = searchNearestEnemy();
 			if (target_to_attack != NULL)
 				newNearestEntityFound();
+			else if (faction == COMPUTER)
+				app->entity_manager->SetEnemyToAttackCommandCenter(this);
 			timer_to_check.start();
 		}
 		break;
@@ -154,6 +156,8 @@ bool Unit::update(float dt)
 			target_to_attack = searchNearestEnemy();
 			if (target_to_attack != NULL)
 				newNearestEntityFound();
+			else
+				state = IDLE;
 		}
 		break;
 	case DYING:
@@ -206,9 +210,24 @@ void Unit::newNearestEntityFound()
 	float distance = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
 	distance -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
 	if (distance <= range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
+	{
 		state = ATTACK;
-
-	else if (path.size() > 0 && path.back() == target_to_attack->tile_pos)
+	}
+	else if (flying)
+	{
+		if (path.size() > 0 && path.back() == target_to_attack->tile_pos)
+		{
+			has_target = true;
+		}
+		else
+		{
+			path.clear();
+			path.push_back(target_to_attack->tile_pos);
+			has_target = true;
+			state = MOVE_ALERT;
+		}
+	}
+	else if (path.size() > 0 && path.back() == app->path->findNearestWalkableTile(target_to_attack->tile_pos, tile_pos, 5))
 	{
 		has_target = true;
 	}

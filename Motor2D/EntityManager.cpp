@@ -106,7 +106,14 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
 
 		Unit* unit = (Unit*)e;
-		if (app->path->createPath(e->tile_pos, p, e->id) != -1)
+		if (unit->flying)
+		{
+			unit->path.clear();
+			unit->path.push_back(p);
+			unit->has_target = true;
+			unit->state = MOVE_ALERT;
+		}
+		else if (app->path->createPath(e->tile_pos, p, e->id) != -1)
 			unit->state = WAITING_PATH_MOVE_ALERT;
 	}
 }
@@ -365,7 +372,14 @@ void EntityManager::handleSelection()
 				Unit *unit = (Unit*)it->second;
 				if (selection.size() == 1)
 				{
-					if (app->path->createPath(unit->tile_pos, target_position, unit->id) != -1)
+					if (unit->flying)
+					{
+						unit->path.clear();
+						unit->path.push_back(unit->target_to_attack->tile_pos);
+						unit->has_target = true;
+						unit->state = MOVE;
+					}
+					else if (app->path->createPath(unit->tile_pos, target_position, unit->id) != -1)
 						unit->state = WAITING_PATH_MOVE;
 				}
 				else
@@ -594,12 +608,15 @@ void EntityManager::recalculatePaths()
 		if (it->second->type == UNIT)
 		{
 			Unit *unit = (Unit*)it->second;
-			if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back(), it->first) != -1)
+			if (!unit->flying)
 			{
-				if (unit->state == MOVE)
-					unit->state = WAITING_PATH_MOVE;
-				else if (unit->state == MOVE_ALERT)
-					unit->state = WAITING_PATH_MOVE_ALERT;
+				if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back(), it->first) != -1)
+				{
+					if (unit->state == MOVE)
+						unit->state = WAITING_PATH_MOVE;
+					else if (unit->state == MOVE_ALERT)
+						unit->state = WAITING_PATH_MOVE_ALERT;
+				}
 			}
 		}
 	}

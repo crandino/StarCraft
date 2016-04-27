@@ -355,7 +355,9 @@ public:
 				//ABV: for melee units we don't need this
 				/*target_to_attack = searchNearestEnemy();
 				if (target_to_attack != NULL )
-					newNearestEntityFound();*/
+					newNearestEntityFound();
+				else
+					state = IDLE;*/
 			}
 			break;
 		case DYING:
