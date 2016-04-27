@@ -10,6 +10,7 @@
 #include "Scv.h"
 #include "Zergling.h"
 #include "Mutalisk.h"
+#include "Hydralisk.h"
 
 #include "CommandCenter.h"
 #include "Bunker.h"
@@ -64,7 +65,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		LOG("Creating Mutalisk");
 		e = new Mutalisk(pos);
 		break;
-	
+	case(HYDRALISK) :
+		LOG("Creating Hydralisk");
+		e = new Hydralisk(pos);
+		break;
 	// TERRAN BUILDINGS
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
@@ -709,6 +713,12 @@ void EntityManager::entityManualCreation()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, MUTALISK);
+	}
+	if (app->input->getKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, HYDRALISK);
 	}
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{

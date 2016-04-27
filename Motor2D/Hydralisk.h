@@ -24,10 +24,23 @@ public:
 	Animation   walk_left_up1;
 	Animation   walk_left_up2;
 	Animation   walk_left_up3;
+
 	vector<Animation*>   move_animation_pack;
 
 	// Dead animation
 	Animation	dead;
+	
+	// ATTACK animations
+	Animation attack_up;
+	Animation attack_right_up;
+	Animation attack_right;
+	Animation attack_right_down;
+	Animation attack_down;
+	Animation attack_left_down;
+	Animation attack_left;
+	Animation attack_left_up;
+	vector<Animation*> attack_animation_pack;
+	
 
 	Hydralisk(iPoint &p);
 

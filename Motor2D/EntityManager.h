@@ -30,7 +30,7 @@ enum SPECIALIZATION  // Second specialization
 	SCV,
 	ZERGLING,
 	MUTALISK,
-
+	HYDRALISK,
 	// Buildings
 	COMMANDCENTER, 
 	BUNKER,
