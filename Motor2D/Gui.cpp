@@ -160,7 +160,7 @@ bool Gui::start()
 	ui_create_bot->draw_element = false;
 	
 	//Bunker buttons------------------------------------------------------------
-	ui_leave_bunker = app->gui->createImage(NULL, { 256, 94, 36, 33 });
+	ui_leave_bunker = app->gui->createImage(NULL, { 255, 152, 36, 33 });
 	ui_leave_bunker->setLocalPos(505, 358);
 	ui_leave_bunker->setListener(this);
 	ui_leave_bunker->interactive = false;
@@ -268,7 +268,14 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_LCLICK_DOWN) :
-			openBuildingMenu();
+
+			if (!buildingMenuOpened)
+				openBuildingMenu();
+			else
+			{
+				buildingMenuOpened = false;
+				ui_create_builds->setLocalPos(551, 358);
+			}
 			break;
 		}
 	}
@@ -287,38 +294,38 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			if (app->game_manager->mineral_resources >= 50)
-			app->entity_manager->create_SCV = true;
+				app->entity_manager->create_SCV = true;
 			info_scv->draw_element = false;
 			break;
 
-		/*case(MOUSE_LCLICK_DOWN_REPEAT) :
-			app->entity_manager->create_SCV = true;
-			break;*/
+			/*case(MOUSE_LCLICK_DOWN_REPEAT) :
+				app->entity_manager->create_SCV = true;
+				break;*/
 		}
+	}
 
-		if (ui == ui_create_bunker)
+	if (ui == ui_create_bunker)
+	{
+		switch (event)
 		{
-			switch (event)
-			{
 
-			case(MOUSE_ENTERS) :
-				info_bunker->draw_element = true;
-				break;
+		case(MOUSE_ENTERS) :
+			info_bunker->draw_element = true;
+			break;
 
-			case(MOUSE_LEAVES) :
-				info_bunker->draw_element = false;
-				break;
+		case(MOUSE_LEAVES) :
+			info_bunker->draw_element = false;
+			break;
 
-			case(MOUSE_LCLICK_DOWN) :
-				if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
-					app->entity_manager->create_bunker = true;
-				info_bunker->draw_element = false;
-				break;
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
+				app->entity_manager->create_bunker = true;
+			info_bunker->draw_element = false;
+			break;
 
 				/*case(MOUSE_LCLICK_DOWN_REPEAT) :
 				app->entity_manager->create_bunker = true;
 				break;*/
-			}
 		}
 	}
 	
@@ -341,6 +348,11 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 	switch (selection)
 	{
 	      case (COMMANDCENTER) :
+			  if(buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
 			  //Desactivate quad background
 		      rectangle_command->draw_element = false;
 			  rectangle_command_2->draw_element = false;
@@ -354,6 +366,17 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->draw_element = false;
 			  ui_leave_bunker->interactive = false;
 
+			  ui_create_bunker->draw_element = false;
+			  ui_create_bunker->interactive = false;
+			  ui_create_barraks->draw_element = false;
+			  ui_create_barraks->interactive = false;
+			  ui_create_turrets->draw_element = false;
+			  ui_create_turrets->interactive = false;
+			  ui_create_factory->draw_element = false;
+			  ui_create_factory->interactive = false;
+			  ui_create_starport->draw_element = false;
+			  ui_create_starport->interactive = false;
+
 			  //Activate new images
 		      ui_create_bot->draw_element = true; 
 			  ui_create_bot->interactive = true;
@@ -363,6 +386,11 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 		      break;
 			  
 		  case (BUNKER) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
 			  //Desactivate quad background
 			  rectangle_command->draw_element = false;
 			  rectangle_command_2->draw_element = true;
@@ -378,6 +406,17 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_builds->draw_element = false;
 			  ui_create_builds->interactive = false;
 
+			  ui_create_bunker->draw_element = false;
+			  ui_create_bunker->interactive = false;
+			  ui_create_barraks->draw_element = false;
+			  ui_create_barraks->interactive = false;
+			  ui_create_turrets->draw_element = false;
+			  ui_create_turrets->interactive = false;
+			  ui_create_factory->draw_element = false;
+			  ui_create_factory->interactive = false;
+			  ui_create_starport->draw_element = false;
+			  ui_create_starport->interactive = false;
+
 			  //Activate new images
 			  ui_leave_bunker->draw_element = true;
 			  ui_leave_bunker->interactive = true;
@@ -385,24 +424,37 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  break;
 			  
 		  case (NOTYPE) :
-			  //Desactivate all the options of Entities
-			  ui_create_bot->draw_element = false;
-			  ui_create_bot->interactive = false;
-			  ui_create_builds->draw_element = false;
-			  ui_create_builds->interactive = false;
-			  ui_leave_bunker->draw_element = false;
-			  ui_leave_bunker->interactive = false;
+			  if (!buildingMenuOpened) {
+				  //Desactivate all the options of Entities
+				  ui_create_bot->draw_element = false;
+				  ui_create_bot->interactive = false;
+				  ui_create_builds->draw_element = false;
+				  ui_create_builds->interactive = false;
+				  ui_leave_bunker->draw_element = false;
+				  ui_leave_bunker->interactive = false;
 
-			  //Activate default entities
-			  rectangle_command->draw_element = true;
-			  rectangle_command_2->draw_element = true;
-			  rectangle_command_3->draw_element = true;
-			  rectangle_command_4->draw_element = true;
-			  rectangle_command_5->draw_element = true;
-			  rectangle_command_6->draw_element = true;
-			  rectangle_command_7->draw_element = true;
-			  rectangle_command_8->draw_element = true;
-			  rectangle_command_9->draw_element = true;
+				  ui_create_bunker->draw_element = false;
+				  ui_create_bunker->interactive = false;
+				  ui_create_barraks->draw_element = false;
+				  ui_create_barraks->interactive = false;
+				  ui_create_turrets->draw_element = false;
+				  ui_create_turrets->interactive = false;
+				  ui_create_factory->draw_element = false;
+				  ui_create_factory->interactive = false;
+				  ui_create_starport->draw_element = false;
+				  ui_create_starport->interactive = false;
+
+				  //Activate default entities
+				  rectangle_command->draw_element = true;
+				  rectangle_command_2->draw_element = true;
+				  rectangle_command_3->draw_element = true;
+				  rectangle_command_4->draw_element = true;
+				  rectangle_command_5->draw_element = true;
+				  rectangle_command_6->draw_element = true;
+				  rectangle_command_7->draw_element = true;
+				  rectangle_command_8->draw_element = true;
+				  rectangle_command_9->draw_element = true;
+			  }
 
 			  break;
 	}
@@ -657,7 +709,7 @@ const GuiElements* Gui::findMouseHover()
 		if (gui_test->interactive == true)
 		{
 			SDL_Rect r = gui_test->getScreenRect();
-			if (mouse.x >= r.x && mouse.x <= r.x + r.w && mouse.y >= r.y && mouse.y <= r.y + r.y)
+			if (mouse.x >= r.x && mouse.x <= r.x + r.w && mouse.y >= r.y && mouse.y <= r.y + r.h)
 			{
 				//elements.reverse();
                 return gui_test;
@@ -675,8 +727,39 @@ const SDL_Texture* Gui::getAtlas() const
 	return atlas;
 }
 
-void Gui::openBuildingMenu() {
+void Gui::openBuildingMenu() 
+{
+	buildingMenuOpened = true;
 
+	//Desactivate quad background
+	rectangle_command->draw_element = false;
+	rectangle_command_2->draw_element = false;
+	rectangle_command_3->draw_element = false;
+	rectangle_command_4->draw_element = false;
+	rectangle_command_5->draw_element = false;
+	rectangle_command_6->draw_element = false;
+	rectangle_command_7->draw_element = true;
+	rectangle_command_8->draw_element = true;
+	rectangle_command_9->draw_element = true;
+	ui_leave_bunker->draw_element = false;
+	ui_leave_bunker->interactive = false;
+
+	//Activate new images
+	ui_create_bot->draw_element = false;
+	ui_create_bot->interactive = false;
+	ui_create_builds->setLocalPos(597, 398);
+	ui_create_builds->draw_element = true;
+	ui_create_builds->interactive = true;
+	ui_create_bunker->draw_element = true;
+	ui_create_bunker->interactive = true;
+	ui_create_barraks->draw_element = true;
+	ui_create_barraks->interactive = true;
+	ui_create_turrets->draw_element = true;
+	ui_create_turrets->interactive = true;
+	ui_create_factory->draw_element = true;
+	ui_create_factory->interactive = true;
+	ui_create_starport->draw_element = true;
+	ui_create_starport->interactive = true;
 }
 
 

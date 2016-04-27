@@ -118,6 +118,7 @@ public:
 	GuiImage* ui_create_starport = nullptr;
 	GuiImage* ui_create_barraks = nullptr;
 
+	bool buildingMenuOpened = false;
 	void openBuildingMenu();
 
 	//Bunkers HUD---------------------------

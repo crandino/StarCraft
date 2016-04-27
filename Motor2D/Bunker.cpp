@@ -109,19 +109,20 @@ bool Bunker::getEntityInside(Entity* entity)
 bool Bunker::getEntitiesOutside()
 {
 	bool ret = false;
-
-	for (map<uint, Entity*>::iterator it = units_inside.begin(); it != units_inside.end();)
+	if (this != NULL && !units_inside.empty())
 	{
-		app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->second->id, it->second));
-		
-		Marine *m = (Marine*)it->second;
-		m->coll->enable();
-		m->to_delete = false;
-		m->inside_bunker = false;		
-		it = units_inside.erase(it);
-		ret = true;
-	}
+		for (map<uint, Entity*>::iterator it = units_inside.begin(); it != units_inside.end();)
+		{
+			app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->second->id, it->second));
 
+			Marine *m = (Marine*)it->second;
+			m->coll->enable();
+			m->to_delete = false;
+			m->inside_bunker = false;
+			it = units_inside.erase(it);
+			ret = true;
+		}
+	}
 	return ret;
 }
 
