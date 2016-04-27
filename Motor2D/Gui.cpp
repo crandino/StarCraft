@@ -10,9 +10,11 @@
 #include "Window.h"
 #include "Textures.h"
 
+
 #include "GuiImage.h"
 #include "GuiCursor.h"
 #include "GuiLabel.h"
+
 
 #include "Bunker.h"
 
@@ -150,8 +152,36 @@ bool Gui::start()
 	// To show walkability on building mode-------------------------
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
+	// Create the Minimap
+	minimap = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png", "Minimap/area.png");
+
 	return true;
 }
+
+Minimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea)
+{
+	Minimap* ret = nullptr;
+
+	ret = new Minimap(rect);
+
+	SDL_Texture* texture = app->tex->loadTexture(pathTex);// cargar textura
+	SDL_Texture* area = app->tex->loadTexture(pathArea);// cargar area
+
+	if (texture)
+	{
+		ret->SetAttributes(&app->entity_manager->active_entities, texture, area);
+	}
+	else
+	{
+		ret->CleanUp();
+		ret = NULL;
+	}
+
+	return ret;
+}
+
+
+
 
 void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 {
@@ -235,8 +265,6 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_builds->draw_element = true;
 			  ui_create_builds->interactive = true;
 			  
-			
-
 		      break;
 			  
 		  case (BUNKER) :
@@ -247,7 +275,6 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_bot->interactive = false;
 			  ui_create_builds->draw_element = false;
 			  ui_create_builds->interactive = false;
-
 
 			  //Activate new images
 			  ui_leave_bunker->draw_element = true;
@@ -324,7 +351,6 @@ bool Gui::update(float dt)
 		    gui_test->checkInput(mouse_hover, focus);
 	}
 		
-
 	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)
 	{
 		GuiElements* gui_test = *node;
@@ -334,6 +360,8 @@ bool Gui::update(float dt)
 			gui_test->update();
 		}
 	}
+
+	minimap->Update();
 
 	return true;
 }
@@ -395,6 +423,9 @@ bool Gui::postUpdate()
 			gui->debugDraw();
 	}
 
+	if (minimap != NULL)
+		minimap->Print();
+
 	cursor->draw();
 
 	if (debug)
@@ -413,6 +444,8 @@ bool Gui::postUpdate()
 			app->render->blit(path_walkability, to_draw.x, to_draw.y, &r);
 		}
 	}	
+
+
 	
 	return true;
 }

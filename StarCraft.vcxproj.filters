@@ -83,6 +83,9 @@
     <ClCompile Include="Motor2D\Unit.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Minimap.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -203,6 +206,9 @@
       <Filter>UI_elements</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Fonts.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Minimap.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

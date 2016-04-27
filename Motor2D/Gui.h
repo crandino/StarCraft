@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Animation.h"
 #include "EntityManager.h"
+#include "Minimap.h"
 
 class GuiCursor;
 class GuiImage;
@@ -76,6 +77,10 @@ public:
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
+	Minimap* createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea);
+
+	// Minimap
+	Minimap* minimap = nullptr;
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;

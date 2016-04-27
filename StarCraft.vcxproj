@@ -90,6 +90,7 @@
     <ClInclude Include="Motor2D\Map.h" />
     <ClInclude Include="Motor2D\Marine.h" />
     <ClInclude Include="Motor2D\MemLeaks.h" />
+    <ClInclude Include="Motor2D\Minimap.h" />
     <ClInclude Include="Motor2D\Module.h" />
     <ClInclude Include="Motor2D\p2Defs.h" />
     <ClInclude Include="Motor2D\p2Log.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="Motor2D\main.cpp" />
     <ClCompile Include="Motor2D\Map.cpp" />
     <ClCompile Include="Motor2D\Marine.cpp" />
+    <ClCompile Include="Motor2D\Minimap.cpp" />
     <ClCompile Include="Motor2D\p2Log.cpp" />
     <ClCompile Include="Motor2D\PathFinding.cpp" />
     <ClCompile Include="Motor2D\PerfTimer.cpp" />
