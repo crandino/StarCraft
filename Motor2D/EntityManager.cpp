@@ -710,4 +710,10 @@ void EntityManager::entityManualCreation()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, MUTALISK);
 	}
+	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, BUNKER);
+	}
 }
