@@ -2,6 +2,8 @@
 #define __PATHFINDING_H_
 
 #include "Module.h"
+#include "Timer.h"
+#include <map>
 #include <vector>
 
 struct pathList;
@@ -42,14 +44,29 @@ struct pathList
 	list<pathNode>::iterator getNodeLowestScore();
 };
 
+struct pathToFind
+{
+	//entity id
+	uint		id;
+	iPoint		destination;
+	pathList	open_list;
+	pathList	close_list;
+
+	pathToFind();
+	pathToFind(uint id, iPoint &destination);
+};
+
 class PathFinding : public Module
 {
 
 private:
 
-	vector<iPoint>		path_found;
-	uchar*			    map_data;
-	uint				width, height;
+	vector<iPoint>				path_found;
+	map<uint, vector<iPoint>*>	paths_found;
+	uchar*						map_data;
+	uint						width, height;
+	list<pathToFind>			paths_to_find;
+	Timer						time_to_search;
 
 public:
 
@@ -60,7 +77,11 @@ public:
 	bool setMap(const uint &width, const uint &height, uchar *data);
 
 	// CreatePath: Request to have a path from A to B
-	int createPath(const iPoint& origin, const iPoint& destination);
+	int createPath(const iPoint& origin, const iPoint& destination, uint id);
+	int createPathNow(const iPoint& origin, const iPoint& destination);
+	
+	// Called each loop iteration (searth for paths)
+	bool update(float dt);
 
 	// CreatePath: Request to have a path from A to adjacent
 	int createPathToAdjacent(const iPoint& origin, uint distance);
@@ -71,6 +92,9 @@ public:
 
 	// GetLastPath: Returns order path step by step
 	const vector<iPoint> &getLastPath() const;
+
+	//getPathFound: return and erase order path step by step from their id if the path is found
+	bool getPathFound(uint id, vector<iPoint> &path);
 
 	//Three utility methods :
 

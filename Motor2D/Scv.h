@@ -217,14 +217,14 @@ public:
 			}
 			break;
 		case WAITING_PATH_MOVE:
-			if (path.size() > 0)
+			if (app->path->getPathFound(id, path))
 			{
 				has_target = true;
 				state = MOVE;
 			}
 			break;
 		case WAITING_PATH_MOVE_ALERT:
-			if (path.size() > 0)
+			if (app->path->getPathFound(id, path))
 			{
 				has_target = true;
 				state = MOVE_ALERT;

@@ -18,6 +18,10 @@ pathNode::pathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL) { }
 pathNode::pathNode(int g_score, int h_score, iPoint position, const pathNode *parent_node) : g(g_score), h(h_score), pos(position), parent(parent_node) { }
 pathNode::pathNode(const pathNode &node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)  { }
 
+
+pathToFind::pathToFind() : id(-1), destination(iPoint(-1, -1)){}
+pathToFind::pathToFind(uint _id, iPoint &_destination) : id(_id), destination(_destination) {}
+
 uint pathNode::findAdjacents(pathList& list_to_fill, bool diagonals) const
 {
 	uint items_before = list_to_fill.list_of_nodes.size();
@@ -236,7 +240,119 @@ bool PathFinding::setMap(const uint &width, const uint &height, uchar *data)
 	return true;
 }
 
-int PathFinding::createPath(const iPoint& origin, const iPoint& destination)
+int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uint id)
+{
+	// Origin are walkable?
+	if (!isWalkable(origin))
+		return -1;
+
+	iPoint new_dest = findNearestWalkableTile(destination, origin, 5);
+	iPoint tile_error = { -1, -1 };
+	if (new_dest == tile_error)
+		return -1;
+
+	iPoint _origin = origin;
+
+	pathToFind p(id, new_dest);
+	paths_to_find.push_back(p);
+	paths_to_find.back().open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
+	return 1;
+}
+
+bool PathFinding::update(float dt)
+{
+	if (paths_to_find.size() > 0)
+	{
+		time_to_search.start();
+		float time = 0.015f / paths_to_find.size();
+		int x = 1;
+
+		list<pathToFind>::iterator it = paths_to_find.begin();
+		for (; it != paths_to_find.end();)
+		{
+			path_found.clear();
+			float test = time_to_search.readSec();
+			while ((time * x) > time_to_search.readSec())
+			{
+				if (it->open_list.list_of_nodes.size() == 0)
+					break;
+				list<pathNode>::iterator pnode = it->open_list.getNodeLowestScore();
+				it->close_list.list_of_nodes.push_back(*pnode);
+				iPoint pos = pnode->pos;
+				it->open_list.list_of_nodes.erase(pnode);
+				pnode = it->close_list.find(pos);
+
+				if (pnode->pos == it->destination)
+				{
+					it->close_list.list_of_nodes.push_back(*pnode);
+					break;
+				}
+
+				pathList candidate_nodes;
+				int items_added = pnode->findWalkableAdjacents(candidate_nodes, true);
+
+				if (items_added > 0)
+				{
+					list<pathNode>::iterator item = candidate_nodes.list_of_nodes.begin();
+					while (item != candidate_nodes.list_of_nodes.end())
+					{
+						if (it->close_list.find(item->pos) != it->close_list.list_of_nodes.end())
+						{
+							++item;
+							continue;
+						}
+						else if (it->open_list.find(item->pos) != it->open_list.list_of_nodes.end())
+						{
+							list<pathNode>::iterator to_compare = it->open_list.find(item->pos);
+							if (item->calculateF(it->destination) < to_compare->score())
+							{
+								to_compare->parent = item->parent;
+								to_compare->calculateF(it->destination);
+							}
+						}
+						else
+						{
+							item->calculateF(it->destination);
+							it->open_list.list_of_nodes.push_back(*item);
+						}
+						++item;
+					}
+				}
+			}
+			if (it->open_list.list_of_nodes.size() == 0 || (it->close_list.list_of_nodes.size() > 0 && it->close_list.list_of_nodes.back().pos == it->destination))
+			{
+				const pathNode *final_path = &it->close_list.list_of_nodes.back();
+				vector<iPoint> tmp;
+				while (final_path != NULL)
+				{
+					tmp.push_back(final_path->pos);
+					final_path = final_path->parent;
+				}
+
+				vector<iPoint>* path_found_now = NULL;
+				for (vector<iPoint>::reverse_iterator rit = tmp.rbegin(); rit != tmp.rend(); ++rit)
+				{
+					path_found.push_back(*rit);
+				}
+
+				path_found.erase(path_found.begin()); //we don't need the tile which is stepping
+
+				path_found_now = new vector<iPoint>(path_found);
+
+				paths_found.insert(pair<uint, vector<iPoint>*>(it->id, path_found_now));
+
+				it = paths_to_find.erase(it);
+			}
+			else
+				it++;
+
+			x++;
+		}
+	}
+	return true;
+}
+
+int PathFinding::createPathNow(const iPoint& origin, const iPoint& destination)
 {
 	// Origin are walkable?
 	if (!isWalkable(origin))
@@ -340,7 +456,7 @@ int PathFinding::createPathToAdjacent(const iPoint& origin, uint distance)
 		it.y *= distance;
 		target->pos += it;
 
-		return createPath(origin, target->pos);
+		return createPathNow(origin, target->pos);
 	}
 	return -1;
 }
@@ -437,6 +553,23 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &
 const vector<iPoint> &PathFinding::getLastPath() const
 {
 	return path_found;
+}
+
+bool PathFinding::getPathFound(uint id, vector<iPoint> &path)
+{
+	map<uint, vector<iPoint>*>::iterator it = paths_found.begin();
+	for (; it != paths_found.end();)
+	{
+		if (it->first == id)
+		{
+			path = *it->second;
+			it = paths_found.erase(it);
+			return true;
+		}
+		else
+			it++;
+	}
+	return false;
 }
 
 bool PathFinding::checkBoundaries(const iPoint& pos) const

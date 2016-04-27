@@ -92,12 +92,8 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
 
 		Unit* unit = (Unit*)e;
-		if (app->path->createPath(e->tile_pos, p) != -1)
-		{
-			unit->path = app->path->getLastPath();
-			unit->has_target = true;
-			unit->state = MOVE_ALERT;
-		}
+		if (app->path->createPath(e->tile_pos, p, e->id) != -1)
+			unit->state = WAITING_PATH_MOVE_ALERT;
 	}
 }
 
@@ -383,22 +379,14 @@ void EntityManager::handleSelection()
 				Unit *unit = (Unit*)it->second;
 				if (selection.size() == 1)
 				{
-					if (app->path->createPath(unit->tile_pos, target_position) != -1)
-					{
-						unit->path = app->path->getLastPath();
-						unit->has_target = true;
-						unit->state = MOVE;
-					}
+					if (app->path->createPath(unit->tile_pos, target_position, unit->id) != -1)
+						unit->state = WAITING_PATH_MOVE;
 				}
 				else
 				{
 					iPoint target = target_position + unit->distance_to_center_selector;
-					if (app->path->createPath(unit->tile_pos, target) != -1)
-					{
-						unit->path = app->path->getLastPath();
-						unit->has_target = true;
-						unit->state = MOVE;
-					}
+					if (app->path->createPath(unit->tile_pos, target, unit->id) != -1)
+						unit->state = WAITING_PATH_MOVE;
 				}
 
 				if (e != NULL)
@@ -411,7 +399,7 @@ void EntityManager::handleSelection()
 					else if (it->second->specialization == SCV && e->type == BUILDING)
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;
-						unit->newNearestEntityFinded();
+						unit->newNearestEntityFound();
 					}
 				}
 			}
@@ -684,8 +672,13 @@ void EntityManager::recalculatePaths()
 		if (it->second->type == UNIT)
 		{
 			Unit *unit = (Unit*)it->second;
-			if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back()) != -1)
-				unit->path = app->path->getLastPath();
+			if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back(), it->first) != -1)
+			{
+				if (unit->state == MOVE)
+					unit->state = WAITING_PATH_MOVE;
+				else if (unit->state == MOVE_ALERT)
+					unit->state = WAITING_PATH_MOVE_ALERT;
+			}
 		}
 	}
 }

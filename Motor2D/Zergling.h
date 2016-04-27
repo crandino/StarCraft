@@ -332,7 +332,7 @@ public:
 			{
 				target_to_attack = searchNearestEnemy();
 				if (target_to_attack != NULL)
-					newNearestEntityFinded();
+					newNearestEntityFound();
 				/*if (queue.size() > 0)//ABV: if we want pathfinding in parts
 				{
 					if (app->path->createPath(tile_pos, queue.front()))
@@ -355,7 +355,7 @@ public:
 			{
 				target_to_attack = searchNearestEnemy();
 				if (target_to_attack != NULL)
-					newNearestEntityFinded();
+					newNearestEntityFound();
 				timer_to_check.start();
 			}
 			if (has_target)
@@ -369,10 +369,9 @@ public:
 				timer_attack.start();
 
 				//ABV: for melee units we don't need this
-				/*Entity* last_target = target_to_attack;
-				target_to_attack = searchNearestEnemy();
-				if (target_to_attack != NULL && last_target != target_to_attack)
-					newNearestEntityFinded();*/
+				/*target_to_attack = searchNearestEnemy();
+				if (target_to_attack != NULL )
+					newNearestEntityFound();*/
 			}
 			break;
 		case DYING:
@@ -383,17 +382,19 @@ public:
 			}
 			break;
 		case WAITING_PATH_MOVE:
-			if (path.size() > 0)
+			if (app->path->getPathFound(id, path))
 			{
 				has_target = true;
 				state = MOVE;
+				timer_to_check.start();
 			}
 			break;
 		case WAITING_PATH_MOVE_ALERT:
-			if (path.size() > 0)
+			if (app->path->getPathFound(id, path))
 			{
 				has_target = true;
 				state = MOVE_ALERT;
+				timer_to_check.start();
 			}
 			break;
 		}

@@ -125,7 +125,7 @@ bool Unit::update(float dt)
 		{
 			target_to_attack = searchNearestEnemy();
 			if (target_to_attack != NULL)
-				newNearestEntityFinded();
+				newNearestEntityFound();
 			timer_to_check.start();
 		}
 		break;
@@ -138,7 +138,7 @@ bool Unit::update(float dt)
 		{
 			target_to_attack = searchNearestEnemy();
 			if (target_to_attack != NULL)
-				newNearestEntityFinded();
+				newNearestEntityFound();
 			timer_to_check.start();
 		}
 		if (has_target)
@@ -151,10 +151,9 @@ bool Unit::update(float dt)
 				state = IDLE;
 			timer_attack.start();
 
-			Entity* last_target = target_to_attack;
 			target_to_attack = searchNearestEnemy();
-			if (target_to_attack != NULL && last_target != target_to_attack)
-				newNearestEntityFinded();
+			if (target_to_attack != NULL)
+				newNearestEntityFound();
 		}
 		break;
 	case DYING:
@@ -165,17 +164,19 @@ bool Unit::update(float dt)
 		}
 		break;
 	case WAITING_PATH_MOVE:
-		if (path.size() > 0)
+		if (app->path->getPathFound(id, path))
 		{
 			has_target = true;
 			state = MOVE;
+			timer_to_check.start();
 		}
 		break;
 	case WAITING_PATH_MOVE_ALERT:
-		if (path.size() > 0)
+		if (app->path->getPathFound(id, path))
 		{
 			has_target = true;
 			state = MOVE_ALERT;
+			timer_to_check.start();
 		}
 		break;
 	}
@@ -199,7 +200,7 @@ void Unit::checkUnitDirection()
 	angle = round(direction.getAngle());
 }
 
-void Unit::newNearestEntityFinded()
+void Unit::newNearestEntityFound()
 {
 	has_target = false;
 	float distance = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
@@ -207,10 +208,10 @@ void Unit::newNearestEntityFinded()
 	if (distance <= range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
 		state = ATTACK;
 
-	else if (app->path->createPath(tile_pos, target_to_attack->tile_pos) != -1) //the path to the selected entity is constructed
+	else if (path.size() > 0 && path.back() == target_to_attack->tile_pos)
 	{
 		has_target = true;
-		path = app->path->getLastPath();
-		state = MOVE_ALERT;
 	}
+	else if (app->path->createPath(tile_pos, target_to_attack->tile_pos, id) != -1) //the path to the selected entity is constructed
+			state = WAITING_PATH_MOVE_ALERT;
 }
