@@ -129,11 +129,8 @@
     <ClCompile Include="Motor2D\main.cpp" />
     <ClCompile Include="Motor2D\Map.cpp" />
     <ClCompile Include="Motor2D\Marine.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Motor2D\Mutalisk.cpp" />
-=======
     <ClCompile Include="Motor2D\Minimap.cpp" />
->>>>>>> origin/master
     <ClCompile Include="Motor2D\p2Log.cpp" />
     <ClCompile Include="Motor2D\PathFinding.cpp" />
     <ClCompile Include="Motor2D\PerfTimer.cpp" />
