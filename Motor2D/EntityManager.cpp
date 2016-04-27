@@ -88,7 +88,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		if (e->specialization == COMMANDCENTER)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
-			recalculatePaths();
+			recalculatePaths(e->coll->rect, false);
 		}
 		if (e->faction == COMPUTER)
 			current_wave_entities.insert(pair<uint, Entity*>(e->id, e));
@@ -140,7 +140,7 @@ bool EntityManager::preUpdate()
 				if (it->second->specialization == COMMANDCENTER)
 					app->game_manager->game_over = true;
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
-				app->entity_manager->recalculatePaths();
+				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
 			
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
@@ -418,7 +418,7 @@ void EntityManager::handleSelection()
 			building_mode = false;
 
 			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			recalculatePaths();
+			recalculatePaths(building_to_place->coll->rect, false);
 		}
 	}
 }
@@ -600,7 +600,7 @@ void EntityManager::choosePlaceForBuilding()
 	app->render->blit(building_to_place->tex, building_to_place->pos.x, building_to_place->pos.y, &building_to_place->current_animation->getCurrentFrame());
 }
 
-void EntityManager::recalculatePaths()
+void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 {
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
@@ -616,6 +616,40 @@ void EntityManager::recalculatePaths()
 						unit->state = WAITING_PATH_MOVE;
 					else if (unit->state == MOVE_ALERT)
 						unit->state = WAITING_PATH_MOVE_ALERT;
+				}
+				else if (walkable == false)
+				{
+					// Right now, there is only one logic map and only one logic layer, so we must not iterate them.
+					list<MapLayer*>::iterator layer = app->map->data.back().layers.begin();
+					while (layer != app->map->data.back().layers.end())
+					{
+						iPoint first_tile = app->map->worldToMap(app->map->data.back(), rect.x, rect.y);
+						iPoint last_tile = app->map->worldToMap(app->map->data.back(), rect.x + rect.w, rect.y + rect.h);
+
+						for (int y = first_tile.y; y < last_tile.y; ++y)
+						{
+							for (int x = first_tile.x; x < last_tile.x; ++x)
+							{
+								if (unit->path.size() > 0)
+								{
+									if (!app->path->isWalkable(unit->path.back()))//if the origin and the destination isn't walkable
+									{
+										unit->path.clear();
+										unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, COMMANDCENTERPOSITION, 25));
+										unit->has_target = true;
+										unit->state = MOVE;
+									}
+								}
+								else if (unit->tile_pos == (iPoint(x, y)))//if without path and they are no walkable tiles
+								{
+									unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, COMMANDCENTERPOSITION, 25));
+									unit->has_target = true;
+									unit->state = MOVE;
+								}
+							}
+						}
+						++layer;
+					}
 				}
 			}
 		}

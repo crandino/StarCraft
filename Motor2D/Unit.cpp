@@ -215,7 +215,7 @@ void Unit::newNearestEntityFound()
 	}
 	else if (flying)
 	{
-		if (path.size() > 0 && path.back() == target_to_attack->tile_pos)
+		if (path.size() > 0 && path.back() == target_to_attack->tile_pos)//if the tile destination is the same than current path
 		{
 			has_target = true;
 		}
@@ -227,7 +227,7 @@ void Unit::newNearestEntityFound()
 			state = MOVE_ALERT;
 		}
 	}
-	else if (path.size() > 0 && path.back() == app->path->findNearestWalkableTile(target_to_attack->tile_pos, tile_pos, 5))
+	else if (path.size() > 0 && path.back() == app->path->findNearestWalkableTile(target_to_attack->tile_pos, tile_pos, 5))//if the tile destination is the same than current path
 	{
 		has_target = true;
 	}

@@ -463,40 +463,36 @@ int PathFinding::createPathToAdjacent(const iPoint& origin, uint distance)
 
 iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &destination, uint radius) const
 {
-	if (isWalkable(origin))
-		return origin;
-	else
+	pathList open_list;
+	open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
+	list<pathNode>::iterator pnode = open_list.list_of_nodes.begin();
+
+	while (pnode != open_list.list_of_nodes.end())
 	{
-		pathList open_list;
-		open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
-		list<pathNode>::iterator pnode = open_list.list_of_nodes.begin();
+		pathList candidate_nodes;
+		int items_added = pnode->findAdjacents(candidate_nodes);
 
-		while (pnode != open_list.list_of_nodes.end())
+		if (items_added > 0)
 		{
-			pathList candidate_nodes;
-			int items_added = pnode->findAdjacents(candidate_nodes);
-
-			if (items_added > 0)
+			list<pathNode>::iterator item = candidate_nodes.list_of_nodes.begin();
+			while (item != candidate_nodes.list_of_nodes.end())
 			{
-				list<pathNode>::iterator item = candidate_nodes.list_of_nodes.begin();
-				while (item != candidate_nodes.list_of_nodes.end())
-				{
-					if (isWalkable(item->pos))
-						return item->pos;
+				if (isWalkable(item->pos))
+					return item->pos;
 
-					if (radius != 0 && abs(origin.x - item->pos.x) <= radius && abs(origin.y - item->pos.y) <= radius)
-					{
-						if (open_list.find(item->pos) == open_list.list_of_nodes.end())
-							open_list.list_of_nodes.push_back(*item);
-					}
-					++item;
+				if (radius != 0 && abs(origin.x - item->pos.x) <= radius && abs(origin.y - item->pos.y) <= radius)
+				{
+					if (open_list.find(item->pos) == open_list.list_of_nodes.end())
+						open_list.list_of_nodes.push_back(*item);
 				}
+				++item;
 			}
-			++pnode;
 		}
+		++pnode;
 	}
 
-	pathList open_list, close_list;
+	pathList close_list;
+	open_list.list_of_nodes.clear();
 
 	open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
 	while (open_list.list_of_nodes.size() > 0)
