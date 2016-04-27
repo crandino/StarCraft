@@ -100,11 +100,21 @@ public:
 	GuiImage* rectangle_map = nullptr;
 	GuiImage* rectangle_command = nullptr;
 	GuiImage* rectangle_command_2 = nullptr;
+	GuiImage* rectangle_command_3 = nullptr;
+	GuiImage* rectangle_command_4 = nullptr;
+	GuiImage* rectangle_command_5 = nullptr;
+	GuiImage* rectangle_command_6 = nullptr;
+	GuiImage* rectangle_command_7 = nullptr;
+	GuiImage* rectangle_command_8 = nullptr;
+	GuiImage* rectangle_command_9 = nullptr;
 
 
 	//Command Center HUD--------------------
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
+	GuiImage* ui_bunker_button = nullptr;
+
+	void openBuildingMenu();
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;

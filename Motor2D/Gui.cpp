@@ -67,6 +67,41 @@ bool Gui::start()
 	rectangle_command_2->interactive = false;
 	rectangle_command_2->can_focus = false;
 
+	rectangle_command_3 = app->gui->createImage(NULL, { 96, 152, 37, 34 });
+	rectangle_command_3->setLocalPos(597, 358);
+	rectangle_command_3->interactive = false;
+	rectangle_command_3->can_focus = false;
+
+	rectangle_command_4 = app->gui->createImage(NULL, { 141, 152, 37, 34 });
+	rectangle_command_4->setLocalPos(505, 398);
+	rectangle_command_4->interactive = false;
+	rectangle_command_4->can_focus = false;
+
+	rectangle_command_5 = app->gui->createImage(NULL, { 186, 152, 37, 34 });
+	rectangle_command_5->setLocalPos(551, 398);
+	rectangle_command_5->interactive = false;
+	rectangle_command_5->can_focus = false;
+
+	rectangle_command_6 = app->gui->createImage(NULL, { 48, 195, 37, 34 });
+	rectangle_command_6->setLocalPos(597, 398);
+	rectangle_command_6->interactive = false;
+	rectangle_command_6->can_focus = false;
+
+	rectangle_command_7 = app->gui->createImage(NULL, { 96, 195, 37, 34 });
+	rectangle_command_7->setLocalPos(505, 438);
+	rectangle_command_7->interactive = false;
+	rectangle_command_7->can_focus = false;
+
+	rectangle_command_8 = app->gui->createImage(NULL, { 141, 195, 37, 34 });
+	rectangle_command_8->setLocalPos(551, 438);
+	rectangle_command_8->interactive = false;
+	rectangle_command_8->can_focus = false;
+
+	rectangle_command_9 = app->gui->createImage(NULL, { 186, 195, 37, 34 });
+	rectangle_command_9->setLocalPos(597, 438);
+	rectangle_command_9->interactive = false;
+	rectangle_command_9->can_focus = false;
+
 	// HUD Command Center------------------------------------------------------
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });
 	ui_create_bot->setLocalPos(505, 358);
@@ -190,23 +225,9 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		switch (event)
 		{
 
-		case(MOUSE_ENTERS) :
-			info_bunker->draw_element = true;
-			break;
-
-		case(MOUSE_LEAVES) :
-			info_bunker->draw_element = false;
-			break;
-
 		case(MOUSE_LCLICK_DOWN) :
-			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
-			app->entity_manager->create_bunker = true;
-			info_bunker->draw_element = false;
+			openBuildingMenu();
 			break;
-
-		/*case(MOUSE_LCLICK_DOWN_REPEAT) :
-			app->entity_manager->create_bunker = true;
-			break;*/
 		}
 	}
 
@@ -232,6 +253,31 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			app->entity_manager->create_SCV = true;
 			break;*/
 		}
+
+		if (ui == ui_bunker_button)
+		{
+			switch (event)
+			{
+
+			case(MOUSE_ENTERS) :
+				info_bunker->draw_element = true;
+				break;
+
+			case(MOUSE_LEAVES) :
+				info_bunker->draw_element = false;
+				break;
+
+			case(MOUSE_LCLICK_DOWN) :
+				if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
+					app->entity_manager->create_bunker = true;
+				info_bunker->draw_element = false;
+				break;
+
+				/*case(MOUSE_LCLICK_DOWN_REPEAT) :
+				app->entity_manager->create_bunker = true;
+				break;*/
+			}
+		}
 	}
 	
 	if (ui == ui_leave_bunker)
@@ -255,7 +301,14 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 	      case (COMMANDCENTER) :
 			  //Desactivate quad background
 		      rectangle_command->draw_element = false;
-			  rectangle_command_2->draw_element = false; 
+			  rectangle_command_2->draw_element = false;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
 			  ui_leave_bunker->draw_element = false;
 			  ui_leave_bunker->interactive = false;
 
@@ -271,6 +324,13 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Desactivate quad background
 			  rectangle_command->draw_element = false;
 			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
 			  ui_create_bot->draw_element = false;
 			  ui_create_bot->interactive = false;
 			  ui_create_builds->draw_element = false;
@@ -294,6 +354,13 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Activate default entities
 			  rectangle_command->draw_element = true;
 			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
 
 			  break;
 	}
@@ -564,6 +631,10 @@ const GuiElements* Gui::findMouseHover()
 const SDL_Texture* Gui::getAtlas() const
 {
 	return atlas;
+}
+
+void Gui::openBuildingMenu() {
+
 }
 
 
