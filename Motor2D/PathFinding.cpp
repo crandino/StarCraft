@@ -271,7 +271,6 @@ bool PathFinding::update(float dt)
 		for (; it != paths_to_find.end();)
 		{
 			path_found.clear();
-			float test = time_to_search.readSec();
 			while ((time * x) > time_to_search.readSec())
 			{
 				if (it->open_list.list_of_nodes.size() == 0)
