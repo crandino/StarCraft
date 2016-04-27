@@ -86,6 +86,9 @@
     <ClCompile Include="Motor2D\Mutalisk.cpp">
       <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Minimap.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -210,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Mutalisk.h">
       <Filter>Entities\Zerg_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Minimap.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
