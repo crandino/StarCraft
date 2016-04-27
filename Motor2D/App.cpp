@@ -54,10 +54,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(path);
 	addModule(fonts);
 	addModule(gui);
+	addModule(game_manager);
 	addModule(entity_manager);
 	addModule(scene);
 	addModule(collision);	
-	addModule(game_manager);
 	// render last to swap buffer
 	addModule(render);
 }

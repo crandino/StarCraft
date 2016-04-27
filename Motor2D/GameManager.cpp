@@ -90,25 +90,30 @@ bool GameManager::start()
 	close_button->can_focus = false;
 	close_button->setListener(this);
 
+
+	optimizationEraseEnemy.start();
 	return ret;
 }
 
 bool GameManager::preUpdate()
 {
+	
 
 	//Code that erase enemies and controls if the wave is killed
-	if (start_game)
-	{
-		if (current_waves <= TOTALWAVES)
+	
+	
+		if (start_game)
 		{
-			eraseEnemiesIfKilled();
+			if (current_waves <= TOTALWAVES)
+			{
+				eraseEnemiesIfKilled();
+			}
+			if (sizeWave() <= 0)
+			{
+				wave_wiped = true;
+			}
 		}
-		if (sizeWave() <= 0)
-		{
-			wave_wiped = true;
-		}
-	}
-
+	
 	return true;
 }
 
@@ -165,7 +170,7 @@ bool GameManager::update(float dt)
 				{
 					
 					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1036, 35 });
+					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1419, 800 });
 					current_waves++;
 
 					time_between_waves.start();

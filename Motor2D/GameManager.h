@@ -9,8 +9,8 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define WAVETIME1 5000.0f //120 = 2 minutes per wave in the future or some other game designish number
-#define WAVETIME2 50.0f
+#define WAVETIME1 1.0f //120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME2 1.0f
 #define	SIZE1X 1 // Changes number of zerglings per wave
 #define SIZE1Y 1
 #define	SIZE2X 10 // Changes number of zerglings per wave
@@ -20,8 +20,8 @@
 #define TOTALUNITSALLWAVES (SIZE1X*SIZE1Y + SIZE2X*SIZE2Y + SIZE3X*SIZE2Y)
 #define ZERGLINGSCORE 20
 #define COMMANDCENTERPOSITION {1500, 2250}
-#define SIZEMARINESX 0
-#define SIZEMARINESY 0
+#define SIZEMARINESX 2
+#define SIZEMARINESY 2
 
 class GuiImage;
 using namespace std;
@@ -102,6 +102,8 @@ public:
 	Timer random_generator;
 	Timer ending_game;
 	Timer winning_game;
+	Timer optimizationEraseEnemy;
+
 
 	//Score system attributes
 	uint score_current_wave = 0;
