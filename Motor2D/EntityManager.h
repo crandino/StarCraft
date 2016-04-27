@@ -96,7 +96,6 @@ public:
 	Entity* whichEntityOnMouse();
 
 	/*---------------Creating Waves-------------------*/
-	void createZergling(iPoint position);
 	void createWave(uint sizex, uint sizey, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
 
 
@@ -121,7 +120,7 @@ public:
 public:
 	map<uint, Entity*>                  selection; 
 	map<uint, Entity*>					active_entities;
-
+	map<uint, Entity*>					current_wave_entities;
 private:
 
 

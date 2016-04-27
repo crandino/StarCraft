@@ -93,27 +93,51 @@ bool GameManager::start()
 	return ret;
 }
 
+bool GameManager::preUpdate()
+{
+
+	//Code that erase enemies and controls if the wave is killed
+	if (start_game)
+	{
+		if (current_waves <= TOTALWAVES)
+		{
+			eraseEnemiesIfKilled();
+		}
+		if (sizeWave() <= 0)
+		{
+			wave_wiped = true;
+		}
+	}
+
+	return true;
+}
+
+
+
+
+
 bool GameManager::update(float dt)
 {
 	bool ret = true;
+	wave_wiped= false;
 
 	if (start_game)
 	{
 		if (current_waves <= TOTALWAVES)
 		{
 			//ADRI
-			//Check if we have killed all the zerlings to begin a new wave
-			bool all_zerlings_dead = true;
-			for (map<uint, Entity*>::iterator it2 = app->entity_manager->active_entities.begin(); it2 != app->entity_manager->active_entities.end(); ++it2)
+			//Check if we have killed all the enemies to begin a new wave
+			if (wave_wiped)
 			{
-				if (it2->second->specialization == ZERGLING)
-				{
-					all_zerlings_dead = false;			
-					break;
-				}
+				//Get Resources
+				mineral_resources += 75;
+				gas_resources += 75;
+				resources++;
+				wave_wiped = false;
 			}
+		
 
-			if (time_between_waves.readSec() >= WAVETIME1 && all_zerlings_dead) //We check how much time do we have left before releasing a new wave
+			if (time_between_waves.readSec() >= WAVETIME1 && sizeWave() <= 0) //We check how much time we do have left before releasing a new wave
 			{
 				if (current_waves == 0)
 				{
@@ -121,14 +145,13 @@ bool GameManager::update(float dt)
 
 					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1419, 800 });
 					current_waves++;
-					all_zerlings_dead = false;
 					resources++;
 
 					time_between_waves.start();
 				}
 			}
 
-			if (current_waves == 1 && all_zerlings_dead && resources == 1)
+			if (current_waves == 1 && sizeWave() <= 0)
 			{   
 				//Get Resources
 				mineral_resources += 150;
@@ -136,7 +159,7 @@ bool GameManager::update(float dt)
 				resources ++;
 			}
 
-			if (time_between_waves.readSec() >= WAVETIME2 && all_zerlings_dead)//We check how much time do we have left before releasing a new wave
+			if (time_between_waves.readSec() >= WAVETIME2 && sizeWave() <= 0)//We check how much time do we have left before releasing a new wave
 			{
 				if (current_waves == 1)
 				{
@@ -144,7 +167,6 @@ bool GameManager::update(float dt)
 					LOG("Wave 2 is over prepare for the next wave!!");
 					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1036, 35 });
 					current_waves++;
-					all_zerlings_dead = false;
 
 					time_between_waves.start();
 				}
@@ -155,13 +177,12 @@ bool GameManager::update(float dt)
 
 					app->entity_manager->createWave(SIZE3X, SIZE3Y, { 1036, 35 });
 					current_waves++;
-					all_zerlings_dead = false;
 
 					time_between_waves.start();
 				}
 			}
 
-			if (current_waves == 2 && all_zerlings_dead && resources == 2)
+			if (current_waves == 2 && sizeWave() <= 0 && resources == 2)
 			{
 				//Get Resources
 				mineral_resources += 75;
@@ -173,13 +194,7 @@ bool GameManager::update(float dt)
 				start_game = false;
 			}
 
-			if (current_waves == 3 && all_zerlings_dead && resources == 3)
-			{
-				//Get Resources
-				mineral_resources += 75;
-				gas_resources += 75;
-				resources++;				
-			}
+	
 		}
 
 		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
@@ -281,6 +296,11 @@ void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 	total_score += ZERGLINGSCORE * totalUnitsKilledCurrentFrame;
 }
 
+int GameManager::sizeWave() 
+{
+	int size = app->entity_manager->current_wave_entities.size();
+	return size;
+}
 bool GameManager::cleanUp()
 {
 	bool ret = false;
@@ -496,3 +516,48 @@ bool GameManager::isGameStarted() const
 }
 
 
+void GameManager::eraseEnemiesIfKilled()
+{
+	if (app->entity_manager->current_wave_entities.size() > 0)
+	{
+		map<uint, Entity*>::iterator it2 = app->entity_manager->current_wave_entities.begin();
+		for (; it2 != app->entity_manager->current_wave_entities.end();)
+		{
+			if (it2->second->to_delete == true)
+			{
+				AddPointsEnemy(it2->second);
+				it2 = app->entity_manager->current_wave_entities.erase(it2);
+				//Score is added up when an enemy is killed
+				
+			}
+			else
+			{
+				it2++;
+			}
+		}
+	}
+
+}
+
+
+void GameManager::AddPointsEnemy(Entity* e)
+{
+	if (e->specialization == ZERGLING)
+	{
+		mineral_resources += 50;
+		gas_resources += 0;
+	}
+
+	/*
+	else if (e->specialization == HYDRALISK)
+	{
+		mineral_resources += 50;
+		gas_resources += 0;
+	}
+	.
+	.
+	.
+	.
+	*/
+
+}

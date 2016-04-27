@@ -79,6 +79,8 @@ public:
 
 	bool start();
 
+	bool preUpdate();
+
 	bool update(float dt);
 	
 	bool postUpdate();
@@ -88,6 +90,10 @@ public:
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
 	void createMarines(iPoint position,unsigned int sizex, unsigned int sizey);
+
+	void eraseEnemiesIfKilled();
+
+	void AddPointsEnemy(Entity* e);
 
 public:
 	//Time Management attributes
@@ -132,6 +138,13 @@ public:
 	//Sound
 	unsigned int fx_click;
 	bool isGameStarted() const;
+	
+	//Wave Control
+	bool wave_wiped = false;
+
+//Utils
+	int sizeWave();
+
 
 private:
 	uint previous_unit_killed = 0;

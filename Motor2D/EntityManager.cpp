@@ -78,6 +78,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths();
 		}
+		if (e->faction == COMPUTER)
+			current_wave_entities.insert(pair<uint, Entity*>(e->id, e));
 	}
 
 	return e;
@@ -435,7 +437,7 @@ void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
 
 			iPoint position = {posx, posy};
 
-			createZergling(position);
+			addEntity(position, ZERGLING);
 		}
 	}
 }
@@ -565,10 +567,9 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same
 	return ret;
 }*/
 
-void EntityManager::createZergling(iPoint position)
-{
-	addEntity(position, ZERGLING);
-}
+
+	
+
 
 //Deletes all units SELECTED
 void EntityManager::deleteEntity(map<uint, Entity*> selection)

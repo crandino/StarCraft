@@ -379,6 +379,7 @@ public:
 			{
 				to_delete = true;
 				coll->to_delete = true;
+				
 			}
 			break;
 		case WAITING_PATH_MOVE:
