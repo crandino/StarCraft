@@ -4,12 +4,15 @@
 #include "Window.h"
 #include "p2Log.h"
 #include "PathFinding.h"
+#include "GameManager.h"
+
 #include "Marine.h"
-#include "Zergling.h"
 #include "Scv.h"
+#include "Zergling.h"
+#include "Mutalisk.h"
+
 #include "CommandCenter.h"
 #include "Bunker.h"
-#include "GameManager.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -42,10 +45,27 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 
 	switch (type)
 	{
+	// UNITS
+		// TERRAN
 	case(MARINE) :
 		LOG("Creating Marine");
 		e = new Marine(pos);
 		break;
+	case(SCV) :
+		LOG("Creating SCV");
+		e = new Scv(pos);
+		break;
+		// ZERGLINGS
+	case(ZERGLING) :
+		LOG("Creating Zergling");
+		e = new Zergling(pos);
+		break;
+	case(MUTALISK) :
+		LOG("Creating Mutalisk");
+		e = new Mutalisk(pos);
+		break;
+	
+	// TERRAN BUILDINGS
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
 		e = new CommandCenter(pos);
@@ -56,14 +76,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		building_to_place = (Building*)e;
 		building_mode = true;
 		create_bunker = false;
-		break;
-	case(ZERGLING) :
-		LOG("Creating Zergling");
-		e = new Zergling(pos);
-		break;
-	case(SCV) :
-		LOG("Creating SCV");
-		e = new Scv(pos);
 		break;
 	}
 
@@ -141,15 +153,7 @@ bool EntityManager::preUpdate()
 	}
 
 	if (app->game_manager->isGameStarted()) handleSelection();
-
-	iPoint position;
-
-	if (app->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, MARINE);		
-	}
+	entityManualCreation();
 
 	if (create_SCV)
 	{
@@ -160,6 +164,7 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == COMMANDCENTER)
 			{
+				iPoint position;
 				pos_commander = it->second->pos;
 				app->game_manager->mineral_resources -= 50;
 				position.x = pos_commander.x + 20;
@@ -174,6 +179,7 @@ bool EntityManager::preUpdate()
 
 	if (create_bunker)
 	{
+		iPoint position;
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		app->game_manager->mineral_resources -= 25;
@@ -181,33 +187,6 @@ bool EntityManager::preUpdate()
 		addEntity(position, BUNKER);
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, ZERGLING);
-	}
-
-	//if (app->input->getKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
-	//	deleteAllEntities();
-
-	//if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
-	//	deleteEntity(selection);
-
-	//------------------------ATTACK MECHANICS------------------------------------//
-	/*if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-	{
-	Entity* e = whichEntityOnMouse();
-	LOG("Hostility ON");
-	if (!selection.empty())
-	{
-	if (e != NULL && e->specialization == ZERGLING)
-	{
-	KillEntity(e);
-	enemyJustDied = true;
-	}
-	}
-	}*/
 	return true;
 }
 
@@ -342,21 +321,26 @@ void EntityManager::handleSelection()
 		// Now, we include the entities according to the only_units boolean variable.
 		for (it = active_entities.begin(); it != active_entities.end(); ++it)
 		{
-			if (it->second->coll->checkCollision(selector) && it->second->faction == PLAYER)
+			if (it->second->coll->checkCollision(selector))
 			{
-				if (it->second->type == UNIT)
+				// On debug mode, the player will select all the entities.
+				if (it->second->faction == COMPUTER && !debug)
+					continue;
+				else
 				{
-					Unit *u = (Unit*)it->second;
-					u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-				}
+					if (it->second->type == UNIT)
+					{
+						Unit *u = (Unit*)it->second;
+						u->distance_to_center_selector = u->tile_pos - app->map->worldToMap(app->map->data.back(), selector.x + (selector.w / 2), selector.y + (selector.h / 2));
+						selection.insert(pair<uint, Entity*>(it->first, it->second));
+					}
 
-				if (!units_only && it->second->type == BUILDING)
-				{
-					selection.insert(pair<uint, Entity*>(it->first, it->second));
-					break;
+					if (!units_only && it->second->type == BUILDING)
+					{
+						selection.insert(pair<uint, Entity*>(it->first, it->second));
+						break;
+					}
 				}
-
 			}
 		}
 	}
@@ -567,69 +551,6 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same
 	return ret;
 }*/
 
-
-	
-
-
-//Deletes all units SELECTED
-void EntityManager::deleteEntity(map<uint, Entity*> selection)
-{
-	vector<Entity* const> unitsto_delete;
-	map<uint, Entity*>::iterator it;
-
-	vector <Entity* const>::iterator itdel;
-	bool must_delete = true;
-
-	for (auto it = selection.cbegin(); it != selection.cend() /* not hoisted */; it++)
-	{
-		/*Stores entities in a vector that is going to be erased later
-		(add into the .h to become accessible to erase them at another
-		time*/
-
-		std::map<uint, Entity*>::iterator itdel;
-		itdel = active_entities.find(it->first);
-		active_entities.erase(itdel);
-	}
-
-	selection.clear();
-}
-
-/*Method that deletes an entity*/
-void EntityManager::deleteEntityKilled(Entity* e)
-{
-	vector <Entity* const>::iterator itdel;
-
-	e->coll->to_delete = true;
-	active_entities.erase(e->id);
-	enemyJustDied = true;
-	if (e->faction == COMPUTER)
-		LOG("ZERGLING KILLED! Enemies remaining in the wave: ");
-}
-
-void EntityManager::KillEntity(map<uint, Entity*> selection)
-{
-	deleteEntity(selection);
-}
-
-void EntityManager::KillEntity(Entity* e)
-{
-	deleteEntityKilled(e);
-}
-
-//Deletes all the units in the screen (DEBUG PURPOSES ONLY)
-void EntityManager::deleteAllEntities()
-{
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); it++)
-	{
-		it->second->coll->to_delete = true;
-		delete it->second;
-	}	
-
-	active_entities.clear();
-	selection.clear();
-}
-
 void EntityManager::choosePlaceForBuilding()
 {
 	iPoint p; app->input->getMousePosition(p);
@@ -705,5 +626,37 @@ void EntityManager::onCollision(Collider* c1, Collider* c2)
 			unit->has_target = true;
 			unit->state = MOVE;
 		}
+	}
+}
+
+void EntityManager::entityManualCreation()
+{
+	iPoint position;
+	if (app->input->getKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, MARINE);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, ZERGLING);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, SCV);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_4) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, MUTALISK);
 	}
 }

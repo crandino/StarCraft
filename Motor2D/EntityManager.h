@@ -29,7 +29,7 @@ enum SPECIALIZATION  // Second specialization
 	MARINE,
 	SCV,
 	ZERGLING,
-
+	MUTALISK,
 
 	// Buildings
 	COMMANDCENTER, 
@@ -74,25 +74,12 @@ public:
 	Entity* const addEntity(Entity* e);
 	Entity* const createUnit(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
-	
-	void deleteEntity(map<uint, Entity*> selection);
-	void deleteEntityKilled(Entity* e);
-	void deleteAllEntities();
 
 	void handleSelection();
 
 	void SetEnemyToAttackCommandCenter(Entity* e);
-
-	/*--------Methods for interact with buildings----------*/
-	void GetInsideBunker(Entity* e);	
-	void repairBuilding(Entity* e);
 	Entity* searchNearestEntityInRange(Entity* e, bool search_in_same_faction = false);
 
-
-	/*---------Methods for attacking other units------------*/
-	//Method that Kills entities Used for the kill of zerglings and other units
-	void KillEntity(map<uint, Entity*> selection);
-	void KillEntity(Entity* e);
 	Entity* whichEntityOnMouse();
 
 	/*---------------Creating Waves-------------------*/
@@ -141,6 +128,8 @@ private:
 
 	void			calculateSelector();
 	void			onCollision(Collider* c1, Collider* c2);	
+
+	void entityManualCreation();
 	
 };
 

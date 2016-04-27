@@ -13,7 +13,6 @@ Marine::Marine(iPoint &p)
 	idle_right.frames.push_back({ 256, 64, 64, 64 });
 	idle_right.frames.push_back({ 256, 0, 64, 64 });
 	idle_right.speed = 0.005f;
-	idle_right.loop = true;
 	idle_animation_pack.push_back(&idle_right);
 
 	idle_right_up.frames.push_back({ 128, 0, 64, 64 });
@@ -22,7 +21,6 @@ Marine::Marine(iPoint &p)
 	idle_right_up.frames.push_back({ 128, 64, 64, 64 });
 	idle_right_up.frames.push_back({ 128, 0, 64, 64 });
 	idle_right_up.speed = 0.005f;
-	idle_right_up.loop = true;
 	idle_animation_pack.push_back(&idle_right_up);
 
 	idle_up.frames.push_back({ 0, 0, 64, 64 });
@@ -31,7 +29,6 @@ Marine::Marine(iPoint &p)
 	idle_up.frames.push_back({ 0, 64, 64, 64 });
 	idle_up.frames.push_back({ 0, 0, 64, 64 });
 	idle_up.speed = 0.005f;
-	idle_up.loop = true;
 	idle_animation_pack.push_back(&idle_up);
 
 	idle_left_up.frames.push_back({ 960, 0, 64, 64 });
@@ -40,7 +37,6 @@ Marine::Marine(iPoint &p)
 	idle_left_up.frames.push_back({ 960, 64, 64, 64 });
 	idle_left_up.frames.push_back({ 960, 0, 64, 64 });
 	idle_left_up.speed = 0.005f;
-	idle_left_up.loop = true;
 	idle_animation_pack.push_back(&idle_left_up);
 
 	idle_left.frames.push_back({ 768, 0, 64, 64 });
@@ -49,7 +45,6 @@ Marine::Marine(iPoint &p)
 	idle_left.frames.push_back({ 768, 64, 64, 64 });
 	idle_left.frames.push_back({ 768, 0, 64, 64 });
 	idle_left.speed = 0.005f;
-	idle_left.loop = true;
 	idle_animation_pack.push_back(&idle_left);
 
 	idle_left_down.frames.push_back({ 640, 0, 64, 64 });
@@ -58,7 +53,6 @@ Marine::Marine(iPoint &p)
 	idle_left_down.frames.push_back({ 640, 64, 64, 64 });
 	idle_left_down.frames.push_back({ 640, 0, 64, 64 });
 	idle_left_down.speed = 0.005f;
-	idle_left_down.loop = true;
 	idle_animation_pack.push_back(&idle_left_down);
 
 	idle_down.frames.push_back({ 448, 0, 64, 64 });
@@ -67,7 +61,6 @@ Marine::Marine(iPoint &p)
 	idle_down.frames.push_back({ 448, 64, 64, 64 });
 	idle_down.frames.push_back({ 448, 0, 64, 64 });
 	idle_down.speed = 0.005f;
-	idle_down.loop = true;
 	idle_animation_pack.push_back(&idle_down);
 
 	idle_right_down.frames.push_back({ 384, 0, 64, 64 });
@@ -76,7 +69,6 @@ Marine::Marine(iPoint &p)
 	idle_right_down.frames.push_back({ 384, 64, 64, 64 });
 	idle_right_down.frames.push_back({ 384, 0, 64, 64 });
 	idle_right_down.speed = 0.005f;
-	idle_right_down.loop = true;
 	idle_animation_pack.push_back(&idle_right_down);
 	//----------------------------------------------
 
@@ -190,49 +182,41 @@ Marine::Marine(iPoint &p)
 	attack_right.frames.push_back({ 256, 128, 64, 64 });
 	attack_right.frames.push_back({ 256, 192, 64, 64 });
 	attack_right.speed = 0.01f;
-	attack_right.loop = true;
 	attack_animation_pack.push_back(&attack_right);
 
 	attack_right_up.frames.push_back({ 128, 128, 64, 64 });
 	attack_right_up.frames.push_back({ 128, 192, 64, 64 });
 	attack_right_up.speed = 0.01f;
-	attack_right_up.loop = true;
 	attack_animation_pack.push_back(&attack_right_up);
 
 	attack_up.frames.push_back({ 0, 128, 64, 64 });
 	attack_up.frames.push_back({ 0, 192, 64, 64 });
 	attack_up.speed = 0.01f;
-	attack_up.loop = true;
 	attack_animation_pack.push_back(&attack_up);
 
 	attack_left_up.frames.push_back({ 896, 128, 64, 64 });
 	attack_left_up.frames.push_back({ 896, 192, 64, 64 });
 	attack_left_up.speed = 0.01f;
-	attack_left_up.loop = true;
 	attack_animation_pack.push_back(&attack_left_up);
 
 	attack_left.frames.push_back({ 768, 128, 64, 64 });
 	attack_left.frames.push_back({ 768, 192, 64, 64 });
 	attack_left.speed = 0.01f;
-	attack_left.loop = true;
 	attack_animation_pack.push_back(&attack_left);
 
 	attack_left_down.frames.push_back({ 640, 128, 64, 64 });
 	attack_left_down.frames.push_back({ 640, 192, 64, 64 });
 	attack_left_down.speed = 0.01f;
-	attack_left_down.loop = true;
 	attack_animation_pack.push_back(&attack_left_down);
 
 	attack_down.frames.push_back({ 512, 128, 64, 64 });
 	attack_down.frames.push_back({ 512, 192, 64, 64 });
 	attack_down.speed = 0.01f;
-	attack_down.loop = true;
 	attack_animation_pack.push_back(&attack_down);
 
 	attack_right_down.frames.push_back({ 384, 128, 64, 64 });
 	attack_right_down.frames.push_back({ 384, 192, 64, 64 });
 	attack_right_down.speed = 0.01f;
-	attack_right_down.loop = true;
 	attack_animation_pack.push_back(&attack_right_down);
 	//----------------------------------------------
 
@@ -245,6 +229,7 @@ Marine::Marine(iPoint &p)
 	dead.frames.push_back({ 320, 832, 64, 64 });
 	dead.frames.push_back({ 384, 832, 64, 64 });
 	dead.frames.push_back({ 448, 832, 64, 64 });
+	dead.loop = false;
 	dead.speed = 0.01f;
 	//----------------------------------------------
 	current_animation = &idle_up;

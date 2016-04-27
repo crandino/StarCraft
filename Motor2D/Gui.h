@@ -119,8 +119,6 @@ public:
 	GuiImage* info_scv = nullptr;
 	GuiImage* info_bunker = nullptr;
 
-
-
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling
 	W_32 = { 28, 9, 32, 19 };

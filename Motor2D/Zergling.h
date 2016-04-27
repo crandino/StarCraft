@@ -84,7 +84,6 @@ public:
 		walk_right.frames.push_back({ 256, 640, 64, 64 });
 		walk_right.frames.push_back({ 256, 704, 64, 64 });
 		walk_right.speed = 0.02f;
-		walk_right.loop = true;
 		move_animation_pack.push_back(&walk_right);
 
 		walk_right_up.frames.push_back({ 128, 256, 64, 64 });
@@ -96,7 +95,6 @@ public:
 		walk_right_up.frames.push_back({ 128, 640, 64, 64 });
 		walk_right_up.frames.push_back({ 128, 704, 64, 64 });
 		walk_right_up.speed = 0.02f;
-		walk_right_up.loop = true;
 		move_animation_pack.push_back(&walk_right_up);
 
 		walk_up.frames.push_back({ 0, 256, 64, 64 });
@@ -108,7 +106,6 @@ public:
 		walk_up.frames.push_back({ 0, 640, 64, 64 });
 		walk_up.frames.push_back({ 0, 704, 64, 64 });
 		walk_up.speed = 0.02f;
-		walk_up.loop = true;
 		move_animation_pack.push_back(&walk_up);
 
 		walk_left_up.frames.push_back({ 896, 256, 64, 64 });
@@ -120,7 +117,6 @@ public:
 		walk_left_up.frames.push_back({ 896, 640, 64, 64 });
 		walk_left_up.frames.push_back({ 896, 704, 64, 64 });
 		walk_left_up.speed = 0.02f;
-		walk_left_up.loop = true;
 		move_animation_pack.push_back(&walk_left_up);
 
 		walk_left.frames.push_back({ 768, 256, 64, 64 });
@@ -132,7 +128,6 @@ public:
 		walk_left.frames.push_back({ 768, 640, 64, 64 });
 		walk_left.frames.push_back({ 768, 704, 64, 64 });
 		walk_left.speed = 0.02f;
-		walk_left.loop = true;
 		move_animation_pack.push_back(&walk_left);
 
 		walk_left_down.frames.push_back({ 640, 256, 64, 64 });
@@ -144,7 +139,6 @@ public:
 		walk_left_down.frames.push_back({ 640, 640, 64, 64 });
 		walk_left_down.frames.push_back({ 640, 704, 64, 64 });
 		walk_left_down.speed = 0.02f;
-		walk_left_down.loop = true;
 		move_animation_pack.push_back(&walk_left_down);
 
 		walk_down.frames.push_back({ 512, 256, 64, 64 });
@@ -156,7 +150,6 @@ public:
 		walk_down.frames.push_back({ 512, 640, 64, 64 });
 		walk_down.frames.push_back({ 512, 704, 64, 64 });
 		walk_down.speed = 0.02f;
-		walk_down.loop = true;
 		move_animation_pack.push_back(&walk_down);
 
 		walk_right_down.frames.push_back({ 384, 256, 64, 64 });
@@ -168,7 +161,6 @@ public:
 		walk_right_down.frames.push_back({ 384, 640, 64, 64 });
 		walk_right_down.frames.push_back({ 384, 704, 64, 64 });
 		walk_right_down.speed = 0.02f;
-		walk_right_down.loop = true;
 		move_animation_pack.push_back(&walk_right_down);
 
 		//-----------------Attack Animation---------------
@@ -176,56 +168,48 @@ public:
 		attack_right.frames.push_back({ 256, 128, 64, 64 });
 		attack_right.frames.push_back({ 256, 192, 64, 64 });
 		attack_right.speed = 0.008f;
-		attack_right.loop = true;
 		attack_animation_pack.push_back(&attack_right);
 
 		attack_right_up.frames.push_back({ 128, 64, 64, 64 });
 		attack_right_up.frames.push_back({ 128, 128, 64, 64 });
 		attack_right_up.frames.push_back({ 128, 192, 64, 64 });
 		attack_right_up.speed = 0.008f;
-		attack_right_up.loop = true;
 		attack_animation_pack.push_back(&attack_right_up);
 
 		attack_up.frames.push_back({ 0, 64, 64, 64 });
 		attack_up.frames.push_back({ 0, 128, 64, 64 });
 		attack_up.frames.push_back({ 0, 192, 64, 64 });
 		attack_up.speed = 0.008f;
-		attack_up.loop = true;
 		attack_animation_pack.push_back(&attack_up);
 
 		attack_left_up.frames.push_back({ 896, 64, 64, 64 });
 		attack_left_up.frames.push_back({ 896, 128, 64, 64 });
 		attack_left_up.frames.push_back({ 896, 192, 64, 64 });
 		attack_left_up.speed = 0.008f;
-		attack_left_up.loop = true;
 		attack_animation_pack.push_back(&attack_left_up);
 
 		attack_left.frames.push_back({ 768, 64, 64, 64 });
 		attack_left.frames.push_back({ 768, 128, 64, 64 });
 		attack_left.frames.push_back({ 768, 192, 64, 64 });
 		attack_left.speed = 0.008f;
-		attack_left.loop = true;
 		attack_animation_pack.push_back(&attack_left);
 
 		attack_left_down.frames.push_back({ 640, 64, 64, 64 });
 		attack_left_down.frames.push_back({ 640, 128, 64, 64 });
 		attack_left_down.frames.push_back({ 640, 192, 64, 64 });
 		attack_left_down.speed = 0.008f;
-		attack_left_down.loop = true;
 		attack_animation_pack.push_back(&attack_left_down);
 
 		attack_down.frames.push_back({ 512, 64, 64, 64 });
 		attack_down.frames.push_back({ 512, 128, 64, 64 });
 		attack_down.frames.push_back({ 512, 192, 64, 64 });
 		attack_down.speed = 0.008f;
-		attack_down.loop = true;
 		attack_animation_pack.push_back(&attack_down);
 
 		attack_right_down.frames.push_back({ 384, 64, 64, 64 });
 		attack_right_down.frames.push_back({ 384, 128, 64, 64 });
 		attack_right_down.frames.push_back({ 384, 192, 64, 64 });
 		attack_right_down.speed = 0.008f;
-		attack_right_down.loop = true;
 		attack_animation_pack.push_back(&attack_right_down);
 
 		//-----------------Death Animation---------------
