@@ -259,12 +259,12 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uin
 	return 1;
 }
 
-bool PathFinding::update(float dt)
+bool PathFinding::postUpdate()
 {
 	if (paths_to_find.size() > 0)
 	{
 		time_to_search.start();
-		float time = 0.015f / paths_to_find.size();
+		float time = ((1 / 60.0f) - (app->getDt() / 1000.0f)) / paths_to_find.size(); //((1sec / 60 frames) - current dt) / size of paths to find
 		int x = 1;
 
 		list<pathToFind>::iterator it = paths_to_find.begin();

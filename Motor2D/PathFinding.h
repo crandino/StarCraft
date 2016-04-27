@@ -81,7 +81,7 @@ public:
 	int createPathNow(const iPoint& origin, const iPoint& destination);
 	
 	// Called each loop iteration (searth for paths)
-	bool update(float dt);
+	bool postUpdate();
 
 	// CreatePath: Request to have a path from A to adjacent
 	int createPathToAdjacent(const iPoint& origin, uint distance);
