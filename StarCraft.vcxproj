@@ -86,6 +86,7 @@
     <ClInclude Include="Motor2D\GuiImage.h" />
     <ClInclude Include="Motor2D\AI.h" />
     <ClInclude Include="Motor2D\GuiLabel.h" />
+    <ClInclude Include="Motor2D\Hydralisk.h" />
     <ClInclude Include="Motor2D\Input.h" />
     <ClInclude Include="Motor2D\Map.h" />
     <ClInclude Include="Motor2D\Marine.h" />
@@ -125,6 +126,7 @@
     <ClCompile Include="Motor2D\GuiImage.cpp" />
     <ClCompile Include="Motor2D\AI.cpp" />
     <ClCompile Include="Motor2D\GuiLabel.cpp" />
+    <ClCompile Include="Motor2D\Hydralisk.cpp" />
     <ClCompile Include="Motor2D\Input.cpp" />
     <ClCompile Include="Motor2D\main.cpp" />
     <ClCompile Include="Motor2D\Map.cpp" />

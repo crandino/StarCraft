@@ -89,6 +89,9 @@
     <ClCompile Include="Motor2D\Minimap.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Hydralisk.cpp">
+      <Filter>Entities\Zerg_Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Minimap.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Hydralisk.h">
+      <Filter>Entities\Zerg_Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
