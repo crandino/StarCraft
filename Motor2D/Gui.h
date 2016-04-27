@@ -112,7 +112,11 @@ public:
 	//Command Center HUD--------------------
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
-	GuiImage* ui_bunker_button = nullptr;
+	GuiImage* ui_create_bunker = nullptr;
+	GuiImage* ui_create_turrets = nullptr;
+	GuiImage* ui_create_factory = nullptr;
+	GuiImage* ui_create_starport = nullptr;
+	GuiImage* ui_create_barraks = nullptr;
 
 	void openBuildingMenu();
 

@@ -103,6 +103,55 @@ bool Gui::start()
 	rectangle_command_9->can_focus = false;
 
 	// HUD Command Center------------------------------------------------------
+	//Buildings Button
+	ui_create_builds = app->gui->createImage(NULL, { 298, 28, 37, 34 });
+	ui_create_builds->setLocalPos(551, 358);
+	ui_create_builds->interactive = false;
+	ui_create_builds->can_focus = true;
+	ui_create_builds->setListener(this);
+	ui_create_builds->draw_element = false;
+
+	//Create Bunkers
+	ui_create_bunker = app->gui->createImage(NULL, { 256, 64, 37, 34 });
+	ui_create_bunker->setLocalPos(505, 358);
+	ui_create_bunker->interactive = false;
+	ui_create_bunker->can_focus = true;
+	ui_create_bunker->setListener(this);
+	ui_create_bunker->draw_element = false;
+
+	//Create Barraks
+	ui_create_barraks = app->gui->createImage(NULL, { 298, 64, 37, 34 });
+	ui_create_barraks->setLocalPos(551, 358);
+	ui_create_barraks->interactive = false;
+	ui_create_barraks->can_focus = true;
+	ui_create_barraks->setListener(this);
+	ui_create_barraks->draw_element = false;
+
+	//Create Turrets
+	ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });
+	ui_create_turrets->setLocalPos(597, 358);
+	ui_create_turrets->interactive = false;
+	ui_create_turrets->can_focus = true;
+	ui_create_turrets->setListener(this);
+	ui_create_turrets->draw_element = false;
+
+	//Create factory
+	ui_create_factory = app->gui->createImage(NULL, { 377, 64, 37, 34 });
+	ui_create_factory->setLocalPos(505, 398);
+	ui_create_factory->interactive = false;
+	ui_create_factory->can_focus = true;
+	ui_create_factory->setListener(this);
+	ui_create_factory->draw_element = false;
+
+	//Create starport
+	ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });
+	ui_create_starport->setLocalPos(551, 398);
+	ui_create_starport->interactive = false;
+	ui_create_starport->can_focus = true;
+	ui_create_starport->setListener(this);
+	ui_create_starport->draw_element = false;
+
+	//SCV Button
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });
 	ui_create_bot->setLocalPos(505, 358);
 	ui_create_bot->setListener(this);
@@ -110,14 +159,7 @@ bool Gui::start()
 	ui_create_bot->can_focus = true;
 	ui_create_bot->draw_element = false;
 	
-	ui_create_builds = app->gui->createImage(NULL, { 298, 28, 37, 34 });
-	ui_create_builds->setLocalPos(551, 358);
-	ui_create_builds->interactive = false;
-	ui_create_builds->can_focus = true;
-	ui_create_builds->setListener(this);
-	ui_create_builds->draw_element = false;
-	
-	
+	//Bunker buttons------------------------------------------------------------
 	ui_leave_bunker = app->gui->createImage(NULL, { 256, 94, 36, 33 });
 	ui_leave_bunker->setLocalPos(505, 358);
 	ui_leave_bunker->setListener(this);
@@ -254,7 +296,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;*/
 		}
 
-		if (ui == ui_bunker_button)
+		if (ui == ui_create_bunker)
 		{
 			switch (event)
 			{
