@@ -147,6 +147,8 @@ bool EntityManager::preUpdate()
 					it2->second->target_to_attack = NULL;
 			}
 
+			app->path->erase(it->first);
+
 			if (it->second->type == BUILDING)
 			{
 				if (it->second->specialization == COMMANDCENTER)
@@ -472,110 +474,42 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same
 	}
 	return ret;
 }
-/*
-	bool ret = false;
 
-	e->target_to_attack = NULL;
-	e->target_to_repair = NULL;
+Entity* EntityManager::searchEnemyToAttack(Entity* e)
+{
+	Entity* ret = NULL;
 	float value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
-	uint previousMaxHP = 10000;
-
-	for (; it != active_entities.end(); ++it) //First and foremost the unit looks for the closest and weakest enemy
+	uint previousMaxHP = 99999;
+	for (; it != active_entities.end(); ++it)
 	{
-		if (e->specialization != SCV && it->second != e && e->faction != it->second->faction && it->second->to_delete == false)
+		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			uint maxHP = it->second->current_hp;
-			
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			uint maxHP = it->second->current_hp;
 
-			//If the a unit is low on health it attacks it :). It is possible to kite zerglings now. However too dumb yet :D!
-			if (e->target_to_attack == NULL && d <= value && maxHP <= previousMaxHP)
+			if (ret == NULL && d <= value && maxHP <= previousMaxHP)
 			{
-				(e->target_to_attack) = &(*it->second);
-				LOG("BUG NET");
 				value = d;
 				previousMaxHP = maxHP;
-				ret = true;
+				ret = it->second;
 			}
-			else if (e->target_to_attack != NULL)
+			else if (ret != NULL)
 			{
-				if ((e->target_to_attack->type == it->second->type && d <= value && maxHP <= previousMaxHP) || 
-					(e->target_to_attack->type == BUILDING && it->second->type == UNIT && d <= e->range_of_vision && maxHP <= previousMaxHP))
+				//Only search entities with same type or if type is building, it search units
+				if ((ret->type == it->second->type && d <= value && maxHP <= previousMaxHP) ||
+					(ret->type == BUILDING && it->second->type == UNIT && d <= e->range_of_vision && maxHP <= previousMaxHP))
 				{
-					(e->target_to_attack) = &(*it->second);
-					LOG("BUG NET");
 					value = d;
 					previousMaxHP = maxHP;
-					ret = true;
+					ret = it->second;
 				}
 			}
 		}
-		// We check if we are a SCV, the objective is a building and needs to be repared
-		else if (e->specialization == SCV && it->second != NULL && it->second->type == BUILDING && (it->second->current_hp < it->second->max_hp))
-		{
-			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			if (d <= value)
-			{
-				(e->target_to_repair) = &(*it->second);
-				value = d;
-				ret = true;
-			}
-		}
 	}
-
-	if (e->target_to_attack != NULL) // Second it does the calculus and changes the IA states
-	{
-		if (e->type == UNIT)
-		{
-			Unit* unit = (Unit*)e;
-			unit->has_target = false;
-			if (value <= e->range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
-			{
-				e->state = ATTACK;
-			}
-			else
-			{
-				if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1) //the path to the selected entity is constructed
-				{
-					unit->has_target = true;
-					unit->path = app->path->getLastPath();
-					e->state = MOVE_ALERT;
-				}
-			}
-		}
-		else
-		{
-			if (value <= e->range_to_attack)
-				e->state = ATTACK;
-
-			else
-				e->state = IDLE;
-		}
-	}
-	else if (e->target_to_repair != NULL)// if we have a building that needs to be repaired
-	{
-		Unit* unit = (Unit*)e;
-		unit->has_target = false;
-		if (value <= e->range_to_attack)
-		{
-			e->state = REPAIR;
-		}
-		//else
-		//{
-		//	if (e->type == UNIT && app->path->createPath(e->tile_pos, e->target_to_attack->tile_pos) != -1)
-		//	{
-		//		unit->has_target = true;
-		//		unit->path = app->path->getLastPath();
-		//		e->state = MOVE_ALERT;
-		//	}
-		//}
-	}
-
 	return ret;
-}*/
+}
 
 void EntityManager::choosePlaceForBuilding()
 {

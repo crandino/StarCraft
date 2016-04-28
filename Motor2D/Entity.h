@@ -106,6 +106,11 @@ public:
 		return app->entity_manager->searchNearestEntityInRange(this);
 	}
 
+	virtual Entity* searchEnemy()
+	{
+		return app->entity_manager->searchEnemyToAttack(this);
+	}
+
 	void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));

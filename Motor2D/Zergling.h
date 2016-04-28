@@ -314,7 +314,7 @@ public:
 		case IDLE:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
-				target_to_attack = searchNearestEnemy();
+				target_to_attack = searchEnemy();
 				if (target_to_attack != NULL)
 					newNearestEntityFound();
 				/*if (queue.size() > 0)//ABV: if we want pathfinding in parts
@@ -337,7 +337,7 @@ public:
 		case MOVE_ALERT:
 			if (timer_to_check.read() >= TIME_TO_CHECK)
 			{
-				target_to_attack = searchNearestEnemy();
+				target_to_attack = searchEnemy();
 				if (target_to_attack != NULL)
 					newNearestEntityFound();
 				timer_to_check.start();
@@ -352,12 +352,10 @@ public:
 					state = IDLE;
 				timer_attack.start();
 
-				//ABV: for melee units we don't need this
-				/*target_to_attack = searchNearestEnemy();
-				if (target_to_attack != NULL )
+				Entity* target = target_to_attack;
+				target_to_attack = searchEnemy();
+				if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
 					newNearestEntityFound();
-				else
-					state = IDLE;*/
 			}
 			break;
 		case DYING:

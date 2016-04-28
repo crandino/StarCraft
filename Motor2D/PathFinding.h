@@ -107,6 +107,9 @@ public:
 	//GetTileAt: return the walkability value of a tile
 	uchar getTileAt(const iPoint& pos) const;
 
+	//erase: to erase if we delete an entity who is searching a path
+	void erase(uint id);
+
 };
 
 #endif // !__ PATHFINDING_H__

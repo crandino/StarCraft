@@ -590,3 +590,29 @@ uchar PathFinding::getTileAt(const iPoint& pos) const
 		return map_data[pos.y * width + pos.x];
 	return INVALID_WALKABILTY_CODE;
 }
+
+void PathFinding::erase(uint id)
+{
+	for (list<pathToFind>::iterator it = paths_to_find.begin(); it != paths_to_find.end();)
+	{
+		if (it->id == id)
+		{
+			it = paths_to_find.erase(it);
+			return;
+		}
+		else
+			it++;
+	}
+
+	for (map<uint, vector<iPoint>*>::iterator it = paths_found.begin(); it != paths_found.end();)
+	{
+		if (it->first == id)
+		{
+			RELEASE(it->second);
+			it = paths_found.erase(it);
+			return;
+		}
+		else
+			it++;
+	}
+}

@@ -49,7 +49,7 @@ bool Bunker::update(float dt)
 	case IDLE:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchNearestEnemy();
+			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
 				state = ATTACK;
 			timer_to_check.start();
@@ -68,7 +68,7 @@ bool Bunker::update(float dt)
 				if (!attack())
 					state = IDLE;
 				timer_attack.start();
-				target_to_attack = searchNearestEnemy();
+				target_to_attack = searchEnemy();
 			}
 		}
 		break;
