@@ -85,6 +85,9 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(BARRACK) :
 		LOG("Creating Barrack");
 		e = new Barrack(pos);
+		building_to_place = (Building*)e;
+		building_mode = true;
+		create_bunker = false;
 		break;
 	}
 
