@@ -29,6 +29,9 @@ public:
 	GUI_TYPES getType()const;
 	Module* getListener()const;
 
+	void enable_element();
+	void disable_element();
+
 protected:
 	void setSize(int w, int h);
 
@@ -38,7 +41,8 @@ public:
 	bool cut_childs = false;
 	bool can_focus = false;
 	bool draw_element = true;
-	GuiElements* parent = nullptr;
+	bool draw_alpha_element = false;
+	GuiElements* parent = nullptr; 
 protected:
 	GUI_TYPES type = UNKNOWN;
 	Module* listener = nullptr;
