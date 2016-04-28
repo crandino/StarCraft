@@ -14,6 +14,7 @@
 
 #include "CommandCenter.h"
 #include "Bunker.h"
+#include "Barrack.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -80,6 +81,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		building_to_place = (Building*)e;
 		building_mode = true;
 		create_bunker = false;
+		break;
+	case(BARRACK) :
+		LOG("Creating Barrack");
+		e = new Barrack(pos);
 		break;
 	}
 
@@ -724,6 +729,6 @@ void EntityManager::entityManualCreation()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, BUNKER);
+		addEntity(position, BARRACK);
 	}
 }

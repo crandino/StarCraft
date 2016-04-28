@@ -34,6 +34,7 @@ enum SPECIALIZATION  // Second specialization
 	// Buildings
 	COMMANDCENTER, 
 	BUNKER,
+	BARRACK,
 };
 
 class Entity;
