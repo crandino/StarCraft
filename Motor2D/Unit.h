@@ -30,7 +30,7 @@ public:
 	// Depending on its state, the entity obtains the corresponding angle // CRZ
 	void checkUnitDirection();
 
-	void newNearestEntityFound();
+	void newEntityFound();
 };
 
 

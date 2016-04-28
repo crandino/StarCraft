@@ -125,7 +125,7 @@ bool Unit::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
-				newNearestEntityFound();
+				newEntityFound();
 			else if (faction == COMPUTER)
 				app->entity_manager->SetEnemyToAttackCommandCenter(this);
 			timer_to_check.start();
@@ -140,7 +140,7 @@ bool Unit::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
-				newNearestEntityFound();
+				newEntityFound();
 			timer_to_check.start();
 		}
 		if (has_target)
@@ -156,7 +156,7 @@ bool Unit::update(float dt)
 			Entity* target = target_to_attack;
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
-				newNearestEntityFound();
+				newEntityFound();
 		}
 		break;
 	case DYING:
@@ -203,7 +203,7 @@ void Unit::checkUnitDirection()
 	angle = round(direction.getAngle());
 }
 
-void Unit::newNearestEntityFound()
+void Unit::newEntityFound()
 {
 	has_target = false;
 	float distance = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);

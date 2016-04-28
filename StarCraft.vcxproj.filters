@@ -92,6 +92,9 @@
     <ClCompile Include="Motor2D\Hydralisk.cpp">
       <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Medic.cpp">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -225,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Barrack.h">
       <Filter>Entities\Terran_Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Medic.h">
+      <Filter>Entities\Terran_Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

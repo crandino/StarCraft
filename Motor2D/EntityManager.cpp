@@ -8,6 +8,7 @@
 
 #include "Marine.h"
 #include "Scv.h"
+#include "Medic.h"
 #include "Zergling.h"
 #include "Mutalisk.h"
 #include "Hydralisk.h"
@@ -413,7 +414,12 @@ void EntityManager::handleSelection()
 					else if (it->second->specialization == SCV && e->type == BUILDING)
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;
-						unit->newNearestEntityFound();
+						unit->newEntityFound();
+					}
+					else if (it->second->specialization == MEDIC && e->faction == it->second->faction && e->type == UNIT)
+					{
+						((Medic*)unit)->target_to_attack = (Unit*)e;
+						unit->newEntityFound();
 					}
 				}
 			}

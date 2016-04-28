@@ -28,6 +28,7 @@ enum SPECIALIZATION  // Second specialization
 	NOTYPE,
 	MARINE,
 	SCV,
+	MEDIC,
 	ZERGLING,
 	MUTALISK,
 	HYDRALISK,
