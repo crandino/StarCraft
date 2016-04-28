@@ -16,9 +16,6 @@ public:
 	iPoint				distance_to_center_selector;    // Useful for PathFinding for groups of units
 
 	bool				flying;							// Does it flies?
-	
-	// Aleix testing
-	queue<iPoint>		queue;
 
 	Unit();
 

@@ -221,12 +221,6 @@ Hydralisk::Hydralisk(iPoint &p)
 	attack_right_down.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_right_down);
 
-
-
-
-
-
-
 	current_animation = &walk_down;
 
 	// Positions and information
@@ -261,82 +255,6 @@ Hydralisk::Hydralisk(iPoint &p)
 
 	// PathFinding and movement variables
 	speed = 8.0f;
-}
-
-void Hydralisk::move(float dt)
-{
-	if (path.size() > 0)
-	{
-		float pixels_to_move = 0;
-		float total_pixels_moved = 0;
-		float total_pixels_to_move = speed / 100 * dt;
-
-		if (total_pixels_to_move >= 4)
-			pixels_to_move = 4;
-
-		do{
-			if (total_pixels_moved + 4 > total_pixels_to_move)
-				pixels_to_move = total_pixels_to_move - total_pixels_moved;
-
-			if (path.begin()->x < tile_pos.x && path.begin()->y < tile_pos.y)
-			{
-				center.x -= pixels_to_move / 2;
-				center.y -= pixels_to_move / 2;
-			}
-			else if (path.begin()->x < tile_pos.x && path.begin()->y > tile_pos.y)
-			{
-				center.x -= pixels_to_move / 2;
-				center.y += pixels_to_move / 2;
-			}
-			else if (path.begin()->x > tile_pos.x && path.begin()->y > tile_pos.y)
-			{
-				center.x += pixels_to_move / 2;
-				center.y += pixels_to_move / 2;
-			}
-			else if (path.begin()->x > tile_pos.x && path.begin()->y < tile_pos.y)
-			{
-				center.x += pixels_to_move / 2;
-				center.y -= pixels_to_move / 2;
-			}
-			else if (path.begin()->y == tile_pos.y)
-			{
-				if (path.begin()->x < tile_pos.x)
-					center.x -= pixels_to_move;
-				else
-					center.x += pixels_to_move;
-			}
-			else
-			{
-				if (path.begin()->y < tile_pos.y)
-					center.y -= pixels_to_move;
-
-				else
-					center.y += pixels_to_move;
-			}
-			calculePos();
-
-			if (app->map->worldToMap(app->map->data.back(), center.x, center.y) != tile_pos)
-			{
-				tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
-				if (tile_pos == path.back())
-				{
-					path.clear();
-					has_target = false;
-					state = IDLE;
-					break;
-				}
-				else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
-					path.erase(path.begin());
-			}
-			total_pixels_moved += pixels_to_move;
-
-		} while (total_pixels_moved < total_pixels_to_move);
-	}
-	else
-	{
-		state = IDLE;
-		has_target = false;
-	}
 }
 
 // Method that assign an animation according to its orientation
