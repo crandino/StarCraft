@@ -144,12 +144,16 @@ void GuiElements::enable_element()
 {
 	this->interactive = true;
 	this->draw_element = true;
-	this->draw_alpha_element = false;
 }
 
 void GuiElements::disable_element()
 {
 	this->interactive = false;
 	this->draw_element = false;
-	this->draw_alpha_element = true;
+}
+
+void GuiElements::unable_element()
+{
+	this->interactive = false;
+	this->draw_element = true;
 }

@@ -306,6 +306,19 @@ bool GameManager::update(float dt)
 	if (close)
 		ret = false;
 
+	//ROGER: Add resources
+	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		mineral_resources = mineral_resources + 100;
+		gas_resources = gas_resources + 100;
+	}
+	//Delete resources
+	if (app->input->getKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		mineral_resources = 0;
+		gas_resources = 0;
+	}
+
 	return ret;
 }
 

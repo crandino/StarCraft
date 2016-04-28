@@ -67,8 +67,8 @@ public:
 	uint total_units_killed_currentFrame = 0;
 
 	//-------------Resources------------------
-	int       mineral_resources = 1000;
-	int       gas_resources = 1000;
+	int       mineral_resources = 0;
+	int       gas_resources = 0;
 	int       resources = 0;
 
 public:

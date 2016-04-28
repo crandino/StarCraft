@@ -111,8 +111,8 @@ bool Gui::start()
 	ui_create_builds->setListener(this);
 	ui_create_builds->draw_element = false;
 
-	//Create Bunkers
-	ui_create_bunker = app->gui->createImage(NULL, { 256, 64, 37, 34 });
+	//Create Bunkers 
+	ui_create_bunker = app->gui->createImage(NULL, { 256, 64, 37, 34 }); //Disabled section { 440, 125, 37, 34 }
 	ui_create_bunker->setLocalPos(505, 358);
 	ui_create_bunker->interactive = false;
 	ui_create_bunker->can_focus = true;
@@ -120,7 +120,7 @@ bool Gui::start()
 	ui_create_bunker->draw_element = false;
 
 	//Create Barraks
-	ui_create_barraks = app->gui->createImage(NULL, { 298, 64, 37, 34 });
+	ui_create_barraks = app->gui->createImage(NULL, { 298, 64, 37, 34 });//Disabled section { 482, 125, 37, 34 }
 	ui_create_barraks->setLocalPos(551, 358);
 	ui_create_barraks->interactive = false;
 	ui_create_barraks->can_focus = true;
@@ -128,7 +128,7 @@ bool Gui::start()
 	ui_create_barraks->draw_element = false;
 
 	//Create Turrets
-	ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });
+	ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });//Disabled section { 522, 125, 37, 34 }
 	ui_create_turrets->setLocalPos(597, 358);
 	ui_create_turrets->interactive = false;
 	ui_create_turrets->can_focus = true;
@@ -136,15 +136,15 @@ bool Gui::start()
 	ui_create_turrets->draw_element = false;
 
 	//Create factory
-	ui_create_factory = app->gui->createImage(NULL, { 377, 64, 37, 34 });
+	ui_create_factory = app->gui->createImage(NULL, { 377, 64, 37, 34 });//Disabled section { 561, 125, 37, 34 }
 	ui_create_factory->setLocalPos(505, 398);
 	ui_create_factory->interactive = false;
 	ui_create_factory->can_focus = true;
 	ui_create_factory->setListener(this);
 	ui_create_factory->draw_element = false;
-
+	
 	//Create starport
-	ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });
+	ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
 	ui_create_starport->setLocalPos(551, 398);
 	ui_create_starport->interactive = false;
 	ui_create_starport->can_focus = true;
@@ -152,7 +152,7 @@ bool Gui::start()
 	ui_create_starport->draw_element = false;
 
 	//SCV Button
-	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });
+	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });//Disabled section { 440, 89, 37, 34 }
 	ui_create_bot->setLocalPos(505, 358);
 	ui_create_bot->setListener(this);
 	ui_create_bot->interactive = false;
@@ -275,6 +275,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			{
 				buildingMenuOpened = false;
 				ui_create_builds->setLocalPos(551, 358);
+
 			}
 			break;
 		}
@@ -729,7 +730,17 @@ void Gui::openBuildingMenu()
 	ui_create_builds->enable_element();
 
 	//Buildings
-	ui_create_bunker->enable_element();
+	if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 25) 
+	{
+		ui_create_bunker->setSection({ 440, 125, 37, 34 });
+		ui_create_bunker->unable_element();
+	}
+	else
+	{
+		ui_create_bunker->setSection({ 256, 64, 37, 34 });
+		ui_create_bunker->enable_element();
+	}
+
 	ui_create_barraks->enable_element();
 	ui_create_turrets->enable_element();
 	ui_create_factory->enable_element();
