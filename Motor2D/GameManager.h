@@ -6,6 +6,7 @@
 #include "Point2d.h"
 #include "Collision.h"
 #include "Gui.h"
+#include "PugiXml\src\pugixml.hpp"
 
 //Number to change the number of waves
 #define TOTALWAVES 2
@@ -25,6 +26,18 @@
 
 class GuiImage;
 using namespace std;
+
+
+struct SizeWave
+{
+	int zergling_quantity;
+	int hydralisk_quantity;
+	int mutalisk_quantity;
+	/*Rest of units*/
+};
+
+
+
 
 //Class that manages the game. The win lose cycle, the points earned, the resources, waves etc..
 
@@ -58,7 +71,7 @@ public:
 
 	GameManager()
 	{
-		name.assign("GameManager");
+		name.assign("game_manager");
 	}
 
 	void displayVictoryScreen();
@@ -68,6 +81,8 @@ public:
 	bool checkGameOver();
 
 	bool victory = false;
+
+	bool awake(pugi::xml_node &node);
 
 	void startGame();
 
@@ -146,6 +161,12 @@ public:
 
 //Utils
 	int sizeWave();
+
+
+
+	SizeWave wave1;
+	SizeWave wave2;
+
 
 
 private:

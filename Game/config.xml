@@ -28,6 +28,26 @@
 	    
   </file_system>
 
+  <game_manager>
+    
+    <!-- Wave Information -->
+    <totalWaves value ="2"/>
+    <SizeWave1 zerglings ="2" hydralisks ="1" />
+    <SizeWave2 zerglings ="5" hydralisks ="3" mutalisks ="2"/>
+    <SizeWave2 zerglings ="5" hydralisks ="3" mutalisks ="2"/>
+    
+    <!-- Player Units -->
+    <InitialSizePlayer marines="10" medic ="3" scv ="1"/>
+    
+    <!-- Score--> 
+    <ZerglingScore value = "20" />
+    <HydraliskScore value = "40" />
+    <MutaliskScore value = "50" />
+    
+    
+      
+  </game_manager>
+
   <fonts>
     <default_font size="24" file="Starcraft_Normal.ttf"/>
     <default_font size="12" file="OpenSans-Regular.ttf"/>

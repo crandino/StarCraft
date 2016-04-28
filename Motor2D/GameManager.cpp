@@ -32,6 +32,23 @@ using namespace std;
 #define COMMANDCENTERPOSITION {1500, 2250}
 */
 
+
+bool GameManager::awake(pugi::xml_node &node) 
+{
+	bool ret = true;
+
+	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
+	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();;
+	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();;
+
+	wave2.zergling_quantity = node.child("SizeWave2").attribute("zerglings").as_uint();
+	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();;
+	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();;
+
+	return ret;
+}
+
+
 bool GameManager::start()
 {
 	bool ret = true;

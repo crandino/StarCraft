@@ -40,9 +40,9 @@ public:
 
 private:
 	std::string	   title;
-	uint		width;
-	uint		height;
-	uint		scale;
+	uint		   width;
+	uint		   height;
+	uint		   scale;
 };
 
 #endif // __WINDOW_H__
