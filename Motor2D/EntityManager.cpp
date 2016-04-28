@@ -524,7 +524,7 @@ void EntityManager::choosePlaceForBuilding()
 
 	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y);
 	iPoint last_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x + building_to_place->coll->rect.w, building_to_place->coll->rect.y + building_to_place->coll->rect.h);
-	iPoint point_to_draw;
+	fPoint point_to_draw;
 
 	for (int y = first_tile.y; y < last_tile.y; ++y)
 	{

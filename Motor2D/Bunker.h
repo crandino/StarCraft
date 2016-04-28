@@ -9,7 +9,7 @@ class Bunker : public Building
 public:
 
 	Animation					idle;
-	map<uint, Entity*>			units_inside;
+	map<uint, Unit*>			units_inside;
 	uint						max_capacity;
 	float						damage_increase_ratio;
 
@@ -18,7 +18,7 @@ public:
 
 	Bunker(iPoint &p);
 	bool update(float dt);
-	bool getEntityInside(Entity* entity);
+	bool getEntityInside(Unit* entity);
 	bool getEntitiesOutside();
 	bool attack();
 

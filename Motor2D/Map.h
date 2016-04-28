@@ -140,7 +140,7 @@ public:
 	// Load new map
 	bool load(const char* path);
 
-	iPoint mapToWorld(MapData &map, int x, int y) const;
+	fPoint mapToWorld(MapData &map, int x, int y) const;
 	iPoint worldToMap(MapData &map, int x, int y) const;
 	bool createWalkabilityMap(int& width, int& height, uchar** buffer) const;
 	bool setLayerProperty(const char* map_name, const char* layer_name, const char* property_name, int value);

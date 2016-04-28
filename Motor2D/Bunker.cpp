@@ -1,4 +1,5 @@
 #include "Bunker.h"
+#include "PathFinding.h"
 #include "p2Log.h"
 
 Bunker::Bunker(iPoint &p)
@@ -89,12 +90,12 @@ bool Bunker::update(float dt)
 	return true;
 }
 
-bool Bunker::getEntityInside(Entity* entity)
+bool Bunker::getEntityInside(Unit* entity)
 {
 
 	if (units_inside.size() < max_capacity)
 	{
-		units_inside.insert(pair<uint, Entity*>(entity->id, entity));
+		units_inside.insert(pair<uint, Unit*>(entity->id, entity));
 		entity->to_delete = true;
 		Marine *m = (Marine*)entity;
 		m->inside_bunker = true;		
@@ -111,9 +112,16 @@ bool Bunker::getEntitiesOutside()
 	bool ret = false;
 	if (this != NULL && !units_inside.empty())
 	{
-		for (map<uint, Entity*>::iterator it = units_inside.begin(); it != units_inside.end();)
+		for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end();)
 		{
-			app->entity_manager->active_entities.insert(pair<uint, Entity*>(it->second->id, it->second));
+			if (!app->path->isWalkable(it->second->tile_pos))
+			{
+				it->second->tile_pos = app->path->findNearestWalkableTile(it->second->tile_pos, COMMANDCENTERPOSITION, 25);
+				it->second->center = app->map->mapToWorld(app->map->data.back(), it->second->tile_pos.x, it->second->tile_pos.y);
+				it->second->calculePos();
+			}
+
+			app->entity_manager->active_entities.insert(pair<uint, Unit*>(it->second->id, it->second));
 
 			Marine *m = (Marine*)it->second;
 			m->coll->enable();

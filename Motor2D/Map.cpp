@@ -77,7 +77,7 @@ void Map::draw()
 						TileSet* tileset = map_to_draw->getTilesetFromTileId(tile_id);   // Tileset for this tile_id
 						SDL_Rect r = tileset->getTileRect(tile_id);		// Section of the tile within the tileset
 
-						iPoint pos = mapToWorld(*map_to_draw, blit_position.x, blit_position.y);
+						fPoint pos = mapToWorld(*map_to_draw, blit_position.x, blit_position.y);
 						app->render->blit(tileset->texture, pos.x, pos.y, &r);
 					}
 					blit_position.x++;
@@ -113,9 +113,9 @@ bool Map::setLayerProperty(const char* map_name, const char* layer_name, const c
 	return false;
 }
 
-iPoint Map::mapToWorld(MapData &map, int x, int y) const
+fPoint Map::mapToWorld(MapData &map, int x, int y) const
 {
-	iPoint ret;
+	fPoint ret;
 
 	if (map.type == MAPTYPE_ORTHOGONAL)
 	{
