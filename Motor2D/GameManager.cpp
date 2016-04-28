@@ -45,6 +45,16 @@ bool GameManager::awake(pugi::xml_node &node)
 	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();;
 	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();;
 
+	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_uint();
+	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_uint();
+	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
+
+
+	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
+	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
+	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
+
+
 	return ret;
 }
 

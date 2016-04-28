@@ -27,17 +27,21 @@
 class GuiImage;
 using namespace std;
 
-
+//XML information
 struct SizeWave
 {
-	int zergling_quantity;
-	int hydralisk_quantity;
-	int mutalisk_quantity;
+	uint zergling_quantity;
+	uint hydralisk_quantity;
+	uint mutalisk_quantity;
 	/*Rest of units*/
 };
 
-
-
+struct initialSizePlayer
+{
+	uint marines_quantity;
+	uint medic_quantity;
+	uint scv_quantity;
+};
 
 //Class that manages the game. The win lose cycle, the points earned, the resources, waves etc..
 
@@ -162,13 +166,17 @@ public:
 //Utils
 	int sizeWave();
 
-
-
+//XML loaded info -------
 	SizeWave wave1;
 	SizeWave wave2;
 
+	initialSizePlayer initial_size;
 
+	uint zergling_score;
+	uint hydralisk_score;
+	uint mutalisk_score;
 
+//XML loaded info end -------
 private:
 	uint previous_unit_killed = 0;
 
