@@ -256,7 +256,7 @@ public:
 		time_to_die = 500.0f;
 
 		// PathFinding and movement variables
-		speed = 8.0f;
+		speed = 12.0f;
 	}
 
 	// Method that assign an animation according to its orientation

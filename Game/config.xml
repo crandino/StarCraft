@@ -32,9 +32,9 @@
     
     <!-- Wave Information -->
     <totalWaves value ="2"/>
-    <SizeWave1 zerglings ="2" hydralisks ="1" />
-    <SizeWave2 zerglings ="5" hydralisks ="3" mutalisks ="2"/>
-    <SizeWave2 zerglings ="5" hydralisks ="3" mutalisks ="2"/>
+    <SizeWave1 zerglings ="4" hydralisks ="0" />
+    <SizeWave2 zerglings ="5" hydralisks ="0" mutalisks ="2"/>
+    <SizeWave3 zerglings ="5" hydralisks ="0" mutalisks ="2"/>
     
     <!-- Player Units -->
     <InitialSizePlayer marines="10" medic ="3" scv ="1"/>

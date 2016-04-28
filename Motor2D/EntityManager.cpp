@@ -438,20 +438,39 @@ void EntityManager::handleSelection()
 }
 
 /*------------------WAVE RELATED METHODS--------------------------*/
-void EntityManager::createWave(uint sizex, uint sizey, iPoint position)
+void EntityManager::createWave(uint sizeZ, uint sizeH, uint sizeM, iPoint position)
 {
-	for (int i = 0; i < sizex; i++)
-	{
-		for (int j = 0; j < sizey; j++)
+		int i = 0;
+		for (; i < sizeZ; i++)
 		{
-			int posx = position.x + (sizex * i * 2);
-			int posy = position.y + (sizey * j * 2);
+			int posx = position.x + (sizeZ * i * 2);
+			int posy = position.y + (sizeZ * i * 2);
 
 			iPoint position = {posx, posy};
 
 			addEntity(position, ZERGLING);
 		}
-	}
+
+		for (i = 0; i < sizeH; i++)
+		{
+			int posx = position.x + (sizeZ * i * 2);
+			int posy = position.y + (sizeZ * i * 2);
+
+			iPoint position = { posx, posy };
+
+			addEntity(position, HYDRALISK);
+		}
+
+		for (i = 0; i < sizeM; i++)
+		{
+			int posx = position.x + (sizeZ * i * 2);
+			int posy = position.y + (sizeZ * i * 2);
+
+			iPoint position = { posx, posy };
+
+			addEntity(position, MUTALISK);
+		}
+	
 }
 
 Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same_faction) //The method ONLY search and return the nearest entity

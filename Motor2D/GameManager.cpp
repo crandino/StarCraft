@@ -175,7 +175,7 @@ bool GameManager::update(float dt)
 				{
 					LOG("Wave 1 is over get prepared!!!!");
 
-					app->entity_manager->createWave(SIZE1X, SIZE1Y, { 1419, 800 });
+					app->entity_manager->createWave(wave1.zergling_quantity,wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
 					current_waves++;
 					resources++;
 
@@ -197,21 +197,12 @@ bool GameManager::update(float dt)
 				{
 					
 					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(SIZE2X, SIZE2Y, { 1419, 800 });
+					app->entity_manager->createWave(wave2.zergling_quantity, wave2.hydralisk_quantity, wave2.mutalisk_quantity, { 1419, 800 });
 					current_waves++;
 
 					time_between_waves.start();
 				}
-				else if (current_waves == 2)
-				{
-
-					LOG("Last wave!!!");
-
-					app->entity_manager->createWave(SIZE3X, SIZE3Y, { 1036, 35 });
-					current_waves++;
-
-					time_between_waves.start();
-				}
+			
 			}
 
 			if (current_waves == 2 && sizeWave() <= 0 && resources == 2)

@@ -260,7 +260,7 @@ Hydralisk::Hydralisk(iPoint &p)
 	time_to_die = 500.0f;
 
 	// PathFinding and movement variables
-	speed = 12.0f;
+	speed = 8.0f;
 }
 
 void Hydralisk::move(float dt)
