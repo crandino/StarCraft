@@ -37,8 +37,8 @@ public:
 
 		// UI paramters
 		selection_type = { 226, 66, 146, 88 };
-		circle_selection_offset = { 6, 30 };
-		offset_life = { -60, 57 };
+		circle_selection_offset = { 0, 34 };
+		offset_life = { -80, 57 };
 
 		// Lifes attributes
 		max_hp = 1000;
