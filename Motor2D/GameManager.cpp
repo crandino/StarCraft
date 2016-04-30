@@ -37,6 +37,8 @@ bool GameManager::awake(pugi::xml_node &node)
 {
 	bool ret = true;
 
+	total_waves = 
+
 	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
 	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();;
 	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();;
@@ -49,12 +51,10 @@ bool GameManager::awake(pugi::xml_node &node)
 	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_uint();
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 
-
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
 	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
-
-
+	
 	return ret;
 }
 
@@ -124,11 +124,7 @@ bool GameManager::start()
 
 bool GameManager::preUpdate()
 {
-	
-
 	//Code that erase enemies and controls if the wave is killed
-	
-	
 		if (start_game)
 		{
 			if (current_waves <= TOTALWAVES)

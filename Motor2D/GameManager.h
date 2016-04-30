@@ -28,6 +28,14 @@ class GuiImage;
 using namespace std;
 
 //XML information
+
+struct GameInformation
+{
+	uint total_waves;
+
+};
+
+
 struct SizeWave
 {
 	uint zergling_quantity;
