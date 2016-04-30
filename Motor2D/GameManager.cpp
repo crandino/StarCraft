@@ -185,30 +185,6 @@ bool GameManager::update(float dt)
 				mineral_resources += 150;
 				gas_resources += 50;
 				resources ++;
-			}
-
-			if (time_between_waves.readSec() >= WAVETIME2 && sizeWave() <= 0)//We check how much time do we have left before releasing a new wave
-			{
-				if (current_waves == 1)
-				{
-					
-					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(wave2.zergling_quantity, wave2.hydralisk_quantity, wave2.mutalisk_quantity, { 1419, 800 });
-					current_waves++;
-
-					time_between_waves.start();
-				}
-			
-			}
-
-			if (current_waves == 2 && sizeWave() <= 0 && resources == 2)
-			{
-				//Get Resources
-				mineral_resources += 75;
-				gas_resources += 75;
-				resources++;
-
-				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
 				won = true;
 				start_game = false;
 			}
@@ -216,46 +192,7 @@ bool GameManager::update(float dt)
 	
 		}
 
-		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
-		if (total_units_killed_currentFrame > 0)
-		{
-			kill_count += total_units_killed_currentFrame;
-			addPoints(kill_count);
-			total_units_killed_currentFrame = 0;
-
-			LOG("Score: %d", total_score);
-
-			if (current_waves == 1 && kill_count >= (SIZE1X*SIZE1Y))
-			{
-				total_kills_game += kill_count;
-				kill_count = 0;
-				addPoints(kill_count);
-
-				LOG("You successfully wiped the first wave good job! NOW THE NEXT ONE >:]");
-				LOG("Total Score: %d", total_score);
-			}
-			else if (current_waves == 2 && kill_count >= SIZE2X*SIZE2Y)
-			{
-				total_kills_game += kill_count;
-				kill_count = 0;
-				addPoints(kill_count);
-
-				LOG("You successfully wiped the second wave good job! NOW THE NEXT ONE >:]");
-				LOG("Total Score: %d", total_score);
-			}
-			else if (current_waves == 3 && kill_count >= SIZE3X*SIZE3Y)
-			{
-				total_kills_game += kill_count;
-				kill_count = 0;
-				addPoints(kill_count);
-
-				LOG("You successfully wiped the last wave good job!!!!!");
-				LOG("Total Score: %d", total_score);
-				current_waves = 4;
-			}
-		}
-		//timer
-		//++unitKillCount;
+		
 
 		if (checkGameOver())
 		{
