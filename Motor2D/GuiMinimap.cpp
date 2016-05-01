@@ -52,7 +52,7 @@ bool GuiMinimap::cleanUp()
 	return ret;
 }
 
-iPoint GuiMinimap::minimapToWorld(const iPoint &mini_map_pos)
+iPoint GuiMinimap::minimapToWorld(const iPoint &mini_map_pos) const
 {
 	iPoint world_pos;
 	world_pos.x = mini_map_pos.x / scale.x;
@@ -70,6 +70,16 @@ iPoint GuiMinimap::minimapToWorld(const iPoint &mini_map_pos)
 		world_pos.y = (app->map->data.front().tile_height * app->map->data.front().height) - (app->render->camera.h / 2);
 
 	return world_pos;
+}
+
+iPoint GuiMinimap::worldToMinimap(const iPoint &world_pos) const
+{
+	iPoint mini_map_pos;
+
+	mini_map_pos.x = rect.x + (world_pos.x * scale.x) - app->render->camera.x;
+	mini_map_pos.y = rect.y + (world_pos.y * scale.y) - app->render->camera.y;
+
+	return mini_map_pos;
 }
 
 //Blitz GuiMinimap
@@ -92,15 +102,12 @@ void GuiMinimap::draw() const
 		{
 			Entity* entity = it->second;
 
-			// Check if we got the entity
-			if (entity != NULL)
-				break;
-
 			// Set drawing quad for each unit
-			SDL_Rect quad_rect;
-			quad_rect.x = rect.x + int(entity->center.x * scale.x) - app->render->camera.x;
-			quad_rect.y = rect.y + int(entity->center.y * scale.y) - app->render->camera.y;
-			quad_rect.w = quad_rect.h = 1;
+		/*	SDL_Rect quad_rect;
+			iPoint p = getLocalPos();
+			quad_rect.x = p.x + int(entity->center.x * scale.x) - app->render->camera.x;
+			quad_rect.y = p.y + int(entity->center.y * scale.y) - app->render->camera.y;
+			quad_rect.w = quad_rect.h = 1;*/
 
 			// Choose quad color
 			Uint8 r, g, b;
@@ -120,7 +127,8 @@ void GuiMinimap::draw() const
 			}
 
 			// send to render
-			app->render->DrawQuad(quad_rect, r, g, b);
+			iPoint quad_pos = worldToMinimap({(int)entity->center.x, (int)entity->center.y });
+			app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, r, g, b);
 		}
 	}
 }

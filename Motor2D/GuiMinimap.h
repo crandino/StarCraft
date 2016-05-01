@@ -26,7 +26,8 @@ public:
 private:
 
 	void calculateScale();
-	iPoint minimapToWorld(const iPoint &mini_map_pos);
+	iPoint minimapToWorld(const iPoint &mini_map_pos) const;
+	iPoint worldToMinimap(const iPoint &world_pos) const;
 
 private:
 

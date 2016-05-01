@@ -235,7 +235,7 @@ Hydralisk::Hydralisk(iPoint &p)
 	// Characterization and behaviour
 	faction = COMPUTER;
 	specialization = MUTALISK;
-	flying = true;
+	flying = false;
 
 	// UI paramters
 	selection_type = { 28, 9, 32, 19 };
