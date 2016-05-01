@@ -6,11 +6,11 @@
 #include "Render.h"
 #include "Animation.h"
 #include "EntityManager.h"
-#include "Minimap.h"
 
 class GuiCursor;
 class GuiImage;
 class GuiLabel;
+class GuiMinimap;
 using namespace std;
 
 
@@ -38,11 +38,9 @@ enum GUI_TYPES
 	UNKNOWN,
 	IMAGE,
 	CURSOR,
-	LABEL
+	LABEL,
+	MINIMAP
 };
-
-
-
 
 // ---------------------------------------------------
 class Gui : public Module
@@ -77,10 +75,7 @@ public:
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
-	Minimap* createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea);
-
-	// Minimap
-	Minimap* minimap = nullptr;
+	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea);
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
@@ -138,6 +133,9 @@ public:
 	//HUD Info SCV and Bunker-----------------
 	GuiImage* info_scv = nullptr;
 	GuiImage* info_bunker = nullptr;
+
+	// HUD Minimap
+	GuiMinimap* mini_map;
 
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling

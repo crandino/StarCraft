@@ -83,14 +83,14 @@
     <ClCompile Include="Motor2D\Mutalisk.cpp">
       <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\Minimap.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Motor2D\Hydralisk.cpp">
       <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
     <ClCompile Include="Motor2D\Medic.cpp">
       <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\GuiMinimap.cpp">
+      <Filter>UI_elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,9 +214,6 @@
     <ClInclude Include="Motor2D\Mutalisk.h">
       <Filter>Entities\Zerg_Units</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Minimap.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Motor2D\Hydralisk.h">
       <Filter>Entities\Zerg_Units</Filter>
     </ClInclude>
@@ -225,6 +222,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Medic.h">
       <Filter>Entities\Terran_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\GuiMinimap.h">
+      <Filter>UI_elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

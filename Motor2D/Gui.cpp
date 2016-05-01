@@ -10,11 +10,10 @@
 #include "Window.h"
 #include "Textures.h"
 
-
 #include "GuiImage.h"
 #include "GuiCursor.h"
 #include "GuiLabel.h"
-
+#include "GuiMinimap.h"
 
 #include "Bunker.h"
 
@@ -204,7 +203,6 @@ bool Gui::start()
 	info_bunker->setLocalPos(545, 323);
 	info_bunker->interactive = false;
 	info_bunker->draw_element = false;
-
 	
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
@@ -229,17 +227,18 @@ bool Gui::start()
 	// To show walkability on building mode-------------------------
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
-	// Create the Minimap
-	minimap = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png", "Minimap/area.png");
+	// Create the GuiMinimap
+	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png", "Minimap/area.png");
+	mini_map->setLocalPos(6, 348);
 
 	return true;
 }
 
-Minimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea)
+GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea)
 {
-	Minimap* ret = nullptr;
+	GuiMinimap* ret = nullptr;
 
-	ret = new Minimap(rect);
+	ret = new GuiMinimap(rect);
 
 	SDL_Texture* texture = app->tex->loadTexture(pathTex);// cargar textura
 	SDL_Texture* area = app->tex->loadTexture(pathArea);// cargar area
@@ -250,15 +249,14 @@ Minimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex, const char *path
 	}
 	else
 	{
-		ret->CleanUp();
+		ret->cleanUp();
 		ret = NULL;
 	}
 
+	elements.push_back(ret);
+
 	return ret;
 }
-
-
-
 
 void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 {
@@ -496,13 +494,11 @@ bool Gui::update(float dt)
 	{
 		GuiElements* gui_test = *node;
 		gui_test->update(mouse_hover, focus);
-		if (gui_test->getType() == CURSOR)
+		if (gui_test->getType() == CURSOR || gui_test->getType() == MINIMAP)
 		{
 			gui_test->update();
 		}
 	}
-
-	minimap->Update();
 
 	return true;
 }
@@ -542,7 +538,7 @@ bool Gui::postUpdate()
 			drawHudSelection(BUNKER);
 	}
 	
-	// CRZ -> possibilty of blitting according to Y value.
+	// CRZ -> A possible option of blitting according to Y value.
 	// Entity drawing
 	multimap<float, Entity*> to_draw;
 	for (map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin(); it != app->entity_manager->active_entities.end(); ++it)
@@ -563,10 +559,7 @@ bool Gui::postUpdate()
 		if (debug == true && gui->draw_element == true)
 			gui->debugDraw();
 	}
-
-	if (minimap != NULL)
-		minimap->Print();
-
+	
 	cursor->draw();
 
 	if (debug)
@@ -586,8 +579,6 @@ bool Gui::postUpdate()
 		}
 	}	
 
-
-	
 	return true;
 }
 

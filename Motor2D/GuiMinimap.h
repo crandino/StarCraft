@@ -1,29 +1,27 @@
-#ifndef __MINIMAP_H__
-#define __MINIMAP_H__
+#ifndef __GUIMINIMAP_H__
+#define __GUIMINIMAP_H__
 
 #include "App.h"
 #include "Render.h"
-#include "EntityManager.h"
+#include "GuiElements.h"
 #include <map>
 
-
-
-class Minimap
+class GuiMinimap : public GuiElements
 {
 public:
 	//Constructor
-	Minimap(SDL_Rect rect);
+	GuiMinimap(SDL_Rect rect);
 
 	//Initializes all remaining data
 	bool SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, SDL_Texture* square);
 
 	//Called every frame
-	bool Update();
+	void update();
 
-	bool CleanUp();
+	bool cleanUp();
 
-	//Blitz minimap
-	bool Print();
+	//Blitz GuiMinimap
+	void draw() const;
 
 private:
 
@@ -42,4 +40,4 @@ private:
 	SDL_Texture* area = NULL;
 };
 
-#endif
+#endif  //__GUIMINIMAP_H__

@@ -1,13 +1,16 @@
-#include "Minimap.h"
+#include "GuiMinimap.h"
 #include "Entity.h"
 #include "Input.h"
 
+GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
+{
+	type = MINIMAP;
+	interactive = true;
+	draw_element = true;
+}
 
-Minimap::Minimap(SDL_Rect map_rect) : rect(map_rect)
-{}
 
-
-bool Minimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, SDL_Texture* square)
+bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, SDL_Texture* square)
 {
 	bool ret = true;
 
@@ -27,11 +30,9 @@ bool Minimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, 
 }
 
 //Called every frame
-bool Minimap::Update()
+void GuiMinimap::update()
 {
-	bool ret = true;
-
-	// check if using minimap
+	// check if using GuiMinimap
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		iPoint mouse_pos;
@@ -40,11 +41,9 @@ bool Minimap::Update()
 		if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
 			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x - rect.x, mouse_pos.y - rect.y }));
 	}
-
-	return ret;
 }
 
-bool Minimap::CleanUp()
+bool GuiMinimap::cleanUp()
 {
 	bool ret = true;
 
@@ -53,7 +52,7 @@ bool Minimap::CleanUp()
 	return ret;
 }
 
-iPoint Minimap::minimapToWorld(const iPoint &mini_map_pos)
+iPoint GuiMinimap::minimapToWorld(const iPoint &mini_map_pos)
 {
 	iPoint world_pos;
 	world_pos.x = mini_map_pos.x / scale.x;
@@ -73,13 +72,11 @@ iPoint Minimap::minimapToWorld(const iPoint &mini_map_pos)
 	return world_pos;
 }
 
-//Blitz minimap
-bool Minimap::Print()
+//Blitz GuiMinimap
+void GuiMinimap::draw() const
 {
-	bool ret = true;
-
 	//print map
-	if (ret = (tex != NULL))
+	if (tex != NULL)
 	{
 		app->render->blit(tex, rect.x - app->render->camera.x, rect.y - app->render->camera.y);
 	}
@@ -89,14 +86,14 @@ bool Minimap::Print()
 	}
 
 	//print units
-	if (ret && (ret = (active_entities != NULL)))
+	if (active_entities != NULL)
 	{
 		for (std::map<uint, Entity*>::iterator it = active_entities->begin(); it != active_entities->end(); ++it)
 		{
 			Entity* entity = it->second;
 
 			// Check if we got the entity
-			if (!(ret = (entity != NULL)))
+			if (entity != NULL)
 				break;
 
 			// Set drawing quad for each unit
@@ -126,14 +123,9 @@ bool Minimap::Print()
 			app->render->DrawQuad(quad_rect, r, g, b);
 		}
 	}
-
-	//print current section
-
-
-	return ret;
 }
 
-void Minimap::calculateScale()
+void GuiMinimap::calculateScale()
 {
 	scale.x = rect.w / (float)(app->map->data.front().width * app->map->data.front().tile_width);    //map width
 	scale.y = rect.h / (float)(app->map->data.front().height * app->map->data.front().tile_height);  //map height;
