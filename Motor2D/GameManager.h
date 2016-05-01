@@ -24,6 +24,32 @@
 #define SIZEMARINESX 2
 #define SIZEMARINESY 2
 
+
+enum GAME_STATE
+{
+	PREPARATION,
+	FIRST_PHASE,
+	ONGOING_WAVE,
+	TIME_BEFORE_WAVE,
+	RETRY,
+	WIN,
+	LOSE,
+	QUIT
+};
+
+enum WAVE_STATE
+{
+	WAITING_FOR_WAVE_TO_START,
+	BEGINNING_WAVE,
+	MIDDLE_WAVE,
+	END_WAVE
+};
+
+
+
+
+
+
 class GuiImage;
 using namespace std;
 
@@ -193,8 +219,10 @@ public:
 
 //XML loaded info end -------
 
+//States
 
-
+	GAME_STATE game_state;
+	WAVE_STATE wave_state;
 
 private:
 	uint previous_unit_killed = 0;

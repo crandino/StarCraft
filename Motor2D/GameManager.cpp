@@ -129,7 +129,7 @@ bool GameManager::start()
 	close_button->interactive = false;
 	close_button->can_focus = false;
 	close_button->setListener(this);
-
+	wave_state = WAITING_FOR_WAVE_TO_START;
 
 	optimizationEraseEnemy.start();
 	return ret;
@@ -137,18 +137,6 @@ bool GameManager::start()
 
 bool GameManager::preUpdate()
 {
-	//Code that erase enemies and controls if the wave is killed
-		if (start_game)
-		{
-			if (current_waves <= TOTALWAVES)
-			{
-				eraseEnemiesIfKilled();
-			}
-			if (sizeWave() <= 0 && (first_phase))
-			{
-				wave_wiped = true;
-			}
-		}
 	
 	return true;
 }
@@ -163,6 +151,81 @@ bool GameManager::update(float dt)
 	bool ret = true;
 	
 
+	switch (game_state)
+	{
+		case(PREPARATION):
+		{
+			LOG("PREPARATION");
+			bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+
+			if (timeElapsed != NULL)//Time before starting
+			{
+				game_state = FIRST_PHASE;
+			}
+			break;
+		}
+		case(FIRST_PHASE):
+		{	LOG("FIRST PHASE");
+			if (current_waves <= TOTALWAVES)
+			{
+				eraseEnemiesIfKilled();
+			}
+			if (sizeWave() <= 0 && (wave_state == MIDDLE_WAVE))
+			{
+				wave_wiped = true;
+			}
+				switch (wave_state)
+				{
+					LOG("WAITING WAVE TO START");
+					case(WAITING_FOR_WAVE_TO_START) :
+					{
+						bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+
+						if (timeElapsed != NULL)//Time before starting
+						{
+							wave_state = BEGINNING_WAVE;
+							
+						}
+						break;
+					}
+
+					case(BEGINNING_WAVE) :
+					{
+						LOG("BEGINNING WAVE!!!");
+						wave_state = MIDDLE_WAVE;
+						app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+						wave_wiped = false;
+						break;
+					}
+					case(MIDDLE_WAVE) :
+					{
+						LOG("MIDDLE WAVE !!!");
+						if (wave_wiped)
+						{
+							LOG("WAVE CLEARED!!!");
+							wave_state = END_WAVE;
+						}
+							 
+
+						eraseEnemiesIfKilled();
+						break;
+					}
+					case(END_WAVE):
+					{
+						current_wave++;
+						wave_state = WAITING_FOR_WAVE_TO_START;
+						break;
+					}
+				}
+				break;
+		}
+						 
+
+	}
+
+
+
+	/*
 	if (start_game)
 	{
 		bool timeElapsed = false;
@@ -186,7 +249,9 @@ bool GameManager::update(float dt)
 
 				if (time_elapsed && wave_wiped == NULL)//Time passed//Wave is created
 					{
-						app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+						
+						//GoWave(current_wave);
+						//app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
 						ongoing_wave = true;
 						wave_wiped = false;
 						
@@ -207,14 +272,14 @@ bool GameManager::update(float dt)
 
 			}
 		}
-		
+		*/
 		
 		
 		/*
 		else if (second_phase)
 		{
 			
-		}*/
+		}
 		else
 		{
 			if (checkGameOver())
@@ -226,10 +291,10 @@ bool GameManager::update(float dt)
 			}
 		}
 
-
+		
 
 	}
-		
+		*/
 		/*
 		if (current_waves <= TOTALWAVES)
 		{
