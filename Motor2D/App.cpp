@@ -17,7 +17,6 @@
 #include "Fonts.h"
 //Gameplay
 #include "GameManager.h"
-#include "AI.h"
 
 
 #include <iostream> 
@@ -41,7 +40,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new Gui();
 	entity_manager = new EntityManager();
 	collision = new Collision();
-	artificial_inteligence = new AI();
 	game_manager = new GameManager();
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp

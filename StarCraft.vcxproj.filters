@@ -65,9 +65,6 @@
     <ClCompile Include="Motor2D\GuiElements.cpp">
       <Filter>UI_elements</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\AI.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Motor2D\GuiLabel.cpp">
       <Filter>UI_elements</Filter>
     </ClCompile>
@@ -204,9 +201,6 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Scv.h">
       <Filter>Entities\Terran_Units</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor2D\AI.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Bunker.h">
       <Filter>Entities\Terran_Buildings</Filter>

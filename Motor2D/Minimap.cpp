@@ -45,8 +45,6 @@ bool Minimap::Update()
 			app->render->camera.x = (mouse_pos.x - rect.x) / scale_x * (-1);
 			app->render->camera.y = (mouse_pos.y - rect.y) / scale_y * (-1);
 		}
-
-
 	}
 
 	return ret;
@@ -89,8 +87,8 @@ bool Minimap::Print()
 
 			// Set drawing quad for each unit
 			SDL_Rect quad_rect;
-			quad_rect.x = rect.x + int(entity->pos.x * scale_x) - app->render->camera.x;
-			quad_rect.y = rect.y + int(entity->pos.y * scale_y) - app->render->camera.y;
+			quad_rect.x = rect.x + int(entity->center.x * scale_x) - app->render->camera.x;
+			quad_rect.y = rect.y + int(entity->center.y * scale_y) - app->render->camera.y;
 			quad_rect.w = quad_rect.h = 1;
 
 			// Choose quad color
@@ -98,9 +96,9 @@ bool Minimap::Print()
 			switch (entity->faction)
 			{
 			case FACTION::PLAYER:
-				r = 124;
-				g = 252;
-				b = 0;
+				r = 0;
+				g = 0;
+				b = 255;
 				break;
 
 			case FACTION::COMPUTER:
@@ -123,6 +121,6 @@ bool Minimap::Print()
 
 void Minimap::UpdateScale()
 {
-	scale_x = rect.w / 3072.000f; //map width
-	scale_y = rect.h / 3072.000f; //map height;
+	scale_x = rect.w / (float)(app->map->data.front().width * app->map->data.front().tile_width);    //map width
+	scale_y = rect.h / (float)(app->map->data.front().height * app->map->data.front().tile_height);  //map height;
 }
