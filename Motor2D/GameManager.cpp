@@ -37,6 +37,15 @@ bool GameManager::awake(pugi::xml_node &node)
 {
 	bool ret = true;
 
+	/*Game Info load*/
+
+	gameInfo.time_before_start = node.child("timeBeforeStart").attribute("value").as_uint();
+	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
+	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
+	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
+
+	/*Wave Info Load*/
+
 	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
 	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();;
 	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();;
@@ -45,16 +54,20 @@ bool GameManager::awake(pugi::xml_node &node)
 	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();;
 	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();;
 
+
+	/*Player Info Load*/
+
 	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_uint();
 	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_uint();
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 
 
+	/*Score data Load*/
+
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
 	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
-
-
+	
 	return ret;
 }
 
@@ -116,7 +129,7 @@ bool GameManager::start()
 	close_button->interactive = false;
 	close_button->can_focus = false;
 	close_button->setListener(this);
-
+	wave_state = WAITING_FOR_WAVE_TO_START;
 
 	optimizationEraseEnemy.start();
 	return ret;
@@ -124,22 +137,6 @@ bool GameManager::start()
 
 bool GameManager::preUpdate()
 {
-	
-
-	//Code that erase enemies and controls if the wave is killed
-	
-	
-		if (start_game)
-		{
-			if (current_waves <= TOTALWAVES)
-			{
-				eraseEnemiesIfKilled();
-			}
-			if (sizeWave() <= 0)
-			{
-				wave_wiped = true;
-			}
-		}
 	
 	return true;
 }
@@ -150,11 +147,155 @@ bool GameManager::preUpdate()
 
 bool GameManager::update(float dt)
 {
-	bool ret = true;
-	wave_wiped= false;
 
+	bool ret = true;
+	
+
+	switch (game_state)
+	{
+		case(PREPARATION):
+		{
+			LOG("PREPARATION");
+			bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+
+			if (timeElapsed != NULL)//Time before starting
+			{
+				game_state = FIRST_PHASE;
+			}
+			break;
+		}
+		case(FIRST_PHASE):
+		{	LOG("FIRST PHASE");
+			if (current_waves <= TOTALWAVES)
+			{
+				eraseEnemiesIfKilled();
+			}
+			if (sizeWave() <= 0 && (wave_state == MIDDLE_WAVE))
+			{
+				wave_wiped = true;
+			}
+				switch (wave_state)
+				{
+					LOG("WAITING WAVE TO START");
+					case(WAITING_FOR_WAVE_TO_START) :
+					{
+						bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+
+						if (timeElapsed != NULL)//Time before starting
+						{
+							wave_state = BEGINNING_WAVE;
+							
+						}
+						break;
+					}
+
+					case(BEGINNING_WAVE) :
+					{
+						LOG("BEGINNING WAVE!!!");
+						wave_state = MIDDLE_WAVE;
+						app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+						wave_wiped = false;
+						break;
+					}
+					case(MIDDLE_WAVE) :
+					{
+						LOG("MIDDLE WAVE !!!");
+						if (wave_wiped)
+						{
+							LOG("WAVE CLEARED!!!");
+							wave_state = END_WAVE;
+						}
+							 
+
+						eraseEnemiesIfKilled();
+						break;
+					}
+					case(END_WAVE):
+					{
+						current_wave++;
+						wave_state = WAITING_FOR_WAVE_TO_START;
+						break;
+					}
+				}
+				break;
+		}
+						 
+
+	}
+
+
+
+	/*
 	if (start_game)
 	{
+		bool timeElapsed = false;
+		//If first_phase is activated it will run the timer and get inside the other code
+		if (first_phase == NULL)
+			 timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+
+
+		if (timeElapsed != NULL)//Time before starting
+		{
+			first_phase = true;
+		}
+		
+		if (first_phase)//The game starts. OK
+		{
+			if (current_wave < total_waves)//If there're remaining waves. OK
+			{
+				bool time_elapsed = false;
+				if (ongoing_wave == false)
+					time_elapsed = time_between_waves.waitSec(time_between_waves,gameInfo.time_before_waves_phase1);
+
+				if (time_elapsed && wave_wiped == NULL)//Time passed//Wave is created
+					{
+						
+						//GoWave(current_wave);
+						//app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+						ongoing_wave = true;
+						wave_wiped = false;
+						
+					}
+				if (wave_wiped == true) //When the wave is finished
+				{
+					current_wave++;
+					time_between_waves.start();
+					//current_wave_info
+				}
+					
+				
+					if (wave_wiped != NULL)
+						time_between_waves.start();
+
+				if (current_wave >= total_waves)
+					first_phase = false;
+
+			}
+		}
+		*/
+		
+		
+		/*
+		else if (second_phase)
+		{
+			
+		}
+		else
+		{
+			if (checkGameOver())
+			{
+				//Display message of game over
+				LOG("GAME OVER");
+				//Display Score
+				LOG("Score: %d", score_current_wave);
+			}
+		}
+
+		
+
+	}
+		*/
+		/*
 		if (current_waves <= TOTALWAVES)
 		{
 			//ADRI
@@ -189,30 +330,6 @@ bool GameManager::update(float dt)
 				mineral_resources += 150;
 				gas_resources += 50;
 				resources ++;
-			}
-
-			if (time_between_waves.readSec() >= WAVETIME2 && sizeWave() <= 0)//We check how much time do we have left before releasing a new wave
-			{
-				if (current_waves == 1)
-				{
-					
-					LOG("Wave 2 is over prepare for the next wave!!");
-					app->entity_manager->createWave(wave2.zergling_quantity, wave2.hydralisk_quantity, wave2.mutalisk_quantity, { 1419, 800 });
-					current_waves++;
-
-					time_between_waves.start();
-				}
-			
-			}
-
-			if (current_waves == 2 && sizeWave() <= 0 && resources == 2)
-			{
-				//Get Resources
-				mineral_resources += 75;
-				gas_resources += 75;
-				resources++;
-
-				LOG("VICTORY IS OURS!!! CORAL IS SAVED THUS PLANET EARTH :). GOOD FUCKING JOB!");
 				won = true;
 				start_game = false;
 			}
@@ -220,54 +337,9 @@ bool GameManager::update(float dt)
 	
 		}
 
-		//EACH TIME A UNIT IS KILLED SCORE IS ADDED UP
-		if (total_units_killed_currentFrame > 0)
-		{
-			kill_count += total_units_killed_currentFrame;
-			addPoints(kill_count);
-			total_units_killed_currentFrame = 0;
+		
 
-			LOG("Score: %d", total_score);
-
-			if (current_waves == 1 && kill_count >= (SIZE1X*SIZE1Y))
-			{
-				total_kills_game += kill_count;
-				kill_count = 0;
-				addPoints(kill_count);
-
-				LOG("You successfully wiped the first wave good job! NOW THE NEXT ONE >:]");
-				LOG("Total Score: %d", total_score);
-			}
-			else if (current_waves == 2 && kill_count >= SIZE2X*SIZE2Y)
-			{
-				total_kills_game += kill_count;
-				kill_count = 0;
-				addPoints(kill_count);
-
-				LOG("You successfully wiped the second wave good job! NOW THE NEXT ONE >:]");
-				LOG("Total Score: %d", total_score);
-			}
-			else if (current_waves == 3 && kill_count >= SIZE3X*SIZE3Y)
-			{
-				total_kills_game += kill_count;
-				kill_count = 0;
-				addPoints(kill_count);
-
-				LOG("You successfully wiped the last wave good job!!!!!");
-				LOG("Total Score: %d", total_score);
-				current_waves = 4;
-			}
-		}
-		//timer
-		//++unitKillCount;
-
-		if (checkGameOver())
-		{
-			//Display message of game over
-			LOG("GAME OVER");
-			//Display Score
-			LOG("Score: %d", score_current_wave);
-		}
+		
 
 		//ADRI
 		//-------------------------UI-----------------------------
@@ -318,7 +390,7 @@ bool GameManager::update(float dt)
 		mineral_resources = 0;
 		gas_resources = 0;
 	}
-
+	*/
 	return ret;
 }
 
@@ -365,8 +437,15 @@ void GameManager::startGame()
 		unsigned int size_marines_y = SIZEMARINESY;
 
 		createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
+<<<<<<< HEAD
 		app->render->setCameraOnPosition(p);
 		
+=======
+		uint w, h; app->win->getWindowSize(w, h);
+		app->render->camera.x = -p.x + (w/2); 
+		app->render->camera.y = -p.y + (h/2);
+		time_before_starting_game.start();
+>>>>>>> origin/master
 }
 
 bool GameManager::checkGameOver()

@@ -24,10 +24,49 @@
 #define SIZEMARINESX 2
 #define SIZEMARINESY 2
 
+
+enum GAME_STATE
+{
+	PREPARATION,
+	FIRST_PHASE,
+	ONGOING_WAVE,
+	TIME_BEFORE_WAVE,
+	RETRY,
+	WIN,
+	LOSE,
+	QUIT
+};
+
+enum WAVE_STATE
+{
+	WAITING_FOR_WAVE_TO_START,
+	BEGINNING_WAVE,
+	MIDDLE_WAVE,
+	END_WAVE
+};
+
+
+
+
+
+
 class GuiImage;
 using namespace std;
 
 //XML information
+
+struct GameInformation
+{
+	uint total_waves;
+	
+	//Time
+	float time_before_waves_phase1;
+	float time_before_waves_phase2;
+	float time_before_start;
+	float time_before_end;
+};
+
+
 struct SizeWave
 {
 	uint zergling_quantity;
@@ -116,7 +155,7 @@ public:
 
 public:
 	//Time Management attributes
-	Timer general_time;
+	Timer time_before_starting_game;
 	Timer time_between_waves;
 	Timer random_generator;
 	Timer ending_game;
@@ -134,7 +173,7 @@ public:
 	GuiImage* start_button = nullptr;
 	GuiImage* exit_button = nullptr;
 	
-
+	
 	//Victory Screen
 	SDL_Texture* victory_img = nullptr;
 	GuiImage* victory_screen = nullptr;
@@ -176,12 +215,24 @@ public:
 	uint hydralisk_score;
 	uint mutalisk_score;
 
+	GameInformation gameInfo;
+
 //XML loaded info end -------
+
+//States
+
+	GAME_STATE game_state;
+	WAVE_STATE wave_state;
+
 private:
 	uint previous_unit_killed = 0;
 
 	bool start_game = false;
-	
+	bool first_phase = false;
+	bool ongoing_wave = false;
+
+	uint current_wave = 0;
+
 	unsigned int size_marines_x = SIZEMARINESX;
 	unsigned int size_marines_y = SIZEMARINESY;
 };

@@ -29,3 +29,13 @@ float Timer::readSec() const
 {
 	return read() / 1000.f;
 }
+
+bool Timer::waitSec(Timer& timer, float secs)const
+{
+	if (timer.readSec() >= secs)
+	{
+		return true;
+	}
+
+	return false;
+}
