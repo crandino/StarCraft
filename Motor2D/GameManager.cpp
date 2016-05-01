@@ -144,7 +144,7 @@ bool GameManager::preUpdate()
 			{
 				eraseEnemiesIfKilled();
 			}
-			if (sizeWave() <= 0)
+			if (sizeWave() <= 0 && (first_phase))
 			{
 				wave_wiped = true;
 			}
@@ -161,7 +161,7 @@ bool GameManager::update(float dt)
 {
 
 	bool ret = true;
-	wave_wiped = false;// new version
+	
 
 	if (start_game)
 	{
@@ -184,19 +184,23 @@ bool GameManager::update(float dt)
 				if (ongoing_wave == false)
 					time_elapsed = time_between_waves.waitSec(time_between_waves,gameInfo.time_before_waves_phase1);
 
-				if (time_elapsed)//Time passed
-					if (wave_wiped == NULL)//Wave is created
+				if (time_elapsed && wave_wiped == NULL)//Time passed//Wave is created
 					{
 						app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
 						ongoing_wave = true;
+						wave_wiped = false;
+						
 					}
-					else //When the wave is finished
-					{
-						current_wave++;
+				if (wave_wiped == true) //When the wave is finished
+				{
+					current_wave++;
+					time_between_waves.start();
+					//current_wave_info
+				}
+					
+				
+					if (wave_wiped != NULL)
 						time_between_waves.start();
-						ongoing_wave = false;
-						//current_wave_info
-					}
 
 				if (current_wave >= total_waves)
 					first_phase = false;
