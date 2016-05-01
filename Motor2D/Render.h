@@ -49,6 +49,7 @@ public:
 
 	//Camera
 	void moveCamera(float dt);
+	void setCameraOnPosition(const iPoint &pos);
 
 public:
 

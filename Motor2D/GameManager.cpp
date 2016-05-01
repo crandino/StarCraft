@@ -360,15 +360,13 @@ void GameManager::startGame()
 
 		iPoint p = COMMANDCENTERPOSITION;
 		app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
-
+		
 		unsigned int size_marines_x = SIZEMARINESX;
 		unsigned int size_marines_y = SIZEMARINESY;
 
-	
 		createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
-		uint w, h; app->win->getWindowSize(w, h);
-		app->render->camera.x = -p.x + (w/2); 
-		app->render->camera.y = -p.y + (h/2);
+		app->render->setCameraOnPosition(p);
+		
 }
 
 bool GameManager::checkGameOver()
@@ -480,7 +478,8 @@ void GameManager::restartGame()
 	start_game = true;
 	game_over = false;
 
-	app->render->start_transition({ 900, 3000 });
+	iPoint p = COMMANDCENTERPOSITION;
+	app->render->setCameraOnPosition(p);
 
 	defeat_screen->draw_element = false;
 	is_defeat_screen_on = false;

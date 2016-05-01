@@ -21,7 +21,7 @@ bool Minimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, 
 		area = square;
 
 	//set scale
-	UpdateScale();
+	calculateScale();
 
 	return ret;
 }
@@ -37,14 +37,8 @@ bool Minimap::Update()
 		iPoint mouse_pos;
 		app->input->getMousePosition(mouse_pos);
 
-		if (mouse_pos.x < rect.x + rect.w
-			&& mouse_pos.x > rect.x
-			&& mouse_pos.y < rect.y + rect.h
-			&& mouse_pos.y > rect.y)
-		{
-			app->render->camera.x = (mouse_pos.x - rect.x) / scale_x * (-1);
-			app->render->camera.y = (mouse_pos.y - rect.y) / scale_y * (-1);
-		}
+		if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
+			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x - rect.x, mouse_pos.y - rect.y }));
 	}
 
 	return ret;
@@ -57,6 +51,26 @@ bool Minimap::CleanUp()
 	// release texture and entities pointer
 
 	return ret;
+}
+
+iPoint Minimap::minimapToWorld(const iPoint &mini_map_pos)
+{
+	iPoint world_pos;
+	world_pos.x = mini_map_pos.x / scale.x;
+	world_pos.y = mini_map_pos.y / scale.y;
+
+	// The method will never return the exact corners as world positions.
+	if (world_pos.x <= (app->render->camera.w / 2))
+		world_pos.x = app->render->camera.w / 2;
+	else if (world_pos.x >= (app->map->data.front().tile_width * app->map->data.front().width) - (app->render->camera.w / 2))
+		world_pos.x = (app->map->data.front().tile_width * app->map->data.front().width) - (app->render->camera.w / 2);
+
+	if (world_pos.y <= (app->render->camera.h / 2)) 
+		world_pos.y = app->render->camera.h / 2;
+	else if (world_pos.y >= (app->map->data.front().tile_height * app->map->data.front().height) - (app->render->camera.h / 2))
+		world_pos.y = (app->map->data.front().tile_height * app->map->data.front().height) - (app->render->camera.h / 2);
+
+	return world_pos;
 }
 
 //Blitz minimap
@@ -87,8 +101,8 @@ bool Minimap::Print()
 
 			// Set drawing quad for each unit
 			SDL_Rect quad_rect;
-			quad_rect.x = rect.x + int(entity->center.x * scale_x) - app->render->camera.x;
-			quad_rect.y = rect.y + int(entity->center.y * scale_y) - app->render->camera.y;
+			quad_rect.x = rect.x + int(entity->center.x * scale.x) - app->render->camera.x;
+			quad_rect.y = rect.y + int(entity->center.y * scale.y) - app->render->camera.y;
 			quad_rect.w = quad_rect.h = 1;
 
 			// Choose quad color
@@ -119,8 +133,8 @@ bool Minimap::Print()
 	return ret;
 }
 
-void Minimap::UpdateScale()
+void Minimap::calculateScale()
 {
-	scale_x = rect.w / (float)(app->map->data.front().width * app->map->data.front().tile_width);    //map width
-	scale_y = rect.h / (float)(app->map->data.front().height * app->map->data.front().tile_height);  //map height;
+	scale.x = rect.w / (float)(app->map->data.front().width * app->map->data.front().tile_width);    //map width
+	scale.y = rect.h / (float)(app->map->data.front().height * app->map->data.front().tile_height);  //map height;
 }

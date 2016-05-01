@@ -27,13 +27,13 @@ public:
 
 private:
 
-	void UpdateScale();
+	void calculateScale();
+	iPoint minimapToWorld(const iPoint &mini_map_pos);
 
 private:
 
 	SDL_Rect rect;
-	float scale_x = 0.1f;
-	float scale_y = 0.1f;
+	fPoint scale;
 	int quad_size = 1;
 
 	map<uint, Entity*>* active_entities = NULL;

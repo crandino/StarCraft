@@ -80,6 +80,9 @@ bool Render::update(float dt)
 {
 	if (transition_active == true)
 		transition_active = transitioning();
+
+	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		setCameraOnPosition({ 0, 0 });
 	
 	//moveCamera(dt);
 
@@ -114,6 +117,12 @@ void Render::moveCamera(float dt)
 	//	camera.y += (camera.y + map_displacement <= 0 ? map_displacement : 0);
 	//else if (mouse_position.y > (camera.h - cursor_offset.y)) // Down
 	//	camera.y -= (camera.y - map_displacement >= camera.h - map_limits.y ? map_displacement : 0);
+}
+
+void Render::setCameraOnPosition(const iPoint &pos)
+{
+	camera.x = -pos.x + (camera.w / 2);
+	camera.y = -pos.y + (camera.h / 2);
 }
 
 // Called before quitting
