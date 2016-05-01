@@ -42,13 +42,4 @@ private:
 	SDL_Texture* area = NULL;
 };
 
-
-
-
-
-
-
-
-
-
 #endif

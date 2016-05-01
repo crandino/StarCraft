@@ -437,15 +437,9 @@ void GameManager::startGame()
 		unsigned int size_marines_y = SIZEMARINESY;
 
 		createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
-<<<<<<< HEAD
 		app->render->setCameraOnPosition(p);
 		
-=======
-		uint w, h; app->win->getWindowSize(w, h);
-		app->render->camera.x = -p.x + (w/2); 
-		app->render->camera.y = -p.y + (h/2);
 		time_before_starting_game.start();
->>>>>>> origin/master
 }
 
 bool GameManager::checkGameOver()
