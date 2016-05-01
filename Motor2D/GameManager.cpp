@@ -170,29 +170,43 @@ bool GameManager::update(float dt)
 		if (first_phase == NULL)
 			 timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
 
+
 		if (timeElapsed != NULL)//Time before starting
 		{
 			first_phase = true;
-			
-			if (first_phase)//The game starts
+		}
+		
+		if (first_phase)//The game starts. OK
+		{
+			if (current_wave < total_waves)//If there're remaining waves. OK
 			{
-				if (current_wave < total_waves)//If there're remaining waves
-				{
-					bool timeElapsed = time_between_waves.waitSec(time_between_waves,gameInfo.time_before_waves_phase1);
-					if (timeElapsed)
-						if (wave_wiped != NULL)
-						//goWave();
+				bool time_elapsed = false;
+				if (ongoing_wave == false)
+					time_elapsed = time_between_waves.waitSec(time_between_waves,gameInfo.time_before_waves_phase1);
 
-					if (wave_wiped)
+				if (time_elapsed)//Time passed
+					if (wave_wiped == NULL)//Wave is created
+					{
+						app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+						ongoing_wave = true;
+					}
+					else //When the wave is finished
+					{
 						current_wave++;
+						time_between_waves.start();
+						ongoing_wave = false;
+						//current_wave_info
+					}
 
-					if (current_wave >= total_waves)
-						first_phase = false;
+				if (current_wave >= total_waves)
+					first_phase = false;
 
-				}
 			}
-			
-		}/*
+		}
+		
+		
+		
+		/*
 		else if (second_phase)
 		{
 			

@@ -147,7 +147,7 @@ public:
 	GuiImage* start_button = nullptr;
 	GuiImage* exit_button = nullptr;
 	
-
+	
 	//Victory Screen
 	SDL_Texture* victory_img = nullptr;
 	GuiImage* victory_screen = nullptr;
@@ -201,7 +201,7 @@ private:
 
 	bool start_game = false;
 	bool first_phase = false;
-
+	bool ongoing_wave = false;
 
 	uint current_wave = 0;
 
