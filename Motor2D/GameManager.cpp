@@ -37,7 +37,14 @@ bool GameManager::awake(pugi::xml_node &node)
 {
 	bool ret = true;
 
-	total_waves = 
+	/*Game Info load*/
+
+	gameInfo.time_before_start = node.child("timeBeforeStart").attribute("value").as_uint();
+	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
+	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
+	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
+
+	/*Wave Info Load*/
 
 	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
 	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();;
@@ -47,9 +54,15 @@ bool GameManager::awake(pugi::xml_node &node)
 	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();;
 	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();;
 
+
+	/*Player Info Load*/
+
 	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_uint();
 	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_uint();
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
+
+
+	/*Score data Load*/
 
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
@@ -146,11 +159,60 @@ bool GameManager::preUpdate()
 
 bool GameManager::update(float dt)
 {
+
 	bool ret = true;
-	wave_wiped= false;
+	wave_wiped = false;// new version
 
 	if (start_game)
 	{
+		bool timeElapsed = false;
+		//If first_phase is activated it will run the timer and get inside the other code
+		if (first_phase == NULL)
+			 timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+
+		if (timeElapsed != NULL)//Time before starting
+		{
+			first_phase = true;
+			
+			if (first_phase)//The game starts
+			{
+				if (current_wave < total_waves)//If there're remaining waves
+				{
+					bool timeElapsed = time_between_waves.waitSec(time_between_waves,gameInfo.time_before_waves_phase1);
+					if (timeElapsed)
+						if (wave_wiped != NULL)
+						//goWave();
+
+					if (wave_wiped)
+						current_wave++;
+
+					if (current_wave >= total_waves)
+						first_phase = false;
+
+				}
+			}
+			
+		}/*
+		else if (second_phase)
+		{
+			
+		}*/
+		else
+		{
+			if (checkGameOver())
+			{
+				//Display message of game over
+				LOG("GAME OVER");
+				//Display Score
+				LOG("Score: %d", score_current_wave);
+			}
+		}
+
+
+
+	}
+		
+		/*
 		if (current_waves <= TOTALWAVES)
 		{
 			//ADRI
@@ -194,13 +256,7 @@ bool GameManager::update(float dt)
 
 		
 
-		if (checkGameOver())
-		{
-			//Display message of game over
-			LOG("GAME OVER");
-			//Display Score
-			LOG("Score: %d", score_current_wave);
-		}
+		
 
 		//ADRI
 		//-------------------------UI-----------------------------
@@ -251,7 +307,7 @@ bool GameManager::update(float dt)
 		mineral_resources = 0;
 		gas_resources = 0;
 	}
-
+	*/
 	return ret;
 }
 
@@ -302,6 +358,7 @@ void GameManager::startGame()
 		uint w, h; app->win->getWindowSize(w, h);
 		app->render->camera.x = -p.x + (w/2); 
 		app->render->camera.y = -p.y + (h/2);
+		time_before_starting_game.start();
 }
 
 bool GameManager::checkGameOver()

@@ -29,9 +29,17 @@
   </file_system>
 
   <game_manager>
+
+    <!-- Game Information -->
+    <totalWaves value = "2.0f"/>
+    <timeBeforeStart value = "180.0f"/>
+    <timeBetweenWavesPhase1 value = "60.0f"/>
+    <timeBetweenWavesPhase2 value = "15.0f"/>
+    <timeBeforeEnd value = "20.0f"/>
+    
     
     <!-- Wave Information -->
-    <totalWaves value ="2"/>
+    
     <SizeWave1 zerglings ="4" hydralisks ="0" />
     <SizeWave2 zerglings ="5" hydralisks ="0" mutalisks ="2"/>
     <SizeWave3 zerglings ="5" hydralisks ="0" mutalisks ="2"/>

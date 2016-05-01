@@ -13,6 +13,7 @@ public:
 	void start();
 	uint32 read() const;
 	float readSec() const;
+	bool waitSec(Timer& timer, float secs)const;
 
 private:
 

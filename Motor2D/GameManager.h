@@ -32,7 +32,12 @@ using namespace std;
 struct GameInformation
 {
 	uint total_waves;
-
+	
+	//Time
+	float time_before_waves_phase1;
+	float time_before_waves_phase2;
+	float time_before_start;
+	float time_before_end;
 };
 
 
@@ -124,7 +129,7 @@ public:
 
 public:
 	//Time Management attributes
-	Timer general_time;
+	Timer time_before_starting_game;
 	Timer time_between_waves;
 	Timer random_generator;
 	Timer ending_game;
@@ -184,12 +189,22 @@ public:
 	uint hydralisk_score;
 	uint mutalisk_score;
 
+	GameInformation gameInfo;
+
 //XML loaded info end -------
+
+
+
+
 private:
 	uint previous_unit_killed = 0;
 
 	bool start_game = false;
-	
+	bool first_phase = false;
+
+
+	uint current_wave = 0;
+
 	unsigned int size_marines_x = SIZEMARINESX;
 	unsigned int size_marines_y = SIZEMARINESY;
 };
