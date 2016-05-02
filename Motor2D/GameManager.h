@@ -176,7 +176,7 @@ public:
 	
 	
 	//Victory Screen
-	SDL_Texture* victory_img = nullptr;
+	SDL_Texture* victory_atlas = nullptr;
 	GuiImage* victory_screen = nullptr;
 	bool is_victory_screen_on = false;
 
@@ -184,7 +184,7 @@ public:
 
 	//Defeat Screen
 	GuiImage* defeat_screen = nullptr;
-	SDL_Texture* defeat_img = nullptr;
+	SDL_Texture* defeat_atlas = nullptr;
 	bool is_defeat_screen_on = false;
 
 	//Ending Buttons

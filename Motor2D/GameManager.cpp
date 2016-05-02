@@ -77,7 +77,7 @@ bool GameManager::start()
 	bool ret = true;
 
 	LOG("LAST HOPE GAME STARTS!");
-	
+
 	fx_click = app->audio->loadFx("Audio/FX/UI/UI_Click.wav");
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
@@ -100,31 +100,31 @@ bool GameManager::start()
 	exit_button->can_focus = true;
 	exit_button->setListener(this);
 
-	defeat_img = app->tex->loadTexture("Screens/defeat_screen.png");
-	defeat_screen = app->gui->createImage(defeat_img, { 0, 0, 640, 480 });
+	defeat_atlas = app->tex->loadTexture("Screens/Defeat_Screen_Atlas.png");
+	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
 	defeat_screen->center();
 	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y);
 	defeat_screen->draw_element = false;
 	is_defeat_screen_on = false;
-	
-	victory_img = app->tex->loadTexture("Screens/victory_screen.png");
-	victory_screen = app->gui->createImage(victory_img, { 0, 0, 640, 480 });
+
+	victory_atlas = app->tex->loadTexture("Screens/Victory_Screen_Atlas.png");
+	victory_screen = app->gui->createImage(victory_atlas, { 0, 0, 384, 256 });
 	victory_screen->center();
-	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y);
+	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y-70);
 	victory_screen->draw_element = false;
 	is_victory_screen_on = false;
 
-	retry_button = app->gui->createImage(defeat_img, { 121, 170, 105, 28 });
+	retry_button = app->gui->createImage(defeat_atlas, { 384, 0, 104, 28 });
 	retry_button->parent = victory_screen;
-	retry_button->setLocalPos(121, 170);
+	retry_button->setLocalPos(265, 150);
 	retry_button->draw_element = false;
 	retry_button->interactive = false;
 	retry_button->can_focus = false;
 	retry_button->setListener(this);
 
-	close_button = app->gui->createImage(defeat_img, { 121, 213, 105, 28 });
+	close_button = app->gui->createImage(defeat_atlas, { 384, 28, 104, 28 });
 	close_button->parent = victory_screen;
-	close_button->setLocalPos(121, 211);
+	close_button->setLocalPos(265, 190);
 	close_button->draw_element = false;
 	close_button->interactive = false;
 	close_button->can_focus = false;
@@ -492,8 +492,10 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click, 0);
+			close_button->setSection({ 384, 84, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
+			close_button->setSection({ 384, 28, 104, 28 });
 			quitGame();
 			break;
 		}
@@ -506,10 +508,10 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_DOWN) :
 			//Restart game
 			app->audio->playFx(fx_click, 0);
-			exit_button->setSection({ 338, 279, 141, 38 });
+			retry_button->setSection({ 384, 56, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			exit_button->setSection({ 339, 229, 141, 39 });	
+			retry_button->setSection({ 384, 28, 104, 28 });	
 			restartGame();
 			game_state = INITIAL_SETUP;
 			break;
