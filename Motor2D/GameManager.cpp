@@ -412,14 +412,7 @@ bool GameManager::isWaveClear()
 
 bool GameManager::cleanUp()
 {
-	bool ret = false;
-
-	RELEASE(start_button);
-	RELEASE(title_screen);
-	RELEASE(exit_button);
-	RELEASE(close_button);
-	RELEASE(victory_screen);
-	RELEASE(retry_button);
+	bool ret = true;
 
 	return ret;
 }

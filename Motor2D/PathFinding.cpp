@@ -271,7 +271,7 @@ bool PathFinding::postUpdate()
 		for (; it != paths_to_find.end();)
 		{
 			path_found.clear();
-			while ((time * x) > time_to_search.readSec())
+			do
 			{
 				if (it->open_list.list_of_nodes.size() == 0)
 					break;
@@ -317,7 +317,7 @@ bool PathFinding::postUpdate()
 						++item;
 					}
 				}
-			}
+			} while ((time * x) > time_to_search.readSec());
 			if (it->open_list.list_of_nodes.size() == 0 || (it->close_list.list_of_nodes.size() > 0 && it->close_list.list_of_nodes.back().pos == it->destination))
 			{
 				const pathNode *final_path = &it->close_list.list_of_nodes.back();
