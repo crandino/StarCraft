@@ -25,6 +25,7 @@ class Gui;
 class EntityManager;
 class Collision;
 class GameManager;
+class FogOfWar;
 
 class App
 {
@@ -103,6 +104,7 @@ public:
 	EntityManager*		entity_manager;
 	Collision*			collision;
 	GameManager*		game_manager;
+	FogOfWar*			fog_of_war;			
 
 private:
 
