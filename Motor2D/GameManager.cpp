@@ -86,14 +86,14 @@ bool GameManager::start()
 	start_screen->setLocalPos(start_screen->getLocalPos().x - 5, start_screen->getLocalPos().y - 50);
 
 	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
-	start_button->parent = title_screen;
+	start_button->parent = start_screen;
 	start_button->center();
 	start_button->interactive = true;
 	start_button->can_focus = true;
 	start_button->setListener(this);
 
 	close_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
-	close_button->parent = title_screen;
+	close_button->parent = start_screen;
 	close_button->center();
 	close_button->setLocalPos(close_button->getLocalPos().x, close_button->getLocalPos().y + 80);
 	close_button->interactive = true;
