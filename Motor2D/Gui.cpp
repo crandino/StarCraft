@@ -347,35 +347,33 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 	{
 	case (COMMANDCENTER) :
 		commandCenterOpened = true;
-			  if(buildingMenuOpened)
+			  if(!buildingMenuOpened)
 			  {
-				  buildingMenuOpened = false;
-				  ui_create_builds->setLocalPos(551, 358);
+				  //Desactivate quad background
+				  rectangle_command->draw_element = false;
+				  rectangle_command_2->draw_element = false;
+				  rectangle_command_3->draw_element = true;
+				  rectangle_command_4->draw_element = true;
+				  rectangle_command_5->draw_element = true;
+				  rectangle_command_6->draw_element = true;
+				  rectangle_command_7->draw_element = true;
+				  rectangle_command_8->draw_element = true;
+				  rectangle_command_9->draw_element = true;
+
+				  ui_leave_bunker->disable_element();
+
+				  ui_leave_bunker->disable_element();
+				  ui_create_bunker->disable_element();
+				  ui_create_barraks->disable_element();
+				  ui_create_turrets->disable_element();
+				  ui_create_factory->disable_element();
+				  ui_create_starport->disable_element();
+
+				  //Activate new images
+				  ui_create_bot->enable_element();
+				  ui_create_builds->enable_element();
 			  }
-			  //Desactivate quad background
-		      rectangle_command->draw_element = false;
-			  rectangle_command_2->draw_element = false;
-			  rectangle_command_3->draw_element = true;
-			  rectangle_command_4->draw_element = true;
-			  rectangle_command_5->draw_element = true;
-			  rectangle_command_6->draw_element = true;
-			  rectangle_command_7->draw_element = true;
-			  rectangle_command_8->draw_element = true;
-			  rectangle_command_9->draw_element = true;
-
-			  ui_leave_bunker->disable_element();
-
-			  ui_leave_bunker->disable_element();
-			  ui_create_bunker->disable_element();
-			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
-			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
-
-			  //Activate new images
-			  ui_create_bot->enable_element();
-			  ui_create_builds->enable_element();
-
+			  
 		      break;
 			  
 		  case (BUNKER) :
@@ -439,9 +437,39 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_starport->disable_element();
 
 			  break;
+
+		  case (MARINE) :
+			  if (buildingMenuOpened)
+			  {
+		     	  buildingMenuOpened = false;
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+			 
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_turrets->disable_element();
+			  ui_create_factory->disable_element();
+			  ui_create_starport->disable_element();
+
+			  break;
 			  
 		  case (NOTYPE) :
-			  if (!buildingMenuOpened) {
+			  //if (!buildingMenuOpened) {
 
 				  //Desactivate all the options of Entities
 				  ui_create_bot->disable_element();
@@ -463,7 +491,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  rectangle_command_7->draw_element = true;
 				  rectangle_command_8->draw_element = true;
 				  rectangle_command_9->draw_element = true;
-			  }
+			  
 			  break;
 	}
 }
@@ -571,6 +599,8 @@ bool Gui::postUpdate()
 			drawHudSelection(BUNKER);
 		if (itm->second->specialization == SPECIALIZATION::BARRACK)
 			drawHudSelection(BARRACK);
+		if (itm->second->specialization == SPECIALIZATION::MARINE)
+			drawHudSelection(MARINE);
 	}
 	
 	// CRZ -> A possible option of blitting according to Y value.
