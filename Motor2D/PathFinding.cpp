@@ -627,7 +627,6 @@ bool PathFinding::cleanUp()
 	for (list<pathToFind>::iterator it = paths_to_find.begin(); it != paths_to_find.end();)
 	{
 		it = paths_to_find.erase(it);
-		it++;
 	}
 
 	for (map<uint, vector<iPoint>*>::iterator it = paths_found.begin(); it != paths_found.end();)
