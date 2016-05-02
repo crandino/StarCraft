@@ -24,7 +24,6 @@
     <path>Terran.zip</path>
     <path>UI.zip</path>
     <path>Audio.zip</path>
-	<path>starcraft_font.zip</path>
 	    
   </file_system>
 
@@ -59,8 +58,8 @@
   </game_manager>
 
   <fonts>
-    <default_font size="24" file="Starcraft_Normal.ttf"/>
-    <default_font size="12" file="OpenSans-Regular.ttf"/>
+    <default_font size="24" file="Font/Starcraft_Normal.ttf"/>
+    <default_font size="12" file="Font/OpenSans-Regular.ttf"/>
   </fonts>
   
   <map>
