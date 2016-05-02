@@ -104,6 +104,7 @@ public:
 	//GUI
 	bool create_bunker = false;
 	bool create_SCV = false;
+	bool			selector_init;
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
@@ -126,7 +127,7 @@ private:
 	SDL_Texture*	building_tile;
 
 	SDL_Rect		selector;
-	bool			selector_init;
+
 	iPoint			initial_selector_pos;
 	iPoint			final_selector_pos;
 

@@ -13,6 +13,8 @@
 #include "Mutalisk.h"
 #include "Hydralisk.h"
 #include "Tank.h"
+#include "Gui.h"
+#include "GuiCursor.h"
 
 #include "CommandCenter.h"
 #include "Bunker.h"

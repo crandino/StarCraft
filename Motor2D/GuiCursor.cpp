@@ -17,6 +17,11 @@ GuiCursor::GuiCursor(const SDL_Texture* texture)
 	idle.speed = 0.01f;
 	idle.loop = true;
 
+	//Selection
+	selection_anim.frames.push_back({ 310, 48, 40, 42 });
+	selection_anim.speed = 0.01f;
+	selection_anim.loop = true;
+
 	// LEFT displacement animation
 	// X positions has been modified to perfectly adapt to the screen
 	/*left_disp.frames.push_back({ 178, 232, 40, 42 });

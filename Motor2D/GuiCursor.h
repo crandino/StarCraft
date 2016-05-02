@@ -17,6 +17,7 @@ public:
 	const SDL_Texture* texture = nullptr;
 	Animation* current_animation;
 	Animation  idle;
+	Animation  selection_anim;
 	Animation  left_disp;
 	Animation  right_disp;
 	Animation  up_disp;
