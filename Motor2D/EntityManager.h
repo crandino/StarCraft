@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 
+
 // Some enums to separate behaviour, UI, ...
 
 enum FACTION   // Controlled by player or computer
@@ -86,8 +87,7 @@ public:
 
 	Entity* whichEntityOnMouse();
 
-	/*---------------Creating Waves-------------------*/
-	void createWave(uint sizeZ, uint sizeH, uint sizeM, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
+
 
 
 public:
@@ -104,6 +104,7 @@ public:
 	//GUI
 	bool create_bunker = false;
 	bool create_SCV = false;
+	bool			selector_init;
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
@@ -126,7 +127,7 @@ private:
 	SDL_Texture*	building_tile;
 
 	SDL_Rect		selector;
-	bool			selector_init;
+
 	iPoint			initial_selector_pos;
 	iPoint			final_selector_pos;
 

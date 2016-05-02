@@ -45,14 +45,20 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 
 	/*Wave Info Load*/
-	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
-	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();
-	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();
-	// CRZ -> list_of_waves.at(current_wave);
 
-	wave2.zergling_quantity = node.child("SizeWave2").attribute("zerglings").as_uint();
-	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();
-	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();
+
+
+	for (node = node.child("SizeWave"); node; node = node.next_sibling("SizeWave"))
+	{
+			uint num_zergling = node.attribute("zerglings").as_uint();
+			uint num_hydralisk = node.attribute("hydralisks").as_uint();
+			uint num_mutalisk = node.attribute("mutalisks").as_uint();
+
+			SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk);
+			waves_info.push_back(wave);
+	}
+
+
 
 
 	/*Player Info Load*/
@@ -81,24 +87,24 @@ bool GameManager::start()
 	fx_click = app->audio->loadFx("Audio/FX/UI/UI_Click.wav");
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
-	title_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
-	title_screen->center();
-	title_screen->setLocalPos(title_screen->getLocalPos().x - 5, title_screen->getLocalPos().y - 50);
+	start_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
+	start_screen->center();
+	start_screen->setLocalPos(start_screen->getLocalPos().x - 5, start_screen->getLocalPos().y - 50);
 
 	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
-	start_button->parent = title_screen;
+	start_button->parent = start_screen;
 	start_button->center();
 	start_button->interactive = true;
 	start_button->can_focus = true;
 	start_button->setListener(this);
 
-	exit_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
-	exit_button->parent = title_screen;
-	exit_button->center();
-	exit_button->setLocalPos(exit_button->getLocalPos().x, exit_button->getLocalPos().y + 80);
-	exit_button->interactive = true;
-	exit_button->can_focus = true;
-	exit_button->setListener(this);
+	close_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
+	close_button->parent = start_screen;
+	close_button->center();
+	close_button->setLocalPos(close_button->getLocalPos().x, close_button->getLocalPos().y + 80);
+	close_button->interactive = true;
+	close_button->can_focus = true;
+	close_button->setListener(this);
 
 	defeat_atlas = app->tex->loadTexture("Screens/Defeat_Screen_Atlas.png");
 	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
@@ -122,13 +128,13 @@ bool GameManager::start()
 	retry_button->can_focus = false;
 	retry_button->setListener(this);
 
-	close_button = app->gui->createImage(defeat_atlas, { 384, 28, 104, 28 });
-	close_button->parent = victory_screen;
-	close_button->setLocalPos(265, 190);
-	close_button->draw_element = false;
-	close_button->interactive = false;
-	close_button->can_focus = false;
-	close_button->setListener(this);
+	exit_button = app->gui->createImage(defeat_atlas, { 384, 28, 104, 28 });
+	exit_button->parent = victory_screen;
+	exit_button->setLocalPos(265, 190);
+	exit_button->draw_element = false;
+	exit_button->interactive = false;
+	exit_button->can_focus = false;
+	exit_button->setListener(this);
 	wave_state = WAITING_FOR_WAVE_TO_START;
 
 	optimizationEraseEnemy.start();
@@ -176,6 +182,13 @@ bool GameManager::update(float dt)
 		case(FIRST_PHASE):
 		{	
 			LOG("FIRST PHASE");
+			if (checkGameOver())
+			{
+				//Display message of game over
+				LOG("GAME OVER");
+				//Display Score
+				LOG("Score: %d", score_current_wave);
+			}
 
 			switch (wave_state)
 			{
@@ -193,7 +206,7 @@ bool GameManager::update(float dt)
 				{
 					LOG("BEGINNING WAVE!!!");
 					wave_state = MIDDLE_WAVE;
-					app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+					createWave(waves_info[current_wave], iPoint(1419, 800));
 					wave_wiped = false;
 					break;
 				}
@@ -226,80 +239,21 @@ bool GameManager::update(float dt)
 				displayVictoryScreen();
 			break;
 		}
+
+		case(LOSE):
+		{
+			return false;
+			break;
+		}
+	
+		case(QUIT)://When close button is pressed
+		{
+					  return false;
+					  break;
+		}
+
 	}
 
-
-
-	/*
-	if (start_game)
-	{
-		bool timeElapsed = false;
-		//If first_phase is activated it will run the timer and get inside the other code
-		if (first_phase == NULL)
-			 timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
-
-
-		if (timeElapsed != NULL)//Time before starting
-		{
-			first_phase = true;
-		}
-		
-		if (first_phase)//The game starts. OK
-		{
-			if (current_wave < total_waves)//If there're remaining waves. OK
-			{
-				bool time_elapsed = false;
-				if (ongoing_wave == false)
-					time_elapsed = time_between_waves.waitSec(time_between_waves,gameInfo.time_before_waves_phase1);
-
-				if (time_elapsed && wave_wiped == NULL)//Time passed//Wave is created
-					{
-						
-						//GoWave(current_wave);
-						//app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
-						ongoing_wave = true;
-						wave_wiped = false;
-						
-					}
-				if (wave_wiped == true) //When the wave is finished
-				{
-					current_wave++;
-					time_between_waves.start();
-					//current_wave_info
-				}
-					
-				
-					if (wave_wiped != NULL)
-						time_between_waves.start();
-
-				if (current_wave >= total_waves)
-					first_phase = false;
-
-			}
-		}
-		*/
-		
-		
-		/*
-		else if (second_phase)
-		{
-			
-		}
-		else
-		{
-			if (checkGameOver())
-			{
-				//Display message of game over
-				LOG("GAME OVER");
-				//Display Score
-				LOG("Score: %d", score_current_wave);
-			}
-		}
-
-		
-
-	}
-		*/
 		
 		//if (current_waves <= TOTALWAVES)
 		//{
@@ -373,10 +327,7 @@ bool GameManager::update(float dt)
 		if (!is_defeat_screen_on)
 			displayDefeatScreen();
 	}
-
-
-	if (close)
-		ret = false;*/
+	*/
 
 	//ROGER: Add resources
 	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
@@ -393,6 +344,44 @@ bool GameManager::update(float dt)
 	
 	return ret;
 }
+
+void GameManager::createWave(SizeWave* wave, iPoint position)
+{
+	int i = 0;
+	for (; i < wave->zergling_quantity; i++)
+	{
+		int posx = position.x + (wave->zergling_quantity * i * 2);
+		int posy = position.y + (wave->zergling_quantity * i * 2);
+
+		iPoint position = { posx, posy };
+
+		app->entity_manager->addEntity(position, ZERGLING);
+	}
+
+	for (i = 0; i < wave->hydralisk_quantity; i++)
+	{
+		int posx = position.x + (wave->hydralisk_quantity * i * 2);
+		int posy = position.y + (wave->hydralisk_quantity * i * 2);
+
+		iPoint position = { posx, posy };
+
+		app->entity_manager->addEntity(position, HYDRALISK);
+	}
+
+	for (i = 0; i < wave->mutalisk_quantity; i++)
+	{
+		int posx = position.x + (wave->mutalisk_quantity * i * 2);
+		int posy = position.y + (wave->mutalisk_quantity * i * 2);
+
+		iPoint position = { posx, posy };
+
+		app->entity_manager->addEntity(position, MUTALISK);
+	}
+
+}
+
+
+
 
 bool GameManager::postUpdate()
 {
@@ -452,7 +441,7 @@ bool GameManager::quitGame()
 {
 	close = true;
 	start_game = false;
-
+	game_state = LOSE;
 	return true;
 }
 
@@ -471,31 +460,46 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			start_button->setSection({ 339, 229, 141, 39 });
 			
 			startGame();
-			title_screen->draw_element = false;
+			start_screen->draw_element = false;
 
 			start_button->draw_element = false;
 			start_button->interactive = false;
 			start_button->can_focus = false;
 
-			exit_button->draw_element = false;
-			exit_button->interactive = false;
-			exit_button->can_focus = false;
+			close_button->draw_element = false;
+			close_button->interactive = false;
+			close_button->can_focus = false;
 			
 			app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
 
-	if (ui == exit_button || ui == close_button)
+	if (ui == exit_button)
 	{
 		switch (event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click, 0);
-			close_button->setSection({ 384, 84, 104, 28 });
+			exit_button->setSection({ 384, 84, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			close_button->setSection({ 384, 28, 104, 28 });
+			exit_button->setSection({ 384, 28, 104, 28 });
+			quitGame();
+			break;
+		}
+	}
+
+	if (ui == close_button)
+	{
+		switch (event)
+		{
+		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click, 0);
+			close_button->setSection({ 339, 278, 145, 40 });
+			break;
+		case(MOUSE_LCLICK_UP) :
+			close_button->setSection({ 339, 229, 145, 40 });
 			quitGame();
 			break;
 		}
@@ -531,7 +535,6 @@ void GameManager::restartGame()
 	//---------------------------------------------------------
 	
 	current_wave = 0;
-	total_waves = 2;
 	score = 0;
 	enemy_count = 0;
 	kill_count = 0;
@@ -541,7 +544,6 @@ void GameManager::restartGame()
 	resources = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
-	total_units_killed_currentFrame = 0;
 
 	won = false;
 	close = false;
@@ -561,9 +563,9 @@ void GameManager::restartGame()
 	retry_button->interactive = false;
 	retry_button->can_focus = false;
 
-	close_button->draw_element = false;
-	close_button->interactive = false;
-	close_button->can_focus = false;
+	exit_button->draw_element = false;
+	exit_button->interactive = false;
+	exit_button->can_focus = false;
 
 	startGame();
 }
@@ -595,9 +597,9 @@ void GameManager::displayVictoryScreen()
 	retry_button->interactive = true;
 	retry_button->can_focus = true;
 	
-	close_button->draw_element = true;
-	close_button->interactive = true;
-	close_button->can_focus = true;
+	exit_button->draw_element = true;
+	exit_button->interactive = true;
+	exit_button->can_focus = true;
 
 }
 
@@ -610,9 +612,9 @@ void GameManager::displayDefeatScreen()
 	retry_button->interactive = true;
 	retry_button->can_focus = true;
 
-	close_button->draw_element = true;
-	close_button->interactive = true;
-	close_button->can_focus = true;
+	exit_button->draw_element = true;
+	exit_button->interactive = true;
+	exit_button->can_focus = true;
 }
 
 bool GameManager::isGameStarted() const

@@ -555,6 +555,12 @@ bool Gui::update(float dt)
 	// Cursor -> check for camera displacement.
 	iPoint pos = cursor->getLocalPos();
 	cursor->current_animation = &cursor->idle;
+
+	if (app->entity_manager->selector_init) // Left
+	{
+		cursor->current_animation = &cursor->selection_anim;
+	}
+
 	// Checking displacement for X axis.
 	if (pos.x < cursor_offset.x) // Left
 	{

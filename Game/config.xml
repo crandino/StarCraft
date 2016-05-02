@@ -24,14 +24,13 @@
     <path>Terran.zip</path>
     <path>UI.zip</path>
     <path>Audio.zip</path>
-	<path>starcraft_font.zip</path>
 	    
   </file_system>
 
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "2"/>
+    <totalWaves value = "4"/>
     <timeBeforeStart value = "2.0f"/>
     <timeBetweenWavesPhase1 value = "5.0f"/>
     <timeBetweenWavesPhase2 value = "5.0f"/>
@@ -40,10 +39,12 @@
     
     <!-- Wave Information -->
     
-    <SizeWave1 zerglings ="1" hydralisks ="0" />
-    <SizeWave2 zerglings ="5" hydralisks ="0" mutalisks ="2"/>
-    <SizeWave3 zerglings ="5" hydralisks ="0" mutalisks ="2"/>
     
+       <SizeWave zerglings ="1" hydralisks ="0" mutalisks ="0"/>
+       <SizeWave zerglings ="2" hydralisks ="1" mutalisks ="0"/>
+       <SizeWave zerglings ="3" hydralisks ="2" mutalisks ="0"/>
+       <SizeWave zerglings ="4" hydralisks ="3" mutalisks ="1"/>
+   
     <!-- Player Units -->
     <InitialSizePlayer marines="10" medic ="3" scv ="1"/>
     
@@ -57,8 +58,8 @@
   </game_manager>
 
   <fonts>
-    <default_font size="24" file="Starcraft_Normal.ttf"/>
-    <default_font size="12" file="OpenSans-Regular.ttf"/>
+    <default_font size="24" file="Font/Starcraft_Normal.ttf"/>
+    <default_font size="12" file="Font/OpenSans-Regular.ttf"/>
   </fonts>
   
   <map>

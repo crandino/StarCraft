@@ -90,7 +90,7 @@ pugi::xml_node App::loadConfig(pugi::xml_document& config_file) const
 	char* buf;
 	int size = app->fs->load("config.xml", &buf);
 	pugi::xml_parse_result result = config_file.load_buffer(buf, size);
-	RELEASE(buf);
+	RELEASE_ARRAY(buf);
 
 	if (result == NULL)
 	{

@@ -149,9 +149,9 @@ public:
 
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling
-	W_32 = { 28, 9, 32, 19 };
+	W_32 = { 28, 9, 32, 19 }; Mutalisk
 	W_48 = { 64, 5, 48, 29 };
-	W_62 = { 116, 2, 62, 37};
+	W_62 = { 116, 2, 62, 37}; Tank
 	W_72 = { 184, 2, 72, 43};
 	W_94 = { 261, 1, 94, 56};
 	W_94 = { 261, 1, 94, 56};
