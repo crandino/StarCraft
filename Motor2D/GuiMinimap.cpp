@@ -10,7 +10,7 @@ GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
 }
 
 
-bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, SDL_Texture* square)
+bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture)
 {
 	bool ret = true;
 
@@ -19,9 +19,6 @@ bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* textur
 
 	if (ret && (ret = (texture != NULL)))
 		tex = texture;
-
-	if (ret && (ret = (square != NULL)))
-		area = square;
 
 	//set scale
 	calculateScale();
@@ -87,13 +84,7 @@ void GuiMinimap::draw() const
 {
 	//print map
 	if (tex != NULL)
-	{
 		app->render->blit(tex, rect.x - app->render->camera.x, rect.y - app->render->camera.y);
-	}
-	else
-	{
-		app->render->DrawQuad(rect, 0, 0, 0); // print black quad in case texture is missing
-	}
 
 	//print units
 	if (active_entities != NULL)
@@ -131,10 +122,16 @@ void GuiMinimap::draw() const
 			app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, r, g, b);
 		}
 	}
+	// print area
+	iPoint pos = worldToMinimap({ -app->render->camera.x, -app->render->camera.y });
+	app->render->DrawQuad({ pos.x, pos.y, area.w, area.h }, 255, 255, 255, 255, false);
 }
 
 void GuiMinimap::calculateScale()
 {
 	scale.x = rect.w / (float)(app->map->data.front().width * app->map->data.front().tile_width);    //map width
 	scale.y = rect.h / (float)(app->map->data.front().height * app->map->data.front().tile_height);  //map height;
+
+	area.w = app->render->camera.w * scale.x;
+	area.h = app->render->camera.h * scale.y;
 }

@@ -228,24 +228,23 @@ bool Gui::start()
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	// Create the GuiMinimap
-	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png", "Minimap/area.png");
+	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png");
 	mini_map->setLocalPos(6, 348);
 
 	return true;
 }
 
-GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex, const char *pathArea)
+GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex)
 {
 	GuiMinimap* ret = nullptr;
 
 	ret = new GuiMinimap(rect);
 
 	SDL_Texture* texture = app->tex->loadTexture(pathTex);// cargar textura
-	SDL_Texture* area = app->tex->loadTexture(pathArea);// cargar area
 
 	if (texture)
 	{
-		ret->SetAttributes(&app->entity_manager->active_entities, texture, area);
+		ret->SetAttributes(&app->entity_manager->active_entities, texture);
 	}
 	else
 	{

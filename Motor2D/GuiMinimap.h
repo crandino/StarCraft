@@ -13,7 +13,7 @@ public:
 	GuiMinimap(SDL_Rect rect);
 
 	//Initializes all remaining data
-	bool SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture, SDL_Texture* square);
+	bool SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture);
 
 	//Called every frame
 	void update();
@@ -33,12 +33,11 @@ private:
 
 	SDL_Rect rect;
 	fPoint scale;
-	int quad_size = 1;
 
 	map<uint, Entity*>* active_entities = NULL;
 
 	SDL_Texture* tex = NULL;
-	SDL_Texture* area = NULL;
+	SDL_Rect	 area;
 };
 
 #endif  //__GUIMINIMAP_H__
