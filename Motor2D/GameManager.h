@@ -94,12 +94,9 @@ class GameManager : public Module
 {
 public:
 
-	int current_waves = 0;
-	int total_waves = 2;
 	int score = 0;
 	int enemy_count = 0;
 	uint kill_count = 0;
-	bool game_over = false;
 	iPoint initial_position;
 
 	/*---- Wave Creation ----*/
@@ -117,15 +114,7 @@ public:
 
 	GameManager();
 
-	void displayVictoryScreen();
-
-	void displayDefeatScreen();
-
 	bool awake(pugi::xml_node &node);
-
-	void startGame();
-
-	void restartGame();
 
 	void addPoints(uint points);
 
@@ -141,40 +130,36 @@ public:
 
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
+	// Setting, resetting or getting game conditions
+	void startGame();
+	void restartGame();
+	bool isGameStarted() const;
+
+	// Gui Victory and Defeat Screens
+	void displayVictoryScreen();
+	void displayDefeatScreen();
+
 	void createMarines(iPoint position,unsigned int sizex, unsigned int sizey);
 
 	void eraseEnemiesIfKilled();
 
 	void AddPointsEnemy(Entity* e);
 
-	void checkingGameCondicions();
-
-	/*---------------Creating Waves-------------------*/
-	void createWave(SizeWave* size, iPoint position);
-
 public:
-	//Time Management attributes
-	Timer time_before_starting_game;
-	Timer time_between_waves;
-	Timer random_generator;
-
+	
 	//Score system attributes
 	uint score_current_wave = 0;
 	uint total_score = 0;
 	//Start/Exit Button
 	SDL_Texture* start_image = nullptr;
-
 	GuiImage* start_screen = nullptr;
 	GuiImage* start_button = nullptr;
-	GuiImage* close_button = nullptr;
-	
+	GuiImage* close_button = nullptr;	
 	
 	//Victory Screen
 	SDL_Texture* victory_atlas = nullptr;
 	GuiImage* victory_screen = nullptr;
 	bool is_victory_screen_on = false;
-
-	bool won = false;
 
 	//Defeat Screen
 	GuiImage* defeat_screen = nullptr;
@@ -185,26 +170,19 @@ public:
 	GuiImage* retry_button = nullptr;
 	GuiImage* exit_button = nullptr;
 
-	//close bool
-	bool close = false;
-
 	//commandCenterDestroyed
 	// CRZ -> 
 	bool command_center_destroyed = false;
 	// -> Otra variable para indicar que ha muerto Jim Raynor!
 
 	//Sound
-	unsigned int fx_click;
-	bool isGameStarted() const;
+	unsigned int fx_click;	
 	
 	//Wave Control
+	bool isWaveClear();
 	bool wave_wiped = false;
 
-//Utils
-	bool isWaveClear();
-
-//XML loaded info -------
-
+	//XML loaded info -------	
 	initialSizePlayer initial_size;
 
 	uint zergling_score;
@@ -213,27 +191,32 @@ public:
 
 	GameInformation gameInfo;
 
-//XML loaded info end -------
+	//States
 
-//States
-
-	GAME_STATE game_state;
-	WAVE_STATE wave_state;
+	GAME_STATE			 game_state;
+	WAVE_STATE			 wave_state;
 	
-	vector<SizeWave*> waves_info;
+	vector<SizeWave*>	 waves_info;
 
 private:
-	uint previous_unit_killed = 0;
-	Timer timer_between_waves;
 
-	bool start_game = false;
-	bool first_phase = false;
-	bool ongoing_wave = false;
+	uint				 current_wave;
+	map<uint, Entity*>	 current_wave_entities;
+	uint				 previous_unit_killed = 0;
 
-	uint current_wave = 0;
+	//Time Management attributes
+	Timer				 timer_between_waves;
+	Timer				 time_before_starting_game;
 
-	unsigned int size_marines_x = SIZEMARINESX;
-	unsigned int size_marines_y = SIZEMARINESY;
+	bool				start_game = false;
+
+	unsigned int		size_marines_x = SIZEMARINESX;
+	unsigned int		size_marines_y = SIZEMARINESY;
+
+	// Check the conditions to finish the game
+	void				checkingGameConditions();
+	// Creating waves
+	void			    createWave(SizeWave* size, iPoint position);
 };
 
 #endif

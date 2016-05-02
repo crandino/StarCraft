@@ -105,14 +105,14 @@ bool GameManager::start()
 	defeat_atlas = app->tex->loadTexture("Screens/Defeat_Screen_Atlas.png");
 	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
 	defeat_screen->center();
-	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y);
+	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y - 70);
 	defeat_screen->draw_element = false;
 	is_defeat_screen_on = false;
 
 	victory_atlas = app->tex->loadTexture("Screens/Victory_Screen_Atlas.png");
 	victory_screen = app->gui->createImage(victory_atlas, { 0, 0, 384, 256 });
 	victory_screen->center();
-	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y-70);
+	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y - 70);
 	victory_screen->draw_element = false;
 	is_victory_screen_on = false;
 
@@ -131,7 +131,8 @@ bool GameManager::start()
 	exit_button->interactive = false;
 	exit_button->can_focus = false;
 	exit_button->setListener(this);
-	wave_state = WAITING_FOR_WAVE_TO_START;
+
+	game_state = INITIAL_SCREEN;
 
 	return ret;
 }
@@ -156,21 +157,19 @@ bool GameManager::update(float dt)
 	case(PREPARATION):
 	{
 		LOG("PREPARATION");
-		startGame();
-		timer_between_waves.start();
-		game_state = FIRST_PHASE;
+		startGame();		
 		break;
 	}
 	case(FIRST_PHASE):
 	{	
-		checkingGameCondicions();
+		checkingGameConditions();
 
 		switch (wave_state)
 		{
-			// CRZ -> Se mostraría informe de la siguiente oleada.
-			LOG("WAITING WAVE TO START");
 			case(WAITING_FOR_WAVE_TO_START) :
 			{
+				// CRZ -> Se mostraría informe de la siguiente oleada.
+				LOG("WAITING WAVE TO START");
 				if (timer_between_waves.readSec() > WAVETIME1)
 					wave_state = BEGINNING_WAVE;
 				break;
@@ -202,43 +201,41 @@ bool GameManager::update(float dt)
 				timer_between_waves.start();
 				break;
 			}
-		}
-		break;
 		}	
-		case(WIN) :
+		break;
+	}	
+	case(WIN) :
+	{
+		if (!is_victory_screen_on)
 		{
-			if (!is_victory_screen_on)
-			{
-				restartGame();
-				displayVictoryScreen();
-			}
-				
-			break;
-		}
+			restartGame();
+			displayVictoryScreen();
+		}				
+		break;
+	}
 
-		case(LOSE):
+	case(LOSE):
+	{
+		if (!is_defeat_screen_on)
 		{
-			if (!is_defeat_screen_on)
-			{
-				restartGame();
-				displayDefeatScreen();
-			}
-				
-			break;
-		}
+			restartGame();
+			displayDefeatScreen();
+		}				
+		break;
+	}
 	
-		case(QUIT): //When close button is pressed
-		{
-			return false;
-			break;
-		}
+	case(QUIT): //When close button is pressed
+	{
+		return false;
+		break;
+	}
 	}
 
 	//ADRI
 	//-------------------------UI-----------------------------
 	//Change the number of WAVE HUD ingame-----------------------
 	char n[20];
-	sprintf_s(n, 20, "%d", current_wave);
+	sprintf_s(n, 20, "%d", current_wave + 1);
 	app->gui->number_of_wave->setText(n, 1);
 
 
@@ -269,7 +266,7 @@ bool GameManager::update(float dt)
 	return ret;
 }
 
-void GameManager::checkingGameCondicions()
+void GameManager::checkingGameConditions()
 {
 	if (current_wave == gameInfo.total_waves)
 	{
@@ -286,35 +283,38 @@ void GameManager::checkingGameCondicions()
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
 {
-	int i = 0;
-	for (; i < wave->zergling_quantity; i++)
+	Entity *entity_to_add;
+	for (uint i = 0; i < wave->zergling_quantity; i++)
 	{
 		int posx = position.x + (wave->zergling_quantity * i * 2);
 		int posy = position.y + (wave->zergling_quantity * i * 2);
 
 		iPoint position = { posx, posy };
 
-		app->entity_manager->addEntity(position, ZERGLING);
+		entity_to_add = app->entity_manager->addEntity(position, ZERGLING);
+		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
 	}
 
-	for (i = 0; i < wave->hydralisk_quantity; i++)
+	for (uint i = 0; i < wave->hydralisk_quantity; i++)
 	{
 		int posx = position.x + (wave->hydralisk_quantity * i * 2);
 		int posy = position.y + (wave->hydralisk_quantity * i * 2);
 
 		iPoint position = { posx, posy };
 
-		app->entity_manager->addEntity(position, HYDRALISK);
+		entity_to_add = app->entity_manager->addEntity(position, HYDRALISK);
+		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
 	}
 
-	for (i = 0; i < wave->mutalisk_quantity; i++)
+	for (uint i = 0; i < wave->mutalisk_quantity; i++)
 	{
 		int posx = position.x + (wave->mutalisk_quantity * i * 2);
 		int posy = position.y + (wave->mutalisk_quantity * i * 2);
 
 		iPoint position = { posx, posy };
 
-		app->entity_manager->addEntity(position, MUTALISK);
+		entity_to_add = app->entity_manager->addEntity(position, MUTALISK);
+		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
 	}
 }
 
@@ -330,7 +330,7 @@ void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 
 bool GameManager::isWaveClear() 
 {
-	wave_wiped = (app->entity_manager->current_wave_entities.empty() ? true : false);
+	wave_wiped = current_wave_entities.empty() ? true : false;
 	return wave_wiped;
 }
 
@@ -343,6 +343,10 @@ bool GameManager::cleanUp()
 
 void GameManager::startGame()
 {
+	current_wave = 0;
+	wave_state = WAITING_FOR_WAVE_TO_START;
+	game_state = FIRST_PHASE;
+
 	iPoint p = COMMANDCENTERPOSITION;
 	app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
 	command_center_destroyed = false;
@@ -362,6 +366,8 @@ void GameManager::startGame()
 
 	createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
 	app->render->setCameraOnPosition(p);
+
+	timer_between_waves.start();
 }
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
@@ -429,7 +435,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			retry_button->setSection({ 384, 56, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			retry_button->setSection({ 384, 28, 104, 28 });	
+			retry_button->setSection({ 384, 0, 104, 28 });	
 			game_state = PREPARATION;			
 			break;
 		}
@@ -502,15 +508,15 @@ bool GameManager::isGameStarted() const
 
 void GameManager::eraseEnemiesIfKilled()
 {
-	if (app->entity_manager->current_wave_entities.size() > 0 && wave_state == MIDDLE_WAVE)
+	if (current_wave_entities.size() > 0 && wave_state == MIDDLE_WAVE)
 	{
-		map<uint, Entity*>::iterator it2 = app->entity_manager->current_wave_entities.begin();
-		for (; it2 != app->entity_manager->current_wave_entities.end();)
+		map<uint, Entity*>::iterator it2 = current_wave_entities.begin();
+		for (; it2 != current_wave_entities.end();)
 		{
 			if (it2->second->to_delete == true)
 			{
 				AddPointsEnemy(it2->second);
-				it2 = app->entity_manager->current_wave_entities.erase(it2);
+				it2 = current_wave_entities.erase(it2);
 				//Score is added up when an enemy is killed
 				
 			}

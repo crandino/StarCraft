@@ -75,20 +75,13 @@ public:
 	bool cleanUp();
 
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
-	Entity* const addEntity(Entity* e);
-	Entity* const createUnit(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
-
-	void handleSelection();
-
-	void SetEnemyToAttackCommandCenter(Entity* e);
+	
+	void	SetEnemyToAttackCommandCenter(Entity* e);
 	Entity* searchNearestEntityInRange(Entity* e, bool search_in_same_faction = false);
 	Entity* searchEnemyToAttack(Entity* e);
 
 	Entity* whichEntityOnMouse();
-
-
-
 
 public:
 
@@ -96,27 +89,21 @@ public:
 	iPoint EntityManager::changeSign(iPoint point);
 
 	void recalculatePaths(const SDL_Rect &rect, bool walkable);//recalculate the paths and move out entities inside the rect
-
-public:
-	//Frag count
-	bool enemyJustDied = false;
-
-	//GUI
-	bool create_bunker = false;
-	bool create_SCV = false;
-	bool			selector_init;
-
-	/* -------- Methods for building -----------------------*/
-	void choosePlaceForBuilding();
+	
 
 public:
 	map<uint, Entity*>                  selection; 
 	map<uint, Entity*>					active_entities;
-	map<uint, Entity*>					current_wave_entities;
+
+	//GUI
+	bool	create_bunker = false;
+	bool	create_SCV = false;
+	bool	selector_init;
+
+	/* -------- Methods for building -----------------------*/
+	void choosePlaceForBuilding();
+
 private:
-
-
-	map<uint, Entity*>					to_delete;
 	uint								next_ID;	
 
 	bool debug = false;
@@ -134,7 +121,8 @@ private:
 	void			calculateSelector();
 	void			onCollision(Collider* c1, Collider* c2);	
 
-	void entityManualCreation();
+	void			entityManualCreation();
+	void			handleSelection();
 	
 };
 

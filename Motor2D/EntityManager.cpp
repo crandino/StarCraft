@@ -110,8 +110,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
 		}
-		if (e->faction == COMPUTER)
-			current_wave_entities.insert(pair<uint, Entity*>(e->id, e));
 	}
 
 	return e;
@@ -237,9 +235,6 @@ bool EntityManager::update(float dt)
 // Called each loop iteration
 bool EntityManager::postUpdate()
 {	
-	/*Resetting bool for Game Manager*/
-	enemyJustDied = false;
-
 	// Entities Drawing
 	// Look on Gui postUpdate()!
 
