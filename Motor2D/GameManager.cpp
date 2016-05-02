@@ -507,10 +507,10 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click, 0);
-			close_button->setSection({ 338, 278, 141, 38 });
+			close_button->setSection({ 339, 278, 145, 40 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			close_button->setSection({ 339, 229, 141, 3 });
+			close_button->setSection({ 339, 229, 145, 40 });
 			quitGame();
 			break;
 		}
@@ -576,9 +576,9 @@ void GameManager::restartGame()
 	retry_button->interactive = false;
 	retry_button->can_focus = false;
 
-	close_button->draw_element = false;
-	close_button->interactive = false;
-	close_button->can_focus = false;
+	exit_button->draw_element = false;
+	exit_button->interactive = false;
+	exit_button->can_focus = false;
 
 	startGame();
 }
@@ -610,9 +610,9 @@ void GameManager::displayVictoryScreen()
 	retry_button->interactive = true;
 	retry_button->can_focus = true;
 	
-	close_button->draw_element = true;
-	close_button->interactive = true;
-	close_button->can_focus = true;
+	exit_button->draw_element = true;
+	exit_button->interactive = true;
+	exit_button->can_focus = true;
 
 }
 
@@ -625,9 +625,9 @@ void GameManager::displayDefeatScreen()
 	retry_button->interactive = true;
 	retry_button->can_focus = true;
 
-	close_button->draw_element = true;
-	close_button->interactive = true;
-	close_button->can_focus = true;
+	exit_button->draw_element = true;
+	exit_button->interactive = true;
+	exit_button->can_focus = true;
 }
 
 bool GameManager::isGameStarted() const
