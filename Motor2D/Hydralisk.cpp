@@ -265,8 +265,10 @@ void Hydralisk::setAnimationFromDirection()
 	case(IDLE) :
 	case(MOVE) :
 	case(MOVE_ALERT) :
+	case(MOVE_ALERT_TO_ATTACK) :
 	case(WAITING_PATH_MOVE) :
 	case(WAITING_PATH_MOVE_ALERT) :
+	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
 	case(ATTACK) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());

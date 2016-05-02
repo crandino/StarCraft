@@ -242,6 +242,8 @@ bool PathFinding::setMap(const uint &width, const uint &height, uchar *data)
 
 int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uint id)
 {
+	erase(id);
+
 	// Origin are walkable?
 	if (!isWalkable(origin))
 		return -1;

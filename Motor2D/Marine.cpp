@@ -376,6 +376,12 @@ void Marine::setAnimationFromDirection()
 		current_animation = &(*move_animation_pack.at(num_animation));
 		break;
 	}
+	case(MOVE_ALERT_TO_ATTACK) :
+	{
+		int num_animation = angle / (360 / move_animation_pack.size());
+		current_animation = &(*move_animation_pack.at(num_animation));
+		break;
+	}
 	case(DYING) :
 	{
 		current_animation = &dead;
@@ -388,6 +394,12 @@ void Marine::setAnimationFromDirection()
 		break;
 	}
 	case(WAITING_PATH_MOVE_ALERT) :
+	{
+		int num_animation = angle / (360 / idle_animation_pack.size());
+		current_animation = &(*idle_animation_pack.at(num_animation));
+		break;
+	}
+	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
 		current_animation = &(*idle_animation_pack.at(num_animation));
