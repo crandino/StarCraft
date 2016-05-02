@@ -110,6 +110,9 @@ public:
 	//GetTileAt: return the walkability value of a tile
 	uchar getTileAt(const iPoint& pos) const;
 
+	//recalculatePath: recalcule the path with same id
+	bool recalculatePath(const iPoint &origin, uint id);
+
 	//erase: to erase if we delete an entity who is searching a path
 	void erase(uint id);
 

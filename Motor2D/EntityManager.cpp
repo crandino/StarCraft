@@ -570,8 +570,8 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 			Unit *unit = (Unit*)it->second;
 			if (!unit->flying)
 			{
-				if ((unit->state == WAITING_PATH_MOVE || unit->state == WAITING_PATH_MOVE_ALERT || unit->state == WAITING_PATH_MOVE_ALERT_TO_ATTACK) &&
-					(app->path->createPath(it->second->tile_pos, unit->path.back(), it->first) != -1));
+				if ((unit->state == WAITING_PATH_MOVE || unit->state == WAITING_PATH_MOVE_ALERT || unit->state == WAITING_PATH_MOVE_ALERT_TO_ATTACK) && 
+					app->path->recalculatePath(it->second->tile_pos, it->first));
 				else if (unit->path.size() > 0 && app->path->createPath(it->second->tile_pos, unit->path.back(), it->first) != -1)
 				{
 					if (unit->state == MOVE)

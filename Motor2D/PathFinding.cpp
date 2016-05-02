@@ -242,8 +242,6 @@ bool PathFinding::setMap(const uint &width, const uint &height, uchar *data)
 
 int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uint id)
 {
-	erase(id);
-
 	// Origin are walkable?
 	if (!isWalkable(origin))
 		return -1;
@@ -254,6 +252,8 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uin
 		return -1;
 
 	iPoint _origin = origin;
+
+	erase(id);
 
 	pathToFind p(id, new_dest);
 	paths_to_find.push_back(p);
@@ -592,6 +592,23 @@ uchar PathFinding::getTileAt(const iPoint& pos) const
 	if (checkBoundaries(pos))
 		return map_data[pos.y * width + pos.x];
 	return INVALID_WALKABILTY_CODE;
+}
+
+bool PathFinding::recalculatePath(const iPoint &origin, uint id)
+{
+	for (list<pathToFind>::iterator it = paths_to_find.begin(); it != paths_to_find.end();)
+	{
+		if (it->id == id)
+		{
+			if(createPath(origin, it->destination, id) != -1)
+				return true;
+			else
+				return false;
+		}
+		else
+			it++;
+	}
+	return false;
 }
 
 void PathFinding::erase(uint id)
