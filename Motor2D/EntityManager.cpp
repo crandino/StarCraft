@@ -12,6 +12,7 @@
 #include "Zergling.h"
 #include "Mutalisk.h"
 #include "Hydralisk.h"
+#include "Tank.h"
 
 #include "CommandCenter.h"
 #include "Bunker.h"
@@ -57,6 +58,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(SCV) :
 		LOG("Creating SCV");
 		e = new Scv(pos);
+		break;
+	case(TANK) :
+		LOG("Creating Tank");
+		e = new Tank(pos);
 		break;
 		// ZERGLINGS
 	case(ZERGLING) :
@@ -250,7 +255,7 @@ bool EntityManager::cleanUp()
 {
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); it++)
-		delete it->second;
+		RELEASE(it->second);
 
 	active_entities.clear();
 	selection.clear();
@@ -299,7 +304,7 @@ void EntityManager::handleSelection()
 	// Clicking and holding left button, starts a selection
 	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		selection.clear();
+		//selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
 		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
 
@@ -308,7 +313,9 @@ void EntityManager::handleSelection()
 		Entity *e = whichEntityOnMouse();
 
 		if (e != NULL)
-			selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };
+		{  	   
+           selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };  
+		}		
 		else
 			selector = { 0, 0, 0, 0 };
 	}
@@ -328,7 +335,8 @@ void EntityManager::handleSelection()
 	{
 		selector_init = false;
 		bool units_only = false;    // If only one unit is on selection, buildings will be excluded
-		map<uint, Entity*>::iterator it = active_entities.begin();
+		map<uint, Entity*>::iterator it = active_entities.begin(); 
+		int delete_selection = 0;
 
 		// First, we need to know if any unit has been selected. 
 		for (; it != active_entities.end(); ++it)
@@ -345,11 +353,23 @@ void EntityManager::handleSelection()
 		{
 			if (it->second->coll->checkCollision(selector))
 			{
+				if (delete_selection == 0)
+				{
+						delete_selection++;
+				}
 				// On debug mode, the player will select all the entities.
 				if (it->second->faction == COMPUTER && !debug)
 					continue;
 				else
 				{
+					
+
+					if (delete_selection == 1)
+					{
+						selection.clear();
+						delete_selection++;
+					}
+
 					if (it->second->type == UNIT)
 					{
 						Unit *u = (Unit*)it->second;
@@ -554,6 +574,16 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 						unit->state = WAITING_PATH_MOVE;
 					else if (unit->state == MOVE_ALERT)
 						unit->state = WAITING_PATH_MOVE_ALERT;
+					else if (unit->state == MOVE_ALERT_TO_ATTACK)
+						unit->state = WAITING_PATH_MOVE_ALERT_TO_ATTACK;
+				}
+				else if (unit->state == WAITING_PATH_MOVE || unit->state == WAITING_PATH_MOVE_ALERT || unit->state == WAITING_PATH_MOVE_ALERT_TO_ATTACK)
+				{
+					if (app->path->createPath(it->second->tile_pos, unit->path.back(), it->first) == -1)
+					{
+						unit->has_target = false;
+						unit->state = IDLE;
+					}
 				}
 				else if (walkable == false)
 				{
@@ -648,12 +678,21 @@ void EntityManager::entityManualCreation()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, MUTALISK);
 	}
+
 	if (app->input->getKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, HYDRALISK);
 	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_6) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, TANK);
+	}
+
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);

@@ -242,6 +242,8 @@ bool PathFinding::setMap(const uint &width, const uint &height, uchar *data)
 
 int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uint id)
 {
+	erase(id);
+
 	// Origin are walkable?
 	if (!isWalkable(origin))
 		return -1;
@@ -271,7 +273,7 @@ bool PathFinding::postUpdate()
 		for (; it != paths_to_find.end();)
 		{
 			path_found.clear();
-			while ((time * x) > time_to_search.readSec())
+			do
 			{
 				if (it->open_list.list_of_nodes.size() == 0)
 					break;
@@ -317,7 +319,7 @@ bool PathFinding::postUpdate()
 						++item;
 					}
 				}
-			}
+			} while ((time * x) > time_to_search.readSec());
 			if (it->open_list.list_of_nodes.size() == 0 || (it->close_list.list_of_nodes.size() > 0 && it->close_list.list_of_nodes.back().pos == it->destination))
 			{
 				const pathNode *final_path = &it->close_list.list_of_nodes.back();
@@ -558,6 +560,7 @@ bool PathFinding::getPathFound(uint id, vector<iPoint> &path)
 		if (it->first == id)
 		{
 			path = *it->second;
+			RELEASE(it->second);
 			it = paths_found.erase(it);
 			return true;
 		}
@@ -615,4 +618,22 @@ void PathFinding::erase(uint id)
 		else
 			it++;
 	}
+}
+
+bool PathFinding::cleanUp()
+{
+	LOG("Cleaning PathFinding");
+	
+	for (list<pathToFind>::iterator it = paths_to_find.begin(); it != paths_to_find.end();)
+	{
+		it = paths_to_find.erase(it);
+	}
+
+	for (map<uint, vector<iPoint>*>::iterator it = paths_found.begin(); it != paths_found.end();)
+	{
+		RELEASE(it->second);
+		it = paths_found.erase(it);
+	}
+
+	return true;
 }

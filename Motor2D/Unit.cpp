@@ -146,6 +146,22 @@ bool Unit::update(float dt)
 		if (has_target)
 			move(dt);
 		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
 	case ATTACK:
 		if (timer_attack.read() >= attack_frequency)
 		{
@@ -179,6 +195,14 @@ bool Unit::update(float dt)
 		{
 			has_target = true;
 			state = MOVE_ALERT;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
 			timer_to_check.start();
 		}
 		break;
@@ -223,7 +247,7 @@ void Unit::newEntityFound()
 			path.clear();
 			path.push_back(target_to_attack->tile_pos);
 			has_target = true;
-			state = MOVE_ALERT;
+			state = MOVE_ALERT_TO_ATTACK;
 		}
 	}
 	else if (path.size() > 0 && path.back() == app->path->findNearestWalkableTile(target_to_attack->tile_pos, tile_pos, 5))//if the tile destination is the same than current path
@@ -231,5 +255,5 @@ void Unit::newEntityFound()
 		has_target = true;
 	}
 	else if (app->path->createPath(tile_pos, target_to_attack->tile_pos, id) != -1) //the path to the selected entity is constructed
-			state = WAITING_PATH_MOVE_ALERT;
+		state = WAITING_PATH_MOVE_ALERT_TO_ATTACK;
 }

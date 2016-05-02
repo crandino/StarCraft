@@ -60,6 +60,8 @@ bool Bunker::update(float dt)
 		break;
 	case MOVE_ALERT:
 		break;
+	case MOVE_ALERT_TO_ATTACK:
+		break;
 	case ATTACK:
 		if (units_inside.size() > 0)
 		{
@@ -85,6 +87,8 @@ bool Bunker::update(float dt)
 	case WAITING_PATH_MOVE:
 		break;
 	case WAITING_PATH_MOVE_ALERT:
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
 		break;
 	}
 	return true;

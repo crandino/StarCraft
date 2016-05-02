@@ -80,6 +80,7 @@
     <ClInclude Include="Motor2D\Entity.h" />
     <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
+    <ClInclude Include="Motor2D\FogOfWar.h" />
     <ClInclude Include="Motor2D\Fonts.h" />
     <ClInclude Include="Motor2D\GameManager.h" />
     <ClInclude Include="Motor2D\GuiCursor.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Motor2D\Scene.h" />
     <ClInclude Include="Motor2D\Gui.h" />
     <ClInclude Include="Motor2D\Scv.h" />
+    <ClInclude Include="Motor2D\Tank.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
     <ClInclude Include="Motor2D\Unit.h" />
@@ -120,6 +122,7 @@
     <ClCompile Include="Motor2D\Collision.cpp" />
     <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
+    <ClCompile Include="Motor2D\FogOfWar.cpp" />
     <ClCompile Include="Motor2D\Fonts.cpp" />
     <ClCompile Include="Motor2D\GameManager.cpp" />
     <ClCompile Include="Motor2D\GuiCursor.cpp" />
@@ -141,6 +144,7 @@
     <ClCompile Include="Motor2D\Render.cpp" />
     <ClCompile Include="Motor2D\Scene.cpp" />
     <ClCompile Include="Motor2D\Gui.cpp" />
+    <ClCompile Include="Motor2D\Tank.cpp" />
     <ClCompile Include="Motor2D\Textures.cpp" />
     <ClCompile Include="Motor2D\Timer.cpp" />
     <ClCompile Include="Motor2D\Unit.cpp" />

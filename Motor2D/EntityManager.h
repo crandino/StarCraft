@@ -33,6 +33,7 @@ enum SPECIALIZATION  // Second specialization
 	ZERGLING,
 	MUTALISK,
 	HYDRALISK,
+	TANK,
 	// Buildings
 	COMMANDCENTER, 
 	BUNKER,

@@ -15,9 +15,9 @@
 #include "Gui.h"
 #include "Collision.h"
 #include "Fonts.h"
+#include "FogOfWar.h"
 //Gameplay
 #include "GameManager.h"
-
 
 #include <iostream> 
 #include <sstream> 
@@ -41,6 +41,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entity_manager = new EntityManager();
 	collision = new Collision();
 	game_manager = new GameManager();
+	fog_of_war = new FogOfWar();
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
 	addModule(fs);
@@ -55,7 +56,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(game_manager);
 	addModule(entity_manager);
 	addModule(scene);
-	addModule(collision);	
+	addModule(collision);
+	addModule(fog_of_war);
 	// render last to swap buffer
 	addModule(render);
 }

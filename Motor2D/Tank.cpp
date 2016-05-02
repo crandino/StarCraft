@@ -1,11 +1,10 @@
-#include "Marine.h"
-#include "Bunker.h"
+#include "Tank.h"
 
-Marine::Marine(iPoint &p)
+Tank::Tank(iPoint &p)
 {
 	//Graphics
 	tex = app->tex->loadTexture("Units/Blue_Marine.png");
-	tex_width = tex_height = 64;
+	tex_width = tex_height = 128;
 	//---------------Idle Animation----------------
 	idle_right.frames.push_back({ 256, 0, 64, 64 });
 	idle_right.frames.push_back({ 256, 64, 64, 64 });
@@ -242,14 +241,11 @@ Marine::Marine(iPoint &p)
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
 	collider_offset = { -10, -14 };
-	
+
 	// Characterization and behaviour
 	faction = PLAYER;
-	specialization = MARINE;
+	specialization = TANK;
 	flying = false;
-
-	// Sounds
-	marine_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 
 	// UI paramters
 	selection_type = { 3, 4, 22, 13 };
@@ -260,19 +256,19 @@ Marine::Marine(iPoint &p)
 	max_hp = 40;
 	current_hp = 40.0f;
 	max_hp_bars = 6;
-	
+
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
 	damage = 5.0f;
 	attack_frequency = 200.0f;
 	time_to_die = 500.0f;
-	
+
 	// PathFinding and movement variables
-	speed = 10.0f;	
+	speed = 10.0f;
 }
 
-void Marine::move(float dt)
+void Tank::move(float dt)
 {
 	if (path.size() > 0)
 	{
@@ -332,10 +328,6 @@ void Marine::move(float dt)
 					path.clear();
 					has_target = false;
 					state = IDLE;
-				
-					if (bunker_to_fill != NULL) 
-						bunker_to_fill->getEntityInside(this);
-					break;
 
 				}
 				else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
@@ -353,7 +345,7 @@ void Marine::move(float dt)
 }
 
 // Method that assign an animation according to its orientation
-void Marine::setAnimationFromDirection()
+void Tank::setAnimationFromDirection()
 {
 	switch (state)
 	{

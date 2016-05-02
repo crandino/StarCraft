@@ -77,6 +77,9 @@ bool Medic::update(float dt)
 	case MOVE_ALERT:
 		if (has_target) move(dt);
 		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (has_target) move(dt);
+		break;
 	case ATTACK://ATTACK == REPAIR for SCV
 		if (timer_attack.read() >= attack_frequency)
 		{
@@ -104,6 +107,13 @@ bool Medic::update(float dt)
 		{
 			has_target = true;
 			state = MOVE_ALERT;
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
 		}
 		break;
 	}
