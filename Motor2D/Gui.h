@@ -114,7 +114,10 @@ public:
 	GuiImage* ui_create_barraks = nullptr;
 
 	bool buildingMenuOpened = false;
+	bool commandCenterOpened = false;
 	void openBuildingMenu();
+
+	void controlIconsSprite();
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;

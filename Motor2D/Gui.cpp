@@ -345,7 +345,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 {
 	switch (selection)
 	{
-	      case (COMMANDCENTER) :
+	case (COMMANDCENTER) :
+		commandCenterOpened = true;
 			  if(buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
@@ -498,6 +499,9 @@ bool Gui::update(float dt)
 			gui_test->update();
 		}
 	}
+
+	//Icons Control 
+	controlIconsSprite();
 
 	return true;
 }
@@ -719,26 +723,60 @@ void Gui::openBuildingMenu()
 	ui_create_builds->setLocalPos(597, 398);
 	ui_create_builds->enable_element();
 
-	//Buildings
-	if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 25) 
-	{
-		ui_create_bunker->setSection({ 440, 125, 37, 34 });
-		ui_create_bunker->unable_element();
-	}
-	else
-	{
-		ui_create_bunker->setSection({ 256, 64, 37, 34 });
-		ui_create_bunker->enable_element();
-	}
-
+	ui_create_bunker->enable_element();
 	ui_create_barraks->enable_element();
 	ui_create_turrets->enable_element();
 	ui_create_factory->enable_element();
 	ui_create_starport->enable_element();
+
 }
 
+void Gui::controlIconsSprite()
+{
+	if (buildingMenuOpened)
+	{
+		//Buildings
+		//Bunker
+		if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 25)
+		{
+			ui_create_bunker->setSection({ 440, 125, 37, 34 });
+			ui_create_bunker->unable_element();
+		}
+		else
+		{
+			ui_create_bunker->setSection({ 256, 64, 37, 34 });
+			ui_create_bunker->enable_element();
+		}
+		//Barracks 
+		ui_create_barraks->setSection({ 482, 125, 37, 34 });
+		ui_create_barraks->unable_element();
+		//Turrets
+		ui_create_turrets->setSection({ 522, 125, 37, 34 });
+		ui_create_turrets->unable_element();
+		//Starport
+		ui_create_starport->setSection({ 440, 162, 37, 34 });
+		ui_create_starport->unable_element();
+		//Factory
+		ui_create_factory->setSection({ 561, 125, 37, 34 });
+		ui_create_factory->unable_element();
 
+		commandCenterOpened = false;
+	}
 
-
+	if (commandCenterOpened)
+	{
+		if (app->game_manager->mineral_resources < 50)
+		{
+			ui_create_bot->setSection({ 440, 89, 37, 34 });
+			ui_create_bot->unable_element();
+		}
+		else
+		{
+			ui_create_bot->setSection({ 256, 28, 37, 34 });
+			ui_create_bot->enable_element();
+		}
+	 buildingMenuOpened = false;
+	}
+}
 
 
