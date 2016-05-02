@@ -92,6 +92,9 @@
     <ClCompile Include="Motor2D\GuiMinimap.cpp">
       <Filter>UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Tank.cpp">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -225,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\GuiMinimap.h">
       <Filter>UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Tank.h">
+      <Filter>Entities\Terran_Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

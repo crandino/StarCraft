@@ -38,7 +38,6 @@ bool GameManager::awake(pugi::xml_node &node)
 	bool ret = true;
 
 	/*Game Info load*/
-
 	gameInfo.total_waves = node.child("totalWaves").attribute("value").as_uint();
 	gameInfo.time_before_start = node.child("timeBeforeStart").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
@@ -46,7 +45,6 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 
 	/*Wave Info Load*/
-
 	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
 	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();
 	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();
@@ -150,7 +148,6 @@ bool GameManager::preUpdate()
 
 bool GameManager::update(float dt)
 {
-
 	bool ret = true;
 
 	switch (game_state)
@@ -161,7 +158,6 @@ bool GameManager::update(float dt)
 		game_state = PREPARATION;
 		break;
 	}
-
 		case(PREPARATION):
 		{
 			LOG("PREPARATION");

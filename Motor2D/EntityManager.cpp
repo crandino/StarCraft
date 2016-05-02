@@ -12,6 +12,7 @@
 #include "Zergling.h"
 #include "Mutalisk.h"
 #include "Hydralisk.h"
+#include "Tank.h"
 
 #include "CommandCenter.h"
 #include "Bunker.h"
@@ -57,6 +58,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(SCV) :
 		LOG("Creating SCV");
 		e = new Scv(pos);
+		break;
+	case(TANK) :
+		LOG("Creating Tank");
+		e = new Tank(pos);
 		break;
 		// ZERGLINGS
 	case(ZERGLING) :
@@ -681,12 +686,21 @@ void EntityManager::entityManualCreation()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, MUTALISK);
 	}
+
 	if (app->input->getKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, HYDRALISK);
 	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_6) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, TANK);
+	}
+
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{
 		app->input->getMousePosition(position);
