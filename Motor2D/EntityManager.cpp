@@ -255,7 +255,7 @@ bool EntityManager::cleanUp()
 {
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); it++)
-		delete it->second;
+		RELEASE(it->second);
 
 	active_entities.clear();
 	selection.clear();
