@@ -81,9 +81,9 @@ bool GameManager::start()
 	fx_click = app->audio->loadFx("Audio/FX/UI/UI_Click.wav");
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
-	title_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
-	title_screen->center();
-	title_screen->setLocalPos(title_screen->getLocalPos().x - 5, title_screen->getLocalPos().y - 50);
+	start_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
+	start_screen->center();
+	start_screen->setLocalPos(start_screen->getLocalPos().x - 5, start_screen->getLocalPos().y - 50);
 
 	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
 	start_button->parent = title_screen;
@@ -92,13 +92,13 @@ bool GameManager::start()
 	start_button->can_focus = true;
 	start_button->setListener(this);
 
-	exit_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
-	exit_button->parent = title_screen;
-	exit_button->center();
-	exit_button->setLocalPos(exit_button->getLocalPos().x, exit_button->getLocalPos().y + 80);
-	exit_button->interactive = true;
-	exit_button->can_focus = true;
-	exit_button->setListener(this);
+	close_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
+	close_button->parent = title_screen;
+	close_button->center();
+	close_button->setLocalPos(close_button->getLocalPos().x, close_button->getLocalPos().y + 80);
+	close_button->interactive = true;
+	close_button->can_focus = true;
+	close_button->setListener(this);
 
 	defeat_atlas = app->tex->loadTexture("Screens/Defeat_Screen_Atlas.png");
 	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
@@ -122,13 +122,13 @@ bool GameManager::start()
 	retry_button->can_focus = false;
 	retry_button->setListener(this);
 
-	close_button = app->gui->createImage(defeat_atlas, { 384, 28, 104, 28 });
-	close_button->parent = victory_screen;
-	close_button->setLocalPos(265, 190);
-	close_button->draw_element = false;
-	close_button->interactive = false;
-	close_button->can_focus = false;
-	close_button->setListener(this);
+	exit_button = app->gui->createImage(defeat_atlas, { 384, 28, 104, 28 });
+	exit_button->parent = victory_screen;
+	exit_button->setLocalPos(265, 190);
+	exit_button->draw_element = false;
+	exit_button->interactive = false;
+	exit_button->can_focus = false;
+	exit_button->setListener(this);
 	wave_state = WAITING_FOR_WAVE_TO_START;
 
 	optimizationEraseEnemy.start();
@@ -471,31 +471,46 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			start_button->setSection({ 339, 229, 141, 39 });
 			
 			startGame();
-			title_screen->draw_element = false;
+			start_screen->draw_element = false;
 
 			start_button->draw_element = false;
 			start_button->interactive = false;
 			start_button->can_focus = false;
 
-			exit_button->draw_element = false;
-			exit_button->interactive = false;
-			exit_button->can_focus = false;
+			close_button->draw_element = false;
+			close_button->interactive = false;
+			close_button->can_focus = false;
 			
 			app->audio->playFx(fx_click, 0);
 			break;
 		}
 	}
 
-	if (ui == exit_button || ui == close_button)
+	if (ui == exit_button)
 	{
 		switch (event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click, 0);
-			close_button->setSection({ 384, 84, 104, 28 });
+			exit_button->setSection({ 384, 84, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			close_button->setSection({ 384, 28, 104, 28 });
+			exit_button->setSection({ 384, 28, 104, 28 });
+			quitGame();
+			break;
+		}
+	}
+
+	if (ui == close_button)
+	{
+		switch (event)
+		{
+		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click, 0);
+			close_button->setSection({ 338, 278, 141, 38 });
+			break;
+		case(MOUSE_LCLICK_UP) :
+			close_button->setSection({ 339, 229, 141, 3 });
 			quitGame();
 			break;
 		}

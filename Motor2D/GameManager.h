@@ -170,9 +170,9 @@ public:
 	//Start/Exit Button
 	SDL_Texture* start_image = nullptr;
 
-	GuiImage* title_screen = nullptr;
+	GuiImage* start_screen = nullptr;
 	GuiImage* start_button = nullptr;
-	GuiImage* exit_button = nullptr;
+	GuiImage* close_button = nullptr;
 	
 	
 	//Victory Screen
@@ -189,7 +189,7 @@ public:
 
 	//Ending Buttons
 	GuiImage* retry_button = nullptr;
-	GuiImage* close_button = nullptr;
+	GuiImage* exit_button = nullptr;
 
 	//close bool
 	bool close = false;
