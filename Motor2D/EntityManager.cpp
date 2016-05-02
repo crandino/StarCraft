@@ -160,7 +160,7 @@ bool EntityManager::preUpdate()
 			if (it->second->type == BUILDING)
 			{
 				if (it->second->specialization == COMMANDCENTER)
-					app->game_manager->game_over = true;
+					app->game_manager->command_center_destroyed = true;
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}

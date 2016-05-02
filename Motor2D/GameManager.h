@@ -27,12 +27,11 @@
 
 enum GAME_STATE
 {
-	INITIAL_SETUP,
+	INITIAL_SCREEN,
 	PREPARATION,
 	FIRST_PHASE,
 	ONGOING_WAVE,
 	TIME_BEFORE_WAVE,
-	RETRY,
 	WIN,
 	LOSE,
 	QUIT
@@ -45,11 +44,6 @@ enum WAVE_STATE
 	MIDDLE_WAVE,
 	END_WAVE
 };
-
-
-
-
-
 
 class GuiImage;
 using namespace std;
@@ -121,26 +115,17 @@ public:
 
 public:
 
-	GameManager()
-	{
-		name.assign("game_manager");
-	}
+	GameManager();
 
 	void displayVictoryScreen();
 
 	void displayDefeatScreen();
-
-	bool checkGameOver();
-
-	bool victory = false;
 
 	bool awake(pugi::xml_node &node);
 
 	void startGame();
 
 	void restartGame();
-
-	bool quitGame();
 
 	void addPoints(uint points);
 
@@ -162,6 +147,8 @@ public:
 
 	void AddPointsEnemy(Entity* e);
 
+	void checkingGameCondicions();
+
 	/*---------------Creating Waves-------------------*/
 	void createWave(SizeWave* size, iPoint position);
 
@@ -170,10 +157,6 @@ public:
 	Timer time_before_starting_game;
 	Timer time_between_waves;
 	Timer random_generator;
-	Timer ending_game;
-	Timer winning_game;
-	Timer optimizationEraseEnemy;
-
 
 	//Score system attributes
 	uint score_current_wave = 0;

@@ -32,6 +32,10 @@ using namespace std;
 #define COMMANDCENTERPOSITION {1500, 2250}
 */
 
+GameManager::GameManager()
+{
+	name.assign("game_manager");
+}
 
 bool GameManager::awake(pugi::xml_node &node) 
 {
@@ -45,9 +49,6 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 
 	/*Wave Info Load*/
-
-
-
 	for (node = node.child("SizeWave"); node; node = node.next_sibling("SizeWave"))
 	{
 			uint num_zergling = node.attribute("zerglings").as_uint();
@@ -58,18 +59,13 @@ bool GameManager::awake(pugi::xml_node &node)
 			waves_info.push_back(wave);
 	}
 
-
-
-
 	/*Player Info Load*/
-
 	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_uint();
 	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_uint();
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 
 
 	/*Score data Load*/
-
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
 	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
@@ -137,7 +133,6 @@ bool GameManager::start()
 	exit_button->setListener(this);
 	wave_state = WAITING_FOR_WAVE_TO_START;
 
-	optimizationEraseEnemy.start();
 	return ret;
 }
 
@@ -148,186 +143,115 @@ bool GameManager::preUpdate()
 	return true;
 }
 
-
-
-
-
 bool GameManager::update(float dt)
 {
 	bool ret = true;
 
 	switch (game_state)
 	{
-	case(INITIAL_SETUP) : 
+	case(INITIAL_SCREEN) : 
 	{
-		time_before_starting_game.start();
-		game_state = PREPARATION;
 		break;
 	}
-		case(PREPARATION):
+	case(PREPARATION):
+	{
+		LOG("PREPARATION");
+		startGame();
+		timer_between_waves.start();
+		game_state = FIRST_PHASE;
+		break;
+	}
+	case(FIRST_PHASE):
+	{	
+		checkingGameCondicions();
+
+		switch (wave_state)
 		{
-			LOG("PREPARATION");
-			bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
-			// CRZ -> Cambiar a timer como el de abajo.
-			// CRZ -> Se mostraría informe de la siguiente oleada.			
-
-			if (timeElapsed != NULL)//Time before starting
+			// CRZ -> Se mostraría informe de la siguiente oleada.
+			LOG("WAITING WAVE TO START");
+			case(WAITING_FOR_WAVE_TO_START) :
 			{
-				// CRZ -> StartGame() tendría que estar aquí.
+				if (timer_between_waves.readSec() > WAVETIME1)
+					wave_state = BEGINNING_WAVE;
+				break;
+			}
+
+			case(BEGINNING_WAVE) :
+			{
+				LOG("BEGINNING WAVE!!!");
+				wave_state = MIDDLE_WAVE;
+				createWave(waves_info[current_wave], iPoint(1419, 800));
+				wave_wiped = false;
+				break;
+			}
+			case(MIDDLE_WAVE) :
+			{
+				LOG("MIDDLE WAVE !!!");
+				if (wave_wiped)
+				{
+					LOG("WAVE CLEARED!!!");
+					wave_state = END_WAVE;
+				}						
+				break;
+			}
+			case(END_WAVE):
+			{
+				current_wave++;				
+				// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
+				wave_state = WAITING_FOR_WAVE_TO_START;
 				timer_between_waves.start();
-				game_state = FIRST_PHASE;
+				break;
 			}
-			break;
 		}
-		case(FIRST_PHASE):
-		{	
-			LOG("FIRST PHASE");
-			if (checkGameOver())
-			{
-				//Display message of game over
-				LOG("GAME OVER");
-				//Display Score
-				LOG("Score: %d", score_current_wave);
-			}
-
-			switch (wave_state)
-			{
-				LOG("WAITING WAVE TO START");
-				case(WAITING_FOR_WAVE_TO_START) :
-				{
-					if (timer_between_waves.readSec() > WAVETIME1)
-					{
-						wave_state = BEGINNING_WAVE;
-					}
-					break;
-				}
-
-				case(BEGINNING_WAVE) :
-				{
-					LOG("BEGINNING WAVE!!!");
-					wave_state = MIDDLE_WAVE;
-					createWave(waves_info[current_wave], iPoint(1419, 800));
-					wave_wiped = false;
-					break;
-				}
-				case(MIDDLE_WAVE) :
-				{
-					LOG("MIDDLE WAVE !!!");
-					if (wave_wiped)
-					{
-						LOG("WAVE CLEARED!!!");
-						wave_state = END_WAVE;
-					}						
-					break;
-				}
-				case(END_WAVE):
-				{
-					current_wave++;
-					if (current_wave == gameInfo.total_waves)
-						game_state = WIN;
-					// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
-					wave_state = WAITING_FOR_WAVE_TO_START;
-					timer_between_waves.start();
-					break;
-				}
-			}
-			break;
+		break;
 		}	
 		case(WIN) :
 		{
 			if (!is_victory_screen_on)
+			{
+				restartGame();
 				displayVictoryScreen();
+			}
+				
 			break;
 		}
 
 		case(LOSE):
 		{
-			return false;
+			if (!is_defeat_screen_on)
+			{
+				restartGame();
+				displayDefeatScreen();
+			}
+				
 			break;
 		}
 	
-		case(QUIT)://When close button is pressed
+		case(QUIT): //When close button is pressed
 		{
-					  return false;
-					  break;
+			return false;
+			break;
 		}
-
 	}
 
-		
-		//if (current_waves <= TOTALWAVES)
-		//{
-		//	//ADRI
-		//	//Check if we have killed all the enemies to begin a new wave
-		//	if (wave_wiped)
-		//	{
-		//		//Get Resources
-		//		mineral_resources += 75;
-		//		gas_resources += 75;
-		//		resources++;
-		//		wave_wiped = false;
-		//	}
-		//
-
-		//	if (time_between_waves.readSec() >= WAVETIME1 && sizeWave() <= 0) //We check how much time we do have left before releasing a new wave
-		//	{
-		//		if (current_waves == 0)
-		//		{
-		//			LOG("Wave 1 is over get prepared!!!!");
-
-		//			app->entity_manager->createWave(wave1.zergling_quantity,wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
-		//			current_waves++;
-		//			resources++;
-
-		//			time_between_waves.start();
-		//		}
-		//	}
-
-		//	if (current_waves == 1 && sizeWave() <= 0)
-		//	{   
-		//		//Get Resources
-		//		mineral_resources += 150;
-		//		gas_resources += 50;
-		//		resources ++;
-		//		won = true;
-		//		start_game = false;
-		//	}
-
-	
-		//}
-
-		
-
-		
-
-		//ADRI
-		//-------------------------UI-----------------------------
-		//Change the number of WAVE HUD ingame-----------------------
-		char n[20];
-		sprintf_s(n, 20, "%d", current_wave);
-		app->gui->number_of_wave->setText(n, 1);
+	//ADRI
+	//-------------------------UI-----------------------------
+	//Change the number of WAVE HUD ingame-----------------------
+	char n[20];
+	sprintf_s(n, 20, "%d", current_wave);
+	app->gui->number_of_wave->setText(n, 1);
 
 
-		//Change the number of RESOURCES HUD ingame-----------------------
-		char n2[20];
-		sprintf_s(n2, 20, "%i", mineral_resources);
-		app->gui->number_of_minerals->setText(n2, 2);
+	//Change the number of RESOURCES HUD ingame-----------------------
+	char n2[20];
+	sprintf_s(n2, 20, "%i", mineral_resources);
+	app->gui->number_of_minerals->setText(n2, 2);
 
 
-		//Change the number of RESOURCES HUD ingame-----------------------
-		char n3[20];
-		sprintf_s(n3, 20, "%i", gas_resources);
-		app->gui->number_of_gass->setText(n3, 2);
-
-		//-----------------------------------------------------------
-		//}	
-
-	/*if (game_over)
-	{
-		if (!is_defeat_screen_on)
-			displayDefeatScreen();
-	}
-	*/
+	//Change the number of RESOURCES HUD ingame-----------------------
+	char n3[20];
+	sprintf_s(n3, 20, "%i", gas_resources);
+	app->gui->number_of_gass->setText(n3, 2);
 
 	//ROGER: Add resources
 	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
@@ -343,6 +267,21 @@ bool GameManager::update(float dt)
 	}
 	
 	return ret;
+}
+
+void GameManager::checkingGameCondicions()
+{
+	if (current_wave == gameInfo.total_waves)
+	{
+		game_state = WIN;
+		start_game = false;
+	}
+
+	if (command_center_destroyed)
+	{
+		game_state = LOSE;
+		start_game = false;
+	}
 }
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
@@ -377,11 +316,7 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 		app->entity_manager->addEntity(position, MUTALISK);
 	}
-
 }
-
-
-
 
 bool GameManager::postUpdate()
 {
@@ -408,41 +343,25 @@ bool GameManager::cleanUp()
 
 void GameManager::startGame()
 {
-		start_game = true;
-		game_over = false;
-		won = false;
-		time_between_waves.start();
+	iPoint p = COMMANDCENTERPOSITION;
+	app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
+	command_center_destroyed = false;
+	start_game = true;
 
-		iPoint p = COMMANDCENTERPOSITION;
-		app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
-		
-		unsigned int size_marines_x = SIZEMARINESX;
-		unsigned int size_marines_y = SIZEMARINESY;
+	defeat_screen->draw_element = false;
+	is_defeat_screen_on = false;
 
-		createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
-		app->render->setCameraOnPosition(p);
-		
-		time_before_starting_game.start();
-}
+	victory_screen->draw_element = false;
+	is_victory_screen_on = false;
 
-bool GameManager::checkGameOver()
-{
-	if (game_over)
-	{
-		if (!is_defeat_screen_on) displayDefeatScreen();
-		start_game = false;
-		return true;
-	}
-	return false;
-}
+	retry_button->disable_element();
+	exit_button->disable_element();
 
+	unsigned int size_marines_x = SIZEMARINESX;
+	unsigned int size_marines_y = SIZEMARINESY;
 
-bool GameManager::quitGame()
-{
-	close = true;
-	start_game = false;
-	game_state = LOSE;
-	return true;
+	createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
+	app->render->setCameraOnPosition(p);
 }
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
@@ -457,19 +376,15 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_UP) :
-			start_button->setSection({ 339, 229, 141, 39 });
+
+			start_button->setSection({ 339, 229, 141, 39 });			
 			
-			startGame();
 			start_screen->draw_element = false;
+			start_button->disable_element();
+			close_button->disable_element();
 
-			start_button->draw_element = false;
-			start_button->interactive = false;
-			start_button->can_focus = false;
-
-			close_button->draw_element = false;
-			close_button->interactive = false;
-			close_button->can_focus = false;
-			
+			time_before_starting_game.start();	
+			game_state = PREPARATION;
 			app->audio->playFx(fx_click, 0);
 			break;
 		}
@@ -485,7 +400,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 		case(MOUSE_LCLICK_UP) :
 			exit_button->setSection({ 384, 28, 104, 28 });
-			quitGame();
+			game_state = QUIT;
 			break;
 		}
 	}
@@ -500,7 +415,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 		case(MOUSE_LCLICK_UP) :
 			close_button->setSection({ 339, 229, 145, 40 });
-			quitGame();
+			game_state = QUIT;
 			break;
 		}
 	}
@@ -510,14 +425,12 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		switch (event)
 		{
 		case(MOUSE_LCLICK_DOWN) :
-			//Restart game
 			app->audio->playFx(fx_click, 0);
 			retry_button->setSection({ 384, 56, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
 			retry_button->setSection({ 384, 28, 104, 28 });	
-			restartGame();
-			game_state = INITIAL_SETUP;
+			game_state = PREPARATION;			
 			break;
 		}
 	}
@@ -545,36 +458,12 @@ void GameManager::restartGame()
 	mineral_resources = 0;
 	gas_resources = 0;
 
-	won = false;
-	close = false;
-	start_game = true;
-	game_over = false;
-
-	iPoint p = COMMANDCENTERPOSITION;
-	app->render->setCameraOnPosition(p);
-
-	defeat_screen->draw_element = false;
-	is_defeat_screen_on = false;
-
-	victory_screen->draw_element = false;
-	is_victory_screen_on = false;
-
-	retry_button->draw_element = false;
-	retry_button->interactive = false;
-	retry_button->can_focus = false;
-
-	exit_button->draw_element = false;
-	exit_button->interactive = false;
-	exit_button->can_focus = false;
-
-	startGame();
+	time_before_starting_game.start();
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.
 void GameManager::createMarines(iPoint position,unsigned int sizex, unsigned int sizey)
 {
-	
-
 	for (int i = 0; i < sizex; i++)
 	{
 		for (int j = 0; j < sizey; j++)
@@ -585,7 +474,6 @@ void GameManager::createMarines(iPoint position,unsigned int sizex, unsigned int
 			app->entity_manager->addEntity(iPoint({ posx, posy }), MARINE);
 		}
 	}
-
 }
 
 void GameManager::displayVictoryScreen()
@@ -593,13 +481,8 @@ void GameManager::displayVictoryScreen()
 	is_victory_screen_on = true;
 	victory_screen->draw_element = true;
 
-	retry_button->draw_element = true;
-	retry_button->interactive = true;
-	retry_button->can_focus = true;
-	
-	exit_button->draw_element = true;
-	exit_button->interactive = true;
-	exit_button->can_focus = true;
+	retry_button->enable_element();
+	exit_button->enable_element();
 
 }
 
@@ -608,20 +491,14 @@ void GameManager::displayDefeatScreen()
 	defeat_screen->draw_element = true;
 	is_defeat_screen_on = true;
 	
-	retry_button->draw_element = true;
-	retry_button->interactive = true;
-	retry_button->can_focus = true;
-
-	exit_button->draw_element = true;
-	exit_button->interactive = true;
-	exit_button->can_focus = true;
+	retry_button->enable_element();
+	exit_button->enable_element();
 }
 
 bool GameManager::isGameStarted() const
 {
 	return start_game;
 }
-
 
 void GameManager::eraseEnemiesIfKilled()
 {
