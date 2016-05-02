@@ -558,6 +558,7 @@ bool PathFinding::getPathFound(uint id, vector<iPoint> &path)
 		if (it->first == id)
 		{
 			path = *it->second;
+			RELEASE(it->second);
 			it = paths_found.erase(it);
 			return true;
 		}
@@ -615,4 +616,23 @@ void PathFinding::erase(uint id)
 		else
 			it++;
 	}
+}
+
+bool PathFinding::cleanUp()
+{
+	LOG("Cleaning PathFinding");
+	
+	for (list<pathToFind>::iterator it = paths_to_find.begin(); it != paths_to_find.end();)
+	{
+		it = paths_to_find.erase(it);
+		it++;
+	}
+
+	for (map<uint, vector<iPoint>*>::iterator it = paths_found.begin(); it != paths_found.end();)
+	{
+		RELEASE(it->second);
+		it = paths_found.erase(it);
+	}
+
+	return true;
 }

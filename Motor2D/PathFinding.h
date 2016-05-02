@@ -83,6 +83,9 @@ public:
 	// Called each loop iteration (searth for paths)
 	bool postUpdate();
 
+	// Called before quitting
+	bool cleanUp();
+
 	// CreatePath: Request to have a path from A to adjacent
 	int createPathToAdjacent(const iPoint& origin, uint distance);
 
