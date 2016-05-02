@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 
+
 // Some enums to separate behaviour, UI, ...
 
 enum FACTION   // Controlled by player or computer
@@ -85,8 +86,7 @@ public:
 
 	Entity* whichEntityOnMouse();
 
-	/*---------------Creating Waves-------------------*/
-	void createWave(uint sizeZ, uint sizeH, uint sizeM, iPoint position = { 250, 250 }/*/*zergling num, hidralisk....num*/);
+
 
 
 public:

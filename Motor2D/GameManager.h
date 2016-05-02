@@ -70,6 +70,14 @@ struct GameInformation
 
 struct SizeWave
 {
+	SizeWave(uint zergling, uint hydra, uint muta)
+	{
+		zergling_quantity = zergling;
+		hydralisk_quantity = hydra;
+		mutalisk_quantity = muta;
+	}
+
+
 	uint zergling_quantity;
 	uint hydralisk_quantity;
 	uint mutalisk_quantity;
@@ -154,6 +162,9 @@ public:
 
 	void AddPointsEnemy(Entity* e);
 
+	/*---------------Creating Waves-------------------*/
+	void createWave(SizeWave* size, iPoint position);
+
 public:
 	//Time Management attributes
 	Timer time_before_starting_game;
@@ -210,8 +221,6 @@ public:
 	bool isWaveClear();
 
 //XML loaded info -------
-	SizeWave wave1;
-	SizeWave wave2;
 
 	initialSizePlayer initial_size;
 
@@ -227,6 +236,8 @@ public:
 
 	GAME_STATE game_state;
 	WAVE_STATE wave_state;
+	
+	vector<SizeWave*> waves_info;
 
 private:
 	uint previous_unit_killed = 0;
