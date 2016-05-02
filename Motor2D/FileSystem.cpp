@@ -122,7 +122,7 @@ int FileSystem::load(const char* file, char **buffer) const
 			if (bytes_readed != size)
 			{
 				LOG("File system error while reading from file %s: %s", file, PHYSFS_getLastError());
-				RELEASE(buffer);
+				RELEASE_ARRAY(buffer);
 			}
 			else
 				ret = (int)size;
