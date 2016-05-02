@@ -113,6 +113,11 @@ public:
 	GuiImage* ui_create_starport = nullptr;
 	GuiImage* ui_create_barraks = nullptr;
 
+	//Barracks HUD-------------------------
+	GuiImage* ui_create_marine = nullptr;
+	GuiImage* ui_create_medic = nullptr;
+	GuiImage* ui_create_firebat = nullptr;
+
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;
 	bool barrackMenuOpened = false;

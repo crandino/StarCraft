@@ -159,7 +159,7 @@ bool Gui::start()
 	ui_create_bot->draw_element = false;
 	
 	//Bunker buttons------------------------------------------------------------
-	ui_leave_bunker = app->gui->createImage(NULL, { 255, 152, 36, 33 });
+	ui_leave_bunker = app->gui->createImage(NULL, { 255, 152, 36, 33 });//Disabled section { 254, 192, 37, 34 }
 	ui_leave_bunker->setLocalPos(505, 358);
 	ui_leave_bunker->setListener(this);
 	ui_leave_bunker->interactive = false;
@@ -172,6 +172,29 @@ bool Gui::start()
 	number_of_wave->setLocalPos(number_of_wave->getScreenPos().x, number_of_wave->getScreenPos().y - 220);
 	number_of_wave->interactive = false;
 
+	//HUD Units
+
+	//Marine button-----------------------------------------------------------
+	ui_create_marine = app->gui->createImage(NULL, { 339, 152, 37, 33 });//Disabled section { 338, 192, 37, 34 }
+	ui_create_marine->setLocalPos(505, 358);
+	ui_create_marine->setListener(this);
+	ui_create_marine->interactive = false;
+	ui_create_marine->can_focus = true;
+	ui_create_marine->draw_element = false;
+	//Medic button------------------------------------------------------------
+	ui_create_medic = app->gui->createImage(NULL, { 382, 152, 37, 33 });//Disabled section { 381, 89, 37, 34 }
+	ui_create_medic->setLocalPos(551, 358);
+	ui_create_medic->setListener(this);
+	ui_create_medic->interactive = false;
+	ui_create_medic->can_focus = true;
+	ui_create_medic->draw_element = false;
+	//Firebat button----------------------------------------------------------
+	ui_create_firebat = app->gui->createImage(NULL, { 294, 152, 37, 33 });//Disabled section { 293, 192, 37, 34 }
+	ui_create_firebat->setLocalPos(597, 358);
+	ui_create_firebat->setListener(this);
+	ui_create_firebat->interactive = false;
+	ui_create_firebat->can_focus = true;
+	ui_create_firebat->draw_element = false;
 
 	//HUD  Mineral and Gass-------------------------------------------------
 	//Image
@@ -369,6 +392,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_create_factory->disable_element();
 				  ui_create_starport->disable_element();
 
+				  ui_create_marine->disable_element();
+				  ui_create_medic->disable_element();
+				  ui_create_firebat->disable_element();
+
 				  //Activate new images
 				  ui_create_bot->enable_element();
 				  ui_create_builds->enable_element();
@@ -382,6 +409,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  buildingMenuOpened = false;
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
+
 			  //Desactivate quad background
 			  rectangle_command->draw_element = false;
 			  rectangle_command_2->draw_element = true;
@@ -402,6 +430,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_factory->disable_element();
 			  ui_create_starport->disable_element();
 
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
 
@@ -417,9 +449,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackMenuOpened = true;
 
 			  //Activate default entities
-			  rectangle_command->draw_element = true;
-			  rectangle_command_2->draw_element = true;
-			  rectangle_command_3->draw_element = true;
+			  rectangle_command->draw_element = false;
+			  rectangle_command_2->draw_element = false;
+			  rectangle_command_3->draw_element = false;
 			  rectangle_command_4->draw_element = true;
 			  rectangle_command_5->draw_element = true;
 			  rectangle_command_6->draw_element = true;
@@ -435,6 +467,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
 			  ui_create_starport->disable_element();
+
+			  ui_create_marine->enable_element();
+			  ui_create_medic->enable_element();
+			  ui_create_firebat->enable_element();
 
 			  break;
 
@@ -466,6 +502,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_factory->disable_element();
 			  ui_create_starport->disable_element();
 
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+
 			  break;
 			  
 		  case (NOTYPE) :
@@ -491,6 +531,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  rectangle_command_7->draw_element = true;
 				  rectangle_command_8->draw_element = true;
 				  rectangle_command_9->draw_element = true;
+
+				  ui_create_marine->disable_element();
+				  ui_create_medic->disable_element();
+				  ui_create_firebat->disable_element();
 			  
 			  break;
 	}
@@ -799,7 +843,7 @@ void Gui::controlIconsSprite()
 	{
 		//Buildings
 		//Bunker
-		if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 25)
+		if (app->game_manager->gas_resources < 75 || app->game_manager->mineral_resources < 100)
 		{
 			ui_create_bunker->setSection({ 440, 125, 37, 34 });
 			ui_create_bunker->unable_element();
@@ -838,12 +882,40 @@ void Gui::controlIconsSprite()
 			ui_create_bot->setSection({ 256, 28, 37, 34 });
 			ui_create_bot->enable_element();
 		}
+
 	 buildingMenuOpened = false;
 	 barrackMenuOpened = false;
 	}
 
 	if (barrackMenuOpened)
 	{
+		//Create Marine
+		if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 75)
+		{
+			ui_create_marine->setSection({ 338, 192, 37, 34 });
+			ui_create_marine->unable_element();
+		}
+		else
+		{
+			ui_create_marine->setSection({ 339, 152, 37, 34 });
+			ui_create_marine->enable_element();
+		}
+
+		//Create Medic
+		if (app->game_manager->gas_resources < 100 || app->game_manager->mineral_resources < 75)
+		{
+			ui_create_medic->setSection({ 381, 192, 37, 34 });
+			ui_create_medic->unable_element();
+		}
+		else
+		{
+			ui_create_medic->setSection({ 382, 152, 36, 34 });
+			ui_create_medic->enable_element();
+		}
+
+		//Factory
+		ui_create_factory->setSection({ 561, 125, 37, 34 });
+		ui_create_factory->unable_element();
 
 		buildingMenuOpened = false;
 		commandCenterOpened = false;
