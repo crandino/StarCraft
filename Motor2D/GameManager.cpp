@@ -39,6 +39,7 @@ bool GameManager::awake(pugi::xml_node &node)
 
 	/*Game Info load*/
 
+	gameInfo.total_waves = node.child("totalWaves").attribute("value").as_uint();
 	gameInfo.time_before_start = node.child("timeBeforeStart").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
@@ -47,12 +48,13 @@ bool GameManager::awake(pugi::xml_node &node)
 	/*Wave Info Load*/
 
 	wave1.zergling_quantity = node.child("SizeWave1").attribute("zerglings").as_uint();
-	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();;
-	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();;
+	wave1.hydralisk_quantity = node.child("SizeWave1").attribute("hydralisks").as_uint();
+	wave1.mutalisk_quantity = node.child("SizeWave1").attribute("mutalisks").as_uint();
+	// CRZ -> list_of_waves.at(current_wave);
 
 	wave2.zergling_quantity = node.child("SizeWave2").attribute("zerglings").as_uint();
-	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();;
-	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();;
+	wave2.hydralisk_quantity = node.child("SizeWave2").attribute("hydralisks").as_uint();
+	wave2.mutalisk_quantity = node.child("SizeWave2").attribute("mutalisks").as_uint();
 
 
 	/*Player Info Load*/
@@ -137,7 +139,8 @@ bool GameManager::start()
 
 bool GameManager::preUpdate()
 {
-	
+	eraseEnemiesIfKilled();
+	isWaveClear();
 	return true;
 }
 
@@ -149,78 +152,84 @@ bool GameManager::update(float dt)
 {
 
 	bool ret = true;
-	
 
 	switch (game_state)
 	{
+	case(INITIAL_SETUP) : 
+	{
+		time_before_starting_game.start();
+		game_state = PREPARATION;
+		break;
+	}
+
 		case(PREPARATION):
 		{
 			LOG("PREPARATION");
 			bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
+			// CRZ -> Cambiar a timer como el de abajo.
+			// CRZ -> Se mostraría informe de la siguiente oleada.			
 
 			if (timeElapsed != NULL)//Time before starting
 			{
+				// CRZ -> StartGame() tendría que estar aquí.
+				timer_between_waves.start();
 				game_state = FIRST_PHASE;
 			}
 			break;
 		}
 		case(FIRST_PHASE):
-		{	LOG("FIRST PHASE");
-			if (current_waves <= TOTALWAVES)
+		{	
+			LOG("FIRST PHASE");
+
+			switch (wave_state)
 			{
-				eraseEnemiesIfKilled();
-			}
-			if (sizeWave() <= 0 && (wave_state == MIDDLE_WAVE))
-			{
-				wave_wiped = true;
-			}
-				switch (wave_state)
+				LOG("WAITING WAVE TO START");
+				case(WAITING_FOR_WAVE_TO_START) :
 				{
-					LOG("WAITING WAVE TO START");
-					case(WAITING_FOR_WAVE_TO_START) :
+					if (timer_between_waves.readSec() > WAVETIME1)
 					{
-						bool timeElapsed = time_before_starting_game.waitSec(time_before_starting_game, gameInfo.time_before_start);
-
-						if (timeElapsed != NULL)//Time before starting
-						{
-							wave_state = BEGINNING_WAVE;
-							
-						}
-						break;
+						wave_state = BEGINNING_WAVE;
 					}
-
-					case(BEGINNING_WAVE) :
-					{
-						LOG("BEGINNING WAVE!!!");
-						wave_state = MIDDLE_WAVE;
-						app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
-						wave_wiped = false;
-						break;
-					}
-					case(MIDDLE_WAVE) :
-					{
-						LOG("MIDDLE WAVE !!!");
-						if (wave_wiped)
-						{
-							LOG("WAVE CLEARED!!!");
-							wave_state = END_WAVE;
-						}
-							 
-
-						eraseEnemiesIfKilled();
-						break;
-					}
-					case(END_WAVE):
-					{
-						current_wave++;
-						wave_state = WAITING_FOR_WAVE_TO_START;
-						break;
-					}
+					break;
 				}
-				break;
-		}
-						 
 
+				case(BEGINNING_WAVE) :
+				{
+					LOG("BEGINNING WAVE!!!");
+					wave_state = MIDDLE_WAVE;
+					app->entity_manager->createWave(wave1.zergling_quantity, wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+					wave_wiped = false;
+					break;
+				}
+				case(MIDDLE_WAVE) :
+				{
+					LOG("MIDDLE WAVE !!!");
+					if (wave_wiped)
+					{
+						LOG("WAVE CLEARED!!!");
+						wave_state = END_WAVE;
+					}						
+					break;
+				}
+				case(END_WAVE):
+				{
+					current_wave++;
+					if (current_wave == gameInfo.total_waves)
+						game_state = WIN;
+					// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
+					wave_state = WAITING_FOR_WAVE_TO_START;
+					timer_between_waves.start();
+					break;
+				}
+			}
+			break;
+		}	
+		case(WIN) :
+		{
+			if (!is_victory_screen_on)
+				displayVictoryScreen();
+			break;
+		}
 	}
 
 
@@ -295,47 +304,47 @@ bool GameManager::update(float dt)
 
 	}
 		*/
-		/*
-		if (current_waves <= TOTALWAVES)
-		{
-			//ADRI
-			//Check if we have killed all the enemies to begin a new wave
-			if (wave_wiped)
-			{
-				//Get Resources
-				mineral_resources += 75;
-				gas_resources += 75;
-				resources++;
-				wave_wiped = false;
-			}
 		
+		//if (current_waves <= TOTALWAVES)
+		//{
+		//	//ADRI
+		//	//Check if we have killed all the enemies to begin a new wave
+		//	if (wave_wiped)
+		//	{
+		//		//Get Resources
+		//		mineral_resources += 75;
+		//		gas_resources += 75;
+		//		resources++;
+		//		wave_wiped = false;
+		//	}
+		//
 
-			if (time_between_waves.readSec() >= WAVETIME1 && sizeWave() <= 0) //We check how much time we do have left before releasing a new wave
-			{
-				if (current_waves == 0)
-				{
-					LOG("Wave 1 is over get prepared!!!!");
+		//	if (time_between_waves.readSec() >= WAVETIME1 && sizeWave() <= 0) //We check how much time we do have left before releasing a new wave
+		//	{
+		//		if (current_waves == 0)
+		//		{
+		//			LOG("Wave 1 is over get prepared!!!!");
 
-					app->entity_manager->createWave(wave1.zergling_quantity,wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
-					current_waves++;
-					resources++;
+		//			app->entity_manager->createWave(wave1.zergling_quantity,wave1.hydralisk_quantity, wave1.mutalisk_quantity, iPoint(1419, 800));
+		//			current_waves++;
+		//			resources++;
 
-					time_between_waves.start();
-				}
-			}
+		//			time_between_waves.start();
+		//		}
+		//	}
 
-			if (current_waves == 1 && sizeWave() <= 0)
-			{   
-				//Get Resources
-				mineral_resources += 150;
-				gas_resources += 50;
-				resources ++;
-				won = true;
-				start_game = false;
-			}
+		//	if (current_waves == 1 && sizeWave() <= 0)
+		//	{   
+		//		//Get Resources
+		//		mineral_resources += 150;
+		//		gas_resources += 50;
+		//		resources ++;
+		//		won = true;
+		//		start_game = false;
+		//	}
 
 	
-		}
+		//}
 
 		
 
@@ -345,7 +354,7 @@ bool GameManager::update(float dt)
 		//-------------------------UI-----------------------------
 		//Change the number of WAVE HUD ingame-----------------------
 		char n[20];
-		sprintf_s(n, 20, "%d", current_waves);
+		sprintf_s(n, 20, "%d", current_wave);
 		app->gui->number_of_wave->setText(n, 1);
 
 
@@ -361,22 +370,17 @@ bool GameManager::update(float dt)
 		app->gui->number_of_gass->setText(n3, 2);
 
 		//-----------------------------------------------------------
-		}	
+		//}	
 
-	if (game_over)
+	/*if (game_over)
 	{
 		if (!is_defeat_screen_on)
 			displayDefeatScreen();
 	}
 
-	if (won)
-	{
-		if (!is_victory_screen_on)
-			displayVictoryScreen();
-	}
 
 	if (close)
-		ret = false;
+		ret = false;*/
 
 	//ROGER: Add resources
 	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
@@ -390,7 +394,7 @@ bool GameManager::update(float dt)
 		mineral_resources = 0;
 		gas_resources = 0;
 	}
-	*/
+	
 	return ret;
 }
 
@@ -404,11 +408,12 @@ void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 	total_score += ZERGLINGSCORE * totalUnitsKilledCurrentFrame;
 }
 
-int GameManager::sizeWave() 
+bool GameManager::isWaveClear() 
 {
-	int size = app->entity_manager->current_wave_entities.size();
-	return size;
+	wave_wiped = (app->entity_manager->current_wave_entities.empty() ? true : false);
+	return wave_wiped;
 }
+
 bool GameManager::cleanUp()
 {
 	bool ret = false;
@@ -517,6 +522,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_UP) :
 			exit_button->setSection({ 339, 229, 141, 39 });	
 			restartGame();
+			game_state = INITIAL_SETUP;
 			break;
 		}
 	}
@@ -533,7 +539,7 @@ void GameManager::restartGame()
 	}
 	//---------------------------------------------------------
 	
-	current_waves = 0;
+	current_wave = 0;
 	total_waves = 2;
 	score = 0;
 	enemy_count = 0;
@@ -626,7 +632,7 @@ bool GameManager::isGameStarted() const
 
 void GameManager::eraseEnemiesIfKilled()
 {
-	if (app->entity_manager->current_wave_entities.size() > 0)
+	if (app->entity_manager->current_wave_entities.size() > 0 && wave_state == MIDDLE_WAVE)
 	{
 		map<uint, Entity*>::iterator it2 = app->entity_manager->current_wave_entities.begin();
 		for (; it2 != app->entity_manager->current_wave_entities.end();)

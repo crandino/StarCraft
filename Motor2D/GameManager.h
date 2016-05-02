@@ -10,7 +10,7 @@
 
 //Number to change the number of waves
 #define TOTALWAVES 2
-#define WAVETIME1 1.0f //120 = 2 minutes per wave in the future or some other game designish number
+#define WAVETIME1 5.0f //120 = 2 minutes per wave in the future or some other game designish number
 #define WAVETIME2 1.0f
 #define	SIZE1X 1 // Changes number of zerglings per wave
 #define SIZE1Y 1
@@ -27,6 +27,7 @@
 
 enum GAME_STATE
 {
+	INITIAL_SETUP,
 	PREPARATION,
 	FIRST_PHASE,
 	ONGOING_WAVE,
@@ -194,7 +195,10 @@ public:
 	bool close = false;
 
 	//commandCenterDestroyed
+	// CRZ -> 
 	bool command_center_destroyed = false;
+	// -> Otra variable para indicar que ha muerto Jim Raynor!
+
 	//Sound
 	unsigned int fx_click;
 	bool isGameStarted() const;
@@ -203,7 +207,7 @@ public:
 	bool wave_wiped = false;
 
 //Utils
-	int sizeWave();
+	bool isWaveClear();
 
 //XML loaded info -------
 	SizeWave wave1;
@@ -226,6 +230,7 @@ public:
 
 private:
 	uint previous_unit_killed = 0;
+	Timer timer_between_waves;
 
 	bool start_game = false;
 	bool first_phase = false;
