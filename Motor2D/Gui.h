@@ -115,6 +115,8 @@ public:
 
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;
+	bool barrackMenuOpened = false;
+
 	void openBuildingMenu();
 
 	void controlIconsSprite();

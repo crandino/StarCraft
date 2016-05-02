@@ -408,6 +408,37 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->enable_element();
 
 			  break;
+
+		  case (BARRACK) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+			  barrackMenuOpened = true;
+
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_turrets->disable_element();
+			  ui_create_factory->disable_element();
+			  ui_create_starport->disable_element();
+
+			  break;
 			  
 		  case (NOTYPE) :
 			  if (!buildingMenuOpened) {
@@ -433,7 +464,6 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  rectangle_command_8->draw_element = true;
 				  rectangle_command_9->draw_element = true;
 			  }
-
 			  break;
 	}
 }
@@ -539,6 +569,8 @@ bool Gui::postUpdate()
 			drawHudSelection(COMMANDCENTER);
 		if (itm->second->specialization == SPECIALIZATION::BUNKER)
 			drawHudSelection(BUNKER);
+		if (itm->second->specialization == SPECIALIZATION::BARRACK)
+			drawHudSelection(BARRACK);
 	}
 	
 	// CRZ -> A possible option of blitting according to Y value.
@@ -761,6 +793,7 @@ void Gui::controlIconsSprite()
 		ui_create_factory->unable_element();
 
 		commandCenterOpened = false;
+		barrackMenuOpened = false;
 	}
 
 	if (commandCenterOpened)
@@ -776,6 +809,14 @@ void Gui::controlIconsSprite()
 			ui_create_bot->enable_element();
 		}
 	 buildingMenuOpened = false;
+	 barrackMenuOpened = false;
+	}
+
+	if (barrackMenuOpened)
+	{
+
+		buildingMenuOpened = false;
+		commandCenterOpened = false;
 	}
 }
 
