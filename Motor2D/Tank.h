@@ -35,16 +35,16 @@ public:
 	// SIEGE MODE animation
 	Animation   siege_mode_off;
 
-	// ATTACK animation
-	Animation	attack_up;
-	Animation	attack_right_up;
-	Animation	attack_right;
-	Animation	attack_right_down;
-	Animation	attack_down;
-	Animation	attack_left_down;
-	Animation	attack_left;
-	Animation	attack_left_up;
-	vector<Animation*>   attack_animation_pack;
+	//// ATTACK animation
+	//Animation	attack_up;
+	//Animation	attack_right_up;
+	//Animation	attack_right;
+	//Animation	attack_right_down;
+	//Animation	attack_down;
+	//Animation	attack_left_down;
+	//Animation	attack_left;
+	//Animation	attack_left_up;
+	//vector<Animation*>   attack_animation_pack;
 
 	// Dead animation
 	Animation	dead;
