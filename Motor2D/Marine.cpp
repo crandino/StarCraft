@@ -272,6 +272,11 @@ Marine::Marine(iPoint &p)
 	speed = 10.0f;	
 }
 
+Marine::~Marine()
+{
+	
+}
+
 void Marine::move(float dt)
 {
 	if (path.size() > 0)

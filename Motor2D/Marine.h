@@ -50,6 +50,7 @@ public:
 
 	Marine(iPoint &p);
 
+	~Marine();
 	void move(float dt);
 	void setAnimationFromDirection();
 	

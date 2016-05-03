@@ -252,8 +252,15 @@ bool EntityManager::cleanUp()
 {
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); it++)
-		RELEASE(it->second);
-
+	{
+		if (it->second->specialization == MARINE)
+		{
+			Marine* unit = (Marine*)it->second;
+			RELEASE(unit);
+		}
+		else
+			RELEASE(it->second);
+	}
 	active_entities.clear();
 	selection.clear();
 
