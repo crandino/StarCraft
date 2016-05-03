@@ -176,6 +176,11 @@ Mutalisk::Mutalisk(iPoint &p)
 	speed = 12.0f;
 }
 
+Mutalisk::~Mutalisk()
+{
+
+}
+
 // Method that assign an animation according to its orientation
 void Mutalisk::setAnimationFromDirection()
 {

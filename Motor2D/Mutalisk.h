@@ -31,6 +31,8 @@ public:
 
 	Mutalisk(iPoint &p);
 
+	~Mutalisk();
+
 	void setAnimationFromDirection();
 
 };

@@ -43,6 +43,11 @@ Bunker::Bunker(iPoint &p)
 	circle_selection_offset = { 0, 25 };
 }
 
+Bunker::~Bunker()
+{
+
+}
+
 bool Bunker::update(float dt)
 {
 	switch (state)

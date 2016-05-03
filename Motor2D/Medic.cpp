@@ -47,6 +47,11 @@ Medic::Medic(iPoint &p)
 	speed = 10.0f;
 }
 
+Medic::~Medic()
+{
+
+}
+
 void Medic::setAnimationFromDirection()
 {
 	/*switch (state)

@@ -168,10 +168,10 @@ bool EntityManager::preUpdate()
 			if (it->second->specialization == MARINE)
 			{
 				if (!((Marine*)it->second)->inside_bunker)
-					RELEASE(it->second);
+					cleanUpEntity(it->second);
 			}
 			else
-				RELEASE(it->second);			
+				cleanUpEntity(it->second);			
 				
 			it = active_entities.erase(it);
 		}
@@ -255,8 +255,53 @@ bool EntityManager::cleanUp()
 	{
 		if (it->second->specialization == MARINE)
 		{
-			Marine* unit = (Marine*)it->second;
-			RELEASE(unit);
+			Marine* marine = (Marine*)it->second;
+			RELEASE(marine);
+		}
+		else if (it->second->specialization == SCV)
+		{
+			Scv* scv = (Scv*)it->second;
+			RELEASE(scv);
+		}
+		else if (it->second->specialization == MEDIC)
+		{
+			Medic* medic = (Medic*)it->second;
+			RELEASE(medic);
+		}
+		else if (it->second->specialization == ZERGLING)
+		{
+			Zergling* zergling = (Zergling*)it->second;
+			RELEASE(zergling);
+		}
+		else if (it->second->specialization == MUTALISK)
+		{
+			Mutalisk* mutalisk = (Mutalisk*)it->second;
+			RELEASE(mutalisk);
+		}
+		else if (it->second->specialization == HYDRALISK)
+		{
+			Hydralisk* hydralisk = (Hydralisk*)it->second;
+			RELEASE(hydralisk);
+		}
+		else if (it->second->specialization == TANK)
+		{
+			Tank* tank = (Tank*)it->second;
+			RELEASE(tank);
+		}
+		else if (it->second->specialization == COMMANDCENTER)
+		{
+			CommandCenter* commandCenter = (CommandCenter*)it->second;
+			RELEASE(commandCenter);
+		}
+		else if (it->second->specialization == BUNKER)
+		{
+			Bunker* bunker = (Bunker*)it->second;
+			RELEASE(bunker);
+		}
+		else if (it->second->specialization == BARRACK)
+		{
+			Barrack* barrack = (Barrack*)it->second;
+			RELEASE(barrack);
 		}
 		else
 			RELEASE(it->second);
@@ -265,6 +310,70 @@ bool EntityManager::cleanUp()
 	selection.clear();
 
 	return true;
+}
+
+void EntityManager::cleanUpEntity(Entity* e)
+{
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); it++)
+	{
+		if (it->second == e)
+		{
+			if (it->second->specialization == MARINE)
+			{
+				Marine* marine = (Marine*)it->second;
+				RELEASE(marine);
+			}
+			else if (it->second->specialization == SCV)
+			{
+				Scv* scv = (Scv*)it->second;
+				RELEASE(scv);
+			}
+			else if (it->second->specialization == MEDIC)
+			{
+				Medic* medic = (Medic*)it->second;
+				RELEASE(medic);
+			}
+			else if (it->second->specialization == ZERGLING)
+			{
+				Zergling* zergling = (Zergling*)it->second;
+				RELEASE(zergling);
+			}
+			else if (it->second->specialization == MUTALISK)
+			{
+				Mutalisk* mutalisk = (Mutalisk*)it->second;
+				RELEASE(mutalisk);
+			}
+			else if (it->second->specialization == HYDRALISK)
+			{
+				Hydralisk* hydralisk = (Hydralisk*)it->second;
+				RELEASE(hydralisk);
+			}
+			else if (it->second->specialization == TANK)
+			{
+				Tank* tank = (Tank*)it->second;
+				RELEASE(tank);
+			}
+			else if (it->second->specialization == COMMANDCENTER)
+			{
+				CommandCenter* commandCenter = (CommandCenter*)it->second;
+				RELEASE(commandCenter);
+			}
+			else if (it->second->specialization == BUNKER)
+			{
+				Bunker* bunker = (Bunker*)it->second;
+				RELEASE(bunker);
+			}
+			else if (it->second->specialization == BARRACK)
+			{
+				Barrack* barrack = (Barrack*)it->second;
+				RELEASE(barrack);
+			}
+			else
+				RELEASE(it->second);
+			return;
+		}
+	}
 }
 
 // Return ID for the corresponding entity

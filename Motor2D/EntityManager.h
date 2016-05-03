@@ -74,6 +74,8 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
+	void cleanUpEntity(Entity* e);
+
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
 	

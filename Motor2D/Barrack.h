@@ -46,6 +46,11 @@ public:
 		max_hp_bars = 30;
 	}
 
+	~Barrack()
+	{
+
+	}
+
 	bool update(float dt)
 	{
 		switch (state)

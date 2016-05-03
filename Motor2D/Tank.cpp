@@ -134,6 +134,11 @@ Tank::Tank(iPoint &p)
 	speed = 12.0f;
 }
 
+Tank::~Tank()
+{
+
+}
+
 void Tank::move(float dt)
 {
 	if (path.size() > 0)

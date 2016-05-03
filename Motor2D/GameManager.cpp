@@ -336,9 +336,12 @@ bool GameManager::isWaveClear()
 
 bool GameManager::cleanUp()
 {
-	bool ret = true;
+	for (vector<SizeWave*>::iterator it = waves_info.begin(); it != waves_info.end(); it++)
+		RELEASE(*it);
 
-	return ret;
+	waves_info.clear();
+
+	return true;
 }
 
 void GameManager::startGame()

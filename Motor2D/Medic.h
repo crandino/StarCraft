@@ -34,6 +34,8 @@ public:
 
 	Medic(iPoint &p);
 
+	~Medic();
+
 	void setAnimationFromDirection();
 
 	bool update(float dt);

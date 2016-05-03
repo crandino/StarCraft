@@ -17,6 +17,7 @@ public:
 	unsigned int bunker_attack_fx;
 
 	Bunker(iPoint &p);
+	~Bunker();
 	bool update(float dt);
 	bool getEntityInside(Unit* entity);
 	bool getEntitiesOutside();

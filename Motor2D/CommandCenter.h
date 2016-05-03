@@ -46,6 +46,11 @@ public:
 		max_hp_bars = 36;		
 	}
 
+	~CommandCenter()
+	{
+
+	}
+
 	bool update(float dt)
 	{
 		switch (state)

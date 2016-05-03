@@ -171,7 +171,6 @@ Hydralisk::Hydralisk(iPoint &p)
 	attack_right.frames.push_back({ 256, 512, 64, 64 });
 	attack_right.frames.push_back({ 256, 640, 64, 64 });
 	attack_right.frames.push_back({ 256, 768, 64, 64 });
-
 	attack_right.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_right);
 
@@ -234,7 +233,7 @@ Hydralisk::Hydralisk(iPoint &p)
 
 	// Characterization and behaviour
 	faction = COMPUTER;
-	specialization = MUTALISK;
+	specialization = HYDRALISK;
 	flying = false;
 
 	// UI paramters
@@ -255,6 +254,11 @@ Hydralisk::Hydralisk(iPoint &p)
 
 	// PathFinding and movement variables
 	speed = 8.0f;
+}
+
+Hydralisk::~Hydralisk()
+{
+
 }
 
 // Method that assign an animation according to its orientation

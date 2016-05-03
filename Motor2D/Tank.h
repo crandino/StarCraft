@@ -53,6 +53,8 @@ public:
 
 	Tank(iPoint &p);
 
+	~Tank();
+
 	void move(float dt);
 	void setAnimationFromDirection();
 
