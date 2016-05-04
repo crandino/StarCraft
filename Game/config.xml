@@ -44,6 +44,12 @@
    
     <!-- Player Units -->
     <InitialSizePlayer marines="10" medic ="3" scv ="1"/>
+    <CommandCenterPosition coordx="1500" coordy= "2250"/>
+    
+    
+    
+    
+    
     
     <!-- Score--> 
     <ZerglingScore value = "20" />

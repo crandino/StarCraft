@@ -44,6 +44,8 @@ public:
 
 	Hydralisk(iPoint &p);
 
+	~Hydralisk();
+
 	void setAnimationFromDirection();
 
 };

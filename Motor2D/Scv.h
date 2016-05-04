@@ -145,6 +145,11 @@ public:
 		speed = 10.0f;	
 	}
 
+	~Scv()
+	{
+
+	}
+
 	void setAnimationFromDirection()
 	{
 		switch (state)

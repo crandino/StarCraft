@@ -65,6 +65,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		LOG("Creating Tank");
 		e = new Tank(pos);
 		break;
+	case(MEDIC) :
+		LOG("Creating Medic");
+		e = new Medic(pos);
+		break;
 		// ZERGLINGS
 	case(ZERGLING) :
 		LOG("Creating Zergling");
@@ -120,7 +124,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 {
 	if (e->type == UNIT)
 	{
-		iPoint p = COMMANDCENTERPOSITION;
+		iPoint p = app->game_manager->command_center_position;
 		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
 
 		Unit* unit = (Unit*)e;
@@ -168,10 +172,10 @@ bool EntityManager::preUpdate()
 			if (it->second->specialization == MARINE)
 			{
 				if (!((Marine*)it->second)->inside_bunker)
-					RELEASE(it->second);
+					cleanUpEntity(it->second);
 			}
 			else
-				RELEASE(it->second);			
+				cleanUpEntity(it->second);			
 				
 			it = active_entities.erase(it);
 		}
@@ -252,12 +256,128 @@ bool EntityManager::cleanUp()
 {
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); it++)
-		RELEASE(it->second);
-
+	{
+		if (it->second->specialization == MARINE)
+		{
+			Marine* marine = (Marine*)it->second;
+			RELEASE(marine);
+		}
+		else if (it->second->specialization == SCV)
+		{
+			Scv* scv = (Scv*)it->second;
+			RELEASE(scv);
+		}
+		else if (it->second->specialization == MEDIC)
+		{
+			Medic* medic = (Medic*)it->second;
+			RELEASE(medic);
+		}
+		else if (it->second->specialization == ZERGLING)
+		{
+			Zergling* zergling = (Zergling*)it->second;
+			RELEASE(zergling);
+		}
+		else if (it->second->specialization == MUTALISK)
+		{
+			Mutalisk* mutalisk = (Mutalisk*)it->second;
+			RELEASE(mutalisk);
+		}
+		else if (it->second->specialization == HYDRALISK)
+		{
+			Hydralisk* hydralisk = (Hydralisk*)it->second;
+			RELEASE(hydralisk);
+		}
+		else if (it->second->specialization == TANK)
+		{
+			Tank* tank = (Tank*)it->second;
+			RELEASE(tank);
+		}
+		else if (it->second->specialization == COMMANDCENTER)
+		{
+			CommandCenter* commandCenter = (CommandCenter*)it->second;
+			RELEASE(commandCenter);
+		}
+		else if (it->second->specialization == BUNKER)
+		{
+			Bunker* bunker = (Bunker*)it->second;
+			RELEASE(bunker);
+		}
+		else if (it->second->specialization == BARRACK)
+		{
+			Barrack* barrack = (Barrack*)it->second;
+			RELEASE(barrack);
+		}
+		else
+			RELEASE(it->second);
+	}
 	active_entities.clear();
 	selection.clear();
 
 	return true;
+}
+
+void EntityManager::cleanUpEntity(Entity* e)
+{
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); it++)
+	{
+		if (it->second == e)
+		{
+			if (it->second->specialization == MARINE)
+			{
+				Marine* marine = (Marine*)it->second;
+				RELEASE(marine);
+			}
+			else if (it->second->specialization == SCV)
+			{
+				Scv* scv = (Scv*)it->second;
+				RELEASE(scv);
+			}
+			else if (it->second->specialization == MEDIC)
+			{
+				Medic* medic = (Medic*)it->second;
+				RELEASE(medic);
+			}
+			else if (it->second->specialization == ZERGLING)
+			{
+				Zergling* zergling = (Zergling*)it->second;
+				RELEASE(zergling);
+			}
+			else if (it->second->specialization == MUTALISK)
+			{
+				Mutalisk* mutalisk = (Mutalisk*)it->second;
+				RELEASE(mutalisk);
+			}
+			else if (it->second->specialization == HYDRALISK)
+			{
+				Hydralisk* hydralisk = (Hydralisk*)it->second;
+				RELEASE(hydralisk);
+			}
+			else if (it->second->specialization == TANK)
+			{
+				Tank* tank = (Tank*)it->second;
+				RELEASE(tank);
+			}
+			else if (it->second->specialization == COMMANDCENTER)
+			{
+				CommandCenter* commandCenter = (CommandCenter*)it->second;
+				RELEASE(commandCenter);
+			}
+			else if (it->second->specialization == BUNKER)
+			{
+				Bunker* bunker = (Bunker*)it->second;
+				RELEASE(bunker);
+			}
+			else if (it->second->specialization == BARRACK)
+			{
+				Barrack* barrack = (Barrack*)it->second;
+				RELEASE(barrack);
+			}
+			else
+				RELEASE(it->second);
+			return;
+		}
+	}
 }
 
 // Return ID for the corresponding entity
@@ -435,8 +555,12 @@ void EntityManager::handleSelection()
 					}
 					else if (it->second->specialization == MEDIC && e->faction == it->second->faction && e->type == UNIT)
 					{
-						((Medic*)unit)->target_to_attack = (Unit*)e;
-						unit->newEntityFound();
+						if (e->specialization != TANK)
+						{
+							((Medic*)unit)->target_to_attack = (Unit*)e;
+							unit->newEntityFound();
+						}
+					
 					}
 				}
 			}
@@ -463,14 +587,16 @@ void EntityManager::handleSelection()
 /*------------------WAVE RELATED METHODS--------------------------*/
 
 
-Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same_faction) //The method ONLY search and return the nearest entity
+Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
 {
 	Entity* ret = NULL;
-	float value = e->range_of_vision;
+	float value = range;
+	if (value == -1.0f)
+		value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING &&(search_in_same_faction || e->faction != it->second->faction))
+		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -478,6 +604,28 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_in_same
 			{
 				ret = &(*it->second);
 				value = d;
+			}
+		}
+	}
+	return ret;
+}
+
+list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range) //The method search and return the entity in the area
+{
+	list<Entity*> ret;
+	float value = range;
+	if (value == -1.0f)
+		value = e->range_of_vision;
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+		{
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			if (d <= value)
+			{
+				ret.push_back(it->second);
 			}
 		}
 	}
@@ -594,14 +742,14 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 									if (!app->path->isWalkable(unit->path.back()))//if the origin and the destination isn't walkable
 									{
 										unit->path.clear();
-										unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, COMMANDCENTERPOSITION, 25));
+										unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 25));
 										unit->has_target = true;
 										unit->state = MOVE;
 									}
 								}
 								else if (unit->tile_pos == (iPoint(x, y)))//if without path and they are no walkable tiles
 								{
-									unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, COMMANDCENTERPOSITION, 25));
+									unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 25));
 									unit->has_target = true;
 									unit->state = MOVE;
 								}
@@ -682,6 +830,13 @@ void EntityManager::entityManualCreation()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, TANK);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, MEDIC);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)

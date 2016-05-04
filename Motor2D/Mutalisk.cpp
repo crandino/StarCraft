@@ -176,6 +176,11 @@ Mutalisk::Mutalisk(iPoint &p)
 	speed = 12.0f;
 }
 
+Mutalisk::~Mutalisk()
+{
+
+}
+
 // Method that assign an animation according to its orientation
 void Mutalisk::setAnimationFromDirection()
 {
@@ -202,3 +207,29 @@ void Mutalisk::setAnimationFromDirection()
 	}
 }
 
+bool Mutalisk::attack(Entity* target_to_attack)
+{
+	bool ret = false;
+	if (target_to_attack != NULL && target_to_attack->state != DYING)
+	{
+		int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
+		d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
+		if (d <= range_to_attack)
+		{
+			ret = true;
+			if ((target_to_attack->current_hp -= damage) <= 0.0f)
+			{
+				ret = false;
+				target_to_attack->state = DYING;
+				app->game_manager->total_units_killed_currentFrame++;
+			}
+			Entity* second_target_to_attack = target_to_attack->searchNearestAlly();
+			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= damage) <= 0.0f)
+			{
+				second_target_to_attack->state = DYING;
+				app->game_manager->total_units_killed_currentFrame++;
+			}
+		}
+	}
+	return ret;
+}

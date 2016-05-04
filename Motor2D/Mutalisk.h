@@ -31,7 +31,10 @@ public:
 
 	Mutalisk(iPoint &p);
 
+	~Mutalisk();
+
 	void setAnimationFromDirection();
+	bool attack(Entity* target_to_attack);
 
 };
 

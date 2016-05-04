@@ -7,6 +7,7 @@
 #include "SDL\include\SDL_render.h"
 #include <map>
 #include <vector>
+#include <list>
 
 
 // Some enums to separate behaviour, UI, ...
@@ -74,11 +75,14 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
+	void cleanUpEntity(Entity* e);
+
 	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
 	Entity* getEntity(uint id);
 	
 	void	SetEnemyToAttackCommandCenter(Entity* e);
-	Entity* searchNearestEntityInRange(Entity* e, bool search_in_same_faction = false);
+	Entity* searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
+	list<Entity*> searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	Entity* searchEnemyToAttack(Entity* e);
 
 	Entity* whichEntityOnMouse();

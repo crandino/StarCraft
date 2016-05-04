@@ -69,6 +69,17 @@ public:
 		paused = false;
 	}
 
+	void setAnimations(int x, int y, int w, int h, int framesPerRow, int framesPerCol, int frameNum)
+	{
+		for (int i = 0; i < framesPerRow; ++i)
+		{
+			for (int j = 0; j < framesPerCol; ++j)
+			{
+				frames.push_back({ x + (w * i), y + (h * j), w, h });
+			}
+		}
+	}
+
 };
 
 

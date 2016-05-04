@@ -234,6 +234,8 @@ Tank::Tank(iPoint &p)
 	damage = 5.0f;
 	attack_frequency = 200.0f;
 	time_to_die = 500.0f;
+	area_attack = true;
+	area_range = 50.0f;
 
 	// PathFinding and movement variables
 	speed = 12.0f;
@@ -260,8 +262,6 @@ bool Tank::update(float dt)
 				newEntityFound();
 			timer_to_check.start();
 		}
-		break;
-	case IDLE_SIEGE_MODE:
 		break;
 	case MOVE:
 		if (has_target)
@@ -297,8 +297,26 @@ bool Tank::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= attack_frequency)
 		{
-			if (!attack())
-				state = IDLE;
+			if (area_attack)
+			{
+				list<Entity*> targets = searchEntitiesInRange(area_range);
+				while (targets.begin() != targets.end())
+				{
+					attackWithoutRange(targets.front());
+					targets.pop_front();
+				}
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+			}
+			else
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
@@ -348,11 +366,15 @@ bool Tank::update(float dt)
 		if (current_animation_turret->finished())
 		{
 			current_animation->resume();
-		}			
+		}
 		break;
 	}
 	return true;
+
 }
+
+Tank::~Tank()
+{}
 
 void Tank::move(float dt)
 {

@@ -259,6 +259,11 @@ public:
 		speed = 12.0f;
 	}
 
+	~Zergling()
+	{
+
+	}
+
 	// Method that assign an animation according to its orientation
 	void setAnimationFromDirection()
 	{

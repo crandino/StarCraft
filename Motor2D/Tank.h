@@ -63,9 +63,13 @@ public:
 	// Dead animation
 	Animation	dead;
 
+	bool		area_attack;
+	float		area_range;
+
 	bool		siege_mode = false;
 
 	Tank(iPoint &p);
+	~Tank();
 
 	bool update(float dt);
 	void move(float dt);
