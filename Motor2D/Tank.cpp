@@ -1,4 +1,6 @@
 #include "Tank.h"
+#include "PathFinding.h"
+#include "Input.h"
 
 Tank::Tank(iPoint &p)
 {
@@ -95,9 +97,112 @@ Tank::Tank(iPoint &p)
 	walk_right_down.frames.push_back({ 768, 256, 128, 128 });
 	walk_right_down.loop = true;
 	walk_right_down.speed = 0.01f;
-	move_animation_pack.push_back(&walk_right_down);	
+	move_animation_pack.push_back(&walk_right_down);
 	
+	siege_mode_on.frames.push_back({ 0, 384, 128, 128 });
+	siege_mode_on.frames.push_back({ 128, 384, 128, 128 });
+	siege_mode_on.frames.push_back({ 256, 384, 128, 128 });
+	siege_mode_on.frames.push_back({ 384, 384, 128, 128 });
+	siege_mode_on.frames.push_back({ 512, 384, 128, 128 });
+	siege_mode_on.frames.push_back({ 640, 384, 128, 128 });
+	siege_mode_on.loop = false;
+	siege_mode_on.speed = 0.005f;
+
+	siege_mode_off.frames.push_back({ 640, 384, 128, 128 });
+	siege_mode_off.frames.push_back({ 512, 384, 128, 128 });
+	siege_mode_off.frames.push_back({ 384, 384, 128, 128 });
+	siege_mode_off.frames.push_back({ 256, 384, 128, 128 });
+	siege_mode_off.frames.push_back({ 128, 384, 128, 128 });
+	siege_mode_off.frames.push_back({ 0, 384, 128, 128 });
+	siege_mode_off.loop = false;
+	siege_mode_off.speed = 0.005f;
+	siege_mode_off.paused = true;
+
 	current_animation = &idle_down;
+
+	// ---------- Idle Turret Animation --------
+	idle_right_turret.frames.push_back({ 512, 512, 128, 128 });
+	idle_right_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_right_turret);
+
+	idle_right_up_turret.frames.push_back({ 256, 512, 128, 128 });
+	idle_right_up_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_right_up_turret);
+
+	idle_up_turret.frames.push_back({ 0, 512, 128, 128 });
+	idle_up_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_up_turret);
+
+	idle_left_up_turret.frames.push_back({ 1792, 512, 128, 128 });
+	idle_left_up_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_left_up_turret);
+
+	idle_left_turret.frames.push_back({ 1536, 512, 128, 128 });
+	idle_left_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_left_turret);
+
+	idle_left_down_turret.frames.push_back({ 1280, 512, 128, 128 });
+	idle_left_down_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_left_down_turret);
+
+	idle_down_turret.frames.push_back({ 1024, 512, 128, 128 });
+	idle_down_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_down_turret);
+
+	idle_right_down_turret.frames.push_back({ 768, 512, 128, 128 });
+	idle_right_down_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_right_down_turret);
+
+	siege_mode_on_turret.frames.push_back({ 768, 384, 128, 128 });
+	siege_mode_on_turret.frames.push_back({ 896, 384, 128, 128 });
+	siege_mode_on_turret.frames.push_back({ 1024, 384, 128, 128 });
+	siege_mode_on_turret.frames.push_back({ 1152, 384, 128, 128 });
+	siege_mode_on_turret.frames.push_back({ 1280, 384, 128, 128 });
+	siege_mode_on_turret.loop = false;
+	siege_mode_on_turret.speed = 0.005f;
+	siege_mode_on_turret.paused = true;
+
+	siege_mode_off_turret.frames.push_back({ 1280, 384, 128, 128 });
+	siege_mode_off_turret.frames.push_back({ 1152, 384, 128, 128 });
+	siege_mode_off_turret.frames.push_back({ 1024, 384, 128, 128 });
+	siege_mode_off_turret.frames.push_back({ 896, 384, 128, 128 });
+	siege_mode_off_turret.frames.push_back({ 768, 384, 128, 128 });	
+	siege_mode_off_turret.loop = false;
+	siege_mode_off_turret.speed = 0.005f;
+
+	idle_siege_mode_right_turret.frames.push_back({ 512, 640, 128, 128 });
+	idle_siege_mode_right_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_right_turret);
+
+	idle_siege_mode_right_up_turret.frames.push_back({ 256, 640, 128, 128 });
+	idle_siege_mode_right_up_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_right_up_turret);
+
+	idle_siege_mode_up_turret.frames.push_back({ 0, 640, 128, 128 });
+	idle_siege_mode_up_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_up_turret);
+
+	idle_siege_mode_left_up_turret.frames.push_back({ 1792, 640, 128, 128 });
+	idle_siege_mode_left_up_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_left_up_turret);
+
+	idle_siege_mode_left_turret.frames.push_back({ 1536, 640, 128, 128 });
+	idle_siege_mode_left_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_left_turret);
+
+	idle_siege_mode_left_down_turret.frames.push_back({ 1280, 640, 128, 128 });
+	idle_siege_mode_left_down_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_left_down_turret);
+
+	idle_siege_mode_down_turret.frames.push_back({ 1024, 640, 128, 128 });
+	idle_siege_mode_down_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_down_turret);
+
+	idle_siege_mode_right_down_turret.frames.push_back({ 768, 640, 128, 128 });
+	idle_siege_mode_right_down_turret.loop = false;
+	idle_animation_turret_pack.push_back(&idle_siege_mode_right_down_turret);
+
+	current_animation_turret = &idle_down_turret;
 
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
@@ -132,6 +237,121 @@ Tank::Tank(iPoint &p)
 
 	// PathFinding and movement variables
 	speed = 12.0f;
+}
+
+bool Tank::update(float dt)
+{
+	checkUnitDirection();
+	setAnimationFromDirection();   // This sets animation according to their angle direction
+	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+
+	if (app->input->getKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		siegeMode(true);
+	if (app->input->getKey(SDL_SCANCODE_A) == KEY_DOWN)
+		siegeMode(false);
+
+	switch (state)
+	{
+	case IDLE:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		break;
+	case IDLE_SIEGE_MODE:
+		break;
+	case MOVE:
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case ATTACK:
+		if (timer_attack.read() >= attack_frequency)
+		{
+			if (!attack())
+				state = IDLE;
+			timer_attack.start();
+
+			Entity* target = target_to_attack;
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+				newEntityFound();
+		}
+		break;
+	case DYING:
+		if (current_animation->finished())
+		{
+			to_delete = true;
+			coll->to_delete = true;
+		}
+		break;
+	case WAITING_PATH_MOVE:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
+			timer_to_check.start();
+		}
+		break;
+	case SIEGE_MODE_ON:
+		if (current_animation->finished())
+		{
+			current_animation_turret->resume();
+		}
+		break;
+	case SIEGE_MODE_OFF:
+		if (current_animation_turret->finished())
+		{
+			current_animation->resume();
+		}			
+		break;
+	}
+	return true;
 }
 
 void Tank::move(float dt)
@@ -219,13 +439,20 @@ void Tank::setAnimationFromDirection()
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
 		current_animation = &(*idle_animation_pack.at(num_animation));
+		current_animation_turret = &(*idle_animation_turret_pack.at(num_animation));
 		break;
+	}
+	case(IDLE_SIEGE_MODE):
+	{
+		current_animation_turret->reset();
+		current_animation_turret->pause();
 	}
 	case(MOVE) :
 	case(MOVE_ALERT) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
 		current_animation = &(*move_animation_pack.at(num_animation));
+		current_animation_turret = &(*idle_animation_turret_pack.at(num_animation));
 		break;
 	}
 	case(MOVE_ALERT_TO_ATTACK) :
@@ -252,7 +479,48 @@ void Tank::setAnimationFromDirection()
 		current_animation = &(*idle_animation_pack.at(num_animation));
 		break;
 	}
+	case(SIEGE_MODE_ON) :
+	{
+		current_animation = &siege_mode_on;
+		current_animation_turret = &siege_mode_on_turret;
+		break;
+	}
+	case(SIEGE_MODE_OFF) :
+	{
+		current_animation = &siege_mode_off;
+		current_animation_turret = &siege_mode_off_turret;
+		break;
+	}
 
+	}
+}
+
+void Tank::draw()
+{
+	app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+	// The turret must be corrected by some pixels, but it will be done in a future, after alpha presentation.
+	app->render->blit(tex, pos.x, pos.y - 10, &(current_animation_turret->getCurrentFrame()));
+}
+
+void Tank::siegeMode(bool siege_mode_flag)
+{
+	if (siege_mode != siege_mode_flag)
+	{
+		if (siege_mode_flag)
+		{
+			siege_mode_on.reset();
+			siege_mode_on_turret.reset();
+			siege_mode_on_turret.pause();
+			state = SIEGE_MODE_ON;
+		}
+		else
+		{
+			siege_mode_off_turret.reset();
+			siege_mode_off.reset();
+			siege_mode_off.pause();			
+			state = SIEGE_MODE_OFF;
+		}
+		siege_mode = siege_mode_flag;
 	}
 }
 

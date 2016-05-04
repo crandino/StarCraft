@@ -337,7 +337,6 @@ bool GameManager::isWaveClear()
 bool GameManager::cleanUp()
 {
 	bool ret = true;
-
 	return ret;
 }
 

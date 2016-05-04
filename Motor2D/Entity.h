@@ -23,7 +23,13 @@ enum STATE
 	DYING,
 	WAITING_PATH_MOVE,
 	WAITING_PATH_MOVE_ALERT,
-	WAITING_PATH_MOVE_ALERT_TO_ATTACK
+	WAITING_PATH_MOVE_ALERT_TO_ATTACK,
+	
+	// TANK STATES
+	SIEGE_MODE_ON,
+	SIEGE_MODE_OFF,
+	IDLE_SIEGE_MODE,
+	ATTACK_SIEGE_MODE
 };
 
 class Entity
@@ -113,7 +119,7 @@ public:
 		return app->entity_manager->searchEnemyToAttack(this);
 	}
 
-	void draw()
+	virtual void draw()
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}

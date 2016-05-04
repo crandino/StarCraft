@@ -15,26 +15,31 @@ private:
 
 public:
 
-	float current_frame;
-	bool loop;
-	float speed;
-	vector<SDL_Rect> frames;
+	bool				paused;
+	float			    current_frame;
+	bool			    loop;
+	float				speed;
+	vector<SDL_Rect>    frames;
 
 	Animation() : speed(1.0f), loop(true), loops(0)
 	{ }
 
-	Animation(const Animation& a) : frames(a.frames), speed(a.speed), current_frame(0), loop(a.loop), loops(0)
+	Animation(const Animation& a) : frames(a.frames), speed(a.speed), current_frame(0), loop(a.loop), loops(0), paused(false)
 	{ }
 
 	SDL_Rect& getCurrentFrame()
 	{
-		float real_speed =  speed * app->getDt();
-		current_frame += real_speed;
-		if (current_frame >= frames.size())
+		if (!paused)
 		{
-			current_frame = (loop) ? 0.0f : frames.size() - 1;
-			loops++;
-		}
+			float real_speed =  speed * app->getDt();
+			current_frame += real_speed;
+			if (current_frame >= frames.size())
+			{
+				current_frame = (loop) ? 0.0f : frames.size() - 1;
+				loops++;
+			}
+		}		
+
 		return frames[(int)current_frame];
 	}
 
@@ -52,6 +57,16 @@ public:
 	{
 		loops = 0;
 		current_frame = 0;
+	}
+
+	void pause()
+	{
+		paused = true;
+	}
+
+	void resume()
+	{
+		paused = false;
 	}
 
 };

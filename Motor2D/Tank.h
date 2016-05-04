@@ -7,7 +7,10 @@ class Tank : public Unit
 {
 public:
 
-	// IDLE animations
+	// Turret animation
+	Animation   *current_animation_turret;
+
+	// IDLE animations (when tank doesn't move and does attack)
 	Animation	idle_up;
 	Animation	idle_right_up;
 	Animation   idle_right;
@@ -18,7 +21,7 @@ public:
 	Animation	idle_left_up;
 	vector<Animation*>   idle_animation_pack;
 
-	// MOVING animations
+	// MOVING animations (when tank moves)
 	Animation	walk_up;
 	Animation   walk_right_up;
 	Animation   walk_right;
@@ -29,22 +32,33 @@ public:
 	Animation   walk_left_up;
 	vector<Animation*>   move_animation_pack;
 
-	// SIEGE MODE animation
+	// SIEGE_MODE animations (when tank activates or deactivate siege mode)
 	Animation   siege_mode_on;
+	Animation   siege_mode_on_turret;
+	Animation   siege_mode_off;	
+	Animation   siege_mode_off_turret;
+	
+	// IDLE animations for turret (when tank keeps quiet, moves and attacks)
+	Animation	idle_up_turret;
+	Animation	idle_right_up_turret;
+	Animation   idle_right_turret;
+	Animation	idle_right_down_turret;
+	Animation	idle_down_turret;
+	Animation	idle_left_down_turret;
+	Animation	idle_left_turret;
+	Animation	idle_left_up_turret;
+	vector<Animation*>   idle_animation_turret_pack;
 
-	// SIEGE MODE animation
-	Animation   siege_mode_off;
-
-	//// ATTACK animation
-	//Animation	attack_up;
-	//Animation	attack_right_up;
-	//Animation	attack_right;
-	//Animation	attack_right_down;
-	//Animation	attack_down;
-	//Animation	attack_left_down;
-	//Animation	attack_left;
-	//Animation	attack_left_up;
-	//vector<Animation*>   attack_animation_pack;
+	// IDLE animations for turret on SIEGE MODE (when tank keeps quiet, moves and attacks)
+	Animation	idle_siege_mode_up_turret;
+	Animation	idle_siege_mode_right_up_turret;
+	Animation   idle_siege_mode_right_turret;
+	Animation	idle_siege_mode_right_down_turret;
+	Animation	idle_siege_mode_down_turret;
+	Animation	idle_siege_mode_left_down_turret;
+	Animation	idle_siege_mode_left_turret;
+	Animation	idle_siege_mode_left_up_turret;
+	vector<Animation*>   idle_siege_mode_animation_turret_pack;
 
 	// Dead animation
 	Animation	dead;
@@ -53,8 +67,11 @@ public:
 
 	Tank(iPoint &p);
 
+	bool update(float dt);
 	void move(float dt);
 	void setAnimationFromDirection();
+	void draw();
+	void siegeMode(bool siegeModeFlag);
 
 };
 
