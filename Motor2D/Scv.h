@@ -137,7 +137,6 @@ public:
 		range_to_attack = 50;
 		damage = 5.0f;
 		attack_frequency = 200.0f;
-		time_to_die = 500.0f;
 		repair_power = 10;
 
 		// PathFinding and movement variables
@@ -210,7 +209,7 @@ public:
 			}
 			break;
 		case DYING:
-			if (timer_to_check.read() >= time_to_die)
+			if (current_animation->finished())
 			{
 				to_delete = true;
 				coll->to_delete = true;

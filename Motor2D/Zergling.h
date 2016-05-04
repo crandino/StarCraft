@@ -253,7 +253,6 @@ public:
 		range_to_attack = 32;
 		damage = 3.0f;
 		attack_frequency = 500.0f;
-		time_to_die = 500.0f;
 
 		// PathFinding and movement variables
 		speed = 12.0f;
