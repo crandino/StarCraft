@@ -48,6 +48,22 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 
+	/*Player Info Load*/
+	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_int();
+	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_int();
+	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
+	command_center_position.x = node.child("CommandCenterPosition").attribute("coordx").as_int();
+	command_center_position.y = node.child("CommandCenterPosition").attribute("coordy").as_int();
+
+
+
+	/*Score data Load*/
+	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
+	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
+	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
+
+
+
 	/*Wave Info Load*/
 	for (node = node.child("SizeWave"); node; node = node.next_sibling("SizeWave"))
 	{
@@ -59,16 +75,7 @@ bool GameManager::awake(pugi::xml_node &node)
 			waves_info.push_back(wave);
 	}
 
-	/*Player Info Load*/
-	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_uint();
-	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_uint();
-	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 
-
-	/*Score data Load*/
-	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
-	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
-	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
 	
 	return ret;
 }
@@ -170,7 +177,7 @@ bool GameManager::update(float dt)
 			{
 				// CRZ -> Se mostraría informe de la siguiente oleada.
 				LOG("WAITING WAVE TO START");
-				if (timer_between_waves.readSec() > WAVETIME1)
+				if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
 					wave_state = BEGINNING_WAVE;
 				break;
 			}
@@ -201,9 +208,38 @@ bool GameManager::update(float dt)
 				timer_between_waves.start();
 				break;
 			}
+			case(PHASE1_END) : 
+			{
+				break;
+			}
 		}	
 		break;
-	}	
+	}
+
+	//Second Phase
+	case(SECOND_PHASE) :
+	{
+		checkingGameConditions();
+
+		switch (wave2_state)
+		{
+			case(WAITING_FOR_WAVE_TO_START) :
+			{
+												LOG("Hello");
+				break;
+			}
+
+			case(BEGINNING_WAVE) :
+			{
+
+				break;
+			}
+		}
+	}
+
+
+		break;
+
 	case(WIN) :
 	{
 		if (!is_victory_screen_on)
@@ -270,8 +306,9 @@ void GameManager::checkingGameConditions()
 {
 	if (current_wave == gameInfo.total_waves)
 	{
-		game_state = WIN;
-		start_game = false;
+		game_state = SECOND_PHASE;
+		wave_state = PHASE1_END;
+		wave2_state = WAITING_FOR_PHASE2_TO_START;
 	}
 
 	if (command_center_destroyed)
@@ -325,7 +362,7 @@ bool GameManager::postUpdate()
 
 void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 {
-	total_score += ZERGLINGSCORE * totalUnitsKilledCurrentFrame;
+	total_score += zergling_score * totalUnitsKilledCurrentFrame;
 }
 
 bool GameManager::isWaveClear() 
@@ -350,7 +387,7 @@ void GameManager::startGame()
 	wave_state = WAITING_FOR_WAVE_TO_START;
 	game_state = FIRST_PHASE;
 
-	iPoint p = COMMANDCENTERPOSITION;
+	iPoint p = command_center_position;
 	app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
 	command_center_destroyed = false;
 	start_game = true;

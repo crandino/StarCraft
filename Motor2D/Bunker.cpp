@@ -125,7 +125,7 @@ bool Bunker::getEntitiesOutside()
 		{
 			if (!app->path->isWalkable(it->second->tile_pos))
 			{
-				it->second->tile_pos = app->path->findNearestWalkableTile(it->second->tile_pos, COMMANDCENTERPOSITION, 25);
+				it->second->tile_pos = app->path->findNearestWalkableTile(it->second->tile_pos, app->game_manager->command_center_position, 25);
 				it->second->center = app->map->mapToWorld(app->map->data.back(), it->second->tile_pos.x, it->second->tile_pos.y);
 				it->second->calculePos();
 			}

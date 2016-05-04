@@ -120,7 +120,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 {
 	if (e->type == UNIT)
 	{
-		iPoint p = COMMANDCENTERPOSITION;
+		iPoint p = app->game_manager->command_center_position;
 		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
 
 		Unit* unit = (Unit*)e;
@@ -734,14 +734,14 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 									if (!app->path->isWalkable(unit->path.back()))//if the origin and the destination isn't walkable
 									{
 										unit->path.clear();
-										unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, COMMANDCENTERPOSITION, 25));
+										unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 25));
 										unit->has_target = true;
 										unit->state = MOVE;
 									}
 								}
 								else if (unit->tile_pos == (iPoint(x, y)))//if without path and they are no walkable tiles
 								{
-									unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, COMMANDCENTERPOSITION, 25));
+									unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 25));
 									unit->has_target = true;
 									unit->state = MOVE;
 								}

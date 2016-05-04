@@ -19,8 +19,6 @@
 #define	SIZE3X 5 // Changes number of zerglings per wave
 #define SIZE3Y 2
 #define TOTALUNITSALLWAVES (SIZE1X*SIZE1Y + SIZE2X*SIZE2Y + SIZE3X*SIZE2Y)
-#define ZERGLINGSCORE 20
-#define COMMANDCENTERPOSITION {1500, 2250}
 #define SIZEMARINESX 2
 #define SIZEMARINESY 2
 
@@ -30,6 +28,8 @@ enum GAME_STATE
 	INITIAL_SCREEN,
 	PREPARATION,
 	FIRST_PHASE,
+	SECOND_PHASE,
+	FINAL_PHASE,
 	ONGOING_WAVE,
 	TIME_BEFORE_WAVE,
 	WIN,
@@ -42,7 +42,18 @@ enum WAVE_STATE
 	WAITING_FOR_WAVE_TO_START,
 	BEGINNING_WAVE,
 	MIDDLE_WAVE,
-	END_WAVE
+	END_WAVE,
+	PHASE1_END
+};
+
+enum WAVE2_STATE
+{
+	WAITING_FOR_PHASE2_TO_START,
+	BEGINNING_WAVE_2,
+	MIDDLE_WAVE_2,
+	END_WAVE_2,
+	PHASE2_END
+
 };
 
 class GuiImage;
@@ -194,9 +205,13 @@ public:
 	//States
 
 	GAME_STATE			 game_state;
+
 	WAVE_STATE			 wave_state;
-	
+	WAVE2_STATE			 wave2_state;
+
 	vector<SizeWave*>	 waves_info;
+	
+	iPoint command_center_position;
 
 private:
 
@@ -212,6 +227,10 @@ private:
 
 	unsigned int		size_marines_x = SIZEMARINESX;
 	unsigned int		size_marines_y = SIZEMARINESY;
+
+	//Player Info
+	
+
 
 	// Check the conditions to finish the game
 	void				checkingGameConditions();
