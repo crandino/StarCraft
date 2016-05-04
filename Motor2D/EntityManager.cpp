@@ -558,15 +558,6 @@ void EntityManager::handleSelection()
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();
 					}
-					else if (it->second->specialization == MEDIC && e->faction == it->second->faction && e->type == UNIT)
-					{
-						if (e->specialization != TANK)
-						{
-							((Medic*)unit)->target_to_attack = (Unit*)e;
-							unit->newEntityFound();
-						}
-					
-					}
 				}
 			}
 		}
@@ -592,7 +583,7 @@ void EntityManager::handleSelection()
 /*------------------WAVE RELATED METHODS--------------------------*/
 
 
-Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
+Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range, bool medic) //The method ONLY search and return the nearest entity
 {
 	Entity* ret = NULL;
 	float value = range;
@@ -601,7 +592,8 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+		if (it->second != e && it->second->state != DYING && (!medic || (it->second->specialization != TANK && it->second->type == UNIT && it->second->current_hp < it->second->max_hp)) 
+			&& ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);

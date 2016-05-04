@@ -276,21 +276,50 @@ bool Medic::update(float dt)
 	switch (state)
 	{
 	case IDLE:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchNearestAlly(true);
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
 		break;
 	case MOVE:
 		if (has_target) move(dt);
 		break;
 	case MOVE_ALERT:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchNearestAlly(true);
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
 		if (has_target) move(dt);
 		break;
 	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchNearestAlly(true);
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
 		if (has_target) move(dt);
 		break;
 	case ATTACK:
 		if (timer_attack.read() >= attack_frequency)
 		{
 			if (!heal())
-			state = IDLE;
+			{
+				state = IDLE;
+				target_to_attack = NULL;
+			}
 			timer_attack.start();
 		}
 		break;
@@ -306,6 +335,7 @@ bool Medic::update(float dt)
 		{
 			has_target = true;
 			state = MOVE;
+			timer_to_check.start();
 		}
 		break;
 	case WAITING_PATH_MOVE_ALERT:
@@ -313,6 +343,7 @@ bool Medic::update(float dt)
 		{
 			has_target = true;
 			state = MOVE_ALERT;
+			timer_to_check.start();
 		}
 		break;
 	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
@@ -320,6 +351,7 @@ bool Medic::update(float dt)
 		{
 			has_target = true;
 			state = MOVE_ALERT_TO_ATTACK;
+			timer_to_check.start();
 		}
 		break;
 	}

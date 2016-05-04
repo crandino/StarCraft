@@ -220,6 +220,7 @@ public:
 			{
 				has_target = true;
 				state = MOVE;
+				timer_to_check.start();
 			}
 			break;
 		case WAITING_PATH_MOVE_ALERT:
@@ -227,6 +228,7 @@ public:
 			{
 				has_target = true;
 				state = MOVE_ALERT;
+				timer_to_check.start();
 			}
 			break;
 		case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
@@ -234,6 +236,7 @@ public:
 			{
 				has_target = true;
 				state = MOVE_ALERT_TO_ATTACK;
+				timer_to_check.start();
 			}
 			break;
 		}
