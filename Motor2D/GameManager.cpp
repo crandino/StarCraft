@@ -57,6 +57,7 @@ bool GameManager::awake(pugi::xml_node &node)
 
 
 
+
 	/*Score data Load*/
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
@@ -65,18 +66,28 @@ bool GameManager::awake(pugi::xml_node &node)
 
 
 	/*Wave Info Load*/
-	for (node = node.child("SizeWave"); node; node = node.next_sibling("SizeWave"))
+	for (pugi::xml_node tempNode = node.child("SizeWave"); tempNode; tempNode = tempNode.next_sibling("SizeWave"))
 	{
-			uint num_zergling = node.attribute("zerglings").as_uint();
-			uint num_hydralisk = node.attribute("hydralisks").as_uint();
-			uint num_mutalisk = node.attribute("mutalisks").as_uint();
+			uint num_zergling = tempNode.attribute("zerglings").as_uint();
+			uint num_hydralisk = tempNode.attribute("hydralisks").as_uint();
+			uint num_mutalisk = tempNode.attribute("mutalisks").as_uint();
 
 			SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk);
 			waves_info.push_back(wave);
 	}
 
+	/*Wave2 Info Load*/
+	for (pugi::xml_node tempNode = node.child("SizeWave2"); tempNode; tempNode = tempNode.next_sibling("SizeWave2"))
+	{
+		uint num_zergling = tempNode.attribute("zerglings").as_uint();
+		uint num_hydralisk = tempNode.attribute("hydralisks").as_uint();
+		uint num_mutalisk = tempNode.attribute("mutalisks").as_uint();
 
-	
+		SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk);
+		waves2_info.push_back(wave);
+	}
+
+
 	return ret;
 }
 
@@ -169,7 +180,7 @@ bool GameManager::update(float dt)
 	}
 	case(FIRST_PHASE):
 	{	
-		checkingGameConditions();
+		
 
 		switch (wave_state)
 		{
@@ -200,9 +211,13 @@ bool GameManager::update(float dt)
 				}						
 				break;
 			}
+
+
 			case(END_WAVE):
 			{
-				current_wave++;				
+				current_wave++;	
+				if (current_wave > gameInfo.total_waves)
+					current_wave = 0;
 				// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
 				wave_state = WAITING_FOR_WAVE_TO_START;
 				timer_between_waves.start();
@@ -210,33 +225,54 @@ bool GameManager::update(float dt)
 			}
 			case(PHASE1_END) : 
 			{
+								 LOG("PHASE 1 ENDED");
 				break;
 			}
+			
 		}	
+		checkingGameConditions();
 		break;
 	}
 
 	//Second Phase
 	case(SECOND_PHASE) :
 	{
-		checkingGameConditions();
+		
 
 		switch (wave2_state)
 		{
 			case(WAITING_FOR_WAVE_TO_START) :
 			{
-												LOG("Hello");
+				LOG("The bomb has landed look for it.");//Audio voice
+				wave2_state = BEGINNING_WAVE_2;
+				
 				break;
 			}
 
-			case(BEGINNING_WAVE) :
+			case(BEGINNING_WAVE_2) :
 			{
+				LOG("BEGINNING WAVE 2!!!");
+				wave2_state = MIDDLE_WAVE_2;
+				createWave(waves2_info[0], iPoint(1419, 800));
 
+				wave_wiped = false;
+
+				break;
+			}
+
+			case(MIDDLE_WAVE_2) :
+			{
+				
+				break;
+			}
+			case(END_WAVE_2) :
+			{
+				
 				break;
 			}
 		}
 	}
-
+		checkingGameConditions();
 
 		break;
 
@@ -308,7 +344,9 @@ void GameManager::checkingGameConditions()
 	{
 		game_state = SECOND_PHASE;
 		wave_state = PHASE1_END;
-		wave2_state = WAITING_FOR_PHASE2_TO_START;
+
+		if (wave2_state == SECOND_PHASE)
+			wave2_state = WAITING_FOR_PHASE2_TO_START;
 	}
 
 	if (command_center_destroyed)

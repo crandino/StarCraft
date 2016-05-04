@@ -210,6 +210,7 @@ public:
 	WAVE2_STATE			 wave2_state;
 
 	vector<SizeWave*>	 waves_info;
+	vector<SizeWave*>   waves2_info;
 	
 	iPoint command_center_position;
 

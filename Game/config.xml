@@ -32,16 +32,19 @@
     <!-- Game Information -->
     <totalWaves value = "4"/>
     <timeBeforeStart value = "2.0f"/>
-    <timeBetweenWavesPhase1 value = "5.0f"/>
-    <timeBetweenWavesPhase2 value = "5.0f"/>
+    <timeBetweenWavesPhase1 value = "2.0f"/>
+    <timeBetweenWavesPhase2 value = "2.0f"/>
     <timeBeforeEnd value = "20.0f"/>    
     
     <!-- Wave Information -->    
     <SizeWave zerglings ="4" hydralisks ="0" mutalisks ="0"/>
     <SizeWave zerglings ="4" hydralisks ="1" mutalisks ="0"/>
     <SizeWave zerglings ="4" hydralisks ="2" mutalisks ="1"/>
-    <SizeWave zerglings ="6" hydralisks ="4" mutalisks ="3"/>
+    <SizeWave zerglings ="0" hydralisks ="0" mutalisks ="1"/>
    
+    <SizeWave2 zerglings ="3" hydralisks ="3" mutalisks ="2"/>
+    
+    
     <!-- Player Units -->
     <InitialSizePlayer marines="10" medic ="3" scv ="1"/>
     <CommandCenterPosition coordx="1500" coordy= "2250"/>
