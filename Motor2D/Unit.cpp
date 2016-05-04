@@ -12,7 +12,7 @@ void Unit::calculePos()
 	pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };
 }
 
-bool Unit::attack()
+bool Unit::attack(Entity* target_to_attack)
 {
 	bool ret = false;
 	if (target_to_attack != NULL && target_to_attack->state != DYING)
@@ -21,16 +21,15 @@ bool Unit::attack()
 		d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
 		if (d <= range_to_attack)
 		{
+			ret = true;
 			if ((target_to_attack->current_hp -= damage) <= 0.0f)
 			{
-				state = IDLE;
+				ret = false;
 				target_to_attack->state = DYING;
-				target_to_attack = NULL;
 
 				if (faction == PLAYER)
 					app->game_manager->total_units_killed_currentFrame++;
 			}
-			ret = true;
 		}
 	}
 	return ret;
@@ -165,8 +164,31 @@ bool Unit::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= attack_frequency)
 		{
-			if (!attack())
-				state = IDLE;
+			if (area_attack)
+			{
+				list<Entity*> targets = searchEntitiesInRange(area_range);
+				bool attacked = false;
+				while (targets.begin() != targets.end())
+				{
+					if (!attack(targets.front()))
+					{
+						state = IDLE;
+						attacked = true;
+					}
+					targets.pop_front();
+				}
+				if (!attacked)
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+			}
+			else
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;

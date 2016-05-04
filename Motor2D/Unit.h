@@ -16,12 +16,14 @@ public:
 	iPoint				distance_to_center_selector;    // Useful for PathFinding for groups of units
 
 	bool				flying;							// Does it flies?
+	bool				area_attack = false;			// Can attack in area?
+	float				area_range = 0.0f;				// Range of area attack
 
 	Unit();
 
 	virtual void calculePos();
 
-	virtual bool attack();
+	virtual bool attack(Entity* target_to_attack);
 
 	virtual void move(float dt);
 

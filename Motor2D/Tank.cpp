@@ -129,6 +129,8 @@ Tank::Tank(iPoint &p)
 	damage = 5.0f;
 	attack_frequency = 200.0f;
 	time_to_die = 500.0f;
+	area_attack = true;
+	area_range = 75.0f;
 
 	// PathFinding and movement variables
 	speed = 12.0f;

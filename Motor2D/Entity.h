@@ -113,6 +113,11 @@ public:
 		return app->entity_manager->searchNearestEntityInRange(this, true);
 	}
 
+	virtual list<Entity*> searchEntitiesInRange(float area_range)
+	{
+		return app->entity_manager->searchEntitiesInRange(target_to_attack, true, area_range);
+	}
+
 	virtual Entity* searchEnemy()
 	{
 		return app->entity_manager->searchEnemyToAttack(this);

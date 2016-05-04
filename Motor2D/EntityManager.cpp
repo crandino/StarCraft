@@ -588,7 +588,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING &&(!search_only_in_same_faction || e->faction == it->second->faction))
+		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -599,6 +599,31 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 			}
 		}
 	}
+	return ret;
+}
+
+list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range) //The method search and return the entity in the area
+{
+	list<Entity*> ret;
+	ret.push_back(e);
+	float value = range;
+	if (value == -1.0f)
+		value = e->range_of_vision;
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+		{
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			if (d <= value)
+			{
+				ret.push_back((it->second));
+			}
+		}
+	}
+
+	list<Entity*>* ret2 = &ret;
 	return ret;
 }
 
