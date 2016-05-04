@@ -108,6 +108,11 @@ public:
 		return app->entity_manager->searchNearestEntityInRange(this);
 	}
 
+	virtual Entity* searchNearestAlly()
+	{
+		return app->entity_manager->searchNearestEntityInRange(this, true);
+	}
+
 	virtual Entity* searchEnemy()
 	{
 		return app->entity_manager->searchEnemyToAttack(this);

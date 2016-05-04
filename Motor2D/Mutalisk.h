@@ -34,6 +34,7 @@ public:
 	~Mutalisk();
 
 	void setAnimationFromDirection();
+	bool attack();
 
 };
 

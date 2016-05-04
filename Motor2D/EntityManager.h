@@ -80,7 +80,7 @@ public:
 	Entity* getEntity(uint id);
 	
 	void	SetEnemyToAttackCommandCenter(Entity* e);
-	Entity* searchNearestEntityInRange(Entity* e, bool search_in_same_faction = false);
+	Entity* searchNearestEntityInRange(Entity* e, bool search_in_same_faction = false, float range = -1.0f);
 	Entity* searchEnemyToAttack(Entity* e);
 
 	Entity* whichEntityOnMouse();
