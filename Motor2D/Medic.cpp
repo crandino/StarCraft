@@ -9,27 +9,35 @@ Medic::Medic(iPoint &p)
 	tex_width = tex_height = 64;
 
 	idle_right.frames.push_back({ 256, 0, 64, 64 });
+	idle_right.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_right);
 
 	idle_right_up.frames.push_back({ 128, 0, 64, 64 });
+	idle_right_up.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_right_up);
 
 	idle_up.frames.push_back({ 0, 0, 64, 64 });
+	idle_up.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_up);
 
 	idle_left_up.frames.push_back({ 896, 0, 64, 64 });
+	idle_left_up.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_left_up);
 
 	idle_left.frames.push_back({ 768, 0, 64, 64 });
+	idle_left.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_left);
 
 	idle_left_down.frames.push_back({ 640, 0, 64, 64 });
+	idle_left_down.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_left_down);
 
 	idle_down.frames.push_back({ 512, 0, 64, 64 });
+	idle_down.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_down);
 
 	idle_right_down.frames.push_back({ 384, 0, 64, 64 });
+	idle_right_down.speed = 0.01f;
 	idle_animation_pack.push_back(&idle_right_down);
 
 	// WALKING ANIMATIONS-----------------------------

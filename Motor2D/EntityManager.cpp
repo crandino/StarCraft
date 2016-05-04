@@ -7,6 +7,7 @@
 #include "GameManager.h"
 
 #include "Marine.h"
+#include "Firebat.h"
 #include "Scv.h"
 #include "Medic.h"
 #include "Zergling.h"
@@ -68,6 +69,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(MEDIC) :
 		LOG("Creating Medic");
 		e = new Medic(pos);
+		break;
+	case(FIREBAT) :
+		LOG("Creating Firebat");
+		e = new Firebat(pos);
 		break;
 		// ZERGLINGS
 	case(ZERGLING) :
@@ -837,6 +842,13 @@ void EntityManager::entityManualCreation()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, MEDIC);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_8) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, FIREBAT);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)

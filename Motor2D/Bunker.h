@@ -3,6 +3,7 @@
 
 #include "Building.h"
 #include "Marine.h"
+#include "Firebat.h"
 
 class Bunker : public Building
 {

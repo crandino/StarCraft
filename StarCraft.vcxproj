@@ -80,6 +80,7 @@
     <ClInclude Include="Motor2D\Entity.h" />
     <ClInclude Include="Motor2D\EntityManager.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
+    <ClInclude Include="Motor2D\Firebat.h" />
     <ClInclude Include="Motor2D\FogOfWar.h" />
     <ClInclude Include="Motor2D\Fonts.h" />
     <ClInclude Include="Motor2D\GameManager.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="Motor2D\Collision.cpp" />
     <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
+    <ClCompile Include="Motor2D\Firebat.cpp" />
     <ClCompile Include="Motor2D\FogOfWar.cpp" />
     <ClCompile Include="Motor2D\Fonts.cpp" />
     <ClCompile Include="Motor2D\GameManager.cpp" />

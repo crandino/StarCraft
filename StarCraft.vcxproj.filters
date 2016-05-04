@@ -98,6 +98,9 @@
     <ClCompile Include="Motor2D\FogOfWar.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Firebat.cpp">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -237,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\FogOfWar.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Firebat.h">
+      <Filter>Entities\Terran_Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

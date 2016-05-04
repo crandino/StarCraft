@@ -35,6 +35,7 @@ enum SPECIALIZATION  // Second specialization
 	MUTALISK,
 	HYDRALISK,
 	TANK,
+	FIREBAT,
 	// Buildings
 	COMMANDCENTER, 
 	BUNKER,
