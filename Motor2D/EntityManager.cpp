@@ -605,7 +605,6 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range) //The method search and return the entity in the area
 {
 	list<Entity*> ret;
-	ret.push_back(e);
 	float value = range;
 	if (value == -1.0f)
 		value = e->range_of_vision;
@@ -618,12 +617,10 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 			if (d <= value)
 			{
-				ret.push_back((it->second));
+				ret.push_back(it->second);
 			}
 		}
 	}
-
-	list<Entity*>* ret2 = &ret;
 	return ret;
 }
 

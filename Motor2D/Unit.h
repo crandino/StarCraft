@@ -24,6 +24,7 @@ public:
 	virtual void calculePos();
 
 	virtual bool attack(Entity* target_to_attack);
+	virtual void attackWithoutRange(Entity* target_to_attack);
 
 	virtual void move(float dt);
 

@@ -35,6 +35,20 @@ bool Unit::attack(Entity* target_to_attack)
 	return ret;
 }
 
+void Unit::attackWithoutRange(Entity* target_to_attack)
+{
+	if (target_to_attack != NULL && target_to_attack->state != DYING)
+	{
+		if ((target_to_attack->current_hp -= damage) <= 0.0f)
+		{
+			target_to_attack->state = DYING;
+
+			if (faction == PLAYER)
+				app->game_manager->total_units_killed_currentFrame++;
+		}
+	}
+}
+
 void Unit::move(float dt)
 {
 	if (path.size() > 0)
@@ -167,17 +181,12 @@ bool Unit::update(float dt)
 			if (area_attack)
 			{
 				list<Entity*> targets = searchEntitiesInRange(area_range);
-				bool attacked = false;
 				while (targets.begin() != targets.end())
 				{
-					if (!attack(targets.front()))
-					{
-						state = IDLE;
-						attacked = true;
-					}
+					attackWithoutRange(targets.front());
 					targets.pop_front();
 				}
-				if (!attacked)
+				if (!attack(target_to_attack))
 				{
 					state = IDLE;
 					target_to_attack = NULL;
@@ -257,6 +266,7 @@ void Unit::newEntityFound()
 	if (distance <= range_to_attack) //If the entity isn't in the range of attack it changes the direction and state
 	{
 		state = ATTACK;
+		timer_attack.start();
 	}
 	else if (flying)
 	{
