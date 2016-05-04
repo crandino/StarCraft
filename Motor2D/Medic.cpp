@@ -253,6 +253,12 @@ void Medic::setAnimationFromDirection()
 			current_animation = &(*move_animation_pack.at(num_animation));
 			break;
 		}
+		case(MOVE_ALERT_TO_ATTACK) :
+		{
+			int num_animation = angle / (360 / move_animation_pack.size());
+			current_animation = &(*move_animation_pack.at(num_animation));
+			break;
+		}
 		case(ATTACK) ://ATTACK == REPAIR for SCV
 		{
 			int num_animation = angle / (360 / heal_animation_pack.size());
