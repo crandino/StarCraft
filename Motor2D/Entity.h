@@ -9,6 +9,7 @@
 #include "Audio.h"
 #include "Collision.h"
 #include "GameManager.h"
+#include "ParticleManager.h"
 #include "SDL\include\SDL.h"
 
 #define TIME_TO_CHECK 100.0f
@@ -59,6 +60,7 @@ public:
 	// Graphics
 	SDL_Texture		*tex;
 	Animation		*current_animation;
+	Particle		*particle;
 	int		     	tex_width, tex_height;		// Dimensions of the sections of the frames
 
 	// UI paramters

@@ -99,6 +99,7 @@
     <ClInclude Include="Motor2D\Mutalisk.h" />
     <ClInclude Include="Motor2D\p2Defs.h" />
     <ClInclude Include="Motor2D\p2Log.h" />
+    <ClInclude Include="Motor2D\ParticleManager.h" />
     <ClInclude Include="Motor2D\PathFinding.h" />
     <ClInclude Include="Motor2D\PerfTimer.h" />
     <ClInclude Include="Motor2D\Point2d.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Motor2D\Mutalisk.cpp" />
     <ClCompile Include="Motor2D\GuiMinimap.cpp" />
     <ClCompile Include="Motor2D\p2Log.cpp" />
+    <ClCompile Include="Motor2D\ParticleManager.cpp" />
     <ClCompile Include="Motor2D\PathFinding.cpp" />
     <ClCompile Include="Motor2D\PerfTimer.cpp" />
     <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp" />

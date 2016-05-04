@@ -1,5 +1,6 @@
 #include "Firebat.h"
 #include "Bunker.h"
+#include "PathFinding.h"
 
 Firebat::Firebat(iPoint &p)
 {
@@ -76,7 +77,7 @@ Firebat::Firebat(iPoint &p)
 	attack_animation_pack.push_back(&attack_right_up);
 
 	attack_up.setAnimations(0, 0, 32, 32, 1, 2, 2);
-	attack_up.speed = 0.002f;
+	attack_up.speed = 0.003f;
 	attack_animation_pack.push_back(&attack_up);
 
 	attack_left_up.setAnimations(448, 0, 32, 32, 1, 2, 2);
@@ -106,6 +107,37 @@ Firebat::Firebat(iPoint &p)
 	//----------------------------------------------
 
 	//-----------Firebat Particles------------------
+	fire_up.anim.setAnimations(0, 0, 80, 72, 1, 13, 13);
+	fire_up.anim.speed = 0.02f;
+	fire_up.anim.loop = true;
+
+	fire_right_up.anim.setAnimations(324, 0, 80, 72, 1, 13, 13);
+	fire_right_up.anim.speed = 0.02f;
+	fire_right_up.anim.loop = true;
+
+	fire_right.anim.setAnimations(163, 0, 80, 72, 1, 13, 13);
+	fire_right.anim.speed = 0.02f;
+	fire_right.anim.loop = true;
+
+	fire_right_down.anim.setAnimations(487, 0, 80, 72, 1, 13, 13);
+	fire_right_down.anim.speed = 0.02f;
+	fire_right_down.anim.loop = true;
+
+	fire_down.anim.setAnimations(80, 0, 80, 72, 1, 13, 13);
+	fire_down.anim.speed = 0.02f;
+	fire_down.anim.loop = true;
+
+	fire_left_down.anim.setAnimations(569, 0, 80, 72, 1, 13, 13);
+	fire_left_down.anim.speed = 0.02f;
+	fire_left_down.anim.loop = true;
+
+	fire_left.anim.setAnimations(245, 0, 80, 72, 1, 13, 13);
+	fire_left.anim.speed = 0.02f;
+	fire_left.anim.loop = true;
+
+	fire_left_up.anim.setAnimations(325, 0, 80, 72, 1, 13, 13);
+	fire_left_up.anim.speed = 0.02f;
+	fire_left.anim.loop = true;
 
 	//----------------------------------------------
 	current_animation = &idle_up;
@@ -126,6 +158,8 @@ Firebat::Firebat(iPoint &p)
 
 	// Sounds
 	firebat_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+	fire_up.image = fire_right_up.image = fire_right.image = fire_right_down.image = fire_down.image = fire_left_down.image 
+	= fire_left.image = fire_left_up.image = app->tex->loadTexture("Particles/Shots/firebat_particles.png");
 
 	// UI paramters
 	selection_type = { 3, 4, 22, 13 };
@@ -242,15 +276,41 @@ void Firebat::setAnimationFromDirection()
 	{
 		 int num_animation = angle / (360 / idle_animation_pack.size());
 		 current_animation = &(*idle_animation_pack.at(num_animation));
+		 if (fire_up.on)
+		 {
+			 fire_up.on = false;
+			 particle->destroyParticle();
+		 }
+
 		 break;
 	}
 	case(ATTACK) :
 	{
 		int num_animation = angle / (360 / attack_animation_pack.size());
 		current_animation = &(*attack_animation_pack.at(num_animation));
+
+		if (current_animation == &attack_up)
+		{
+			if (!fire_up.on)
+			{
+				fire_up.on = true;
+				particle = app->particle->addParticle(fire_up, center.x, center.y, 5, -45, INT_MAX, fire_up.image);
+			}
+		}			
 		break;
 	}
 	case(MOVE) :
+	{	
+		int num_animation = angle / (360 / move_animation_pack.size());
+		current_animation = &(*move_animation_pack.at(num_animation));
+		if (fire_up.on)
+		{
+			fire_up.on = false;
+			particle->destroyParticle();
+		}
+
+	    break;
+	}
 	case(MOVE_ALERT) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
@@ -263,11 +323,17 @@ void Firebat::setAnimationFromDirection()
      	current_animation = &(*move_animation_pack.at(num_animation));
 		break;
 	}
-	//case(DYING) :
-	//{
-	//	current_animation = &dead;
-	//	break;
-	//}
+	case(DYING) :
+
+	{   int num_animation = angle / (360 / idle_animation_pack.size());
+		current_animation = &(*idle_animation_pack.at(num_animation));
+		if (fire_up.on)
+		{
+			fire_up.on = false;
+			particle->destroyParticle();
+		}
+		break;
+	}
 	case(WAITING_PATH_MOVE) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
@@ -289,4 +355,119 @@ void Firebat::setAnimationFromDirection()
 
 	}
 }
+
+bool Firebat::update(float dt)
+{
+	checkUnitDirection();
+	setAnimationFromDirection();   // This sets animation according to their angle direction
+	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+
+	switch (state)
+	{
+	case IDLE:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		break;
+	case MOVE:
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case ATTACK:
+		if (timer_attack.read() >= attack_frequency)
+		{
+			if (area_attack)
+			{
+				list<Entity*> targets = searchEntitiesInRange(area_range);
+				while (targets.begin() != targets.end())
+				{
+					attackWithoutRange(targets.front());
+					targets.pop_front();
+				}
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+			}
+			else
+			if (!attack(target_to_attack))
+			{
+				state = IDLE;
+				target_to_attack = NULL;
+			}
+			timer_attack.start();
+
+			Entity* target = target_to_attack;
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+				newEntityFound();
+		}
+		break;
+	case DYING:
+		if (current_animation->finished())
+		{
+			to_delete = true;
+			coll->to_delete = true;
+		}
+		break;
+	case WAITING_PATH_MOVE:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
+			timer_to_check.start();
+		}
+		break;
+	}
+	return true;
+}
+
 

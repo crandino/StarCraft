@@ -3,7 +3,8 @@
 #define __ANIMATION_H__
 
 #include <vector>
-#include"App.h"
+#include "App.h"
+#include "SDL\include\SDL.h"
 
 using namespace std;
 

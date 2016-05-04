@@ -2,6 +2,7 @@
 #define __FIREBAT_H__
 
 #include "Unit.h"
+#include "ParticleManager.h"
 
 class Firebat : public Unit
 {
@@ -40,8 +41,16 @@ public:
 	Animation	attack_left_up;
 	vector<Animation*>   attack_animation_pack;
 
-	// Dead animation
-	Animation	dead;
+	//Particles
+	Particle	fire_up;
+	Particle	fire_right_up;
+	Particle	fire_right;
+	Particle	fire_right_down;
+	Particle	fire_down;
+	Particle	fire_left_down;
+	Particle	fire_left;
+	Particle	fire_left_up;
+
 
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
 	bool			     inside_bunker = false;		// It's inside?
@@ -53,6 +62,7 @@ public:
 	~Firebat();
 	void move(float dt);
 	void setAnimationFromDirection();
+	bool update(float dt);
 
 };
 

@@ -26,6 +26,7 @@ class EntityManager;
 class Collision;
 class GameManager;
 class FogOfWar;
+class ParticleManager;
 
 class App
 {
@@ -104,7 +105,8 @@ public:
 	EntityManager*		entity_manager;
 	Collision*			collision;
 	GameManager*		game_manager;
-	FogOfWar*			fog_of_war;			
+	FogOfWar*			fog_of_war;		
+	ParticleManager*	particle = NULL;
 
 private:
 
