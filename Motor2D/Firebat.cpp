@@ -263,11 +263,11 @@ void Firebat::setAnimationFromDirection()
      	current_animation = &(*move_animation_pack.at(num_animation));
 		break;
 	}
-	case(DYING) :
-	{
-		current_animation = &dead;
-		break;
-	}
+	//case(DYING) :
+	//{
+	//	current_animation = &dead;
+	//	break;
+	//}
 	case(WAITING_PATH_MOVE) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
