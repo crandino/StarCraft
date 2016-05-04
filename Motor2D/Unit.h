@@ -9,6 +9,11 @@ class Unit: public Entity
 {
 public:
 
+	//---COLOR OF THE TERRAN UNITS
+	// H -> 221
+	// S -> 68
+	// B -> -1
+
 	// PathFinding and movement variables
 	bool				has_target;						// If has a target, the unit moves.
 	vector<iPoint>		path;							// The path returned by the PathFinding that the unit follows...

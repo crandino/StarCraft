@@ -65,6 +65,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		LOG("Creating Tank");
 		e = new Tank(pos);
 		break;
+	case(MEDIC) :
+		LOG("Creating Medic");
+		e = new Medic(pos);
+		break;
 		// ZERGLINGS
 	case(ZERGLING) :
 		LOG("Creating Zergling");
@@ -551,8 +555,12 @@ void EntityManager::handleSelection()
 					}
 					else if (it->second->specialization == MEDIC && e->faction == it->second->faction && e->type == UNIT)
 					{
-						((Medic*)unit)->target_to_attack = (Unit*)e;
-						unit->newEntityFound();
+						if (e->specialization != TANK)
+						{
+							((Medic*)unit)->target_to_attack = (Unit*)e;
+							unit->newEntityFound();
+						}
+					
 					}
 				}
 			}
@@ -822,6 +830,13 @@ void EntityManager::entityManualCreation()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, TANK);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, MEDIC);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)

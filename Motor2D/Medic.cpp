@@ -4,13 +4,185 @@
 Medic::Medic(iPoint &p)
 {
 	// Graphics
+	// IDLE
+	tex = app->tex->loadTexture("Units/Medic.png");
+	tex_width = tex_height = 64;
 
+	idle_right.frames.push_back({ 256, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_right);
+
+	idle_right_up.frames.push_back({ 128, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_right_up);
+
+	idle_up.frames.push_back({ 0, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_up);
+
+	idle_left_up.frames.push_back({ 896, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_left_up);
+
+	idle_left.frames.push_back({ 768, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_left);
+
+	idle_left_down.frames.push_back({ 640, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_left_down);
+
+	idle_down.frames.push_back({ 512, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_down);
+
+	idle_right_down.frames.push_back({ 384, 0, 64, 64 });
+	idle_animation_pack.push_back(&idle_right_down);
+
+	// WALKING ANIMATIONS-----------------------------
+
+	walk_right.setAnimations(256, 384, 64, 64, 1, 7, 7);
+	walk_right.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right);
+
+	walk_right_up3.setAnimations(192, 384, 64, 64, 1, 7, 7);
+	walk_right_up3.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right_up3);
+
+	walk_right_up2.setAnimations(128, 384, 64, 64, 1, 7, 7);
+	walk_right_up2.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right_up2);
+
+	walk_right_up1.setAnimations(64, 384, 64, 64, 1, 7, 7);
+	walk_right_up1.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right_up1);
+
+	walk_up.setAnimations(0, 384, 64, 64, 1, 7, 7);
+	walk_up.speed = 0.02f;
+	move_animation_pack.push_back(&walk_up);
+
+	walk_left_up3.setAnimations(960, 384, 64, 64, 1, 7, 7);
+	walk_left_up3.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left_up3);
+
+	walk_left_up2.setAnimations(896, 384, 64, 64, 1, 7, 7);
+	walk_left_up2.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left_up2);
+
+	walk_left_up1.setAnimations(832, 384, 64, 64, 1, 7, 7);
+	walk_left.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left_up1);
+
+	walk_left.setAnimations(768, 384, 64, 64, 1, 7, 7);
+	walk_left.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left);
+
+	walk_left_down3.setAnimations(704, 384, 64, 64, 1, 7, 7);
+	walk_left_down3.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left_down3);
+
+	walk_left_down2.setAnimations(640, 384, 64, 64, 1, 7, 7);
+	walk_left_down2.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left_down2);
+
+	walk_left_down1.setAnimations(576, 384, 64, 64, 1, 7, 7);
+	walk_left_down1.speed = 0.02f;
+	move_animation_pack.push_back(&walk_left_down1);
+
+	walk_down.setAnimations(512, 384, 64, 64, 1, 7, 7);
+	walk_down.speed = 0.02f;
+	move_animation_pack.push_back(&walk_down);
+
+	walk_right_down3.setAnimations(448, 384, 64, 64, 1, 7, 7);
+	walk_right_down3.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right_down3);
+
+	walk_right_down2.setAnimations(384, 384, 64, 64, 1, 7, 7);
+	walk_right_down2.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right_down2);
+
+	walk_right_down1.setAnimations(320, 384, 64, 64, 1, 7, 7);
+	walk_right_down1.speed = 0.02f;
+	move_animation_pack.push_back(&walk_right_down1);
+
+	//------------------------------------------------
+
+	//-- HEAL ANIMATIONS------------------------------
+	heal_right.setAnimations(256, 256, 64, 64, 1, 2, 2);
+	heal_right.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right);
+
+	heal_right_up3.setAnimations(192, 256, 64, 64, 1, 2, 2);
+	heal_right_up3.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right_up3);
+
+	heal_right_up2.setAnimations(128, 256, 64, 64, 1, 2, 2);
+	heal_right_up2.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right_up2);
+
+	heal_right_up1.setAnimations(64, 256, 64, 64, 1, 2, 2);
+	heal_right_up1.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right_up1);
+
+	heal_up.setAnimations(0, 256, 64, 64, 1, 2, 2);
+	heal_up.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_up);
+
+	heal_left_up3.setAnimations(960, 256, 64, 64, 1, 2, 2);
+	heal_left_up3.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left_up3);
+
+	heal_left_up2.setAnimations(896, 256, 64, 64, 1, 2, 2);
+	heal_left_up2.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left_up2);
+
+	heal_left_up1.setAnimations(832, 256, 64, 64, 1, 2, 2);
+	heal_left.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left_up1);
+
+	heal_left.setAnimations(768, 256, 64, 64, 1, 2, 2);
+	heal_left.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left);
+
+	heal_left_down3.setAnimations(704, 256, 64, 64, 1, 2, 2);
+	heal_left_down3.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left_down3);
+
+	heal_left_down2.setAnimations(640, 256, 64, 64, 1, 2, 2);
+	heal_left_down2.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left_down2);
+
+	heal_left_down1.setAnimations(576, 256, 64, 64, 1, 2, 2);
+	heal_left_down1.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_left_down1);
+
+	heal_down.setAnimations(512, 256, 64, 64, 1, 2, 2);
+	heal_down.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_down);
+
+	heal_right_down3.setAnimations(448, 256, 64, 64, 1, 2, 2);
+	heal_right_down3.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right_down3);
+
+	heal_right_down2.setAnimations(384, 256, 64, 64, 1, 2, 2);
+	heal_right_down2.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right_down2);
+
+	heal_right_down1.setAnimations(320, 256, 64, 64, 1, 2, 2);
+	heal_right_down1.speed = 0.01f;
+	heal_animation_pack.push_back(&heal_right_down1);
+
+	// DEAD ANIMATION---------------------------------
+	dead.frames.push_back({ 0, 832, 64, 64 });
+	dead.frames.push_back({ 64, 832, 64, 64 });
+	dead.frames.push_back({ 128, 832, 64, 64 });
+	dead.frames.push_back({ 192, 832, 64, 64 });
+	dead.frames.push_back({ 256, 832, 64, 64 });
+	dead.frames.push_back({ 320, 832, 64, 64 });
+	dead.frames.push_back({ 384, 832, 64, 64 });
+	dead.frames.push_back({ 448, 832, 64, 64 });
+	dead.loop = false;
+	dead.speed = 0.01f;
 	//------------------------------------------------
 
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+	current_animation = &idle_down;
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 30, 30 }, COLLIDER_UNIT, app->entity_manager);
@@ -40,11 +212,11 @@ Medic::Medic(iPoint &p)
 	damage = 5.0f;
 	attack_frequency = 200.0f;
 	time_to_die = 500.0f;
-	healing_power = 10;
+	healing_power = 5;
 
 	// PathFinding and movement variables
-	angle = 225.f;
 	speed = 10.0f;
+	angle = 180.0f;
 }
 
 Medic::~Medic()
@@ -54,16 +226,38 @@ Medic::~Medic()
 
 void Medic::setAnimationFromDirection()
 {
-	/*switch (state)
-	{
-	case(IDLE) :
-	case(MOVE) :
-	case(MOVE_ALERT) :
-	case(WAITING_PATH_MOVE) :
-	case(WAITING_PATH_MOVE_ALERT) :
-	case(ATTACK) ://ATTACK == REPAIR for SCV
-	case(DYING) :
-	}*/
+	switch (state)
+		{
+		case(IDLE) :
+		{
+			int num_animation = angle / (360 / idle_animation_pack.size());
+			current_animation = &(*idle_animation_pack.at(num_animation));
+			break;
+		}
+		case(MOVE) :
+		{
+			int num_animation = angle / (360 / move_animation_pack.size());
+			current_animation = &(*move_animation_pack.at(num_animation));
+			break;
+		}
+		case(MOVE_ALERT) :
+		{
+			int num_animation = angle / (360 / move_animation_pack.size());
+			current_animation = &(*move_animation_pack.at(num_animation));
+			break;
+		}
+		case(ATTACK) ://ATTACK == REPAIR for SCV
+		{
+			int num_animation = angle / (360 / heal_animation_pack.size());
+			current_animation = &(*heal_animation_pack.at(num_animation));
+			break;
+		}
+		case(DYING) :
+		{
+			current_animation = &dead;
+			break;
+		}
+	}
 }
 
 bool Medic::update(float dt)
@@ -85,11 +279,11 @@ bool Medic::update(float dt)
 	case MOVE_ALERT_TO_ATTACK:
 		if (has_target) move(dt);
 		break;
-	case ATTACK://ATTACK == REPAIR for SCV
+	case ATTACK:
 		if (timer_attack.read() >= attack_frequency)
 		{
 			if (!heal())
-				state = IDLE;
+			state = IDLE;
 			timer_attack.start();
 		}
 		break;
@@ -144,4 +338,84 @@ bool Medic::heal()
 		}
 	}
 	return ret;
+}
+
+void Medic::move(float dt)
+{
+	if (path.size() > 0)
+	{
+		float pixels_to_move = 0;
+		float total_pixels_moved = 0;
+		float total_pixels_to_move = speed / 100 * dt;
+
+		if (total_pixels_to_move >= 4)
+			pixels_to_move = 4;
+
+		do{
+			if (total_pixels_moved + 4 > total_pixels_to_move)
+				pixels_to_move = total_pixels_to_move - total_pixels_moved;
+
+			if (path.begin()->x < tile_pos.x && path.begin()->y < tile_pos.y)
+			{
+				center.x -= pixels_to_move / 2;
+				center.y -= pixels_to_move / 2;
+			}
+			else if (path.begin()->x < tile_pos.x && path.begin()->y > tile_pos.y)
+			{
+				center.x -= pixels_to_move / 2;
+				center.y += pixels_to_move / 2;
+			}
+			else if (path.begin()->x > tile_pos.x && path.begin()->y > tile_pos.y)
+			{
+				center.x += pixels_to_move / 2;
+				center.y += pixels_to_move / 2;
+			}
+			else if (path.begin()->x > tile_pos.x && path.begin()->y < tile_pos.y)
+			{
+				center.x += pixels_to_move / 2;
+				center.y -= pixels_to_move / 2;
+			}
+			else if (path.begin()->y == tile_pos.y)
+			{
+				if (path.begin()->x < tile_pos.x)
+					center.x -= pixels_to_move;
+				else
+					center.x += pixels_to_move;
+			}
+			else
+			{
+				if (path.begin()->y < tile_pos.y)
+					center.y -= pixels_to_move;
+
+				else
+					center.y += pixels_to_move;
+			}
+			calculePos();
+
+			if (app->map->worldToMap(app->map->data.back(), center.x, center.y) != tile_pos)
+			{
+				tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+				if (tile_pos == path.back())
+				{
+					path.clear();
+					has_target = false;
+					state = IDLE;
+
+					if (target_to_attack != NULL)
+						state = ATTACK;
+					break;
+
+				}
+				else if (tile_pos.x == path.begin()->x && tile_pos.y == path.begin()->y)
+					path.erase(path.begin());
+			}
+			total_pixels_moved += pixels_to_move;
+
+		} while (total_pixels_moved < total_pixels_to_move);
+	}
+	else
+	{
+		state = IDLE;
+		has_target = false;
+	}
 }
