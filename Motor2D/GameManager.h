@@ -156,6 +156,8 @@ public:
 
 	void AddPointsEnemy(Entity* e);
 
+	void incrementPhase2WavePower();
+
 public:
 	
 	//Score system attributes
@@ -217,6 +219,7 @@ public:
 private:
 
 	uint				 current_wave;
+	uint				 current_wave2 = 0;
 	map<uint, Entity*>	 current_wave_entities;
 	uint				 previous_unit_killed = 0;
 

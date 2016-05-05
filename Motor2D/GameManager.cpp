@@ -225,7 +225,7 @@ bool GameManager::update(float dt)
 			}
 			case(PHASE1_END) : 
 			{
-								 LOG("PHASE 1 ENDED");
+				LOG("PHASE 1 ENDED");
 				break;
 			}
 			
@@ -244,7 +244,8 @@ bool GameManager::update(float dt)
 			case(WAITING_FOR_WAVE_TO_START) :
 			{
 				LOG("The bomb has landed look for it.");//Audio voice
-				wave2_state = BEGINNING_WAVE_2;
+				
+					wave2_state = BEGINNING_WAVE_2;
 				
 				break;
 			}
@@ -252,9 +253,10 @@ bool GameManager::update(float dt)
 			case(BEGINNING_WAVE_2) :
 			{
 				LOG("BEGINNING WAVE 2!!!");
+				current_wave = 0;
 				wave2_state = MIDDLE_WAVE_2;
 				createWave(waves2_info[0], iPoint(1419, 800));
-
+				incrementPhase2WavePower();
 				wave_wiped = false;
 
 				break;
@@ -262,12 +264,19 @@ bool GameManager::update(float dt)
 
 			case(MIDDLE_WAVE_2) :
 			{
-				
+				LOG("MIDDLE WAVE2 !!!");
+				if (wave_wiped)
+				{
+					LOG("WAVE2 CLEARED!!!");
+					wave2_state = END_WAVE_2;
+				}
 				break;
 			}
 			case(END_WAVE_2) :
 			{
-				
+				LOG("WAVE 2 FINISH");
+
+				wave_state = WAITING_FOR_WAVE_TO_START;
 				break;
 			}
 		}
@@ -338,16 +347,30 @@ bool GameManager::update(float dt)
 	return ret;
 }
 
+void GameManager::incrementPhase2WavePower()
+{
+	waves2_info[0]->zergling_quantity += 2;
+	waves2_info[0]->hydralisk_quantity += 1;
+	waves2_info[0]->mutalisk_quantity += 1;
+	
+	
+	/*REST OF UNITS*/
+	//The wave 0 holds all the information of all entities
+}
+
+
 void GameManager::checkingGameConditions()
 {
 	if (current_wave == gameInfo.total_waves)
 	{
 		game_state = SECOND_PHASE;
 		wave_state = PHASE1_END;
-
-		if (wave2_state == SECOND_PHASE)
-			wave2_state = WAITING_FOR_PHASE2_TO_START;
 	}
+	/*
+	if (current_wave2 == bombPlanted)
+	{
+		
+	}*/
 
 	if (command_center_destroyed)
 	{
@@ -439,8 +462,8 @@ void GameManager::startGame()
 	retry_button->disable_element();
 	exit_button->disable_element();
 
-	unsigned int size_marines_x = SIZEMARINESX;
-	unsigned int size_marines_y = SIZEMARINESY;
+	unsigned int size_marines_x = SIZEMARINESX * 3;
+	unsigned int size_marines_y = SIZEMARINESY ;
 
 	createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
 	app->render->setCameraOnPosition(p);

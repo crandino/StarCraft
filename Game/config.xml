@@ -43,16 +43,12 @@
     <SizeWave zerglings ="4" hydralisks ="2" mutalisks ="1"/>
     <SizeWave zerglings ="0" hydralisks ="0" mutalisks ="1"/>
    
-    <SizeWave2 zerglings ="3" hydralisks ="3" mutalisks ="2"/>
+    <SizeWave2 zerglings ="0" hydralisks ="5" mutalisks ="0"/>
     
     
     <!-- Player Units -->
     <InitialSizePlayer marines="10" medic ="3" scv ="1"/>
     <CommandCenterPosition coordx="1500" coordy= "2250"/>
-    
-    
-    
-    
     
     
     <!-- Score--> 
