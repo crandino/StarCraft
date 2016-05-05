@@ -55,6 +55,16 @@ bool Audio::awake(pugi::xml_node &node)
 	return ret;
 }
 
+bool Audio::stopMusic()
+{
+	if (music != NULL)
+	{
+		Mix_HaltMusic();
+	}
+
+  return true;
+}
+
 // Called before quitting
 bool Audio::cleanUp()
 {

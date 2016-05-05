@@ -63,6 +63,9 @@ public:
 
 	int			healing_power;
 
+	//FX
+	uint fx_heal;
+
 	Medic(iPoint &p);
 
 	~Medic();

@@ -43,6 +43,10 @@ public:
 	bool can_focus = false;
 	bool draw_element = true;
 	GuiElements* parent = nullptr; 
+
+	//FX
+	unsigned int fx_click;
+
 protected:
 	GUI_TYPES type = UNKNOWN;
 	Module* listener = nullptr;

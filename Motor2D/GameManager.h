@@ -190,6 +190,8 @@ public:
 
 	//Sound
 	unsigned int fx_click;	
+	unsigned int fx_win;
+	unsigned int fx_lose;
 	
 	//Wave Control
 	bool isWaveClear();
@@ -231,9 +233,6 @@ private:
 
 	unsigned int		size_marines_x = SIZEMARINESX;
 	unsigned int		size_marines_y = SIZEMARINESY;
-
-	//FX
-	unsigned int game_fx;
 
 	//Player Info
 	

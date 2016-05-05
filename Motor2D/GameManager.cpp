@@ -98,7 +98,17 @@ bool GameManager::start()
 
 	LOG("LAST HOPE GAME STARTS!");
 
+	fx_win = app->audio->loadFx("Audio/FX/UI/YouWin.wav");
+	fx_lose = app->audio->loadFx("Audio/FX/UI/YouLose.wav");
 	fx_click = app->audio->loadFx("Audio/FX/UI/Click_1.wav");
+
+	//Backgorund audio (DEBUG include)
+	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
+	for (unsigned int i = 0; i <= 3; i++)
+	{
+		app->audio->volumeDown();
+	}
+
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
 	start_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
@@ -289,8 +299,10 @@ bool GameManager::update(float dt)
 	{
 		if (!is_victory_screen_on)
 		{
+			app->audio->stopMusic();
 			restartGame();
 			displayVictoryScreen();
+			app->audio->playFx(fx_win, 0);
 		}				
 		break;
 	}
@@ -299,8 +311,10 @@ bool GameManager::update(float dt)
 	{
 		if (!is_defeat_screen_on)
 		{
+			app->audio->stopMusic();
 			restartGame();
 			displayDefeatScreen();
+			app->audio->playFx(fx_lose, 0);
 		}				
 		break;
 	}
@@ -536,7 +550,12 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			retry_button->setSection({ 384, 56, 104, 28 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			retry_button->setSection({ 384, 0, 104, 28 });	
+			retry_button->setSection({ 384, 0, 104, 28 });
+			app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
+			for (unsigned int i = 0; i <= 3; i++)
+			{
+				app->audio->volumeDown();
+			}
 			game_state = PREPARATION;			
 			break;
 		}
@@ -553,7 +572,7 @@ void GameManager::restartGame()
 		it->second->to_delete = true;
 	}
 	//---------------------------------------------------------
-	
+
 	current_wave = 0;
 	score = 0;
 	enemy_count = 0;

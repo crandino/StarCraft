@@ -89,19 +89,29 @@ void GuiElements::checkInput(const GuiElements* mouse_hover, const GuiElements* 
 		if (listener != nullptr)
 		{
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+			{
 				listener->onGui(this, MOUSE_LCLICK_DOWN);
+			}		
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+			{
 				listener->onGui(this, MOUSE_LCLICK_DOWN_REPEAT);
+			}
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+			{
 				listener->onGui(this, MOUSE_LCLICK_UP);
+			}
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+			{
 				listener->onGui(this, MOUSE_RCLICK_DOWN);
+			}
 
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_UP)
+			{
 				listener->onGui(this, MOUSE_RCLICK_UP);
+			}
 		}
 
 		if (draggable == true && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)

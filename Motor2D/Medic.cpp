@@ -202,7 +202,7 @@ Medic::Medic(iPoint &p)
 	flying = false;
 
 	// Sounds
-	
+	fx_heal = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Heal.wav");
 
 	// UI paramters
 	selection_type = { 28, 9, 32, 19 };
@@ -326,6 +326,7 @@ bool Medic::update(float dt)
 				state = IDLE;
 				target_to_attack = NULL;
 			}
+			app->audio->playFx(fx_heal, 0);
 			timer_attack.start();
 		}
 		break;
