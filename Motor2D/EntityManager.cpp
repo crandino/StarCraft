@@ -297,6 +297,11 @@ bool EntityManager::cleanUp()
 			Tank* tank = (Tank*)it->second;
 			RELEASE(tank);
 		}
+		else if (it->second->specialization == FIREBAT)
+		{
+			Firebat* firebat = (Firebat*)it->second;
+			RELEASE(firebat);
+		}
 		else if (it->second->specialization == COMMANDCENTER)
 		{
 			CommandCenter* commandCenter = (CommandCenter*)it->second;
@@ -362,6 +367,11 @@ void EntityManager::cleanUpEntity(Entity* e)
 			{
 				Tank* tank = (Tank*)it->second;
 				RELEASE(tank);
+			}
+			else if (it->second->specialization == FIREBAT)
+			{
+				Firebat* firebat = (Firebat*)it->second;
+				RELEASE(firebat);
 			}
 			else if (it->second->specialization == COMMANDCENTER)
 			{
