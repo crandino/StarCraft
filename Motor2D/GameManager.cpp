@@ -190,8 +190,6 @@ bool GameManager::update(float dt)
 	}
 	case(FIRST_PHASE):
 	{	
-		
-
 		switch (wave_state)
 		{
 			case(WAITING_FOR_WAVE_TO_START) :
@@ -251,7 +249,7 @@ bool GameManager::update(float dt)
 
 		switch (wave2_state)
 		{
-			case(WAITING_FOR_WAVE_TO_START) :
+			case(WAITING_FOR_PHASE2_TO_START) :
 			{
 				LOG("The bomb has landed look for it.");//Audio voice
 				
@@ -263,12 +261,11 @@ bool GameManager::update(float dt)
 			case(BEGINNING_WAVE_2) :
 			{
 				LOG("BEGINNING WAVE 2!!!");
-				current_wave = 0;
+				
 				wave2_state = MIDDLE_WAVE_2;
 				createWave(waves2_info[0], iPoint(1419, 800));
-				incrementPhase2WavePower();
-				wave_wiped = false;
-
+				wave2_power_counter += incrementPhase2WavePower();
+				current_wave = 0;
 				break;
 			}
 
@@ -279,6 +276,7 @@ bool GameManager::update(float dt)
 				{
 					LOG("WAVE2 CLEARED!!!");
 					wave2_state = END_WAVE_2;
+					wave_wiped = false;
 				}
 				break;
 			}
@@ -286,14 +284,15 @@ bool GameManager::update(float dt)
 			{
 				LOG("WAVE 2 FINISH");
 
-				wave_state = WAITING_FOR_WAVE_TO_START;
+				wave2_state = WAITING_FOR_PHASE2_TO_START;
 				break;
 			}
 		}
-	}
 		checkingGameConditions();
 
 		break;
+	}
+		
 
 	case(WIN) :
 	{
@@ -361,13 +360,13 @@ bool GameManager::update(float dt)
 	return ret;
 }
 
-void GameManager::incrementPhase2WavePower()
+int GameManager::incrementPhase2WavePower()
 {
 	waves2_info[0]->zergling_quantity += 2;
 	waves2_info[0]->hydralisk_quantity += 1;
 	waves2_info[0]->mutalisk_quantity += 1;
 	
-	
+	return 1;
 	/*REST OF UNITS*/
 	//The wave 0 holds all the information of all entities
 }
@@ -378,13 +377,14 @@ void GameManager::checkingGameConditions()
 	if (current_wave == gameInfo.total_waves)
 	{
 		game_state = SECOND_PHASE;
-		wave_state = PHASE1_END;
 	}
-	/*
+	
+	/*PHASE 3
 	if (current_wave2 == bombPlanted)
 	{
 		
-	}*/
+	}
+	*/
 
 	if (command_center_destroyed)
 	{
@@ -443,6 +443,10 @@ void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 bool GameManager::isWaveClear() 
 {
 	wave_wiped = current_wave_entities.empty() ? true : false;
+	
+	if (wave_wiped == true)
+		LOG("WAVE_WIPED");
+
 	return wave_wiped;
 }
 
@@ -628,7 +632,7 @@ bool GameManager::isGameStarted() const
 
 void GameManager::eraseEnemiesIfKilled()
 {
-	if (current_wave_entities.size() > 0 && wave_state == MIDDLE_WAVE)
+	if (current_wave_entities.size() > 0 && (wave_state == MIDDLE_WAVE || wave2_state == MIDDLE_WAVE))
 	{
 		map<uint, Entity*>::iterator it2 = current_wave_entities.begin();
 		for (; it2 != current_wave_entities.end();)

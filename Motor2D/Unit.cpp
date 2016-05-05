@@ -125,6 +125,7 @@ void Unit::move(float dt)
 	}
 }
 
+
 bool Unit::update(float dt)
 {
 	checkUnitDirection();

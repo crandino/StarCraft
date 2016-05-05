@@ -156,7 +156,7 @@ public:
 
 	void AddPointsEnemy(Entity* e);
 
-	void incrementPhase2WavePower();
+	
 
 public:
 	
@@ -224,6 +224,8 @@ private:
 	uint				 current_wave2 = 0;
 	map<uint, Entity*>	 current_wave_entities;
 	uint				 previous_unit_killed = 0;
+	uint				 wave2_power_counter = 0;
+
 
 	//Time Management attributes
 	Timer				 timer_between_waves;
@@ -242,6 +244,10 @@ private:
 	void				checkingGameConditions();
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
+	
+	//Phase 2 increment power to waves
+	int					incrementPhase2WavePower();
+
 };
 
 #endif
