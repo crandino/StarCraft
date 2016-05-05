@@ -315,12 +315,22 @@ void Firebat::setAnimationFromDirection()
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
 		current_animation = &(*move_animation_pack.at(num_animation));
+		if (fire_up.on)
+		{
+			fire_up.on = false;
+			particle->destroyParticle();
+		}
 		break;
 	}
 	case(MOVE_ALERT_TO_ATTACK) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
      	current_animation = &(*move_animation_pack.at(num_animation));
+		if (fire_up.on)
+		{
+			fire_up.on = false;
+			particle->destroyParticle();
+		}
 		break;
 	}
 	case(DYING) :
