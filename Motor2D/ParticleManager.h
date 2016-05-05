@@ -65,6 +65,7 @@ struct Particle
 	Animation			anim;
 	unsigned int		fx; //This is for audio
 	fPoint				position;
+	fPoint				offset;
 	fPoint				initialPosition;
 	fPoint				speed;
 	Uint32				life;	// Time the particle life
@@ -93,6 +94,7 @@ class Emisor
 {
 public:
 	fPoint		position;
+	fPoint		offset;
 	fPoint		speed;
 	float		duration;
 	Timer		timer;

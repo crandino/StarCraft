@@ -61,6 +61,7 @@ public:
 	SDL_Texture		*tex;
 	Animation		*current_animation;
 	Particle		*particle;
+	iPoint			particle_offset;
 	int		     	tex_width, tex_height;		// Dimensions of the sections of the frames
 
 	// UI paramters

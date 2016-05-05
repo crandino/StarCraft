@@ -146,6 +146,7 @@ Firebat::Firebat(iPoint &p)
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+	particle_offset = { 0, 0 };
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
@@ -294,7 +295,8 @@ void Firebat::setAnimationFromDirection()
 			if (!fire_up.on)
 			{
 				fire_up.on = true;
-				particle = app->particle->addParticle(fire_up, center.x, center.y, 5, -45, INT_MAX, fire_up.image);
+				particle_offset = { 5, -45 };
+				particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
 			}
 		}			
 		break;

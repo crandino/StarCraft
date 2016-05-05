@@ -181,6 +181,8 @@ Particle* ParticleManager::addParticle(const Particle& p, int x, int y, int offs
 	Particle* part = NULL;
 
 	part = new Particle(p);
+	part->offset.x = offset_x;
+	part->offset.y = offset_y;
 	part->position.x = (x - p.anim.peekCurrentFrame().w / 2) + offset_x;
 	part->position.y = (y - p.anim.peekCurrentFrame().h / 2) + offset_y;
 	part->initialPosition = p.position;
@@ -395,7 +397,7 @@ bool Emisor::update(float dt) // If particles are created each frame
 	if (alive && active)
 	{
 		// TODO 5: Create a new particle with the particleEmited info and set his speed with method setSpeed
-		Particle* q = app->particle->addParticle(particleEmited, position.x, position.y,0,0, particleEmited.life);
+		Particle* q = app->particle->addParticle(particleEmited, position.x, position.y,offset.x,offset.y, particleEmited.life);
 		q->setSpeed(velocity, minAngle, maxAngle);
 
 		position.x += speed.x * dt / 1000;
@@ -515,7 +517,7 @@ bool FireEmisor::update(float dt)
 		if (!fireStarted)
 		{
 			fireStarted = true;
-			app->particle->addParticle(fire, position.x, position.y,0,0, fire.life);
+			app->particle->addParticle(fire, position.x, position.y,offset.x,offset.y, fire.life);
 		}
 		if (timer.read() >= smokeStart * 1000)
 		{
