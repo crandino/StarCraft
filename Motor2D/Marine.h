@@ -46,7 +46,7 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the marine
 	bool			     inside_bunker = false;		// It's inside?
 
-	unsigned int marine_attack_fx;
+	unsigned int fx_attack;
 
 	Marine(iPoint &p);
 

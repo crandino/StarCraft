@@ -55,7 +55,9 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
 	bool			     inside_bunker = false;		// It's inside?
 
-	unsigned int firebat_attack_fx;
+	list<uint> fx_list;
+	unsigned int fx_attack_1;
+	unsigned int fx_attack_2;
 
 	Firebat(iPoint &p);
 

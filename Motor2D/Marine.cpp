@@ -249,7 +249,7 @@ Marine::Marine(iPoint &p)
 	flying = false;
 
 	// Sounds
-	marine_attack_fx = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
+	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
 
 	// UI paramters
 	selection_type = { 3, 4, 22, 13 };

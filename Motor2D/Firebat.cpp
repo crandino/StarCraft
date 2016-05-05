@@ -158,7 +158,10 @@ Firebat::Firebat(iPoint &p)
 	flying = false;
 
 	// Sounds
-	firebat_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+	fx_attack_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_1.wav");
+	fx_attack_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_2.wav");
+	fx_list.push_back(fx_attack_1);
+	fx_list.push_back(fx_attack_2);
 	fire_up.image = fire_right_up.image = fire_right.image = fire_right_down.image = fire_down.image = fire_left_down.image 
 	= fire_left.image = fire_left_up.image = app->tex->loadTexture("Particles/Shots/firebat_particles.png");
 
