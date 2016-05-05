@@ -98,7 +98,7 @@ bool GameManager::start()
 
 	LOG("LAST HOPE GAME STARTS!");
 
-	fx_click = app->audio->loadFx("Audio/FX/UI/UI_Click.wav");
+	fx_click = app->audio->loadFx("Audio/FX/UI/Click_1.wav");
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
 	start_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });

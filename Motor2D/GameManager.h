@@ -232,6 +232,9 @@ private:
 	unsigned int		size_marines_x = SIZEMARINESX;
 	unsigned int		size_marines_y = SIZEMARINESY;
 
+	//FX
+	unsigned int game_fx;
+
 	//Player Info
 	
 

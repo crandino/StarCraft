@@ -120,7 +120,7 @@ public:
 		flying = false;		
 
 		// Sounds
-		scv_repair_fx = app->audio->loadFx("Audio/FX/SCV/Scv_repair.wav");
+		scv_repair_fx = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_1.wav");
 			
 		// UI paramters
 		selection_type = { 28, 9, 32, 19 };
