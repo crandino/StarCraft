@@ -157,18 +157,24 @@ public:
 		case(MOVE) :
 		{
 			int num_animation = angle / (360 / move_animation_pack.size());
+			if (num_animation == move_animation_pack.size())
+				num_animation = 0;
 			current_animation = &(*move_animation_pack.at(num_animation));
 			break;
 		}
 		case(MOVE_ALERT) :
 		{
 			int num_animation = angle / (360 / move_animation_pack.size());
+			if (num_animation == move_animation_pack.size())
+				num_animation = 0;
 			current_animation = &(*move_animation_pack.at(num_animation));
 			break;
 		}
 		case(ATTACK) ://ATTACK == REPAIR for SCV
 		{
 			int num_animation = angle / (360 / repair_animation_pack.size());
+			if (num_animation == repair_animation_pack.size())
+				num_animation = 0;
 			current_animation = &(*repair_animation_pack.at(num_animation));
 			break;
 		}

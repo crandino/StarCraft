@@ -195,6 +195,8 @@ void Mutalisk::setAnimationFromDirection()
 	case(ATTACK) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
+		if (num_animation == move_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*move_animation_pack.at(num_animation));
 		break;
 	}

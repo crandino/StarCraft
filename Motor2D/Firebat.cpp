@@ -278,7 +278,9 @@ void Firebat::setAnimationFromDirection()
 	{
 	case(IDLE) :
 	{
-		 int num_animation = angle / (360 / idle_animation_pack.size());
+		int num_animation = angle / (360 / idle_animation_pack.size());
+		if (num_animation == idle_animation_pack.size())
+			num_animation = 0;
 		 current_animation = &(*idle_animation_pack.at(num_animation));
 		 if (fire_up.on)
 		 {
@@ -291,6 +293,8 @@ void Firebat::setAnimationFromDirection()
 	case(ATTACK) :
 	{
 		int num_animation = angle / (360 / attack_animation_pack.size());
+		if (num_animation == attack_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*attack_animation_pack.at(num_animation));
 
 		if (current_animation == &attack_up)
@@ -307,6 +311,8 @@ void Firebat::setAnimationFromDirection()
 	case(MOVE) :
 	{	
 		int num_animation = angle / (360 / move_animation_pack.size());
+		if (num_animation == move_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*move_animation_pack.at(num_animation));
 		if (fire_up.on)
 		{
@@ -319,6 +325,8 @@ void Firebat::setAnimationFromDirection()
 	case(MOVE_ALERT) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
+		if (num_animation == move_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*move_animation_pack.at(num_animation));
 		if (fire_up.on)
 		{
@@ -330,6 +338,8 @@ void Firebat::setAnimationFromDirection()
 	case(MOVE_ALERT_TO_ATTACK) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
+		if (num_animation == move_animation_pack.size())
+			num_animation = 0;
      	current_animation = &(*move_animation_pack.at(num_animation));
 		if (fire_up.on)
 		{
@@ -341,6 +351,8 @@ void Firebat::setAnimationFromDirection()
 	case(DYING) :
 
 	{   int num_animation = angle / (360 / idle_animation_pack.size());
+		if (num_animation == idle_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*idle_animation_pack.at(num_animation));
 		if (fire_up.on)
 		{
@@ -352,18 +364,24 @@ void Firebat::setAnimationFromDirection()
 	case(WAITING_PATH_MOVE) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
+		if (num_animation == idle_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*idle_animation_pack.at(num_animation));
 		break;
 	}
 	case(WAITING_PATH_MOVE_ALERT) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
+		if (num_animation == idle_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*idle_animation_pack.at(num_animation));
 		break;
 	}
 	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
+		if (num_animation == idle_animation_pack.size())
+			num_animation = 0;
 		current_animation = &(*idle_animation_pack.at(num_animation));
 		break;
 	}
