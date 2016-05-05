@@ -82,9 +82,10 @@ public:
 	Entity* getEntity(uint id);
 	
 	void	SetEnemyToAttackCommandCenter(Entity* e);
-	Entity* searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f, bool medic = false);
+	Entity* searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	list<Entity*> searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	Entity* searchEnemyToAttack(Entity* e);
+	Entity* searchAllyToHeal(Entity* e);
 
 	Entity* whichEntityOnMouse();
 

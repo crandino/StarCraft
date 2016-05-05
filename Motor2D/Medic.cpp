@@ -284,7 +284,7 @@ bool Medic::update(float dt)
 	case IDLE:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchNearestAlly(true);
+			target_to_attack = searchAllyToHeal();
 			if (target_to_attack != NULL)
 				newEntityFound();
 			timer_to_check.start();
@@ -296,7 +296,7 @@ bool Medic::update(float dt)
 	case MOVE_ALERT:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchNearestAlly(true);
+			target_to_attack = searchAllyToHeal();
 			if (target_to_attack != NULL)
 				newEntityFound();
 			timer_to_check.start();
@@ -306,7 +306,7 @@ bool Medic::update(float dt)
 	case MOVE_ALERT_TO_ATTACK:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchNearestAlly(true);
+			target_to_attack = searchAllyToHeal();
 			if (target_to_attack != NULL)
 				newEntityFound();
 			else

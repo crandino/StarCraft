@@ -117,9 +117,14 @@ public:
 		return app->entity_manager->searchNearestEntityInRange(this);
 	}
 
-	virtual Entity* searchNearestAlly(bool medic = false)
+	virtual Entity* searchNearestAlly()
 	{
-		return app->entity_manager->searchNearestEntityInRange(this, true, -1.0f, medic);
+		return app->entity_manager->searchNearestEntityInRange(this, true);
+	}
+
+	virtual Entity* searchAllyToHeal()
+	{
+		return app->entity_manager->searchAllyToHeal(this);
 	}
 
 	virtual list<Entity*> searchEntitiesInRange(float area_range)

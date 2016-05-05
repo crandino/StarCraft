@@ -593,7 +593,7 @@ void EntityManager::handleSelection()
 /*------------------WAVE RELATED METHODS--------------------------*/
 
 
-Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range, bool medic) //The method ONLY search and return the nearest entity
+Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
 {
 	Entity* ret = NULL;
 	float value = range;
@@ -602,8 +602,8 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && (!medic || (it->second->specialization != TANK && it->second->type == UNIT && it->second->current_hp < it->second->max_hp)) 
-			&& ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+		if (it->second != e && it->second->state != DYING && 
+			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -669,6 +669,32 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e)
 					previousMaxHP = maxHP;
 					ret = it->second;
 				}
+			}
+		}
+	}
+	return ret;
+}
+
+Entity* EntityManager::searchAllyToHeal(Entity* e)
+{
+	Entity* ret = NULL;
+	float value = e->range_of_vision;
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	uint previousMaxHP = 99999;
+	for (; it != active_entities.end(); ++it)
+	{
+		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && it->second->type == UNIT && 
+			it->second->specialization != TANK && it->second->current_hp < it->second->max_hp)
+		{
+			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+			uint maxHP = it->second->current_hp;
+
+			if (d <= value && maxHP <= previousMaxHP)
+			{
+				value = d;
+				previousMaxHP = maxHP;
+				ret = it->second;
 			}
 		}
 	}
