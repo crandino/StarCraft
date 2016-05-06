@@ -15,7 +15,9 @@ public:
 	float						damage_increase_ratio;
 
 	// SFX
-	unsigned int bunker_attack_fx;
+	unsigned int fx_attack;
+	unsigned int fx_entering;
+	unsigned int fx_leaving;
 
 	Bunker(iPoint &p);
 	~Bunker();
