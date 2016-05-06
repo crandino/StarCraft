@@ -47,10 +47,11 @@ bool Textures::start()
 bool Textures::cleanUp()
 {
 	LOG("Freeing textures and Image library");
-	list<SDL_Texture*>::reverse_iterator item = textures.rbegin();
-	for(item; item != textures.rend(); item++)
+	list<SDL_Texture*>::iterator item = textures.begin();
+	for(item; item != textures.end(); item++)
 	{
 		SDL_DestroyTexture(*item);
+		
 	}
 
 	textures.clear();

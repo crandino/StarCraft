@@ -149,6 +149,9 @@ Firebat::Firebat(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 	particle_offset = { 0, 0 };
 
+	fire_up.image = app->tex->loadTexture("Particles/Shots/firebat_particles.png");
+	explosion_dead.image = app->tex->loadTexture("Particles/Explosion/Small_Explosion.png");
+
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
 	collider_offset = { -10, -14 };
@@ -157,9 +160,6 @@ Firebat::Firebat(iPoint &p)
 	faction = PLAYER;
 	specialization = FIREBAT;
 	flying = false;
-
-	fire_up.image = fire_right_up.image = fire_right.image = fire_right_down.image = fire_down.image = fire_left_down.image 
-	= fire_left.image = fire_left_up.image = app->tex->loadTexture("Particles/Shots/firebat_particles.png");
 
 	// UI paramters
 	selection_type = { 3, 4, 22, 13 };
@@ -174,7 +174,7 @@ Firebat::Firebat(iPoint &p)
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
-	damage = 5.0f;
+	damage = 5000.0f;
 	attack_frequency = 800.0f;
 	time_to_die = 500.0f;
 
@@ -194,6 +194,10 @@ bool Firebat::start()
 	fx_attack_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_2.wav");
 	fx_list.push_back(fx_attack_1);
 	fx_list.push_back(fx_attack_2);
+
+
+	
+
 
 	return true;
 }
@@ -281,118 +285,92 @@ void Firebat::move(float dt)
 // Method that assign an animation according to its orientation
 void Firebat::setAnimationFromDirection()
 {
+	
+
 	switch (state)
 	{
 	case(IDLE) :
 	{
-		int num_animation = angle / (360 / idle_animation_pack.size());
-		if (num_animation == idle_animation_pack.size())
-			num_animation = 0;
-		 current_animation = &(*idle_animation_pack.at(num_animation));
-		 if (fire_up.on)
-		 {
-			 fire_up.on = false;
-			 particle->destroyParticle();
-		 }
+				   int num_animation = angle / (360 / idle_animation_pack.size());
+				   if (num_animation == idle_animation_pack.size())
+					   num_animation = 0;
+				   current_animation = &(*idle_animation_pack.at(num_animation));
 
-		 break;
+				   break;
 	}
 	case(ATTACK) :
 	{
-		int num_animation = angle / (360 / attack_animation_pack.size());
-		if (num_animation == attack_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*attack_animation_pack.at(num_animation));
 
-		if (current_animation == &attack_up)
-		{
-			if (!fire_up.on)
-			{
-				fire_up.on = true;
-				particle_offset = { 5, -45 };
-				particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
-			}
-		}			
-		break;
+					 int num_animation = angle / (360 / attack_animation_pack.size());
+					 if (num_animation == attack_animation_pack.size())
+						 num_animation = 0;
+					 current_animation = &(*attack_animation_pack.at(num_animation));
+				
+		 break;
 	}
 	case(MOVE) :
-	{	
-		int num_animation = angle / (360 / move_animation_pack.size());
-		if (num_animation == move_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*move_animation_pack.at(num_animation));
-		if (fire_up.on)
-		{
-			fire_up.on = false;
-			particle->destroyParticle();
-		}
+	{
+				   int num_animation = angle / (360 / move_animation_pack.size());
+				   if (num_animation == move_animation_pack.size())
+					   num_animation = 0;
+				   current_animation = &(*move_animation_pack.at(num_animation));
 
-	    break;
+				   break;
 	}
 	case(MOVE_ALERT) :
 	{
-		int num_animation = angle / (360 / move_animation_pack.size());
-		if (num_animation == move_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*move_animation_pack.at(num_animation));
-		if (fire_up.on)
-		{
-			fire_up.on = false;
-			particle->destroyParticle();
-		}
-		break;
+						 int num_animation = angle / (360 / move_animation_pack.size());
+						 if (num_animation == move_animation_pack.size())
+							 num_animation = 0;
+						 current_animation = &(*move_animation_pack.at(num_animation));
+
+						 break;
 	}
 	case(MOVE_ALERT_TO_ATTACK) :
 	{
-		int num_animation = angle / (360 / move_animation_pack.size());
-		if (num_animation == move_animation_pack.size())
-			num_animation = 0;
-     	current_animation = &(*move_animation_pack.at(num_animation));
-		if (fire_up.on)
-		{
-			fire_up.on = false;
-			particle->destroyParticle();
-		}
-		break;
+								   int num_animation = angle / (360 / move_animation_pack.size());
+								   if (num_animation == move_animation_pack.size())
+									   num_animation = 0;
+								   current_animation = &(*move_animation_pack.at(num_animation));
+
+								
+								   break;
 	}
 	case(DYING) :
 
-	{   int num_animation = angle / (360 / idle_animation_pack.size());
-		if (num_animation == idle_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*idle_animation_pack.at(num_animation));
-		if (fire_up.on)
-		{
-			fire_up.on = false;
-			particle->destroyParticle();
-		}
-		break;
-	}
-	case(WAITING_PATH_MOVE) :
-	{
+	{   
 		int num_animation = angle / (360 / idle_animation_pack.size());
 		if (num_animation == idle_animation_pack.size())
 			num_animation = 0;
 		current_animation = &(*idle_animation_pack.at(num_animation));
+	}
+
 		break;
+	
+	case(WAITING_PATH_MOVE) :
+	{
+								int num_animation = angle / (360 / idle_animation_pack.size());
+								if (num_animation == idle_animation_pack.size())
+									num_animation = 0;
+								current_animation = &(*idle_animation_pack.at(num_animation));
+								break;
 	}
 	case(WAITING_PATH_MOVE_ALERT) :
 	{
-		int num_animation = angle / (360 / idle_animation_pack.size());
-		if (num_animation == idle_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*idle_animation_pack.at(num_animation));
-		break;
+									  int num_animation = angle / (360 / idle_animation_pack.size());
+									  if (num_animation == idle_animation_pack.size())
+										  num_animation = 0;
+									  current_animation = &(*idle_animation_pack.at(num_animation));
+									  break;
 	}
 	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
 	{
-		int num_animation = angle / (360 / idle_animation_pack.size());
-		if (num_animation == idle_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*idle_animation_pack.at(num_animation));
-		break;
+												int num_animation = angle / (360 / idle_animation_pack.size());
+												if (num_animation == idle_animation_pack.size())
+													num_animation = 0;
+												current_animation = &(*idle_animation_pack.at(num_animation));
+												break;
 	}
-
 	}
 }
 
@@ -400,6 +378,7 @@ bool Firebat::update(float dt)
 {
 	checkUnitDirection();
 	setAnimationFromDirection();   // This sets animation according to their angle direction
+	setParticleBehaviour(); //IPL: well idk what happened... seems like is working well... we will do more tests... 
 	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 	switch (state)
@@ -509,5 +488,178 @@ bool Firebat::update(float dt)
 	}
 	return true;
 }
+
+void Firebat::resetFireParticle()
+{
+	if (fire_up.on || fire_right_up.on || fire_right.on || fire_right_down.on || fire_down.on || fire_left_down.on || fire_left.on || fire_left_up.on)
+	{
+		fire_up.on = false;
+		fire_right_up.on = false;
+		fire_right.on = false;
+		fire_right_down.on = false;
+		fire_down.on = false;
+		fire_left_down.on = false;
+		fire_left.on = false;
+		fire_left_up.on = false;
+		particle->on = false;
+		particle->alive = false;
+
+	}
+}
+
+void Firebat::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case IDLE:
+		resetFireParticle();
+		break;
+	case MOVE:
+		resetFireParticle();
+		break;
+	case MOVE_ALERT:
+		resetFireParticle();
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		resetFireParticle();
+		break;
+	case ATTACK:
+		if (current_animation == &attack_up)
+		{
+			if (particle != NULL && !fire_up.on)
+			{
+				resetFireParticle();
+			}
+			if (!fire_up.on)
+			{
+
+				particle_offset = { 5, -45 };
+				particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				fire_up.on = true;
+
+			}
+
+		}
+
+		if (current_animation == &attack_right_up)
+		{
+			if (particle != NULL && !fire_right_up.on)
+			{
+				resetFireParticle();
+
+			}
+
+			if (!fire_right_up.on)
+			{
+				fire_right_up.on = true;
+				particle_offset = { 45, -40 };
+				particle = app->particle->addParticle(fire_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+
+		}
+
+		if (current_animation == &attack_right)
+		{
+			if (particle != NULL && !fire_right.on)
+			{
+				resetFireParticle();
+
+			}
+
+			if (!fire_right.on)
+			{
+				fire_right.on = true;
+				particle_offset = { 60, -5 };
+				particle = app->particle->addParticle(fire_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+
+		}
+
+		if (current_animation == &attack_right_down)
+		{
+			if (particle != NULL && !fire_right_down.on)
+			{
+				resetFireParticle();
+			}
+
+			if (!fire_right_down.on)
+			{
+				fire_right_down.on = true;
+				particle_offset = { 46, 30 };
+				particle = app->particle->addParticle(fire_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+
+		}
+
+		if (current_animation == &attack_down)
+		{
+			if (particle != NULL && !fire_down.on)
+			{
+				resetFireParticle();
+			}
+
+			if (!fire_down.on)
+			{
+				fire_down.on = true;
+				particle_offset = { 2, 40 };
+				particle = app->particle->addParticle(fire_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+
+		}
+
+		if (current_animation == &attack_left_down)
+		{
+			if (particle != NULL && !fire_left_down.on)
+			{
+				resetFireParticle();
+			}
+
+			if (!fire_left_down.on)
+			{
+				fire_left_down.on = true;
+				particle_offset = { -45, 30 };
+				particle = app->particle->addParticle(fire_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+		}
+
+		if (current_animation == &attack_left)
+		{
+			if (particle != NULL && !fire_left.on)
+			{
+				resetFireParticle();
+			}
+
+			if (!fire_left.on)
+			{
+				fire_left.on = true;
+				particle_offset = { -60, -5 };
+				particle = app->particle->addParticle(fire_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+
+		}
+
+		if (current_animation == &attack_left_up)
+		{
+			if (particle != NULL && !fire_left_up.on)
+			{
+				resetFireParticle();
+			}
+
+			if (!fire_left_up.on)
+			{
+				fire_left_up.on = true;
+				particle_offset = { -45, -40 };
+				particle = app->particle->addParticle(fire_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+			}
+
+		}
+		break;
+	case DYING:
+		resetFireParticle();
+		particle = app->particle->addParticle(explosion_dead, center.x, center.y, 0, 0, 1, explosion_dead.image);
+		break;
+	}
+}
+
 
 

@@ -39,16 +39,21 @@ public:
 	Particle* addParticle(const Particle& p, int x, int y, int offset_x, int offset_y, Uint32 secLife = INT_MAX, SDL_Texture* texture = NULL,
 		unsigned int sfx = 0, uint32 delay = 0);
 
+
 	Emisor* addEmisor(Particle& p, int x, int y, float emisorDuration, Uint32 particleLife, int particleVelocity, float minAngle = 0.0f, float maxAngle = 360.0f,
 		SDL_Texture* tex = NULL);
+
+
 
 	FireEmisor* addFire(int x, int y, float duration);
 
 	BurstEmisor* addBurst(int x, int y);
 
+	void setParticleBehaviour(Particle* p, int x, int y, int offset_x, int offset_y);
+
 private:
-	SDL_Texture* texture;
-	std::string textureFile;
+	//SDL_Texture* texture;
+	//std::string textureFile;
 
 	std::list<Particle*> particleList;
 	std::list<Emisor*> emisorList;

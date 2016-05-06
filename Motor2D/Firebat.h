@@ -51,7 +51,8 @@ public:
 	Particle	fire_left;
 	Particle	fire_left_up;
 
-	Particle	explosion_dead;
+	Particle	    explosion_dead;
+	SDL_Texture*	particle_tex;
 
 
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
@@ -69,6 +70,8 @@ public:
 	bool start();
 	void setAnimationFromDirection();
 	bool update(float dt);
+	void setParticleBehaviour();
+	void resetFireParticle();
 
 };
 

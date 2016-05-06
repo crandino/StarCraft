@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "p2Log.h"
 #include "Timer.h"
+#include "EntityManager.h"
 #include "Audio.h"
 
 // PARTICLE MANAGER---------------
@@ -23,7 +24,7 @@ ParticleManager::~ParticleManager()
 bool ParticleManager::awake(pugi::xml_node &node)
 {
 	LOG("Particle Manager: Awake");
-	textureFile.assign(node.child("particle_manager").first_attribute().as_string());
+	//textureFile.assign(node.child("particle_manager").first_attribute().as_string());
 	std::srand(time(NULL));
 
 	return true;
@@ -33,7 +34,7 @@ bool ParticleManager::start()
 {
 	bool ret = true;
 	LOG("Particle Manager: Start");
-	texture = app->tex->loadTexture(textureFile.c_str());
+	//texture = app->tex->loadTexture(textureFile.c_str());
 
 	//ret = loadParticlesFile(particle_file);
 
@@ -109,15 +110,15 @@ bool ParticleManager::postUpdate()
 bool ParticleManager::cleanUp()
 {
 	LOG("Particle Manager: CleanUp");
-	app->tex->unloadTexture(texture);
+	//app->tex->unloadTexture(texture);
 
 	//TODO 2: Iterate the particle list and clear, release the particle and clear the list.
 
 	std::list<Particle*>::iterator tmp = particleList.begin();
 
-	for (; tmp != particleList.end(); ++tmp)
-		RELEASE((*tmp));
-
+	for (; tmp != particleList.end(); ++tmp)	
+	RELEASE((*tmp));
+	
 	particleList.clear();
 
 	//TODO 2: Iterate the emisor list and clear, release the particle and clear the list.
@@ -125,8 +126,8 @@ bool ParticleManager::cleanUp()
 	std::list<Emisor*>::iterator tmp2 = emisorList.begin();
 
 	for (; tmp2 != emisorList.end(); ++tmp2)
-		RELEASE((*tmp2));
-
+	RELEASE((*tmp2));
+	
 	emisorList.clear();
 
 	return true;
@@ -185,13 +186,12 @@ Particle* ParticleManager::addParticle(const Particle& p, int x, int y, int offs
 	part->offset.y = offset_y;
 	part->position.x = (x - p.anim.peekCurrentFrame().w / 2) + offset_x;
 	part->position.y = (y - p.anim.peekCurrentFrame().h / 2) + offset_y;
+	part->on = p.on;
 	part->initialPosition = p.position;
 	part->alive = true;
 	part->life = secLife;
 	if (texture)
 		part->image = texture;
-	else
-		part->image = p.image;
 
 	part->fx = sfx;
 	part->timer.start();
@@ -256,6 +256,7 @@ BurstEmisor* ParticleManager::addBurst(int x,int y)
 
 	return ret;
 }
+
 //-----------------------------------------
 
 // PARTICLE--------------------------------
