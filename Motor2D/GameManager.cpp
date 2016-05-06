@@ -266,17 +266,19 @@ bool GameManager::update(float dt)
 				createWave(waves2_info[0], iPoint(1419, 800));
 				wave2_power_counter += incrementPhase2WavePower();
 				current_wave = 0;
+				timer_phase2_wave.start();
 				break;
 			}
 
 			case(MIDDLE_WAVE_2) :
 			{
 				LOG("MIDDLE WAVE2 !!!");
-				if (wave_wiped)
+				if (timer_phase2_wave.readSec() > gameInfo.time_before_waves_phase2)
 				{
-					LOG("WAVE2 CLEARED!!!");
+					LOG("Wave Creation!!!");
 					wave2_state = END_WAVE_2;
 					wave_wiped = false;
+					timer_phase2_wave.start();
 				}
 				break;
 			}
@@ -284,7 +286,7 @@ bool GameManager::update(float dt)
 			{
 				LOG("WAVE 2 FINISH");
 
-				wave2_state = WAITING_FOR_PHASE2_TO_START;
+				wave2_state = BEGINNING_WAVE_2;
 				break;
 			}
 		}

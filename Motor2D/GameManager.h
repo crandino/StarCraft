@@ -56,6 +56,9 @@ enum WAVE2_STATE
 
 };
 
+
+
+
 class GuiImage;
 using namespace std;
 
@@ -230,6 +233,7 @@ private:
 	//Time Management attributes
 	Timer				 timer_between_waves;
 	Timer				 time_before_starting_game;
+	Timer				 timer_phase2_wave;
 
 	bool				start_game = false;
 

@@ -34,7 +34,7 @@
     <totalWaves value = "4"/>
     <timeBeforeStart value = "2.0f"/>
     <timeBetweenWavesPhase1 value = "2.0f"/>
-    <timeBetweenWavesPhase2 value = "2.0f"/>
+    <timeBetweenWavesPhase2 value = "4.0f"/>
     <timeBeforeEnd value = "20.0f"/>    
     
     <!-- Wave Information -->    
