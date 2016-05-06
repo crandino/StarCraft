@@ -59,6 +59,7 @@ public:
 	unsigned int fx_attack_1;
 	unsigned int fx_attack_2;
 
+	Firebat() {}
 	Firebat(iPoint &p);
 
 	~Firebat();

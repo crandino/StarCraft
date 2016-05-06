@@ -276,6 +276,11 @@ Marine::~Marine()
 	SDL_DestroyTexture(tex);
 }
 
+bool Marine::start()
+{
+	return true;
+}
+
 void Marine::move(float dt)
 {
 	if (path.size() > 0)

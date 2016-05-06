@@ -43,6 +43,8 @@ public:
 	// Dead animation
 	Animation dead;
 
+	Zergling() {}
+
 	Zergling(iPoint &p)
 	{
 		// Graphics

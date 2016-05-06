@@ -66,6 +66,7 @@ public:
 	//FX
 	uint fx_heal;
 
+	Medic() {}
 	Medic(iPoint &p);
 
 	~Medic();

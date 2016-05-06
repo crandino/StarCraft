@@ -29,6 +29,7 @@ public:
 	// Dead animation
 	Animation	dead;
 
+	Mutalisk() {}
 	Mutalisk(iPoint &p);
 
 	~Mutalisk();

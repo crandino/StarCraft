@@ -11,6 +11,8 @@ public:
 
 public:
 
+	Barrack() {}
+
 	Barrack(iPoint &p)
 	{
 		// Graphics
