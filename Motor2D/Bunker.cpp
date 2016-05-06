@@ -15,7 +15,7 @@ Bunker::Bunker(iPoint &p)
 
 	// Animations and FX
 	tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
-	bunker_attack_fx = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+	fx_attack = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 	idle.frames.push_back({ 0, 0, 96, 128 });
 	idle.speed = 1.0f;
 	idle.loop = false;
@@ -70,7 +70,7 @@ bool Bunker::update(float dt)
 	case ATTACK:
 		if (units_inside.size() > 0)
 		{
-			app->audio->playFx(bunker_attack_fx);
+			app->audio->playFx(fx_attack);
 			if ((timer_attack.read() >= attack_frequency))
 			{
 				if (!attack())
