@@ -39,13 +39,13 @@
     <timeBeforeEnd value = "20.0f"/>    
     
     <!-- Wave Information -->    
-    <SizeWave zerglings ="4" hydralisks ="0" mutalisks ="0"/>
-    <SizeWave zerglings ="4" hydralisks ="1" mutalisks ="0"/>
-    <SizeWave zerglings ="4" hydralisks ="2" mutalisks ="1"/>
-    <SizeWave zerglings ="0" hydralisks ="0" mutalisks ="1"/>
-    <SizeWave zerglings ="0" hydralisks ="1" mutalisks ="0"/>
+    <SizeWave zerglings ="4" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
+    <SizeWave zerglings ="4" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
+    <SizeWave zerglings ="4" hydralisks ="2" mutalisks ="1" ultralisks ="0"/>
+    <SizeWave zerglings ="0" hydralisks ="0" mutalisks ="1" ultralisks ="0"/>
+    <SizeWave zerglings ="0" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
    
-    <SizeWave2 zerglings ="1" hydralisks ="0" mutalisks ="0"/>
+    <SizeWave2 zerglings ="1" hydralisks ="0" mutalisks ="0" ultralisks ="1"/>
     
     
     <!-- Player Units -->
@@ -57,7 +57,7 @@
     <ZerglingScore value = "20" />
     <HydraliskScore value = "40" />
     <MutaliskScore value = "50" />
-    
+    <UltraliskScore value = "100" />
     
       
   </game_manager>

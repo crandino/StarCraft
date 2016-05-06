@@ -112,6 +112,7 @@
     <ClInclude Include="Motor2D\Tank.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
+    <ClInclude Include="Motor2D\Ultralisk.h" />
     <ClInclude Include="Motor2D\Unit.h" />
     <ClInclude Include="Motor2D\Vector2D.h" />
     <ClInclude Include="Motor2D\Window.h" />
@@ -151,11 +152,14 @@
     <ClCompile Include="Motor2D\Tank.cpp" />
     <ClCompile Include="Motor2D\Textures.cpp" />
     <ClCompile Include="Motor2D\Timer.cpp" />
+    <ClCompile Include="Motor2D\Ultralisk.cpp" />
     <ClCompile Include="Motor2D\Unit.cpp" />
     <ClCompile Include="Motor2D\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Game\config.xml" />
+    <Xml Include="Game\config.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\maps\LOGIC_MAP.tmx" />

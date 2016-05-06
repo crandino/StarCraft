@@ -12,6 +12,7 @@
 #include "Medic.h"
 #include "Zergling.h"
 #include "Mutalisk.h"
+#include "Ultralisk.h"
 #include "Hydralisk.h"
 #include "Tank.h"
 #include "Gui.h"
@@ -52,6 +53,8 @@ bool EntityManager::awake(pugi::xml_node &node)
 	list_of_entity_classes.push_back(mutalisk);
 	hydralisk = new Hydralisk();
 	list_of_entity_classes.push_back(hydralisk);
+	ultralisk = new Ultralisk();
+	list_of_entity_classes.push_back(ultralisk);
 
 	command_center = new CommandCenter();
 	list_of_entity_classes.push_back(command_center);
@@ -116,6 +119,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(HYDRALISK) :
 		LOG("Creating Hydralisk");
 		e = new Hydralisk(pos);
+		break;
+	case(ULTRALISK) :
+		LOG("Creating Ultralisk");
+		e = new Ultralisk(pos);
 		break;
 	// TERRAN BUILDINGS
 	case(COMMANDCENTER) :
@@ -769,6 +776,13 @@ void EntityManager::entityManualCreation()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, HYDRALISK);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_KP_9) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, ULTRALISK);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_KP_6) == KEY_DOWN)
