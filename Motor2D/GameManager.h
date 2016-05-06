@@ -251,17 +251,17 @@ private:
 	unsigned int		size_marines_y = SIZEMARINESY;
 
 	//Player Info
+	//Bomb				bomb;
 	
-
 
 	// Check the conditions to finish the game
 	void				checkingGameConditions();
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
 	
-	//Phase 2 increment power to waves
+	//Phase 2 
 	int					incrementPhase2WavePower();
-
+	Bomb*				bomb;
 };
 
 #endif

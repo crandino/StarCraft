@@ -23,6 +23,8 @@ class CommandCenter;
 class Barrack;
 class Bunker;
 
+class Bomb;
+
 // Some enums to separate behaviour, UI, ...
 
 enum FACTION   // Controlled by player or computer

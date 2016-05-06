@@ -104,6 +104,9 @@
     <ClCompile Include="Motor2D\ParticleManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Bomb.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -249,6 +252,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\ParticleManager.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Bomb.h">
+      <Filter>Entities\Terran_Buildings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

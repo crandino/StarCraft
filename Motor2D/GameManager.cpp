@@ -13,6 +13,7 @@
 #include "map.h"
 #include <map>
 #include "Entity.h"
+#include "Bomb.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -48,8 +49,6 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
-
-
 
 	/*Player Info Load*/
 	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_int();
@@ -164,6 +163,9 @@ bool GameManager::start()
 	exit_button->setListener(this);
 
 	game_state = INITIAL_SCREEN;
+	iPoint bombPosition = { 1700, 2250 };
+	
+	bomb = new Bomb(bombPosition);
 
 	return ret;
 }
@@ -172,6 +174,10 @@ bool GameManager::preUpdate()
 {
 	eraseEnemiesIfKilled();
 	isWaveClear();
+
+
+	
+
 	return true;
 }
 
@@ -223,7 +229,6 @@ bool GameManager::update(float dt)
 				break;
 			}
 
-
 			case(END_WAVE):
 			{
 				current_wave++;	
@@ -250,7 +255,6 @@ bool GameManager::update(float dt)
 	case(SECOND_PHASE) :
 	{
 		
-
 		switch (wave2_state)
 		{
 			case(WAITING_FOR_PHASE2_TO_START) :
@@ -258,7 +262,7 @@ bool GameManager::update(float dt)
 				LOG("The bomb has landed look for it.");//Audio voice
 				
 				//BOMB CREATION GOES HERE
-				
+				//bomb = new bomb();
 
 				if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)//A timer before the bomb when the bomb is landing and there are messages for the player what's to come
 				{
@@ -322,12 +326,7 @@ bool GameManager::update(float dt)
 			case(END_WAVE_3) :
 				LOG("END WAVE FINAL PHASE");
 					break;
-
-
 		}
-
-
-
 
 		break;
 	}
@@ -471,6 +470,9 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 bool GameManager::postUpdate()
 {
+	if (game_state == SECOND_PHASE)
+		app->render->DrawQuad({1700, 2250, 30, 30}, 0, 206, 209);
+	
 	return true;
 }
 
@@ -500,6 +502,7 @@ bool GameManager::cleanUp()
 	waves_info.clear();
 	waves2_info.clear();
 
+	RELEASE(bomb);
 	return true;
 }
 
