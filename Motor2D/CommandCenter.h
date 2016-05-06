@@ -48,7 +48,7 @@ public:
 
 	~CommandCenter()
 	{
-
+		SDL_DestroyTexture(tex);
 	}
 
 	bool update(float dt)

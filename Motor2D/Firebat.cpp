@@ -188,7 +188,7 @@ Firebat::Firebat(iPoint &p)
 
 Firebat::~Firebat()
 {
-
+	SDL_DestroyTexture(tex);
 }
 
 void Firebat::move(float dt)

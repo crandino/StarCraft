@@ -494,7 +494,11 @@ bool GameManager::cleanUp()
 	for (vector<SizeWave*>::iterator it = waves_info.begin(); it != waves_info.end(); it++)
 		RELEASE(*it);
 
+	for (vector<SizeWave*>::iterator it = waves2_info.begin(); it != waves2_info.end(); it++)
+		RELEASE(*it);
+
 	waves_info.clear();
+	waves2_info.clear();
 
 	return true;
 }

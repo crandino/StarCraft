@@ -97,7 +97,7 @@ public:
 	};
 
 	// Destructor
-	~Entity()
+	virtual ~Entity()
 	{
 		SDL_DestroyTexture(tex);
 	}

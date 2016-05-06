@@ -258,7 +258,7 @@ Hydralisk::Hydralisk(iPoint &p)
 
 Hydralisk::~Hydralisk()
 {
-
+	SDL_DestroyTexture(tex);
 }
 
 // Method that assign an animation according to its orientation

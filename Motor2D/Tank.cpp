@@ -241,6 +241,11 @@ Tank::Tank(iPoint &p)
 	speed = 12.0f;
 }
 
+Tank::~Tank()
+{
+	SDL_DestroyTexture(tex);
+}
+
 bool Tank::update(float dt)
 {
 	checkUnitDirection();
@@ -372,9 +377,6 @@ bool Tank::update(float dt)
 	return true;
 
 }
-
-Tank::~Tank()
-{}
 
 void Tank::move(float dt)
 {

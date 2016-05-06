@@ -228,7 +228,7 @@ Medic::Medic(iPoint &p)
 
 Medic::~Medic()
 {
-
+	SDL_DestroyTexture(tex);
 }
 
 void Medic::setAnimationFromDirection()

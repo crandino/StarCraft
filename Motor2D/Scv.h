@@ -146,7 +146,7 @@ public:
 
 	~Scv()
 	{
-
+		SDL_DestroyTexture(tex);
 	}
 
 	void setAnimationFromDirection()

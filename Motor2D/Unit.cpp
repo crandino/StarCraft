@@ -7,6 +7,11 @@ Unit::Unit()
 	has_target = false;
 };
 
+Unit::~Unit()
+{
+	SDL_DestroyTexture(tex);
+}
+
 void Unit::calculePos()
 {
 	pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };

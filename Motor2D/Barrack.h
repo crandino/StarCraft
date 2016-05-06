@@ -48,7 +48,7 @@ public:
 
 	~Barrack()
 	{
-
+		SDL_DestroyTexture(tex);
 	}
 
 	bool update(float dt)

@@ -17,6 +17,11 @@ public:
 		type = BUILDING;
 	};
 
+	virtual ~Building()
+	{
+		SDL_DestroyTexture(tex);
+	}
+
 	//virtual bool update(float dt)
 	//{
 	//	switch (state)

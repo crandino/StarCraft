@@ -25,6 +25,7 @@ public:
 	float				area_range = 0.0f;				// Range of area attack
 
 	Unit();
+	virtual ~Unit();
 
 	virtual void calculePos();
 

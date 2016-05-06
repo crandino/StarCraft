@@ -273,7 +273,7 @@ Marine::Marine(iPoint &p)
 
 Marine::~Marine()
 {
-	
+	SDL_DestroyTexture(tex);
 }
 
 void Marine::move(float dt)

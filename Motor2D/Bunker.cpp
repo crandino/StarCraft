@@ -45,7 +45,7 @@ Bunker::Bunker(iPoint &p)
 
 Bunker::~Bunker()
 {
-
+	SDL_DestroyTexture(tex);
 }
 
 bool Bunker::update(float dt)
