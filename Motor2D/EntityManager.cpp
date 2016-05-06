@@ -476,7 +476,7 @@ void EntityManager::handleSelection()
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
 						app->gui->bunker_to_leave = (Bunker*)e;
 					}
-					else if (it->second->specialization == SCV && e->type == BUILDING)
+					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();

@@ -73,7 +73,6 @@ public:
 	~Tank();
 
 	bool update(float dt);
-	void move(float dt);
 	void setAnimationFromDirection();
 	void draw();
 	void siegeMode(bool siegeModeFlag);
