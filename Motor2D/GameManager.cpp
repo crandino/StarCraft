@@ -257,10 +257,12 @@ bool GameManager::update(float dt)
 			{
 				LOG("The bomb has landed look for it.");//Audio voice
 				
-				if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)
+				//BOMB CREATION GOES HERE
+				
+
+				if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)//A timer before the bomb when the bomb is landing and there are messages for the player what's to come
 				{
 					wave2_state = BEGINNING_WAVE_2;
-
 				}
 
 				break;
@@ -285,7 +287,6 @@ bool GameManager::update(float dt)
 				{
 					LOG("Wave Creation!!!");
 					wave2_state = END_WAVE_2;
-					wave_wiped = false;
 					timer_phase2_wave.start();
 				}
 				break;
@@ -302,7 +303,35 @@ bool GameManager::update(float dt)
 
 		break;
 	}
-		
+	case(FINAL_PHASE):
+	{
+		switch (wave3_state)
+		{
+			case(WAITING_FOR_PHASE3_TO_START) :
+			
+			break;
+
+			case (BEGINNING_WAVE_3) :
+				LOG("BEGINNING FINAL PHASE!");
+					break;
+
+			case(MIDDLE_WAVE_3) :
+				LOG("MIDDLE WAVE FINAL PHASE!");
+					break;
+
+			case(END_WAVE_3) :
+				LOG("END WAVE FINAL PHASE");
+					break;
+
+
+		}
+
+
+
+
+		break;
+	}
+
 
 	case(WIN) :
 	{
@@ -390,9 +419,9 @@ void GameManager::checkingGameConditions()
 	}
 	
 	/*PHASE 3
-	if (current_wave2 == bombPlanted)
+	if (bombPlanted)
 	{
-		
+		game_state = THIRD_PHASE
 	}
 	*/
 

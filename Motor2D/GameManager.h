@@ -53,7 +53,15 @@ enum WAVE2_STATE
 	MIDDLE_WAVE_2,
 	END_WAVE_2,
 	PHASE2_END
+};
 
+enum FINAL_STATE
+{
+	WAITING_FOR_PHASE3_TO_START,
+	BEGINNING_WAVE_3,
+	MIDDLE_WAVE_3,
+	END_WAVE_3,
+	PHASE3_END
 };
 
 
@@ -216,6 +224,7 @@ public:
 
 	WAVE_STATE			 wave_state;
 	WAVE2_STATE			 wave2_state;
+	FINAL_STATE			 wave3_state;
 
 	vector<SizeWave*>	 waves_info;
 	vector<SizeWave*>   waves2_info;
