@@ -87,17 +87,19 @@ struct GameInformation
 
 struct SizeWave
 {
-	SizeWave(uint zergling, uint hydra, uint muta)
+	SizeWave(uint zergling, uint hydra, uint muta, uint ultra)
 	{
 		zergling_quantity = zergling;
 		hydralisk_quantity = hydra;
 		mutalisk_quantity = muta;
+		ultralisk_quantity = ultra;
 	}
 
 
 	uint zergling_quantity;
 	uint hydralisk_quantity;
 	uint mutalisk_quantity;
+	uint ultralisk_quantity;
 	/*Rest of units*/
 };
 
@@ -215,6 +217,7 @@ public:
 	uint zergling_score;
 	uint hydralisk_score;
 	uint mutalisk_score;
+	uint ultralisk_score;
 
 	GameInformation gameInfo;
 

@@ -18,6 +18,7 @@ class Tank;
 class Zergling;
 class Hydralisk;
 class Mutalisk;
+class Ultralisk;
 
 class CommandCenter;
 class Barrack;
@@ -49,6 +50,7 @@ enum SPECIALIZATION  // Second specialization
 	ZERGLING,
 	MUTALISK,
 	HYDRALISK,
+	ULTRALISK,
 	TANK,
 	FIREBAT,
 	// Buildings
@@ -136,6 +138,7 @@ private:
 	Zergling		*zergling;
 	Mutalisk		*mutalisk;
 	Hydralisk		*hydralisk;
+	Ultralisk       *ultralisk;
 
 	// Buildings
 	CommandCenter	*command_center;

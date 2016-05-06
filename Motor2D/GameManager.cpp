@@ -64,7 +64,7 @@ bool GameManager::awake(pugi::xml_node &node)
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
 	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
-
+	ultralisk_score = node.child("UltraliskScore").attribute("value").as_uint();
 
 
 	/*Wave Info Load*/
@@ -73,8 +73,9 @@ bool GameManager::awake(pugi::xml_node &node)
 			uint num_zergling = tempNode.attribute("zerglings").as_uint();
 			uint num_hydralisk = tempNode.attribute("hydralisks").as_uint();
 			uint num_mutalisk = tempNode.attribute("mutalisks").as_uint();
+			uint num_ultralisk = tempNode.attribute("ultralisks").as_uint();
 
-			SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk);
+			SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk, num_ultralisk);
 			waves_info.push_back(wave);
 	}
 
@@ -84,8 +85,9 @@ bool GameManager::awake(pugi::xml_node &node)
 		uint num_zergling = tempNode.attribute("zerglings").as_uint();
 		uint num_hydralisk = tempNode.attribute("hydralisks").as_uint();
 		uint num_mutalisk = tempNode.attribute("mutalisks").as_uint();
+		uint num_ultralisk = tempNode.attribute("ultralisks").as_uint();
 
-		SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk);
+		SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk, num_ultralisk);
 		waves2_info.push_back(wave);
 	}
 
@@ -403,6 +405,7 @@ int GameManager::incrementPhase2WavePower()
 	waves2_info[0]->zergling_quantity += 2;
 	waves2_info[0]->hydralisk_quantity += 1;
 	waves2_info[0]->mutalisk_quantity += 1;
+	waves2_info[0]->ultralisk_quantity += 1;
 	
 	return 1;
 	/*REST OF UNITS*/
@@ -453,6 +456,17 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, HYDRALISK);
+		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+	}
+
+	for (uint i = 0; i < wave->ultralisk_quantity; i++)
+	{
+		int posx = position.x + (wave->ultralisk_quantity * i * 2);
+		int posy = position.y + (wave->ultralisk_quantity * i * 2);
+
+		iPoint position = { posx, posy };
+
+		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
 	}
 
