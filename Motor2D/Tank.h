@@ -68,6 +68,7 @@ public:
 
 	bool		siege_mode = false;
 
+	Tank() {}
 	Tank(iPoint &p);
 	~Tank();
 

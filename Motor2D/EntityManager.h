@@ -9,6 +9,19 @@
 #include <vector>
 #include <list>
 
+class Marine;
+class Scv;
+class Medic;
+class Firebat;
+class Tank;
+
+class Zergling;
+class Hydralisk;
+class Mutalisk;
+
+class CommandCenter;
+class Barrack;
+class Bunker;
 
 // Some enums to separate behaviour, UI, ...
 
@@ -110,7 +123,24 @@ public:
 	void choosePlaceForBuilding();
 
 private:
-	uint								next_ID;	
+	uint			 next_ID;
+	list<Entity*>    list_of_entity_classes;   // Useful to call all start for each entity class.
+
+	// Units
+	Marine			*marine;
+	Scv				*scv;
+	Medic			*medic;
+	Firebat			*firebat;
+	Tank            *tank;
+
+	Zergling		*zergling;
+	Mutalisk		*mutalisk;
+	Hydralisk		*hydralisk;
+
+	// Buildings
+	CommandCenter	*command_center;
+	Bunker			*bunker;
+	Barrack         *barrack;
 
 	bool debug = false;
 

@@ -48,9 +48,11 @@ public:
 
 	unsigned int fx_attack;
 
+	Marine() {};
 	Marine(iPoint &p);
 
 	~Marine();
+	bool start();
 	void move(float dt);
 	void setAnimationFromDirection();
 	

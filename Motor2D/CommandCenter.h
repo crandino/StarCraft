@@ -11,6 +11,8 @@ public:
 
 public:
 
+	CommandCenter() {}
+
 	CommandCenter(iPoint &p)
 	{
 		// Graphics

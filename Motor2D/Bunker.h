@@ -19,8 +19,10 @@ public:
 	unsigned int fx_entering;
 	unsigned int fx_leaving;
 
+	Bunker() {}
 	Bunker(iPoint &p);
 	~Bunker();
+
 	bool update(float dt);
 	bool getEntityInside(Unit* entity);
 	bool getEntitiesOutside();

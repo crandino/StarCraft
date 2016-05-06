@@ -102,9 +102,9 @@ public:
 		SDL_DestroyTexture(tex);
 	}
 
-	virtual void setAnimationFromDirection()
+	virtual bool start()
 	{
-
+		return true;
 	}
 
 	virtual bool update(float dt)
@@ -141,6 +141,9 @@ public:
 	{
 		app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
+
+	virtual void setAnimationFromDirection()
+	{ }
 
 };
 

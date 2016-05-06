@@ -272,8 +272,11 @@ Marine::Marine(iPoint &p)
 }
 
 Marine::~Marine()
+{ }
+
+bool Marine::start()
 {
-	
+	return true;
 }
 
 void Marine::move(float dt)

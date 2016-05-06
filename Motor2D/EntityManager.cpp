@@ -34,6 +34,31 @@ EntityManager::~EntityManager()
 // Called before render is available
 bool EntityManager::awake(pugi::xml_node &node)
 {
+	marine = new Marine();
+	list_of_entity_classes.push_back(marine);
+	scv = new Scv();
+	list_of_entity_classes.push_back(scv);
+	medic = new Medic();
+	list_of_entity_classes.push_back(medic);
+	firebat = new Firebat();
+	list_of_entity_classes.push_back(firebat);
+	tank = new Tank();
+	list_of_entity_classes.push_back(tank);
+
+	zergling = new Zergling();
+	list_of_entity_classes.push_back(zergling);
+	mutalisk = new Mutalisk();
+	list_of_entity_classes.push_back(mutalisk);
+	hydralisk = new Hydralisk();
+	list_of_entity_classes.push_back(hydralisk);
+
+	command_center = new CommandCenter();
+	list_of_entity_classes.push_back(command_center);
+	bunker = new Bunker();
+	list_of_entity_classes.push_back(bunker);
+	barrack = new Barrack();
+	list_of_entity_classes.push_back(barrack);
+
 	return true;
 }
 
@@ -41,6 +66,10 @@ bool EntityManager::awake(pugi::xml_node &node)
 bool EntityManager::start()
 {
 	next_ID = 0;
+
+	for (list<Entity*>::iterator it = list_of_entity_classes.begin(); it != list_of_entity_classes.end(); ++it)
+		(*it)->start();
+
     building_tile = app->tex->loadTexture("maps/Path_Tiles.png");
 
 	return true;
@@ -104,7 +133,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
 		building_mode = true;
-		create_bunker = false;
 		break;
 	}
 
@@ -322,6 +350,13 @@ bool EntityManager::cleanUp()
 	}
 	active_entities.clear();
 	selection.clear();
+
+	for (list<Entity*>::iterator it = list_of_entity_classes.begin(); it != list_of_entity_classes.end();)
+	{
+		RELEASE(*it);
+		it = list_of_entity_classes.erase(it);
+	}
+	list_of_entity_classes.clear();		
 
 	return true;
 }

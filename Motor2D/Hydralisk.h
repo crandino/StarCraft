@@ -41,7 +41,7 @@ public:
 	Animation attack_left_up;
 	vector<Animation*> attack_animation_pack;
 	
-
+	Hydralisk() {}
 	Hydralisk(iPoint &p);
 
 	~Hydralisk();

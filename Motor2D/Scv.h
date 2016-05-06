@@ -31,6 +31,8 @@ public:
 	unsigned int	scv_repair_fx;
 	int				repair_power;
 
+	Scv() {}
+
 	Scv(iPoint &p)
 	{
 		// Graphics
