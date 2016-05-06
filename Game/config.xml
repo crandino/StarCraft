@@ -36,7 +36,9 @@
     <timeBetweenWavesPhase1 value = "2.0f"/>
     <timeBetweenWavesPhase2 value = "4.0f"/>
     <timeBeforeWhileBombLanding value ="2.0f"/>
-    <timeBeforeEnd value = "20.0f"/>    
+    <timeBeforeEnd value = "20.0f"/>  
+    <!--Debug-->
+    <hold value ="false"/>
     
     <!-- Wave Information -->    
     <SizeWave zerglings ="4" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>

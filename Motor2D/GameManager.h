@@ -33,6 +33,7 @@ enum GAME_STATE
 	ONGOING_WAVE,
 	TIME_BEFORE_WAVE,
 	WIN,
+	HOLD,
 	LOSE,
 	QUIT
 };
@@ -265,6 +266,7 @@ private:
 	//Phase 2 
 	int					incrementPhase2WavePower();
 	Bomb*				bomb;
+	bool				hold = false;
 };
 
 #endif

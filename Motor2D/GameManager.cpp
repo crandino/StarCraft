@@ -91,6 +91,7 @@ bool GameManager::awake(pugi::xml_node &node)
 		waves2_info.push_back(wave);
 	}
 
+	hold = node.child("hold").attribute("value").as_bool();
 
 	return ret;
 }
@@ -186,148 +187,150 @@ bool GameManager::preUpdate()
 bool GameManager::update(float dt)
 {
 	bool ret = true;
+	if (hold)
+		game_state = HOLD;
 
 	switch (game_state)
 	{
-	case(INITIAL_SCREEN) : 
+	case(INITIAL_SCREEN) :
 	{
 		break;
 	}
-	case(PREPARATION):
+	case(PREPARATION) :
 	{
 		LOG("PREPARATION");
-		startGame();		
+		startGame();
 		break;
 	}
-	case(FIRST_PHASE):
-	{	
+	case(FIRST_PHASE) :
+	{
 		switch (wave_state)
 		{
-			case(WAITING_FOR_WAVE_TO_START) :
-			{
-				// CRZ -> Se mostraría informe de la siguiente oleada.
-				LOG("WAITING WAVE TO START");
-				if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
-					wave_state = BEGINNING_WAVE;
-				break;
-			}
+		case(WAITING_FOR_WAVE_TO_START) :
+		{
+			// CRZ -> Se mostraría informe de la siguiente oleada.
+			LOG("WAITING WAVE TO START");
+			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
+				wave_state = BEGINNING_WAVE;
+			break;
+		}
 
-			case(BEGINNING_WAVE) :
+		case(BEGINNING_WAVE) :
+		{
+			LOG("BEGINNING WAVE!!!");
+			wave_state = MIDDLE_WAVE;
+			createWave(waves_info[current_wave], iPoint(1419, 800));
+			wave_wiped = false;
+			break;
+		}
+		case(MIDDLE_WAVE) :
+		{
+			LOG("MIDDLE WAVE !!!");
+			if (wave_wiped)
 			{
-				LOG("BEGINNING WAVE!!!");
-				wave_state = MIDDLE_WAVE;
-				createWave(waves_info[current_wave], iPoint(1419, 800));
-				wave_wiped = false;
-				break;
+				LOG("WAVE CLEARED!!!");
+				wave_state = END_WAVE;
 			}
-			case(MIDDLE_WAVE) :
-			{
-				LOG("MIDDLE WAVE !!!");
-				if (wave_wiped)
-				{
-					LOG("WAVE CLEARED!!!");
-					wave_state = END_WAVE;
-				}						
-				break;
-			}
+			break;
+		}
 
-			case(END_WAVE):
-			{
-				current_wave++;	
-				if (current_wave > gameInfo.total_waves)
-					current_wave = 0;
-				// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
-				wave_state = WAITING_FOR_WAVE_TO_START;
-				timer_between_waves.start();
-				break;
-			}
-			case(PHASE1_END) : 
-			{
-				LOG("PHASE 1 ENDED");
-				timer_phase2_wave.start();
-				break;
-			}
-			
-		}	
+		case(END_WAVE) :
+		{
+			current_wave++;
+			if (current_wave > gameInfo.total_waves)
+				current_wave = 0;
+			// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
+			wave_state = WAITING_FOR_WAVE_TO_START;
+			timer_between_waves.start();
+			break;
+		}
+		case(PHASE1_END) :
+		{
+			LOG("PHASE 1 ENDED");
+			timer_phase2_wave.start();
+			break;
+		}
+
+		}
 		checkingGameConditions();
 		break;
 	}
 
-	//Second Phase
+					  //Second Phase
 	case(SECOND_PHASE) :
 	{
-		
+
 		switch (wave2_state)
 		{
-			case(WAITING_FOR_PHASE2_TO_START) :
+		case(WAITING_FOR_PHASE2_TO_START) :
+		{
+			LOG("The bomb has landed look for it.");//Audio voice
+
+			//BOMB CREATION GOES HERE
+			//bomb = new bomb();
+
+			if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)//A timer before the bomb when the bomb is landing and there are messages for the player what's to come
 			{
-				LOG("The bomb has landed look for it.");//Audio voice
-				
-				//BOMB CREATION GOES HERE
-				//bomb = new bomb();
-
-				if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)//A timer before the bomb when the bomb is landing and there are messages for the player what's to come
-				{
-					wave2_state = BEGINNING_WAVE_2;
-				}
-
-				break;
-			}
-
-			case(BEGINNING_WAVE_2) :
-			{
-				LOG("BEGINNING WAVE 2!!!");
-				
-				wave2_state = MIDDLE_WAVE_2;
-				createWave(waves2_info[0], iPoint(1419, 800));
-				wave2_power_counter += incrementPhase2WavePower();
-				current_wave = 0;
-				timer_phase2_wave.start();
-				break;
-			}
-
-			case(MIDDLE_WAVE_2) :
-			{
-				LOG("MIDDLE WAVE2 !!!");
-				if (timer_phase2_wave.readSec() > gameInfo.time_before_waves_phase2)
-				{
-					LOG("Wave Creation!!!");
-					wave2_state = END_WAVE_2;
-					timer_phase2_wave.start();
-				}
-				break;
-			}
-			case(END_WAVE_2) :
-			{
-				LOG("WAVE 2 FINISH");
-
 				wave2_state = BEGINNING_WAVE_2;
-				break;
 			}
+
+			break;
+		}
+
+		case(BEGINNING_WAVE_2) :
+		{
+			LOG("BEGINNING WAVE 2!!!");
+
+			wave2_state = MIDDLE_WAVE_2;
+			createWave(waves2_info[0], iPoint(1419, 800));
+			wave2_power_counter += incrementPhase2WavePower();
+			current_wave = 0;
+			timer_phase2_wave.start();
+			break;
+		}
+
+		case(MIDDLE_WAVE_2) :
+		{
+			LOG("MIDDLE WAVE2 !!!");
+			if (timer_phase2_wave.readSec() > gameInfo.time_before_waves_phase2)
+			{
+				LOG("Wave Creation!!!");
+				wave2_state = END_WAVE_2;
+				timer_phase2_wave.start();
+			}
+			break;
+		}
+		case(END_WAVE_2) :
+		{
+			LOG("WAVE 2 FINISH");
+
+			wave2_state = BEGINNING_WAVE_2;
+			break;
+		}
 		}
 		checkingGameConditions();
 
 		break;
 	}
-	case(FINAL_PHASE):
+	case(FINAL_PHASE) :
 	{
 		switch (wave3_state)
 		{
-			case(WAITING_FOR_PHASE3_TO_START) :
-			
+		case(WAITING_FOR_PHASE3_TO_START) :
+
 			break;
 
-			case (BEGINNING_WAVE_3) :
-				LOG("BEGINNING FINAL PHASE!");
-					break;
+		case (BEGINNING_WAVE_3) :
+			LOG("BEGINNING FINAL PHASE!");
+			break;
 
-			case(MIDDLE_WAVE_3) :
-				LOG("MIDDLE WAVE FINAL PHASE!");
-					break;
+		case(MIDDLE_WAVE_3) :
+			LOG("MIDDLE WAVE FINAL PHASE!");
+			break;
 
-			case(END_WAVE_3) :
-				LOG("END WAVE FINAL PHASE");
-					break;
+		case(END_WAVE_3) :
+			LOG("END WAVE FINAL PHASE");
+			break;
 		}
 
 		break;
@@ -342,10 +345,14 @@ bool GameManager::update(float dt)
 			restartGame();
 			displayVictoryScreen();
 			app->audio->playFx(fx_win, 0);
-		}				
+		}
 		break;
 	}
+	case(HOLD) :
+	{
 
+		break;
+	}
 	case(LOSE):
 	{
 		if (!is_defeat_screen_on)
