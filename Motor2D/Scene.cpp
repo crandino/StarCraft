@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "PathFinding.h"
 #include "Scene.h"
+#include "FogOfWar.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -49,7 +50,16 @@ bool Scene::start()
 	rectangle_map_camera->setListener(this);
 	rectangle_map_camera->can_focus = true;
 	rectangle_map_camera->draw_element = false;
-	
+
+	//FOG_OF_WAR 1- Scene Start. Setting up scene, called only once at start.
+	//Setting up fog of war module
+	list<MapData>::iterator item = app->map->data.begin();
+	while (item != app->map->data.end())
+	{
+		app->fog_of_war->setUp(item->tile_width * item->width, item->tile_height * item->height, 256, 256, 2);
+		app->fog_of_war->maps[1]->maxAlpha = 175;
+		item++;
+	}
 	return true;
 }
 
@@ -62,6 +72,7 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
+
 	float cam_speed = 1.0f;
 
 	//test->print("YOOO");
@@ -131,13 +142,22 @@ bool Scene::update(float dt)
 		app->render->blit(path_tile, pos.x, pos.y);
 	}*/
 	//--------------------------------------------------------------------------
-
+	//FOG_OF_WAR 3 - Scene update.Called once every frame.
+	//Draw the Fog of War
+	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		debug = !debug;
+	if (!debug)
+	app->fog_of_war->draw();
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::postUpdate()
 {
+	//FOG_OF_WAR 5 - Scene PosUpdate. Called once every frame.
+	//Clear the low alpha map
+	app->fog_of_war->clearMap(1);
+
 	bool ret = true;
 
 	if(app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)

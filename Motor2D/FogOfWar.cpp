@@ -252,11 +252,13 @@ void FogOfWar::draw()
 		return;
 
 	//Rect to draw, we'll only draw the tiles displayed on screen (culling)
-	int startX = app->render->camera.x / (tileW * 2);
-	int startY = app->render->camera.y / (tileH * 2);
+	iPoint pos = app->render->screenToWorld(app->render->camera.x, app->render->camera.y);
+	int startX = pos.x / (tileW * 1);
+	int startY = pos.y / (tileH * 1);
 
-	int endX = startX + app->render->camera.w / (tileW * 2) + 1;
-	int endY = startY + app->render->camera.h / (tileH * 2) + 1;
+	iPoint pos2 = app->render->screenToWorld(app->render->camera.w, app->render->camera.h);
+	int endX = startX + pos2.x/ (tileW * 1) +1;
+	int endY = startY + pos2.y/ (tileH * 1) +1;
 
 	//Drawing all fog maps
 	for (vector<FogMap*>::reverse_iterator currentMap = maps.rbegin(); currentMap != maps.rend(); currentMap++)
@@ -382,7 +384,7 @@ bool FogOfWar::isVisible(int x, int y)
 int FogOfWar::createMap(int w, int h, int maxAlpha)
 {
 	int ret = -1;
-	fow = app->tex->loadTexture("graphics/tilesets/FogOfWar.png");
+	fow = app->tex->loadTexture("maps/FogOfWar.png");
 
 	FogMap* tmp = new FogMap(w, h);
 	if (ret)

@@ -16,6 +16,7 @@
 #include "Tank.h"
 #include "Gui.h"
 #include "GuiCursor.h"
+#include "FogOfWar.h"
 
 #include "CommandCenter.h"
 #include "Bunker.h"
@@ -266,6 +267,8 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 			it->second->update(dt);
 
+	//FOG_OF_WAR
+	updateFogOfWar();
 	return true;
 }
 
@@ -795,4 +798,38 @@ void EntityManager::entityManualCreation()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, BARRACK);
 	}
+}
+
+void EntityManager::updateFogOfWar()
+{
+	//FOG_OF_WAR 2 - "Update Fog of War" function. Called once every frame.
+	//Drawing all a circle on the map for each allied unit and building
+	
+	if (active_entities.empty() == false)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		while (it != active_entities.end())
+		{
+			if (it->second->faction == PLAYER)
+			{
+				app->fog_of_war->drawCircle(it->second->pos.x, it->second->pos.y, it->second->range_of_vision);
+			}
+			it++;
+		}
+	}
+
+	/*if (buildingList.empty() == false)
+	{
+		std::list<Building*>::iterator buildIt = buildingList.begin();
+		{
+			while (buildIt != buildingList.end())
+			{
+				if ((*buildIt)->stats.player == PLAYER && (*buildIt)->state != BS_DEAD)
+				{
+					App->fogOfWar->DrawCircle((*buildIt)->GetCollider().x + (*buildIt)->GetCollider().w / 2, (*buildIt)->GetCollider().y + (*buildIt)->GetCollider().h / 2, 250);
+				}
+				buildIt++;
+			}
+		}
+	}*/
 }

@@ -158,6 +158,8 @@ private:
 	void			entityManualCreation();
 	void			handleSelection();
 	
+	//FOG_OF_WAR
+	void updateFogOfWar();
 };
 
 #endif // __EntityManager_H__
