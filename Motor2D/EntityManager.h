@@ -99,6 +99,7 @@ public:
 	void	SetEnemyToAttackCommandCenter(Entity* e);
 	Entity* searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	list<Entity*> searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
+	bool checkFocus(Unit* e);
 	Entity* searchEnemyToAttack(Entity* e);
 	Entity* searchAllyToHeal(Entity* e);
 

@@ -16,6 +16,7 @@ public:
 
 	// PathFinding and movement variables
 	bool				has_target;						// If has a target, the unit moves.
+	bool				has_focus = false;						// If the unit make focus
 	vector<iPoint>		path;							// The path returned by the PathFinding that the unit follows...
 	float				speed;							// ...at some speed.
 	iPoint				distance_to_center_selector;    // Useful for PathFinding for groups of units
@@ -28,6 +29,7 @@ public:
 	virtual ~Unit();
 
 	virtual void calculePos();
+	virtual Entity* searchEnemy();
 
 	virtual bool attack(Entity* target_to_attack);
 	virtual void attackWithoutRange(Entity* target_to_attack);

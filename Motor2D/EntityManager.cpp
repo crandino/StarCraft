@@ -488,6 +488,12 @@ void EntityManager::handleSelection()
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();
 					}
+					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER)
+					{
+						unit->target_to_attack = e;
+						unit->has_focus = true;
+						unit->newEntityFound();
+					}
 				}
 			}
 		}
@@ -556,6 +562,25 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 			}
 		}
 	}
+	return ret;
+}
+
+bool EntityManager::checkFocus(Unit* e)
+{
+	bool ret = false;
+	float value = e->range_of_vision;
+	if (e->target_to_attack != NULL && e->target_to_attack->state != DYING)
+	{
+		float d = abs(e->center.x - e->target_to_attack->center.x) + abs(e->center.y - e->target_to_attack->center.y);
+		d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (e->target_to_attack->coll->rect.w / 2 + e->target_to_attack->coll->rect.h / 2) / 2);
+
+		if (d <= value)
+		{
+			ret = true;
+		}
+	}
+	if (!ret)
+		e->has_focus = false;
 	return ret;
 }
 
