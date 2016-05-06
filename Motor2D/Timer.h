@@ -17,7 +17,7 @@ public:
 
 private:
 
-	uint32	started_at;
+	uint32 started_at;
 };
 
 #endif //__Timer_H__

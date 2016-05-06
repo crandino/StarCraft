@@ -43,7 +43,7 @@ bool Gui::awake(pugi::xml_node& conf)
 bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
-	//terran_console = app->tex->loadTexture("TerranConsole/tconsole.png");
+
 	
 	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });

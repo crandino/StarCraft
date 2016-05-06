@@ -81,11 +81,6 @@ bool Render::update(float dt)
 	if (transition_active == true)
 		transition_active = transitioning();
 
-	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		setCameraOnPosition({ 0, 0 });
-	
-	//moveCamera(dt);
-
 	return true;
 }
 

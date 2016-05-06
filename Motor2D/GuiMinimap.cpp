@@ -2,6 +2,8 @@
 #include "Entity.h"
 #include "Input.h"
 
+#include "p2Log.h"
+
 GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
 {
 	type = MINIMAP;
@@ -23,6 +25,11 @@ bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* textur
 	//set scale
 	calculateScale();
 
+	max_ping_width = max_ping_height = area.w * 2;
+
+	ping_duration = 4000;
+	ping_speed = 0.05f;
+
 	return ret;
 }
 
@@ -38,14 +45,24 @@ void GuiMinimap::update()
 		if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
 			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x - rect.x, mouse_pos.y - rect.y }));
 	}
+
+	// Ping update
+	if (ping_active)
+	{
+		if ((uint)ping_timer.read() < ping_duration)
+			updatePing();
+		else
+			ping_active = false;
+	}	
+
+	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		activePing({ 500, 500 });
 }
 
 bool GuiMinimap::cleanUp()
 {
 	bool ret = true;
-
 	// release texture and entities pointer
-
 	return ret;
 }
 
@@ -94,12 +111,6 @@ void GuiMinimap::draw() const
 			Entity* entity = it->second;
 
 			// Set drawing quad for each unit
-		/*	SDL_Rect quad_rect;
-			iPoint p = getLocalPos();
-			quad_rect.x = p.x + int(entity->center.x * scale.x) - app->render->camera.x;
-			quad_rect.y = p.y + int(entity->center.y * scale.y) - app->render->camera.y;
-			quad_rect.w = quad_rect.h = 1;*/
-
 			// Choose quad color
 			Uint8 r, g, b;
 			switch (entity->faction)
@@ -118,13 +129,17 @@ void GuiMinimap::draw() const
 			}
 
 			// send to render
-			iPoint quad_pos = worldToMinimap({(int)entity->center.x, (int)entity->center.y });
+			iPoint quad_pos = worldToMinimap({ (int)entity->center.x, (int)entity->center.y });
 			app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, r, g, b);
 		}
 	}
+
 	// print area
 	iPoint pos = worldToMinimap({ -app->render->camera.x, -app->render->camera.y });
 	app->render->DrawQuad({ pos.x, pos.y, area.w, area.h }, 255, 255, 255, 255, false);
+
+	if (ping_active)
+		app->render->DrawQuad({ (int)ping_position.x - ping_width / 2, (int)ping_position.y - ping_height / 2, ping_width, ping_height }, 255, 0, 0, 255, false);
 }
 
 void GuiMinimap::calculateScale()
@@ -134,4 +149,26 @@ void GuiMinimap::calculateScale()
 
 	area.w = app->render->camera.w * scale.x;
 	area.h = app->render->camera.h * scale.y;
+}
+
+void GuiMinimap::activePing(iPoint attack_position)
+{
+	ping_active = true;
+	ping_position = worldToMinimap(attack_position);
+
+	ping_width = max_ping_width;
+	ping_height = max_ping_height;
+
+	ping_timer.start();
+}
+
+bool GuiMinimap::updatePing()
+{
+	if (ping_width > area.w && ping_height > area.h)
+	{
+		ping_width -= ping_speed * app->getDt();
+		ping_height -= ping_speed * app->getDt();
+	}	
+	
+	return true;
 }
