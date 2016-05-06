@@ -201,9 +201,6 @@ Medic::Medic(iPoint &p)
 	specialization = MEDIC;
 	flying = false;
 
-	// Sounds
-	fx_heal = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Heal.wav");
-
 	// UI paramters
 	selection_type = { 28, 9, 32, 19 };
 	circle_selection_offset = { -2, 0 };
@@ -229,6 +226,14 @@ Medic::Medic(iPoint &p)
 Medic::~Medic()
 {
 	SDL_DestroyTexture(tex);
+}
+
+bool Medic::start()
+{
+	// Sounds
+	fx_heal = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Heal.wav");
+
+	return true;
 }
 
 void Medic::setAnimationFromDirection()

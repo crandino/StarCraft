@@ -463,6 +463,17 @@ void Tank::setAnimationFromDirection()
 	}
 }
 
+bool Tank::start()
+{
+	//Sounds (file names must be changed)
+	fx_sige_mode_on = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_Off.wav");
+	fx_sige_mode_turret = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_On.wav");
+	fx_missile_none_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileNoneSiege.wav");
+	fx_missile_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileSiege.wav");
+
+	return true;
+}
+
 void Tank::draw()
 {
 	app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));

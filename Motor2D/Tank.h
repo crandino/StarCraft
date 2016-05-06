@@ -68,10 +68,17 @@ public:
 
 	bool		siege_mode = false;
 
+	//FX
+	uint fx_sige_mode_on;
+	uint fx_sige_mode_turret;
+	uint fx_missile_none_siege;
+	uint fx_missile_siege;
+
 	Tank() {}
 	Tank(iPoint &p);
 	~Tank();
 
+	bool start();
 	bool update(float dt);
 	void setAnimationFromDirection();
 	void draw();

@@ -74,6 +74,7 @@ public:
 	void setAnimationFromDirection();
 	bool update(float dt);
 	void move(float dt);
+	bool start();
 
 	bool heal();
 };

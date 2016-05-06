@@ -64,6 +64,7 @@ public:
 
 	~Firebat();
 	void move(float dt);
+	bool start();
 	void setAnimationFromDirection();
 	bool update(float dt);
 

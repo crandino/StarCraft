@@ -248,9 +248,6 @@ Marine::Marine(iPoint &p)
 	specialization = MARINE;
 	flying = false;
 
-	// Sounds
-	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
-
 	// UI paramters
 	selection_type = { 3, 4, 22, 13 };
 	circle_selection_offset = { 0, -1 };
@@ -278,6 +275,8 @@ Marine::~Marine()
 
 bool Marine::start()
 {
+	// Sounds
+	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
 	return true;
 }
 
