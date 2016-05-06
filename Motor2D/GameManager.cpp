@@ -47,6 +47,9 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
+	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
+
+
 
 	/*Player Info Load*/
 	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_int();
@@ -234,6 +237,7 @@ bool GameManager::update(float dt)
 			case(PHASE1_END) : 
 			{
 				LOG("PHASE 1 ENDED");
+				timer_phase2_wave.start();
 				break;
 			}
 			
@@ -253,8 +257,12 @@ bool GameManager::update(float dt)
 			{
 				LOG("The bomb has landed look for it.");//Audio voice
 				
+				if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)
+				{
 					wave2_state = BEGINNING_WAVE_2;
-				
+
+				}
+
 				break;
 			}
 

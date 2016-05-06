@@ -71,6 +71,7 @@ struct GameInformation
 	//Time
 	float time_before_waves_phase1;
 	float time_before_waves_phase2;
+	float time_while_bomb_landing;
 	float time_before_start;
 	float time_before_end;
 };

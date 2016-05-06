@@ -35,6 +35,7 @@
     <timeBeforeStart value = "2.0f"/>
     <timeBetweenWavesPhase1 value = "2.0f"/>
     <timeBetweenWavesPhase2 value = "4.0f"/>
+     <timeBeforeWhileBombLanding value ="2"/>
     <timeBeforeEnd value = "20.0f"/>    
     
     <!-- Wave Information -->    
