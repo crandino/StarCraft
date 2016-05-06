@@ -96,14 +96,15 @@ Firebat::Firebat(iPoint &p)
 	attack_down.speed = 0.002f;
 	attack_animation_pack.push_back(&attack_down);
 
-	attack_right_down.frames.push_back({ 384, 128, 64, 64 });
-	attack_right_down.frames.push_back({ 384, 192, 64, 64 });
+	attack_right_down.setAnimations(192, 0, 32, 32, 1, 2, 2);
 	attack_right_down.speed = 0.002f;
 	attack_animation_pack.push_back(&attack_right_down);
 	//----------------------------------------------
 
 	//------------Firebat DEAD----------------------
-	// It's Explosion Particle
+	explosion_dead.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	explosion_dead.anim.speed = 0.02f;
+	explosion_dead.anim.loop = false;
 	//----------------------------------------------
 
 	//-----------Firebat Particles------------------
@@ -135,7 +136,7 @@ Firebat::Firebat(iPoint &p)
 	fire_left.anim.speed = 0.02f;
 	fire_left.anim.loop = true;
 
-	fire_left_up.anim.setAnimations(325, 0, 80, 72, 1, 13, 13);
+	fire_left_up.anim.setAnimations(409, 0, 80, 72, 1, 13, 13);
 	fire_left_up.anim.speed = 0.02f;
 	fire_left.anim.loop = true;
 

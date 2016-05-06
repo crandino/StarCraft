@@ -51,6 +51,8 @@ public:
 	Particle	fire_left;
 	Particle	fire_left_up;
 
+	Particle	explosion_dead;
+
 
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
 	bool			     inside_bunker = false;		// It's inside?
