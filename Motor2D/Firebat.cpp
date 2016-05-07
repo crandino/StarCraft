@@ -489,7 +489,7 @@ bool Firebat::update(float dt)
 	return true;
 }
 
-void Firebat::resetFireParticle()
+void Firebat::resetParticle()
 {
 	if (fire_up.on || fire_right_up.on || fire_right.on || fire_right_down.on || fire_down.on || fire_left_down.on || fire_left.on || fire_left_up.on)
 	{
@@ -512,23 +512,23 @@ void Firebat::setParticleBehaviour()
 	switch (state)
 	{
 	case IDLE:
-		resetFireParticle();
+		resetParticle();
 		break;
 	case MOVE:
-		resetFireParticle();
+		resetParticle();
 		break;
 	case MOVE_ALERT:
-		resetFireParticle();
+		resetParticle();
 		break;
 	case MOVE_ALERT_TO_ATTACK:
-		resetFireParticle();
+		resetParticle();
 		break;
 	case ATTACK:
 		if (current_animation == &attack_up)
 		{
 			if (particle != NULL && !fire_up.on)
 			{
-				resetFireParticle();
+				resetParticle();
 			}
 			if (!fire_up.on)
 			{
@@ -545,7 +545,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_right_up.on)
 			{
-				resetFireParticle();
+				resetParticle();
 
 			}
 
@@ -562,7 +562,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_right.on)
 			{
-				resetFireParticle();
+				resetParticle();
 
 			}
 
@@ -579,7 +579,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_right_down.on)
 			{
-				resetFireParticle();
+				resetParticle();
 			}
 
 			if (!fire_right_down.on)
@@ -595,7 +595,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_down.on)
 			{
-				resetFireParticle();
+				resetParticle();
 			}
 
 			if (!fire_down.on)
@@ -611,7 +611,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_left_down.on)
 			{
-				resetFireParticle();
+				resetParticle();
 			}
 
 			if (!fire_left_down.on)
@@ -626,7 +626,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_left.on)
 			{
-				resetFireParticle();
+				resetParticle();
 			}
 
 			if (!fire_left.on)
@@ -642,7 +642,7 @@ void Firebat::setParticleBehaviour()
 		{
 			if (particle != NULL && !fire_left_up.on)
 			{
-				resetFireParticle();
+				resetParticle();
 			}
 
 			if (!fire_left_up.on)
@@ -655,7 +655,7 @@ void Firebat::setParticleBehaviour()
 		}
 		break;
 	case DYING:
-		resetFireParticle();
+		resetParticle();
 		particle = app->particle->addParticle(explosion_dead, center.x, center.y, 0, 0, 1, explosion_dead.image);
 		break;
 	}

@@ -654,6 +654,10 @@ void GameManager::restartGame()
 	{
 		it->second->coll->to_delete = true;
 		it->second->to_delete = true;
+		if (it->second->particle != NULL)
+		{
+			it->second->particle->alive = false;
+		}
 	}
 	//---------------------------------------------------------
 
