@@ -6,6 +6,17 @@
 class Ultralisk : public Unit
 {
 public:
+	//IDLE animation
+	Animation idle_up;
+	Animation idle_right_up;
+	Animation idle_right;
+	Animation idle_right_down;
+	Animation idle_down;
+	Animation idle_left_down;
+	Animation idle_left;
+	Animation idle_left_up;
+
+	vector<Animation*> idle_animation_pack;
 
 	// MOVING animations
 	Animation	walk_up;
