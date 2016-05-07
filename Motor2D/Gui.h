@@ -132,7 +132,7 @@ public:
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
-	Bunker* bunker_to_leave;
+	list<Bunker*> bunker_to_leave;
 
 	//HUD Label-----------------------------
 	GuiLabel* number_of_wave = nullptr;

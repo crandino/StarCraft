@@ -431,8 +431,16 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 			//Method to leave the bunker
 		case(MOUSE_LCLICK_DOWN) :
-			
-			bunker_to_leave->getEntitiesOutside();
+			for (list<Bunker*>::iterator it = bunker_to_leave.begin(); it != bunker_to_leave.end();)
+			{
+				if (app->entity_manager->selection.begin()->first == it._Ptr->_Myval->id)
+				{
+					it._Ptr->_Myval->getEntitiesOutside();
+					it = bunker_to_leave.erase(it);
+				}
+				else
+					it++;
+			}
 			break;
 		}
 	}

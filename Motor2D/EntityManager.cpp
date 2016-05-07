@@ -609,12 +609,12 @@ void EntityManager::handleSelection()
 					if ((it->second->specialization == MARINE && e->specialization == BUNKER))
 					{
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
-						app->gui->bunker_to_leave = (Bunker*)e;
+						app->gui->bunker_to_leave.push_back((Bunker*)e);
 					}
 					else if ((it->second->specialization == FIREBAT && e->specialization == BUNKER))
 					{
 						((Firebat*)unit)->bunker_to_fill = (Bunker*)e;
-						app->gui->bunker_to_leave = (Bunker*)e;
+						app->gui->bunker_to_leave.push_back((Bunker*)e);
 					}
 					else if (it->second->specialization == JIM_RAYNOR)
 					{
@@ -626,7 +626,7 @@ void EntityManager::handleSelection()
 						else if (e->specialization == BUNKER)
 						{
 							jim->bunker_to_fill = (Bunker*)e;
-							app->gui->bunker_to_leave = (Bunker*)e;
+							app->gui->bunker_to_leave.push_back((Bunker*)e);
 						}
 					}
 					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
