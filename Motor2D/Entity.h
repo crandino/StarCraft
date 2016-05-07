@@ -64,7 +64,8 @@ public:
 	// Graphics
 	SDL_Texture		*tex;
 	Animation		*current_animation;
-	Particle		*particle;
+	Particle		*particle;					//Pointer to control the particles on entities
+	Particle		*particle_aux;				//Auxiliar pointer to control more particles
 	iPoint			particle_offset;
 	int		     	tex_width, tex_height;		// Dimensions of the sections of the frames
 
