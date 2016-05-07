@@ -14,6 +14,7 @@
 #include <map>
 #include "Entity.h"
 #include "Bomb.h"
+#include "PathFinding.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -471,6 +472,9 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 		entity_to_add = app->entity_manager->addEntity(position, ZERGLING);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->zergling_quantity * i * 2), command_center_position.y + (wave->zergling_quantity * i * 2) - 100);
+		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
+			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
 	}
 
 	for (uint i = 0; i < wave->hydralisk_quantity; i++)
@@ -482,6 +486,9 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 		entity_to_add = app->entity_manager->addEntity(position, HYDRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->hydralisk_quantity * i * 2), command_center_position.y + (wave->hydralisk_quantity * i * 2) - 100);
+		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
+			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
 	}
 
 	for (uint i = 0; i < wave->ultralisk_quantity; i++)
@@ -493,6 +500,9 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->ultralisk_quantity * i * 2), command_center_position.y + (wave->ultralisk_quantity * i * 2) - 100);
+		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
+			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
 	}
 
 	for (uint i = 0; i < wave->mutalisk_quantity; i++)
@@ -504,6 +514,9 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 		entity_to_add = app->entity_manager->addEntity(position, MUTALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->mutalisk_quantity * i * 2), command_center_position.y + (wave->mutalisk_quantity * i * 2) - 100);
+		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
+			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
 	}
 }
 
