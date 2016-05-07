@@ -343,9 +343,12 @@ void Jym_Raynor::move(float dt)
 
 					if (bunker_to_fill != NULL)
 						bunker_to_fill->getEntityInside(this);
-					else if (taking_bomb)
+					
+					else if (!taking_bomb)
 					{
 						//TAKE BOMB CODE HERE
+						GetBomb();
+						taking_bomb = true;
 					}
 					break;
 
@@ -442,3 +445,10 @@ void Jym_Raynor::setAnimationFromDirection()
 	}
 }
 
+void Jym_Raynor::GetBomb()
+{
+	bomb = (Entity*)(app->game_manager->bomb);
+
+
+
+}

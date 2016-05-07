@@ -10,7 +10,7 @@ class Bomb : public Building
 {
 public:
 
-	//Animation					idle;
+	Animation					idle;
 	bool						isPicked = false;
 	
 	

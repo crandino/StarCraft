@@ -166,9 +166,9 @@ bool GameManager::start()
 	exit_button->setListener(this);
 
 	game_state = INITIAL_SCREEN;
-	iPoint bombPosition = { 1700, 2250 };
+
 	
-	bomb = new Bomb(bombPosition);
+	
 
 	return ret;
 }
@@ -177,9 +177,6 @@ bool GameManager::preUpdate()
 {
 	eraseEnemiesIfKilled();
 	isWaveClear();
-
-
-	
 
 	return true;
 }
@@ -267,8 +264,11 @@ bool GameManager::update(float dt)
 			LOG("The bomb has landed look for it.");//Audio voice
 
 			//BOMB CREATION GOES HERE
-			//bomb = new bomb();
-
+			if (!bombCreated)
+			{
+				bomb = (Bomb*)app->entity_manager->addEntity(iPoint(1700,2250), BOMB);
+				bombCreated = false;
+			}
 			if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)//A timer before the bomb when the bomb is landing and there are messages for the player what's to come
 			{
 				wave2_state = BEGINNING_WAVE_2;
@@ -491,8 +491,8 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 bool GameManager::postUpdate()
 {
-	if (game_state == SECOND_PHASE)
-		app->render->DrawQuad({1700, 2250, 30, 30}, 0, 206, 209);
+	//if (game_state == SECOND_PHASE)
+		//app->render->DrawQuad({1700, 2250, 30, 30}, 0, 206, 209);
 	
 	return true;
 }
@@ -523,7 +523,6 @@ bool GameManager::cleanUp()
 	waves_info.clear();
 	waves2_info.clear();
 
-	RELEASE(bomb);
 	return true;
 }
 

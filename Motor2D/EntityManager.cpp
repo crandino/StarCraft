@@ -20,6 +20,7 @@
 #include "GuiCursor.h"
 #include "FogOfWar.h"
 
+#include "Bomb.h"
 #include "CommandCenter.h"
 #include "Bunker.h"
 #include "Barrack.h"
@@ -145,9 +146,16 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		LOG("Creating Barrack");
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
-		building_mode = true;
 		break;
+
+	case(BOMB) :
+		LOG("Bomb created");
+		e = new Bomb(pos);
+		building_to_place = (Building*)e;
+		building_mode = true;
 	}
+	
+
 
 	if (e != NULL && building_mode != true)
 	{

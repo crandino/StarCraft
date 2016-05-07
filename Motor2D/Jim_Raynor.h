@@ -40,15 +40,17 @@ public:
 	Animation	attack_left_up;
 	vector<Animation*>   attack_animation_pack;
 
+	
+
 	// Dead animation
 	Animation	dead;
 
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Jym_Raynor
 	bool			     inside_bunker = false;		// It's inside?
 
-	bool				 taking_bomb;
-
-	unsigned int fx_attack;
+	bool				 taking_bomb = false;
+	Entity*				 bomb;
+	unsigned int		 fx_attack;
 
 	Jym_Raynor() {};
 	Jym_Raynor(iPoint &p);
@@ -57,7 +59,7 @@ public:
 	bool start();
 	void move(float dt);
 	void setAnimationFromDirection();
-
+	void GetBomb();
 };
 
 #endif __JYM_RAYNOR_H__

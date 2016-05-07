@@ -111,6 +111,9 @@ void Collision::drawDebug(Collider *col)
 	case COLLIDER_UNIT:
 		app->render->DrawQuad(col->rect, 255, 0, 255, alpha, false);
 		break;
+	case COLLIDER_BOMB:
+		app->render->DrawQuad(col->rect, 0, 205, 255, alpha, false);
+		break;
 	}
 }
 

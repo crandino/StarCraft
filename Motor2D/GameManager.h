@@ -231,10 +231,10 @@ public:
 	FINAL_STATE			 wave3_state;
 
 	vector<SizeWave*>	 waves_info;
-	vector<SizeWave*>   waves2_info;
+	vector<SizeWave*>    waves2_info;
 	
 	iPoint command_center_position;
-
+	Bomb*				 bomb;
 private:
 
 	uint				 current_wave;
@@ -256,7 +256,7 @@ private:
 
 	//Player Info
 	//Bomb				bomb;
-	
+	bool				bombCreated = false;
 
 	// Check the conditions to finish the game
 	void				checkingGameConditions();
@@ -265,7 +265,7 @@ private:
 	
 	//Phase 2 
 	int					incrementPhase2WavePower();
-	Bomb*				bomb;
+
 	bool				hold = false;
 };
 
