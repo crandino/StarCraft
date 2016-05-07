@@ -522,6 +522,13 @@ void EntityManager::handleSelection()
 					{
 						((Jym_Raynor*)unit)->taking_bomb = true;
 					}
+					else if (it->second->specialization == JYM_RAYNOR && e->specialization == COMMANDCENTER)
+					{
+						if (((Jym_Raynor*)unit)->bomb != NULL)
+						{
+							//place bomb code here
+						}
+					}
 				}
 			}
 		}
