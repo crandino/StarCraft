@@ -315,6 +315,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->mineral_resources >= 50)
 			app->entity_manager->create_SCV = true;
 			info_scv->draw_element = false;
 			break;
@@ -362,6 +363,63 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->entity_manager->create_barrack = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_marine)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 75)
+			app->entity_manager->create_marine = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_medic)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 100 || app->game_manager->mineral_resources >= 75)
+			app->entity_manager->create_medic = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_firebat)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 200 || app->game_manager->mineral_resources >= 50)
+			app->entity_manager->create_firebat = true;
 			break;
 
 		}

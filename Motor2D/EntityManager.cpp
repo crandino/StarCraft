@@ -264,6 +264,75 @@ bool EntityManager::preUpdate()
 		}
 	}
 
+	if (create_marine)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_barrack;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == BARRACK)
+			{
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->gas_resources -= 50;
+				app->game_manager->mineral_resources -= 75;
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
+
+				addEntity(position, MARINE);
+				create_marine = false;
+				break;
+			}
+		}
+	}
+
+	if (create_medic)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_barrack;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == BARRACK)
+			{
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->gas_resources -= 100;
+				app->game_manager->mineral_resources -= 75;
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
+
+				addEntity(position, MEDIC);
+				create_medic = false;
+				break;
+			}
+		}
+	}
+
+	if (create_firebat)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_barrack;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == BARRACK)
+			{
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->gas_resources -= 200;
+				app->game_manager->mineral_resources -= 50;
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
+
+				addEntity(position, FIREBAT);
+				create_firebat = false;
+				break;
+			}
+		}
+	}
+
 	if (create_bunker)
 	{
 		iPoint position;
