@@ -166,8 +166,6 @@ bool GameManager::start()
 	exit_button->setListener(this);
 
 	game_state = INITIAL_SCREEN;
-
-	
 	
 
 	return ret;
@@ -439,6 +437,12 @@ void GameManager::checkingGameConditions()
 		game_state = LOSE;
 		start_game = false;
 	}
+
+	if (jym_raynor_killed)
+	{
+		game_state = LOSE;
+		start_game = false;
+	}
 }
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
@@ -535,6 +539,7 @@ void GameManager::startGame()
 	iPoint p = command_center_position;
 	app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
 	command_center_destroyed = false;
+	jym_raynor_killed = false;
 	start_game = true;
 
 	defeat_screen->draw_element = false;
@@ -550,8 +555,12 @@ void GameManager::startGame()
 	unsigned int size_marines_y = SIZEMARINESY ;
 
 	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
-	app->render->setCameraOnPosition(p);
+	
+	app->entity_manager->addEntity(iPoint(1500, 2150), JYM_RAYNOR);
 
+
+	app->render->setCameraOnPosition(p);
+	
 	timer_between_waves.start();
 }
 
@@ -724,20 +733,16 @@ void GameManager::AddPointsEnemy(Entity* e)
 {
 	if (e->specialization == ZERGLING)
 	{
-		mineral_resources += 50;
+		mineral_resources += 25;
 		gas_resources += 0;
 	}
 
-	/*
+	
 	else if (e->specialization == HYDRALISK)
 	{
-		mineral_resources += 50;
-		gas_resources += 0;
+		mineral_resources += 30;
+		gas_resources += 25;
 	}
-	.
-	.
-	.
-	.
-	*/
+	
 
 }

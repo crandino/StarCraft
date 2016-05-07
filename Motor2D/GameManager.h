@@ -198,9 +198,10 @@ public:
 	GuiImage* retry_button = nullptr;
 	GuiImage* exit_button = nullptr;
 
-	//commandCenterDestroyed
-	// CRZ -> 
+	//Lose Conditions
+	// 
 	bool command_center_destroyed = false;
+	bool jym_raynor_killed = false;
 	// -> Otra variable para indicar que ha muerto Jim Raynor!
 
 	//Sound

@@ -153,6 +153,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e = new Bomb(pos);
 		building_to_place = (Building*)e;
 		building_mode = true;
+		break;
 	}
 	
 
@@ -213,10 +214,16 @@ bool EntityManager::preUpdate()
 
 			app->path->erase(it->first);
 
+			if (it->second->specialization == JYM_RAYNOR)
+				app->game_manager->jym_raynor_killed = true;
+
+
 			if (it->second->type == BUILDING)
 			{
 				if (it->second->specialization == COMMANDCENTER)
 					app->game_manager->command_center_destroyed = true;
+
+			
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
