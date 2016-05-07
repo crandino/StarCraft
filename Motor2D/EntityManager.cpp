@@ -467,7 +467,7 @@ void EntityManager::handleSelection()
 		map<uint, Entity*>::iterator it = selection.begin();
 		for (; it != selection.end(); ++it)
 		{
-			if (it->second->type == UNIT)
+			if (it->second->type == UNIT && it->second->state != DYING)
 			{
 				Unit *unit = (Unit*)it->second;
 				if (selection.size() == 1)
