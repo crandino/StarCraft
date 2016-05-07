@@ -159,16 +159,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
-		// Command center creation, special treatment
-		if (e->specialization == COMMANDCENTER)
+		// Building creation, special treatment
+		if (e->type == BUILDING)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
 		}
-
-		// Bomb creation, special treatment
-		if (e->specialization == BOMB)
-			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 	}
 
 	return e;
