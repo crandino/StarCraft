@@ -251,7 +251,7 @@ bool Gui::start()
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	// Create the GuiMinimap
-	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png");
+	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/finalminimap.png");
 	mini_map->setLocalPos(6, 348);
 
 	return true;
