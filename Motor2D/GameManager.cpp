@@ -57,15 +57,11 @@ bool GameManager::awake(pugi::xml_node &node)
 	command_center_position.x = node.child("CommandCenterPosition").attribute("coordx").as_int();
 	command_center_position.y = node.child("CommandCenterPosition").attribute("coordy").as_int();
 
-
-
-
 	/*Score data Load*/
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
 	hydralisk_score = node.child("HydraliskScore").attribute("value").as_uint();
 	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
 	ultralisk_score = node.child("UltraliskScore").attribute("value").as_uint();
-
 
 	/*Wave Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave"); tempNode; tempNode = tempNode.next_sibling("SizeWave"))
@@ -167,23 +163,20 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
-	
-	
-
 	return ret;
 }
 
 bool GameManager::preUpdate()
 {
 	eraseEnemiesIfKilled();
-	isWaveClear();
-
+	
 	return true;
 }
 
 bool GameManager::update(float dt)
 {
 	bool ret = true;
+
 	if (hold)
 		game_state = HOLD;
 
@@ -206,7 +199,7 @@ bool GameManager::update(float dt)
 		case(WAITING_FOR_WAVE_TO_START) :
 		{
 			// CRZ -> Se mostraría informe de la siguiente oleada.
-			LOG("WAITING WAVE TO START");
+			LOG("WAITING WAVE TO START - PHASE 1");
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
 				wave_state = BEGINNING_WAVE;
 			break;
@@ -214,18 +207,19 @@ bool GameManager::update(float dt)
 
 		case(BEGINNING_WAVE) :
 		{
-			LOG("BEGINNING WAVE!!!");
+			LOG("BEGINNING WAVE - PHASE 1!!!");
 			wave_state = MIDDLE_WAVE;
-			createWave(waves_info[current_wave], iPoint(1419, 800));
+			createWave(waves_info[current_wave], iPoint(1450, 1200));
 			wave_wiped = false;
 			break;
 		}
 		case(MIDDLE_WAVE) :
 		{
-			LOG("MIDDLE WAVE !!!");
+			LOG("MIDDLE WAVE - PHASE 1!!!");
+			isWaveClear();
 			if (wave_wiped)
 			{
-				LOG("WAVE CLEARED!!!");
+				LOG("WAVE CLEARED - PHASE 1!!!");
 				wave_state = END_WAVE;
 			}
 			break;
@@ -234,110 +228,79 @@ bool GameManager::update(float dt)
 		case(END_WAVE) :
 		{
 			current_wave++;
-			if (current_wave > gameInfo.total_waves)
-				current_wave = 0;
-			// CRZ-> Es la última wave? Saber que tenemos que saltar a la SECOND_PHASE!
 			wave_state = WAITING_FOR_WAVE_TO_START;
 			timer_between_waves.start();
 			break;
 		}
-		case(PHASE1_END) :
-		{
-			LOG("PHASE 1 ENDED");
-			timer_phase2_wave.start();
-			break;
-		}
 
 		}
 		checkingGameConditions();
 		break;
 	}
 
-					  //Second Phase
-	case(SECOND_PHASE) :
+	case(BOMB_LANDING) :
 	{
-
-		switch (wave2_state)
+		//BOMB CREATION GOES HERE
+		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
 		{
-		case(WAITING_FOR_PHASE2_TO_START) :
+			LOG("The bomb has landed look for it."); //Audio voice
+			bomb = (Bomb*)app->entity_manager->addEntity(iPoint(535, 2300), BOMB);
+			game_state = SECOND_PHASE;
+		}
+		break;
+	}
+
+	//Second Phase
+	case(SECOND_PHASE):
+	{
+		switch (wave_state)
 		{
-			LOG("The bomb has landed look for it.");//Audio voice
-
-			//BOMB CREATION GOES HERE
-			if (!bombCreated)
-			{
-				bomb = (Bomb*)app->entity_manager->addEntity(iPoint(1700,2250), BOMB);
-				bombCreated = false;
-			}
-			if (timer_phase2_wave.readSec() > gameInfo.time_while_bomb_landing)//A timer before the bomb when the bomb is landing and there are messages for the player what's to come
-			{
-				wave2_state = BEGINNING_WAVE_2;
-			}
-
+	
+		case(WAITING_FOR_WAVE_TO_START) :
+		{
+			LOG("WAITING WAVE TO START - PHASE 2");
+			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase2)
+				wave_state = BEGINNING_WAVE;
 			break;
 		}
 
-		case(BEGINNING_WAVE_2) :
+		case(BEGINNING_WAVE) :
 		{
-			LOG("BEGINNING WAVE 2!!!");
+			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
-			wave2_state = MIDDLE_WAVE_2;
-			createWave(waves2_info[0], iPoint(1419, 800));
+			createWave(waves2_info[0], iPoint(1450, 1200));
 			wave2_power_counter += incrementPhase2WavePower();
-			current_wave = 0;
-			timer_phase2_wave.start();
+			wave_state = MIDDLE_WAVE;
+			wave_wiped = false;
 			break;
 		}
 
-		case(MIDDLE_WAVE_2) :
+		case(MIDDLE_WAVE) :
 		{
-			LOG("MIDDLE WAVE2 !!!");
-			if (timer_phase2_wave.readSec() > gameInfo.time_before_waves_phase2)
+			LOG("MIDDLE WAVE - PHASE 2 !!!");
+			isWaveClear();
+			if (wave_wiped)
 			{
-				LOG("Wave Creation!!!");
-				wave2_state = END_WAVE_2;
-				timer_phase2_wave.start();
+				LOG("WAVE CLEARED - PHASE 2!!!");
+				wave_state = END_WAVE;
 			}
 			break;
 		}
-		case(END_WAVE_2) :
+		case(END_WAVE) :
 		{
-			LOG("WAVE 2 FINISH");
-
-			wave2_state = BEGINNING_WAVE_2;
+			LOG("WAVE 2 FINISH - PHASE 2");
+			current_wave++;
+			wave_state = WAITING_FOR_WAVE_TO_START;
+			timer_between_waves.start();
 			break;
 		}
 		}
+
 		checkingGameConditions();
-
-		break;
-	}
-	case(FINAL_PHASE) :
-	{
-		switch (wave3_state)
-		{
-		case(WAITING_FOR_PHASE3_TO_START) :
-
-			break;
-
-		case (BEGINNING_WAVE_3) :
-			LOG("BEGINNING FINAL PHASE!");
-			break;
-
-		case(MIDDLE_WAVE_3) :
-			LOG("MIDDLE WAVE FINAL PHASE!");
-			break;
-
-		case(END_WAVE_3) :
-			LOG("END WAVE FINAL PHASE");
-			break;
-		}
-
 		break;
 	}
 
-
-	case(WIN) :
+	case(WIN):
 	{
 		if (!is_victory_screen_on)
 		{
@@ -346,11 +309,6 @@ bool GameManager::update(float dt)
 			displayVictoryScreen();
 			app->audio->playFx(fx_win, 0);
 		}
-		break;
-	}
-	case(HOLD) :
-	{
-
 		break;
 	}
 	case(LOSE):
@@ -364,7 +322,10 @@ bool GameManager::update(float dt)
 		}				
 		break;
 	}
-	
+	case(HOLD) :
+	{
+		break;
+	}	
 	case(QUIT): //When close button is pressed
 	{
 		return false;
@@ -422,9 +383,11 @@ int GameManager::incrementPhase2WavePower()
 
 void GameManager::checkingGameConditions()
 {
-	if (current_wave == gameInfo.total_waves)
+	if (game_state == FIRST_PHASE && current_wave == gameInfo.total_waves)
 	{
-		game_state = SECOND_PHASE;
+		LOG("END OF PHASE 1");
+		timer_between_game_states.start();
+		game_state = BOMB_LANDING;
 	}
 	
 	/*PHASE 3
@@ -506,7 +469,7 @@ bool GameManager::isWaveClear()
 {
 	wave_wiped = current_wave_entities.empty() ? true : false;
 	
-	if (wave_wiped == true)
+	if (wave_wiped)
 		LOG("WAVE_WIPED");
 
 	return wave_wiped;
@@ -574,7 +537,6 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			start_button->disable_element();
 			close_button->disable_element();
 
-			time_before_starting_game.start();	
 			game_state = PREPARATION;
 			app->audio->playFx(fx_click, 0);
 			break;
@@ -653,8 +615,6 @@ void GameManager::restartGame()
 	resources = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
-
-	time_before_starting_game.start();
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.
@@ -698,7 +658,7 @@ bool GameManager::isGameStarted() const
 
 void GameManager::eraseEnemiesIfKilled()
 {
-	if (current_wave_entities.size() > 0 && (wave_state == MIDDLE_WAVE || wave2_state == MIDDLE_WAVE))
+	if (current_wave_entities.size() > 0 && (wave_state == MIDDLE_WAVE))
 	{
 		map<uint, Entity*>::iterator it2 = current_wave_entities.begin();
 		for (; it2 != current_wave_entities.end();)
@@ -716,7 +676,6 @@ void GameManager::eraseEnemiesIfKilled()
 			}
 		}
 	}
-
 }
 
 

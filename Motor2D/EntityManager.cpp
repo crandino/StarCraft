@@ -151,11 +151,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
-		building_to_place = (Building*)e;
-		building_mode = true;
+		break;
 	}
-	
-
 
 	if (e != NULL && building_mode != true)
 	{
@@ -168,6 +165,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
 		}
+
+		// Bomb creation, special treatment
+		if (e->specialization == BOMB)
+			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 	}
 
 	return e;
