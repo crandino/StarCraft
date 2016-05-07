@@ -15,6 +15,7 @@
 #include "Ultralisk.h"
 #include "Hydralisk.h"
 #include "Tank.h"
+#include "Jim_Raynor.h"
 #include "Gui.h"
 #include "GuiCursor.h"
 #include "FogOfWar.h"
@@ -102,6 +103,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(MEDIC) :
 		LOG("Creating Medic");
 		e = new Medic(pos);
+		break;
+	case(JYM_RAYNOR) :
+		LOG("Creating Jym Raynor");
+		e = new Jym_Raynor(pos);
 		break;
 	case(FIREBAT) :
 		LOG("Creating Firebat");
@@ -476,11 +481,25 @@ void EntityManager::handleSelection()
 						unit->state = WAITING_PATH_MOVE;
 				}
 
+				if (it->second->specialization == MARINE || it->second->specialization == JYM_RAYNOR)
+				{
+					if (it->second->specialization == MARINE)
+						((Marine*)unit)->bunker_to_fill = NULL;
+					else //(it->second->specialization == JYM_RAYNOR)
+					{
+						((Jym_Raynor*)unit)->bunker_to_fill = NULL;
+						((Jym_Raynor*)unit)->taking_bomb = false;
+					}
+				}
+
 				if (e != NULL)
 				{
-					if (it->second->specialization == MARINE && e->specialization == BUNKER)
+					if ((it->second->specialization == MARINE || it->second->specialization == JYM_RAYNOR) && e->specialization == BUNKER)
 					{
-						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
+						if (it->second->specialization == MARINE)
+							((Marine*)unit)->bunker_to_fill = (Bunker*)e;
+						else //(it->second->specialization == JYM_RAYNOR)
+							((Jym_Raynor*)unit)->bunker_to_fill = (Bunker*)e;
 						app->gui->bunker_to_leave = (Bunker*)e;
 					}
 					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
@@ -493,6 +512,10 @@ void EntityManager::handleSelection()
 						unit->target_to_attack = e;
 						unit->has_focus = true;
 						unit->newEntityFound();
+					}
+					else if (it->second->specialization == JYM_RAYNOR && e->specialization == BOMB)
+					{
+						((Jym_Raynor*)unit)->taking_bomb = true;
 					}
 				}
 			}
@@ -829,6 +852,13 @@ void EntityManager::entityManualCreation()
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, FIREBAT);
+	}
+
+	if (app->input->getKey(SDL_SCANCODE_J) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, JYM_RAYNOR);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
