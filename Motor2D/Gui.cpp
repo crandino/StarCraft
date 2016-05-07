@@ -127,28 +127,28 @@ bool Gui::start()
 	ui_create_barraks->draw_element = false;
 
 	//Create Turrets
-	ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });//Disabled section { 522, 125, 37, 34 }
-	ui_create_turrets->setLocalPos(597, 358);
-	ui_create_turrets->interactive = false;
-	ui_create_turrets->can_focus = true;
-	ui_create_turrets->setListener(this);
-	ui_create_turrets->draw_element = false;
+	//ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });//Disabled section { 522, 125, 37, 34 }
+	//ui_create_turrets->setLocalPos(597, 358);
+	//ui_create_turrets->interactive = false;
+	//ui_create_turrets->can_focus = true;
+	//ui_create_turrets->setListener(this);
+	//ui_create_turrets->draw_element = false;
 
 	//Create factory
 	ui_create_factory = app->gui->createImage(NULL, { 377, 64, 37, 34 });//Disabled section { 561, 125, 37, 34 }
-	ui_create_factory->setLocalPos(505, 398);
+	ui_create_factory->setLocalPos(597, 358);
 	ui_create_factory->interactive = false;
 	ui_create_factory->can_focus = true;
 	ui_create_factory->setListener(this);
 	ui_create_factory->draw_element = false;
 	
 	//Create starport
-	ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
-	ui_create_starport->setLocalPos(551, 398);
-	ui_create_starport->interactive = false;
-	ui_create_starport->can_focus = true;
-	ui_create_starport->setListener(this);
-	ui_create_starport->draw_element = false;
+	//ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
+	//ui_create_starport->setLocalPos(551, 398);
+	//ui_create_starport->interactive = false;
+	//ui_create_starport->can_focus = true;
+	//ui_create_starport->setListener(this);
+	//ui_create_starport->draw_element = false;
 
 	//SCV Button
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });//Disabled section { 440, 89, 37, 34 }
@@ -294,6 +294,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			else
 			{
 				buildingMenuOpened = false;
+				ui_create_builds->setSection({ 298, 28, 37, 34 });
 				ui_create_builds->setLocalPos(551, 358);
 
 			}
@@ -388,10 +389,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_leave_bunker->disable_element();
 				  ui_create_bunker->disable_element();
 				  ui_create_barraks->disable_element();
-				  ui_create_turrets->disable_element();
 				  ui_create_factory->disable_element();
-				  ui_create_starport->disable_element();
-
+				
 				  ui_create_marine->disable_element();
 				  ui_create_medic->disable_element();
 				  ui_create_firebat->disable_element();
@@ -407,6 +406,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
 
@@ -426,9 +426,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->disable_element();
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
+
 
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
@@ -443,6 +442,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
 
@@ -464,9 +464,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->disable_element();
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
+			 
 
 			  ui_create_marine->enable_element();
 			  ui_create_medic->enable_element();
@@ -478,6 +477,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  if (buildingMenuOpened)
 			  {
 		     	  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
 
@@ -498,9 +498,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->disable_element();
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
 
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
@@ -516,10 +514,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_create_builds->disable_element();
 				  ui_leave_bunker->disable_element();
 				  ui_create_bunker->disable_element();
-				  ui_create_barraks->disable_element();						
-				  ui_create_turrets->disable_element();						
+				  ui_create_barraks->disable_element();											
 				  ui_create_factory->disable_element();
-				  ui_create_starport->disable_element();
+				 
 				  
 				  //Activate default entities
 				  rectangle_command->draw_element = true;
@@ -822,8 +819,8 @@ void Gui::openBuildingMenu()
 	rectangle_command_2->draw_element = false;
 	rectangle_command_3->draw_element = false;
 	rectangle_command_4->draw_element = false;
-	rectangle_command_5->draw_element = false;
-	rectangle_command_6->draw_element = false;
+	rectangle_command_5->draw_element = true;
+	rectangle_command_6->draw_element = true;
 	rectangle_command_7->draw_element = true;
 	rectangle_command_8->draw_element = true;
 	rectangle_command_9->draw_element = true;
@@ -832,15 +829,14 @@ void Gui::openBuildingMenu()
 
 	//Activate new images
 	ui_create_bot->disable_element();
-	ui_create_builds->setLocalPos(597, 398);
+	ui_create_builds->setLocalPos(505, 398);
+	ui_create_builds->setSection({ 338, 28, 37, 34 });
 	ui_create_builds->enable_element();
 
 	ui_create_bunker->enable_element();
 	ui_create_barraks->enable_element();
-	ui_create_turrets->enable_element();
 	ui_create_factory->enable_element();
-	ui_create_starport->enable_element();
-
+	
 }
 
 void Gui::controlIconsSprite()
@@ -862,12 +858,6 @@ void Gui::controlIconsSprite()
 		//Barracks 
 		ui_create_barraks->setSection({ 482, 125, 37, 34 });
 		ui_create_barraks->unable_element();
-		//Turrets
-		ui_create_turrets->setSection({ 522, 125, 37, 34 });
-		ui_create_turrets->unable_element();
-		//Starport
-		ui_create_starport->setSection({ 440, 162, 37, 34 });
-		ui_create_starport->unable_element();
 		//Factory
 		ui_create_factory->setSection({ 561, 125, 37, 34 });
 		ui_create_factory->unable_element();
