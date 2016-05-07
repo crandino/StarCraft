@@ -218,9 +218,6 @@ bool EntityManager::preUpdate()
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
-
-			if (it->second->specialization == JIM_RAYNOR)
-				app->game_manager->jim_raynor_dead = true;
 			
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
@@ -228,6 +225,19 @@ bool EntityManager::preUpdate()
 			{
 				if (!((Marine*)it->second)->inside_bunker)
 					RELEASE(it->second);
+			}
+			else if (it->second->specialization == FIREBAT)
+			{
+				if (!((Firebat*)it->second)->inside_bunker)
+					RELEASE(it->second);
+			}
+			else if (it->second->specialization == JIM_RAYNOR)
+			{
+				if (!((JimRaynor*)it->second)->inside_bunker)
+				{
+					app->game_manager->jim_raynor_dead = true;
+					RELEASE(it->second);
+				}
 			}
 			else
 				RELEASE(it->second);
@@ -613,6 +623,11 @@ void EntityManager::handleSelection()
 							jim->bomb = (Bomb*)e;
 						else if (jim->bomb_taken && e->specialization == COMMANDCENTER)
 							jim->bomb_activated = true;
+						else if (e->specialization == BUNKER)
+						{
+							jim->bunker_to_fill = (Bunker*)e;
+							app->gui->bunker_to_leave = (Bunker*)e;
+						}
 					}
 					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
 					{

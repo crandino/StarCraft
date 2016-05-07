@@ -4,6 +4,7 @@
 #include "Building.h"
 #include "Marine.h"
 #include "Firebat.h"
+#include "JimRaynor.h"
 
 class Bunker : public Building
 {
@@ -12,7 +13,6 @@ public:
 	Animation					idle;
 	map<uint, Unit*>			units_inside;
 	uint						max_capacity;
-	float						damage_increase_ratio;
 
 	// SFX
 	unsigned int fx_attack;
