@@ -591,29 +591,29 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  }
 
 
-						//Activate default entities
-						rectangle_command->draw_element = true;
-						rectangle_command_2->draw_element = true;
-						rectangle_command_3->draw_element = true;
-						rectangle_command_4->draw_element = true;
-						rectangle_command_5->draw_element = true;
-						rectangle_command_6->draw_element = true;
-						rectangle_command_7->draw_element = true;
-						rectangle_command_8->draw_element = true;
-						rectangle_command_9->draw_element = true;
-
-						ui_create_bot->disable_element();
-						ui_create_builds->disable_element();
-						ui_leave_bunker->disable_element();
-						ui_create_bunker->disable_element();
-						ui_create_barraks->disable_element();
-						ui_create_factory->disable_element();
-
-						ui_create_marine->disable_element();
-						ui_create_medic->disable_element();
-						ui_create_firebat->disable_element();
-
-						break;
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+			  
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+			  
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+			  
+			  break;
 
 		  case (FIREBAT) :
 			  if (buildingMenuOpened)
@@ -624,29 +624,62 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  }
 
 
-						//Activate default entities
-						rectangle_command->draw_element = true;
-						rectangle_command_2->draw_element = true;
-						rectangle_command_3->draw_element = true;
-						rectangle_command_4->draw_element = true;
-						rectangle_command_5->draw_element = true;
-						rectangle_command_6->draw_element = true;
-						rectangle_command_7->draw_element = true;
-						rectangle_command_8->draw_element = true;
-						rectangle_command_9->draw_element = true;
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+			  
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+			  
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+			  
+			  break;
 
-						ui_create_bot->disable_element();
-						ui_create_builds->disable_element();
-						ui_leave_bunker->disable_element();
-						ui_create_bunker->disable_element();
-						ui_create_barraks->disable_element();
-						ui_create_factory->disable_element();
+		  case (JIM_RAYNOR) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
 
-						ui_create_marine->disable_element();
-						ui_create_medic->disable_element();
-						ui_create_firebat->disable_element();
 
-						break;
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+			  
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+			  
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+			  
+			  break;
 
 		  case (SCV) :
 			  if (buildingMenuOpened)
@@ -657,29 +690,30 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  }
 
 
-						//Activate default entities
-						rectangle_command->draw_element = true;
-						rectangle_command_2->draw_element = true;
-						rectangle_command_3->draw_element = true;
-						rectangle_command_4->draw_element = true;
-						rectangle_command_5->draw_element = true;
-						rectangle_command_6->draw_element = true;
-						rectangle_command_7->draw_element = true;
-						rectangle_command_8->draw_element = true;
-						rectangle_command_9->draw_element = true;
+				//Activate default entities
+				rectangle_command->draw_element = true;
+				rectangle_command_2->draw_element = true;
+				rectangle_command_3->draw_element = true;
+				rectangle_command_4->draw_element = true;
+				rectangle_command_5->draw_element = true;
+				rectangle_command_6->draw_element = true;
+				rectangle_command_7->draw_element = true;
+				rectangle_command_8->draw_element = true;
+				rectangle_command_9->draw_element = true;
 
-						ui_create_bot->disable_element();
-						ui_create_builds->disable_element();
-						ui_leave_bunker->disable_element();
-						ui_create_bunker->disable_element();
-						ui_create_barraks->disable_element();
-						ui_create_factory->disable_element();
+				ui_create_bot->disable_element();
+				ui_create_builds->disable_element();
+				ui_leave_bunker->disable_element();
+				ui_create_bunker->disable_element();
+				ui_create_barraks->disable_element();
+				ui_create_factory->disable_element();
 
-						ui_create_marine->disable_element();
-						ui_create_medic->disable_element();
-						ui_create_firebat->disable_element();
+				ui_create_marine->disable_element();
+				ui_create_medic->disable_element();
+				ui_create_firebat->disable_element();
 
-						break;
+				break;
+
 		  case (NOTYPE) :
 				  //Desactivate all the options of Entities
 				  ui_create_bot->disable_element();
@@ -826,6 +860,8 @@ bool Gui::postUpdate()
 			drawHudSelection(FIREBAT);
 		if (itm->second->specialization == SPECIALIZATION::SCV)
 			drawHudSelection(SCV);
+		if (itm->second->specialization == SPECIALIZATION::JIM_RAYNOR)
+			drawHudSelection(JIM_RAYNOR);
 	}
 	
 	// CRZ -> A possible option of blitting according to Y value.
