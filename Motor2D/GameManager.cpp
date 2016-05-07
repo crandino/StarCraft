@@ -549,7 +549,7 @@ void GameManager::startGame()
 	unsigned int size_marines_x = SIZEMARINESX * 3;
 	unsigned int size_marines_y = SIZEMARINESY ;
 
-	createMarines({ 1500, 2150 }, size_marines_x, size_marines_y);
+	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
 	app->render->setCameraOnPosition(p);
 
 	timer_between_waves.start();

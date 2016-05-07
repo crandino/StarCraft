@@ -46,6 +46,7 @@ public:
 		max_hp = 1000;
 		current_hp = 1000;
 		max_hp_bars = 30;
+		range_of_vision = 300;
 	}
 
 	~Barrack()

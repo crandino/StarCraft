@@ -887,9 +887,13 @@ void EntityManager::updateFogOfWar()
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		while (it != active_entities.end())
 		{
-			if (it->second->faction == PLAYER)
+			if (it->second->faction == PLAYER && it->second->type == UNIT)
 			{
 				app->fog_of_war->drawCircle(it->second->pos.x, it->second->pos.y, it->second->range_of_vision);
+			}
+			else if (it->second->faction == PLAYER && it->second->type == BUILDING)
+			{
+				app->fog_of_war->drawCircle(it->second->center.x, it->second->center.y, it->second->range_of_vision);
 			}
 			it++;
 		}

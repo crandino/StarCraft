@@ -47,7 +47,7 @@ public:
 		current_hp = 1500;
 		max_hp_bars = 36;
 
-		range_of_vision = 150;
+		range_of_vision = 300;
 	}
 
 	~CommandCenter()
