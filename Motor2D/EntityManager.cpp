@@ -215,6 +215,16 @@ bool EntityManager::preUpdate()
 			{
 				if (it->second->specialization == COMMANDCENTER)
 					app->game_manager->command_center_destroyed = true;			
+				else if (it->second->specialization == BUNKER)
+				{
+					for (list<Bunker*>::iterator itb = app->gui->bunker_to_leave.begin(); itb != app->gui->bunker_to_leave.end();)
+					{
+						if (it->first == itb._Ptr->_Myval->id)
+							itb = app->gui->bunker_to_leave.erase(itb);
+						else
+							itb++;
+					}
+				}
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}

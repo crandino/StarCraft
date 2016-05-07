@@ -172,7 +172,7 @@ bool Bunker::attack()
 			damage = 0.0f;
 			for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end(); it++)
 				damage += it->second->damage / 2;
-			if (target_to_attack->current_hp -= damage <= 0.0f)
+			if ((target_to_attack->current_hp -= damage) <= 0.0f)
 			{
 				state = IDLE;
 				target_to_attack->state = DYING;
