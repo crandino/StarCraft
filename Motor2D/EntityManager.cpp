@@ -147,10 +147,10 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
 		break;
-
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
+		building_to_place = (Building*)e;
 		break;
 	}
 
@@ -159,16 +159,12 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
-		// Command center creation, special treatment
-		if (e->specialization == COMMANDCENTER)
+		// Building creation, special treatment
+		if (e->type == BUILDING)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
 		}
-
-		// Bomb creation, special treatment
-		if (e->specialization == BOMB)
-			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 	}
 
 	return e;
@@ -217,7 +213,7 @@ bool EntityManager::preUpdate()
 			if (it->second->type == BUILDING)
 			{
 				if (it->second->specialization == COMMANDCENTER)
-					app->game_manager->command_center_destroyed = true;
+					app->game_manager->command_center_destroyed = true;			
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
@@ -509,7 +505,7 @@ void EntityManager::handleSelection()
 						else if (jim->bomb_taken && e->specialization == COMMANDCENTER)
 							jim->bomb_activated = true;
 					}
-			
+
 					if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;

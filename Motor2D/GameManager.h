@@ -177,8 +177,8 @@ public:
 	GuiImage* retry_button = nullptr;
 	GuiImage* exit_button = nullptr;
 
-	//commandCenterDestroyed
-	// CRZ -> 
+	//Lose Conditions
+	// 
 	bool command_center_destroyed = false;
 	bool jim_raynor_dead = false;
 
