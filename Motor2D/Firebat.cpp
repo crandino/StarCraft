@@ -208,7 +208,7 @@ void Firebat::move(float dt)
 	{
 		float pixels_to_move = 0;
 		float total_pixels_moved = 0;
-		float total_pixels_to_move = speed / 100 * dt;
+		float total_pixels_to_move = (speed * speed_multiplier) / 100 * dt;
 
 		if (total_pixels_to_move >= 4)
 			pixels_to_move = 4;

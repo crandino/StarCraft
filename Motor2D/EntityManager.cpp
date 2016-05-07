@@ -152,7 +152,6 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
-		building_to_place = (Building*)e;
 		break;
 	}
 
@@ -162,7 +161,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
 		// Building creation, special treatment
-		if (e->type == COMMANDCENTER || e->type == BOMB)
+		if (e->specialization == COMMANDCENTER || e->specialization == BOMB)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
@@ -579,6 +578,21 @@ void EntityManager::handleSelection()
 					if (app->path->createPath(unit->tile_pos, target, unit->id) != -1)
 						unit->state = WAITING_PATH_MOVE;
 				}
+				
+				if (it->second->specialization == MARINE || it->second->specialization == FIREBAT || it->second->specialization == JIM_RAYNOR)
+				{
+					if (it->second->specialization == MARINE)
+						((Marine*)unit)->bunker_to_fill = NULL;
+					else if (it->second->specialization == FIREBAT)
+						((Firebat*)unit)->bunker_to_fill = NULL;
+					else //(it->second->specialization == JYM_RAYNOR)
+					{
+						JimRaynor *jim = (JimRaynor*)it->second;
+						jim->bunker_to_fill = NULL;
+						jim->bomb = NULL;
+						jim->bomb_activated = false;
+					}
+				}
 
 				if (e != NULL)
 				{
@@ -587,8 +601,12 @@ void EntityManager::handleSelection()
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
 						app->gui->bunker_to_leave = (Bunker*)e;
 					}
-
-					if (it->second->specialization == JIM_RAYNOR)
+					else if ((it->second->specialization == FIREBAT && e->specialization == BUNKER))
+					{
+						((Firebat*)unit)->bunker_to_fill = (Bunker*)e;
+						app->gui->bunker_to_leave = (Bunker*)e;
+					}
+					else if (it->second->specialization == JIM_RAYNOR)
 					{
 						JimRaynor *jim = (JimRaynor*)it->second;
 						if (e->specialization == BOMB)
@@ -596,8 +614,7 @@ void EntityManager::handleSelection()
 						else if (jim->bomb_taken && e->specialization == COMMANDCENTER)
 							jim->bomb_activated = true;
 					}
-
-					if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
+					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();
@@ -660,19 +677,22 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range) //The method search and return the entity in the area
 {
 	list<Entity*> ret;
-	float value = range;
-	if (value == -1.0f)
-		value = e->range_of_vision;
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
+	if (e != NULL)
 	{
-		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+		float value = range;
+		if (value == -1.0f)
+			value = e->range_of_vision;
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
 		{
-			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			if (d <= value)
+			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
 			{
-				ret.push_back(it->second);
+				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+				if (d <= value)
+				{
+					ret.push_back(it->second);
+				}
 			}
 		}
 	}

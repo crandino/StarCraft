@@ -291,7 +291,7 @@ void JimRaynor::move(float dt)
 	{
 		float pixels_to_move = 0;
 		float total_pixels_moved = 0;
-		float total_pixels_to_move = speed / 100 * dt;
+		float total_pixels_to_move = (speed * speed_multiplier) / 100 * dt;
 
 		if (total_pixels_to_move >= 4)
 			pixels_to_move = 4;
@@ -353,12 +353,14 @@ void JimRaynor::move(float dt)
 						bomb->coll->to_delete = true;
 						bomb = NULL;
 						bomb_taken = true;
+						speed_multiplier = 0.2f;
 					}
 
 					if (bomb_activated)
 					{
 						// Last phase of the game
 						app->game_manager->game_state = BOMB_ACTIVATION;
+						speed_multiplier = 1.0f;
 					}
 					break;
 
