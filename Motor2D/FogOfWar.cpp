@@ -215,21 +215,24 @@ bool FogOfWar::cleanUp()
 	return true;
 }
 
-bool FogOfWar::setUp(uint graphicalW, uint graphicalH, uint mapW, uint mapH, uint nMaps)
+bool FogOfWar::setUp(uint graphicalW, uint graphicalH, uint _tileW, uint _tileH, uint nMaps)
 {
 	//If there are maps loaded already, unload them
 	if (ready)
 	{
 		eraseMaps();
 	}
+
 	//Create as many maps as necessary
 	for (uint n = 0; n < nMaps; n++)
 	{
-		createMap(mapW, mapH);
+		createMap(graphicalW / _tileW, graphicalH / _tileH);
 	}
+
 	//Save the width and height of each tile
-	tileW = ceil((float)graphicalW / (float)mapW);
-	tileH = ceil((float)graphicalH / (float)mapH);
+	tileW = _tileW;
+	tileH = _tileH;
+	
 	ready = true;
 	return true;
 }
@@ -252,27 +255,28 @@ void FogOfWar::draw()
 		return;
 
 	//Rect to draw, we'll only draw the tiles displayed on screen (culling)
-	iPoint pos = app->render->screenToWorld(app->render->camera.x, app->render->camera.y);
-	int startX = pos.x / (tileW * 1);
-	int startY = pos.y / (tileH * 1);
+	int startX = -app->render->camera.x / tileW;
+	int startY = -app->render->camera.y / tileH;
 
-	iPoint pos2 = app->render->screenToWorld(app->render->camera.w, app->render->camera.h);
-	int endX = startX + pos2.x/ (tileW * 1) +1;
-	int endY = startY + pos2.y/ (tileH * 1) +1;
+	int hud_terran_height = 100;   // Pixels height of Terran HUD
+	int endX = app->render->camera.w - app->render->camera.x / tileW + 1;
+	int endY = (app->render->camera.h - hud_terran_height) - app->render->camera.y / tileH + 1;
+
+	int max_map_height = maps.front()->getHeight();
+	int max_map_width = maps.front()->getWidth();
 
 	//Drawing all fog maps
-	for (vector<FogMap*>::reverse_iterator currentMap = maps.rbegin(); currentMap != maps.rend(); currentMap++)
+	for (vector<FogMap*>::reverse_iterator currentMap = maps.rbegin(); currentMap != maps.rend(); ++currentMap)
 	{
 		if ((*currentMap)->draw)
 		{
 			//Soften the fog edges of the section we'll render
 			(*currentMap)->softenSection(startX, startY, endX, endY);
-			for (int y = startY; y <= endY && y < (*currentMap)->getHeight(); y++)
+			for (int y = startY; y <= endY && y < max_map_height; ++y)
 			{
-				for (int x = startX; x <= endX && x < (*currentMap)->getWidth(); x++)
+				for (int x = startX; x <= endX && x < max_map_width; ++x)
 				{
 					//Now the fog is just black rectangles with diferents alphas. Diferent methods will be explained.
-
 					SDL_Rect r = { 0, 0, tileW, tileH };
 
 					//Next function enables the blending of the texture
@@ -281,14 +285,11 @@ void FogOfWar::draw()
 					SDL_SetTextureAlphaMod(fow, (*currentMap)->map[x][y]);
 
 					//Finally, blit can run correctly with the suitable alpha texture
-					app->render->blit(fow, x * tileW, y * tileH, &r, true);
+					app->render->blit(fow, x * tileW, y * tileH, &r);
 
 					/*
-
 					Another option would be:
-
 					App->render->AddRect({ x * tileW, y * tileH, tileW, tileH }, true, 0, 0, 0, (*currentMap)->map[x][y]);
-
 					*/
 				}
 			}
@@ -383,15 +384,14 @@ bool FogOfWar::isVisible(int x, int y)
 
 int FogOfWar::createMap(int w, int h, int maxAlpha)
 {
-	int ret = -1;
+	FogMap* tmp = NULL;
 	fow = app->tex->loadTexture("maps/FogOfWar.png");
 
-	FogMap* tmp = new FogMap(w, h);
-	if (ret)
+	tmp = new FogMap(w, h);
+	if (tmp)
 	{
 		tmp->maxAlpha = maxAlpha;
-		ret = maps.size();
 		maps.push_back(tmp);
 	}
-	return ret;
+	return maps.size();
 }

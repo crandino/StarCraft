@@ -53,13 +53,11 @@ bool Scene::start()
 
 	//FOG_OF_WAR 1- Scene Start. Setting up scene, called only once at start.
 	//Setting up fog of war module
-	list<MapData>::iterator item = app->map->data.begin();
-	while (item != app->map->data.end())
-	{
-		app->fog_of_war->setUp(item->tile_width * item->width, item->tile_height * item->height, 256, 256, 2);
-		app->fog_of_war->maps[1]->maxAlpha = 175;
-		item++;
-	}
+
+	list<MapData>::iterator map = app->map->data.begin();
+	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 2);
+	app->fog_of_war->maps[1]->maxAlpha = 175;
+		
 	return true;
 }
 
@@ -141,13 +139,16 @@ bool Scene::update(float dt)
 		iPoint pos; pos = app->map->mapToWorld(app->map->data.back(), it->x, it->y);
 		app->render->blit(path_tile, pos.x, pos.y);
 	}*/
+
 	//--------------------------------------------------------------------------
 	//FOG_OF_WAR 3 - Scene update.Called once every frame.
 	//Draw the Fog of War
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
+
 	if (!debug)
 	app->fog_of_war->draw();
+
 	return true;
 }
 
