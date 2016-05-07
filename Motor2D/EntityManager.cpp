@@ -153,18 +153,17 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		e = new Bomb(pos);
 		building_to_place = (Building*)e;
 		building_mode = true;
+
 		break;
 	}
-	
-
 
 	if (e != NULL && building_mode != true)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
-		// Command center creation, special treatment
-		if (e->specialization == COMMANDCENTER)
+		// Building creation, special treatment
+		if (e->type == BUILDING)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
@@ -531,6 +530,13 @@ void EntityManager::handleSelection()
 					else if (it->second->specialization == JYM_RAYNOR && e->specialization == BOMB)
 					{
 						((Jym_Raynor*)unit)->taking_bomb = true;
+					}
+					else if (it->second->specialization == JYM_RAYNOR && e->specialization == COMMANDCENTER)
+					{
+						if (((Jym_Raynor*)unit)->bomb != NULL)
+						{
+							//place bomb code here
+						}
 					}
 				}
 			}

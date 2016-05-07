@@ -49,7 +49,7 @@ public:
 	bool			     inside_bunker = false;		// It's inside?
 
 	bool				 taking_bomb = false;
-	Entity*				 bomb;
+	Entity*				 bomb = NULL;
 	unsigned int		 fx_attack;
 
 	Jym_Raynor() {};

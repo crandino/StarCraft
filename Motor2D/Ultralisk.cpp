@@ -172,7 +172,7 @@ Ultralisk::Ultralisk(iPoint &p)
 	range_of_vision = 200;
 	range_to_attack = 75;
 	damage = 7.0f;
-	attack_frequency = 5.0f;
+	attack_frequency = 200.0f;
 	time_to_die = 500.0f;
 	area_attack = true;
 	area_range = 40.0f;

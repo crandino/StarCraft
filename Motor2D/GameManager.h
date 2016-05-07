@@ -28,10 +28,11 @@ enum GAME_STATE
 	INITIAL_SCREEN,
 	PREPARATION,
 	FIRST_PHASE,
+	BOMB_LANDING,
 	SECOND_PHASE,
+	BOMB_ACTIVATION,
 	FINAL_PHASE,
-	ONGOING_WAVE,
-	TIME_BEFORE_WAVE,
+
 	WIN,
 	HOLD,
 	LOSE,
@@ -44,29 +45,8 @@ enum WAVE_STATE
 	BEGINNING_WAVE,
 	MIDDLE_WAVE,
 	END_WAVE,
-	PHASE1_END
+	PHASE_END
 };
-
-enum WAVE2_STATE
-{
-	WAITING_FOR_PHASE2_TO_START,
-	BEGINNING_WAVE_2,
-	MIDDLE_WAVE_2,
-	END_WAVE_2,
-	PHASE2_END
-};
-
-enum FINAL_STATE
-{
-	WAITING_FOR_PHASE3_TO_START,
-	BEGINNING_WAVE_3,
-	MIDDLE_WAVE_3,
-	END_WAVE_3,
-	PHASE3_END
-};
-
-
-
 
 class GuiImage;
 using namespace std;
@@ -171,8 +151,6 @@ public:
 
 	void AddPointsEnemy(Entity* e);
 
-	
-
 public:
 	
 	//Score system attributes
@@ -228,14 +206,13 @@ public:
 	GAME_STATE			 game_state;
 
 	WAVE_STATE			 wave_state;
-	WAVE2_STATE			 wave2_state;
-	FINAL_STATE			 wave3_state;
 
 	vector<SizeWave*>	 waves_info;
 	vector<SizeWave*>    waves2_info;
 	
-	iPoint command_center_position;
+	iPoint				 command_center_position;
 	Bomb*				 bomb;
+
 private:
 
 	uint				 current_wave;
@@ -244,16 +221,14 @@ private:
 	uint				 previous_unit_killed = 0;
 	uint				 wave2_power_counter = 0;
 
-
 	//Time Management attributes
 	Timer				 timer_between_waves;
-	Timer				 time_before_starting_game;
-	Timer				 timer_phase2_wave;
+	Timer				 timer_between_game_states;
 
-	bool				start_game = false;
+	bool				 start_game = false;
 
-	unsigned int		size_marines_x = SIZEMARINESX;
-	unsigned int		size_marines_y = SIZEMARINESY;
+	unsigned int		 size_marines_x = SIZEMARINESX;
+	unsigned int		 size_marines_y = SIZEMARINESY;
 
 	//Player Info
 	//Bomb				bomb;

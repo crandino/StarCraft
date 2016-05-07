@@ -4,8 +4,6 @@
 //#include "JimRaynor.h"
 #include "Building.h"
 
-
-
 class Bomb : public Building
 {
 public:

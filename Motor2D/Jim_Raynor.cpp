@@ -448,7 +448,7 @@ void Jym_Raynor::setAnimationFromDirection()
 void Jym_Raynor::GetBomb()
 {
 	bomb = (Entity*)(app->game_manager->bomb);
-
+	speed = 2.0f;
 
 
 }

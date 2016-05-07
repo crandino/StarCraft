@@ -31,7 +31,7 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "5"/>
+    <totalWaves value = "2"/>
     <timeBeforeStart value = "2.0f"/>
     <timeBetweenWavesPhase1 value = "2.0f"/>
     <timeBetweenWavesPhase2 value = "25.0f"/>
@@ -47,20 +47,17 @@
     <SizeWave zerglings ="0" hydralisks ="0" mutalisks ="1" ultralisks ="0"/>
     <SizeWave zerglings ="0" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
    
-    <SizeWave2 zerglings ="1" hydralisks ="0" mutalisks ="0" ultralisks ="1"/>
-    
+    <SizeWave2 zerglings ="1" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>    
     
     <!-- Player Units -->
     <InitialSizePlayer marines="10" medic ="3" scv ="1"/>
-    <CommandCenterPosition coordx="1500" coordy= "2250"/>
-    
+    <CommandCenterPosition coordx="1500" coordy= "2250"/>    
     
     <!-- Score--> 
     <ZerglingScore value = "20" />
     <HydraliskScore value = "40" />
     <MutaliskScore value = "50" />
-    <UltraliskScore value = "100" />
-    
+    <UltraliskScore value = "100" />    
       
   </game_manager>
 
