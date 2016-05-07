@@ -47,6 +47,7 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_start = node.child("timeBeforeStart").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
+	gameInfo.time_before_waves_phase3 = node.child("timeBetweenWavesPhase3").attribute("value").as_uint();
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
 
@@ -210,14 +211,12 @@ bool GameManager::update(float dt)
 			LOG("BEGINNING WAVE - PHASE 1!!!");
 			wave_state = MIDDLE_WAVE;
 			createWave(waves_info[current_wave], iPoint(1450, 1200));
-			wave_wiped = false;
 			break;
 		}
 		case(MIDDLE_WAVE) :
 		{
 			LOG("MIDDLE WAVE - PHASE 1!!!");
-			isWaveClear();
-			if (wave_wiped)
+			if (isWaveClear())
 			{
 				LOG("WAVE CLEARED - PHASE 1!!!");
 				wave_state = END_WAVE;
@@ -227,6 +226,7 @@ bool GameManager::update(float dt)
 
 		case(END_WAVE) :
 		{
+			LOG("WAVE FINISHED - PHASE 1");
 			current_wave++;
 			wave_state = WAITING_FOR_WAVE_TO_START;
 			timer_between_waves.start();
@@ -244,7 +244,7 @@ bool GameManager::update(float dt)
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
 		{
 			LOG("The bomb has landed look for it."); //Audio voice
-			bomb = (Bomb*)app->entity_manager->addEntity(iPoint(535, 2300), BOMB);
+			bomb = (Bomb*)app->entity_manager->addEntity(iPoint(1600, 2250), BOMB);
 			game_state = SECOND_PHASE;
 		}
 		break;
@@ -271,15 +271,13 @@ bool GameManager::update(float dt)
 			createWave(waves2_info[0], iPoint(1450, 1200));
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
-			wave_wiped = false;
 			break;
 		}
 
 		case(MIDDLE_WAVE) :
 		{
 			LOG("MIDDLE WAVE - PHASE 2 !!!");
-			isWaveClear();
-			if (wave_wiped)
+			if (isWaveClear())
 			{
 				LOG("WAVE CLEARED - PHASE 2!!!");
 				wave_state = END_WAVE;
@@ -288,7 +286,64 @@ bool GameManager::update(float dt)
 		}
 		case(END_WAVE) :
 		{
-			LOG("WAVE 2 FINISH - PHASE 2");
+			LOG("WAVE FINISHED - PHASE 2");
+			current_wave++;
+			wave_state = WAITING_FOR_WAVE_TO_START;
+			timer_between_waves.start();
+			break;
+		}
+		}
+
+		checkingGameConditions();
+		break;
+	}
+
+	case(BOMB_ACTIVATION) :
+	{
+		//BOMB CREATION GOES HERE
+		LOG("The bomb has been activated! Countdown activated!"); //Audio voice	
+		game_state = FINAL_PHASE;
+		timer_between_game_states.start();
+		break;
+	}
+
+	//Final Phase
+	case(FINAL_PHASE) :
+	{
+		switch (wave_state)
+		{
+
+		case(WAITING_FOR_WAVE_TO_START) :
+		{
+			LOG("WAITING WAVE TO START - PHASE 3");
+			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase3)
+				wave_state = BEGINNING_WAVE;
+			break;
+		}
+
+		case(BEGINNING_WAVE) :
+		{
+			LOG("BEGINNING WAVE - PHASE 3 !!!");
+
+			createWave(waves2_info[0], iPoint(1450, 1200));
+			wave2_power_counter += incrementPhase2WavePower();
+			wave_state = MIDDLE_WAVE;
+			break;
+		}
+
+		case(MIDDLE_WAVE) :
+		{
+			LOG("MIDDLE WAVE - PHASE 3!!!");
+			if (isWaveClear())
+			{
+				LOG("WAVE CLEARED - PHASE 3!!!");
+				wave_state = END_WAVE;
+			}
+			break;
+		}
+		case(END_WAVE) :
+		{
+			LOG("WAVE FINISHED - PHASE 3");
 			current_wave++;
 			wave_state = WAITING_FOR_WAVE_TO_START;
 			timer_between_waves.start();
@@ -389,17 +444,16 @@ void GameManager::checkingGameConditions()
 		timer_between_game_states.start();
 		game_state = BOMB_LANDING;
 	}
-	
-	/*PHASE 3
-	if (bombPlanted)
-	{
-		game_state = THIRD_PHASE
-	}
-	*/
 
-	if (command_center_destroyed)
+	if (command_center_destroyed || jim_raynor_dead)
 	{
 		game_state = LOSE;
+		start_game = false;
+	}
+
+	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > 5.0f)
+	{
+		game_state = WIN;
 		start_game = false;
 	}
 }
@@ -454,9 +508,6 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 bool GameManager::postUpdate()
 {
-	//if (game_state == SECOND_PHASE)
-		//app->render->DrawQuad({1700, 2250, 30, 30}, 0, 206, 209);
-	
 	return true;
 }
 
@@ -467,12 +518,7 @@ void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 
 bool GameManager::isWaveClear() 
 {
-	wave_wiped = current_wave_entities.empty() ? true : false;
-	
-	if (wave_wiped)
-		LOG("WAVE_WIPED");
-
-	return wave_wiped;
+	return current_wave_entities.empty() ? true : false;
 }
 
 bool GameManager::cleanUp()
@@ -498,6 +544,7 @@ void GameManager::startGame()
 	iPoint p = command_center_position;
 	app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
 	command_center_destroyed = false;
+	jim_raynor_dead = false;
 	start_game = true;
 
 	defeat_screen->draw_element = false;

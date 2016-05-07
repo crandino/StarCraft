@@ -60,6 +60,7 @@ struct GameInformation
 	//Time
 	float time_before_waves_phase1;
 	float time_before_waves_phase2;
+	float time_before_waves_phase3;
 	float time_while_bomb_landing;
 	float time_before_start;
 	float time_before_end;
@@ -179,7 +180,7 @@ public:
 	//commandCenterDestroyed
 	// CRZ -> 
 	bool command_center_destroyed = false;
-	// -> Otra variable para indicar que ha muerto Jim Raynor!
+	bool jim_raynor_dead = false;
 
 	//Sound
 	unsigned int fx_click;	
@@ -188,7 +189,6 @@ public:
 	
 	//Wave Control
 	bool isWaveClear();
-	bool wave_wiped = false;
 
 	//XML loaded info -------	
 	initialSizePlayer initial_size;
@@ -228,10 +228,6 @@ private:
 
 	unsigned int		 size_marines_x = SIZEMARINESX;
 	unsigned int		 size_marines_y = SIZEMARINESY;
-
-	//Player Info
-	//Bomb				bomb;
-	bool				bombCreated = false;
 
 	// Check the conditions to finish the game
 	void				checkingGameConditions();

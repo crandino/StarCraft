@@ -1,9 +1,9 @@
-#ifndef __JYM_RAYNOR_H__
-#define __JYM_RAYNOR_H__
+#ifndef __Jim_Raynor_H__
+#define __Jim_Raynor_H__
 
 #include "Unit.h"
 
-class Jym_Raynor : public Unit
+class JimRaynor : public Unit
 {
 public:
 
@@ -38,28 +38,27 @@ public:
 	Animation	attack_left_down;
 	Animation	attack_left;
 	Animation	attack_left_up;
-	vector<Animation*>   attack_animation_pack;
-
-	
+	vector<Animation*>   attack_animation_pack;	
 
 	// Dead animation
-	Animation	dead;
+	Animation			 dead;
 
-	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Jym_Raynor
-	bool			     inside_bunker = false;		// It's inside?
+	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Jim_Raynor
+	//bool			     inside_bunker = false;		// It's inside?
 
-	bool				 taking_bomb = false;
 	Entity*				 bomb;
+	bool				 bomb_taken;
+	bool				 bomb_activated;
+
 	unsigned int		 fx_attack;
 
-	Jym_Raynor() {};
-	Jym_Raynor(iPoint &p);
-	~Jym_Raynor();
+	JimRaynor() {};
+	JimRaynor(iPoint &p);
+	~JimRaynor();
 
 	bool start();
 	void move(float dt);
 	void setAnimationFromDirection();
-	void GetBomb();
 };
 
-#endif __JYM_RAYNOR_H__
+#endif __Jim_Raynor_H__

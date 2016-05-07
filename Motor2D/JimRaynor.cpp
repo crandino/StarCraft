@@ -1,7 +1,7 @@
-#include "Jim_Raynor.h"
+#include "JimRaynor.h"
 #include "Bunker.h"
 
-Jym_Raynor::Jym_Raynor(iPoint &p)
+JimRaynor::JimRaynor(iPoint &p)
 {
 	//Graphics
 	tex = app->tex->loadTexture("tmp_Jim_Raynor.png");
@@ -178,7 +178,7 @@ Jym_Raynor::Jym_Raynor(iPoint &p)
 	move_animation_pack.push_back(&walk_right_down);
 	//----------------------------------------------
 
-	//-----------Jym_Raynor ATTACK----------------------
+	//-----------Jim_Raynor ATTACK----------------------
 	attack_right.frames.push_back({ 256, 128, 64, 64 });
 	attack_right.frames.push_back({ 256, 192, 64, 64 });
 	attack_right.speed = 0.01f;
@@ -220,7 +220,7 @@ Jym_Raynor::Jym_Raynor(iPoint &p)
 	attack_animation_pack.push_back(&attack_right_down);
 	//----------------------------------------------
 
-	//------------Jym_Raynor DEAD-----------------------
+	//------------Jim_Raynor DEAD-----------------------
 	dead.frames.push_back({ 0, 832, 64, 64 });
 	dead.frames.push_back({ 64, 832, 64, 64 });
 	dead.frames.push_back({ 128, 832, 64, 64 });
@@ -245,7 +245,7 @@ Jym_Raynor::Jym_Raynor(iPoint &p)
 
 	// Characterization and behaviour
 	faction = PLAYER;
-	specialization = JYM_RAYNOR;
+	specialization = JIM_RAYNOR;
 	flying = false;
 
 	// UI paramters
@@ -266,21 +266,26 @@ Jym_Raynor::Jym_Raynor(iPoint &p)
 
 	// PathFinding and movement variables
 	speed = 10.0f;
+
+	// Bomb related
+	bomb = NULL;
+	bomb_taken = false;
+	bomb_activated = false;
 }
 
-Jym_Raynor::~Jym_Raynor()
+JimRaynor::~JimRaynor()
 {
 	SDL_DestroyTexture(tex);
 }
 
-bool Jym_Raynor::start()
+bool JimRaynor::start()
 {
 	// Sounds
 	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
 	return true;
 }
 
-void Jym_Raynor::move(float dt)
+void JimRaynor::move(float dt)
 {
 	if (path.size() > 0)
 	{
@@ -340,15 +345,20 @@ void Jym_Raynor::move(float dt)
 					path.clear();
 					has_target = false;
 					state = IDLE;
-
-					if (bunker_to_fill != NULL)
-						bunker_to_fill->getEntityInside(this);
 					
-					else if (!taking_bomb)
+					if (bomb != NULL)
 					{
-						//TAKE BOMB CODE HERE
-						GetBomb();
-						taking_bomb = true;
+						// Bomb taken so it can be deleted
+						bomb->to_delete = true;
+						bomb->coll->to_delete = true;
+						bomb = NULL;
+						bomb_taken = true;
+					}
+
+					if (bomb_activated)
+					{
+						// Last phase of the game
+						app->game_manager->game_state = BOMB_ACTIVATION;
 					}
 					break;
 
@@ -368,7 +378,7 @@ void Jym_Raynor::move(float dt)
 }
 
 // Method that assign an animation according to its orientation
-void Jym_Raynor::setAnimationFromDirection()
+void JimRaynor::setAnimationFromDirection()
 {
 	switch (state)
 	{
@@ -443,12 +453,4 @@ void Jym_Raynor::setAnimationFromDirection()
 	}
 
 	}
-}
-
-void Jym_Raynor::GetBomb()
-{
-	bomb = (Entity*)(app->game_manager->bomb);
-
-
-
 }

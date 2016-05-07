@@ -14,7 +14,7 @@ class Scv;
 class Medic;
 class Firebat;
 class Tank;
-class Jym_Raynor;
+class JimRaynor;
 
 class Zergling;
 class Hydralisk;
@@ -54,7 +54,7 @@ enum SPECIALIZATION  // Second specialization
 	ULTRALISK,
 	TANK,
 	FIREBAT,
-	JYM_RAYNOR,
+	JIM_RAYNOR,
 	// Buildings
 	COMMANDCENTER, 
 	BUNKER,
@@ -138,7 +138,7 @@ private:
 	Medic			*medic;
 	Firebat			*firebat;
 	Tank            *tank;
-	Jym_Raynor		*jym_raynor;
+	JimRaynor		*Jim_Raynor;
 
 	Zergling		*zergling;
 	Mutalisk		*mutalisk;

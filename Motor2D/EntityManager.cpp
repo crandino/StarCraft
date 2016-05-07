@@ -15,7 +15,7 @@
 #include "Ultralisk.h"
 #include "Hydralisk.h"
 #include "Tank.h"
-#include "Jim_Raynor.h"
+#include "JimRaynor.h"
 #include "Gui.h"
 #include "GuiCursor.h"
 #include "FogOfWar.h"
@@ -105,9 +105,9 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		LOG("Creating Medic");
 		e = new Medic(pos);
 		break;
-	case(JYM_RAYNOR) :
+	case(JIM_RAYNOR) :
 		LOG("Creating Jym Raynor");
-		e = new Jym_Raynor(pos);
+		e = new JimRaynor(pos);
 		break;
 	case(FIREBAT) :
 		LOG("Creating Firebat");
@@ -221,6 +221,9 @@ bool EntityManager::preUpdate()
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
+
+			if (it->second->specialization == JIM_RAYNOR)
+				app->game_manager->jim_raynor_dead = true;
 			
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
@@ -462,7 +465,7 @@ void EntityManager::handleSelection()
 		target_position = app->render->screenToWorld(target_position.x, target_position.y);
 		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
 
-		//Bunker stuff
+		//Bunker and bomb useful method
 		Entity* e = whichEntityOnMouse();
 
 		map<uint, Entity*>::iterator it = selection.begin();
@@ -490,28 +493,24 @@ void EntityManager::handleSelection()
 						unit->state = WAITING_PATH_MOVE;
 				}
 
-				if (it->second->specialization == MARINE || it->second->specialization == JYM_RAYNOR)
-				{
-					if (it->second->specialization == MARINE)
-						((Marine*)unit)->bunker_to_fill = NULL;
-					else //(it->second->specialization == JYM_RAYNOR)
-					{
-						((Jym_Raynor*)unit)->bunker_to_fill = NULL;
-						((Jym_Raynor*)unit)->taking_bomb = false;
-					}
-				}
-
 				if (e != NULL)
 				{
-					if ((it->second->specialization == MARINE || it->second->specialization == JYM_RAYNOR) && e->specialization == BUNKER)
+					if ((it->second->specialization == MARINE && e->specialization == BUNKER))
 					{
-						if (it->second->specialization == MARINE)
-							((Marine*)unit)->bunker_to_fill = (Bunker*)e;
-						else //(it->second->specialization == JYM_RAYNOR)
-							((Jym_Raynor*)unit)->bunker_to_fill = (Bunker*)e;
+						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
 						app->gui->bunker_to_leave = (Bunker*)e;
 					}
-					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
+
+					if (it->second->specialization == JIM_RAYNOR)
+					{
+						JimRaynor *jim = (JimRaynor*)it->second;
+						if (e->specialization == BOMB)
+							jim->bomb = (Bomb*)e;
+						else if (jim->bomb_taken && e->specialization == COMMANDCENTER)
+							jim->bomb_activated = true;
+					}
+			
+					if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();
@@ -521,10 +520,6 @@ void EntityManager::handleSelection()
 						unit->target_to_attack = e;
 						unit->has_focus = true;
 						unit->newEntityFound();
-					}
-					else if (it->second->specialization == JYM_RAYNOR && e->specialization == BOMB)
-					{
-						((Jym_Raynor*)unit)->taking_bomb = true;
 					}
 				}
 			}
@@ -867,7 +862,7 @@ void EntityManager::entityManualCreation()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, JYM_RAYNOR);
+		addEntity(position, JIM_RAYNOR);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
@@ -888,14 +883,8 @@ void EntityManager::updateFogOfWar()
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		while (it != active_entities.end())
 		{
-			if (it->second->faction == PLAYER && it->second->type == UNIT)
-			{
-				app->fog_of_war->drawCircle(it->second->pos.x, it->second->pos.y, it->second->range_of_vision);
-			}
-			else if (it->second->faction == PLAYER && it->second->type == BUILDING)
-			{
+			 if (it->second->faction == PLAYER)
 				app->fog_of_war->drawCircle(it->second->center.x, it->second->center.y, it->second->range_of_vision);
-			}
 			it++;
 		}
 	}
