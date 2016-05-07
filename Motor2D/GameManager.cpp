@@ -210,7 +210,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
 			wave_state = MIDDLE_WAVE;
-			createWave(waves_info[current_wave], iPoint(1450, 1200));
+			createWave(waves_info[current_wave], iPoint(625, 328));
 			break;
 		}
 		case(MIDDLE_WAVE) :
@@ -268,7 +268,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
-			createWave(waves2_info[0], iPoint(1450, 1200));
+			createWave(waves2_info[0], iPoint(625, 328));
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
@@ -325,7 +325,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
 
-			createWave(waves2_info[0], iPoint(1450, 1200));
+			createWave(waves2_info[0], iPoint(625, 328));
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
