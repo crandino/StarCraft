@@ -146,6 +146,8 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		LOG("Creating Barrack");
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
+		building_mode = true;
+		create_barrack = false;
 		break;
 	case(BOMB) :
 		LOG("Bomb created");
@@ -270,6 +272,26 @@ bool EntityManager::preUpdate()
 		app->game_manager->mineral_resources -= 25;
 		app->game_manager->gas_resources -= 50;
 		addEntity(position, BUNKER);
+	}
+
+	if (create_barrack)
+	{
+		iPoint position;
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		app->game_manager->mineral_resources -= 250;
+		app->game_manager->gas_resources -= 250;
+		addEntity(position, BARRACK);
+	}
+
+	if (create_factory)
+	{
+		iPoint position;
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		app->game_manager->mineral_resources -= 300;
+		app->game_manager->gas_resources -= 300;
+		addEntity(position, FACTORY);
 	}
 
 	return true;

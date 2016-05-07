@@ -113,6 +113,10 @@ public:
 	//GuiImage* ui_create_starport = nullptr;
 	GuiImage* ui_create_barraks = nullptr;
 
+	//Control Barracks and Factories
+	bool barrackAlive = false;
+	bool factoryAlive = false;
+
 	//Barracks HUD-------------------------
 	GuiImage* ui_create_marine = nullptr;
 	GuiImage* ui_create_medic = nullptr;

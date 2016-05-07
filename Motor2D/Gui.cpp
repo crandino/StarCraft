@@ -315,8 +315,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
-			if (app->game_manager->mineral_resources >= 50)
-				app->entity_manager->create_SCV = true;
+			app->entity_manager->create_SCV = true;
 			info_scv->draw_element = false;
 			break;
 
@@ -340,14 +339,31 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
-			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
-				app->entity_manager->create_bunker = true;
+			app->entity_manager->create_bunker = true;
 			info_bunker->draw_element = false;
 			break;
 
 				/*case(MOUSE_LCLICK_DOWN_REPEAT) :
 				app->entity_manager->create_bunker = true;
 				break;*/
+		}
+	}
+
+	if (ui == ui_create_barraks)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			app->entity_manager->create_barrack = true;
+			break;
+
 		}
 	}
 	
@@ -371,6 +387,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 	{
 	case (COMMANDCENTER) :
 		commandCenterOpened = true;
+		barrackMenuOpened = false;
 			  if(!buildingMenuOpened)
 			  {
 				  //Desactivate quad background
@@ -403,6 +420,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 		      break;
 			  
 		  case (BUNKER) :
+
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
@@ -439,14 +457,14 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  break;
 
 		  case (BARRACK) :
+			  barrackMenuOpened = true;
+			  commandCenterOpened = false;
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
 				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
-
-			  barrackMenuOpened = true;
 
 			  //Activate default entities
 			  rectangle_command->draw_element = false;
@@ -465,7 +483,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
 			  ui_create_factory->disable_element();
-			 
+
 
 			  ui_create_marine->enable_element();
 			  ui_create_medic->enable_element();
@@ -506,9 +524,105 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  break;
 			  
-		  case (NOTYPE) :
-			  //if (!buildingMenuOpened) {
+		  case (MEDIC) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
 
+
+						//Activate default entities
+						rectangle_command->draw_element = true;
+						rectangle_command_2->draw_element = true;
+						rectangle_command_3->draw_element = true;
+						rectangle_command_4->draw_element = true;
+						rectangle_command_5->draw_element = true;
+						rectangle_command_6->draw_element = true;
+						rectangle_command_7->draw_element = true;
+						rectangle_command_8->draw_element = true;
+						rectangle_command_9->draw_element = true;
+
+						ui_create_bot->disable_element();
+						ui_create_builds->disable_element();
+						ui_leave_bunker->disable_element();
+						ui_create_bunker->disable_element();
+						ui_create_barraks->disable_element();
+						ui_create_factory->disable_element();
+
+						ui_create_marine->disable_element();
+						ui_create_medic->disable_element();
+						ui_create_firebat->disable_element();
+
+						break;
+
+		  case (FIREBAT) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+
+						//Activate default entities
+						rectangle_command->draw_element = true;
+						rectangle_command_2->draw_element = true;
+						rectangle_command_3->draw_element = true;
+						rectangle_command_4->draw_element = true;
+						rectangle_command_5->draw_element = true;
+						rectangle_command_6->draw_element = true;
+						rectangle_command_7->draw_element = true;
+						rectangle_command_8->draw_element = true;
+						rectangle_command_9->draw_element = true;
+
+						ui_create_bot->disable_element();
+						ui_create_builds->disable_element();
+						ui_leave_bunker->disable_element();
+						ui_create_bunker->disable_element();
+						ui_create_barraks->disable_element();
+						ui_create_factory->disable_element();
+
+						ui_create_marine->disable_element();
+						ui_create_medic->disable_element();
+						ui_create_firebat->disable_element();
+
+						break;
+
+		  case (SCV) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+
+						//Activate default entities
+						rectangle_command->draw_element = true;
+						rectangle_command_2->draw_element = true;
+						rectangle_command_3->draw_element = true;
+						rectangle_command_4->draw_element = true;
+						rectangle_command_5->draw_element = true;
+						rectangle_command_6->draw_element = true;
+						rectangle_command_7->draw_element = true;
+						rectangle_command_8->draw_element = true;
+						rectangle_command_9->draw_element = true;
+
+						ui_create_bot->disable_element();
+						ui_create_builds->disable_element();
+						ui_leave_bunker->disable_element();
+						ui_create_bunker->disable_element();
+						ui_create_barraks->disable_element();
+						ui_create_factory->disable_element();
+
+						ui_create_marine->disable_element();
+						ui_create_medic->disable_element();
+						ui_create_firebat->disable_element();
+
+						break;
+		  case (NOTYPE) :
 				  //Desactivate all the options of Entities
 				  ui_create_bot->disable_element();
 				  ui_create_builds->disable_element();
@@ -648,6 +762,12 @@ bool Gui::postUpdate()
 			drawHudSelection(BARRACK);
 		if (itm->second->specialization == SPECIALIZATION::MARINE)
 			drawHudSelection(MARINE);
+		if (itm->second->specialization == SPECIALIZATION::MEDIC)
+			drawHudSelection(MEDIC);
+		if (itm->second->specialization == SPECIALIZATION::FIREBAT)
+			drawHudSelection(FIREBAT);
+		if (itm->second->specialization == SPECIALIZATION::SCV)
+			drawHudSelection(SCV);
 	}
 	
 	// CRZ -> A possible option of blitting according to Y value.
@@ -843,7 +963,6 @@ void Gui::controlIconsSprite()
 {
 	if (buildingMenuOpened)
 	{
-		//Buildings
 		//Bunker
 		if (app->game_manager->gas_resources < 75 || app->game_manager->mineral_resources < 100)
 		{
@@ -856,31 +975,44 @@ void Gui::controlIconsSprite()
 			ui_create_bunker->enable_element();
 		}
 		//Barracks 
-		ui_create_barraks->setSection({ 482, 125, 37, 34 });
-		ui_create_barraks->unable_element();
+		if (!barrackAlive && app->game_manager->gas_resources >= 250 && app->game_manager->mineral_resources >= 250)
+		{
+			ui_create_barraks->setSection({ 298, 64, 37, 34 });
+			ui_create_barraks->enable_element();
+		}
+		else
+		{
+			ui_create_barraks->setSection({ 482, 125, 37, 34 });
+			ui_create_barraks->unable_element();
+		}
 		//Factory
-		ui_create_factory->setSection({ 561, 125, 37, 34 });
-		ui_create_factory->unable_element();
-
-		commandCenterOpened = false;
-		barrackMenuOpened = false;
+		if (!factoryAlive && app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 300)
+		{
+			ui_create_factory->setSection({ 377, 64, 37, 34 });
+			ui_create_factory->enable_element();
+		}
+		else
+		{
+			ui_create_factory->setSection({ 561, 125, 37, 34 });
+			ui_create_factory->unable_element();
+		}
 	}
 
 	if (commandCenterOpened)
 	{
-		if (app->game_manager->mineral_resources < 50)
+		if (!buildingMenuOpened)
 		{
-			ui_create_bot->setSection({ 440, 89, 37, 34 });
-			ui_create_bot->unable_element();
+			if (app->game_manager->mineral_resources < 50)
+			{
+				ui_create_bot->setSection({ 440, 89, 37, 34 });
+				ui_create_bot->unable_element();
+			}
+			else
+			{
+				ui_create_bot->setSection({ 256, 28, 37, 34 });
+				ui_create_bot->enable_element();
+			}
 		}
-		else
-		{
-			ui_create_bot->setSection({ 256, 28, 37, 34 });
-			ui_create_bot->enable_element();
-		}
-
-	 buildingMenuOpened = false;
-	 barrackMenuOpened = false;
 	}
 
 	if (barrackMenuOpened)
@@ -893,7 +1025,7 @@ void Gui::controlIconsSprite()
 		}
 		else
 		{
-			ui_create_marine->setSection({ 339, 152, 37, 34 });
+			ui_create_marine->setSection({ 338, 152, 37, 34 });
 			ui_create_marine->enable_element();
 		}
 
@@ -905,16 +1037,24 @@ void Gui::controlIconsSprite()
 		}
 		else
 		{
-			ui_create_medic->setSection({ 382, 152, 36, 34 });
+			ui_create_medic->setSection({ 381, 152, 37, 34 });
 			ui_create_medic->enable_element();
 		}
 
-		//Factory
-		ui_create_factory->setSection({ 561, 125, 37, 34 });
-		ui_create_factory->unable_element();
+		//Create Firebat
+		if (app->game_manager->gas_resources < 200 || app->game_manager->mineral_resources < 50)
+		{
+			ui_create_firebat->setSection({ 293, 192, 37, 34 });
+			ui_create_firebat->unable_element();
+		}
+		else
+		{
+			ui_create_firebat->setSection({ 293, 152, 37, 33 });
+			ui_create_firebat->enable_element();
+		}
+		
 
-		buildingMenuOpened = false;
-		commandCenterOpened = false;
+		
 	}
 }
 
