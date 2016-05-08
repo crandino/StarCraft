@@ -608,6 +608,13 @@ void EntityManager::handleSelection()
 			if (it->second->type == UNIT && it->second->state != DYING)
 			{
 				Unit *unit = (Unit*)it->second;
+
+				if (it->second->specialization == TANK)
+				{
+					if (((Tank*)unit)->siege_mode)
+						continue;
+				}
+
 				if (selection.size() == 1)
 				{
 					if (unit->flying)
