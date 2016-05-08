@@ -778,22 +778,31 @@ bool Gui::update(float dt)
 		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
 		cursor->current_animation = &cursor->left_disp;
 	}
-	else if (pos.x > (app->render->camera.w - cursor_offset.x)) // Right
+	else if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT)
+		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
+	else if (pos.x >(app->render->camera.w - cursor_offset.x)) // Right
 	{
 		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
 		cursor->current_animation = &cursor->right_disp;
 	}
+	else if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_LEFT) != KEY_REPEAT)
+		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
+
 	// Checking displacement for Y axis.
 	if (pos.y < cursor_offset.y) // Up
 	{
 		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
 		cursor->current_animation = &cursor->up_disp;
 	}
-	else if (pos.y > (app->render->camera.h - cursor_offset.y)) // Down
+	else if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_DOWN) != KEY_REPEAT)
+		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
+	else if (pos.y >(app->render->camera.h - cursor_offset.y)) // Down
 	{
 		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 		cursor->current_animation = &cursor->down_disp;
-	}		
+	}
+	else if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_UP) != KEY_REPEAT)
+		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 
 	const GuiElements* mouse_hover = findMouseHover();
 	if (mouse_hover &&
