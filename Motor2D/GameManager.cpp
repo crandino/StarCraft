@@ -188,10 +188,7 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
-
-
 	srand(time(NULL));
-
 
 	return ret;
 }
@@ -395,12 +392,16 @@ bool GameManager::update(float dt)
 
 	case(WIN):
 	{
-		if (!is_victory_screen_on)
-		{
-			app->audio->stopMusic();
-			restartGame();
-			displayVictoryScreen();
-			app->audio->playFx(fx_win, 0);
+
+		if (timer_between_waves.readSec() > gameInfo.time_before_end)
+		{ 
+			if (!is_victory_screen_on)
+			{
+				app->audio->stopMusic();
+				restartGame();
+				displayVictoryScreen();
+				app->audio->playFx(fx_win, 0);
+			}
 		}
 		break;
 	}
@@ -448,8 +449,8 @@ bool GameManager::update(float dt)
 	//ROGER: Add resources
 	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
-		mineral_resources = mineral_resources + 100;
-		gas_resources = gas_resources + 100;
+		mineral_resources += 100;
+		gas_resources += 100;
 	}
 	//Delete resources
 	if (app->input->getKey(SDL_SCANCODE_E) == KEY_DOWN)
@@ -491,6 +492,7 @@ void GameManager::checkingGameConditions()
 
 	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > 5.0f)
 	{
+		timer_between_waves.start();
 		game_state = WIN;
 		start_game = false;
 	}

@@ -130,6 +130,7 @@ public:
 	bool	create_tank = false;
 	bool    create_barrack = false;
 	bool    create_factory = false;
+	bool	set_bomb = false;
 
 	bool	selector_init;
 

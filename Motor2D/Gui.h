@@ -121,6 +121,7 @@ public:
 	GuiImage* ui_create_marine = nullptr;
 	GuiImage* ui_create_medic = nullptr;
 	GuiImage* ui_create_firebat = nullptr;
+	GuiImage* ui_set_bomb = nullptr;
 
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;

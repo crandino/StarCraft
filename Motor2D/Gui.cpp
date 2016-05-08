@@ -196,6 +196,13 @@ bool Gui::start()
 	ui_create_firebat->can_focus = true;
 	ui_create_firebat->draw_element = false;
 
+	ui_set_bomb = app->gui->createImage(NULL, { 339, 152, 37, 34 });//Disabled section { 338, 192, 37, 34 }
+	ui_set_bomb->setLocalPos(597, 358);
+	ui_set_bomb->setListener(this);
+	ui_set_bomb->interactive = false;
+	ui_set_bomb->can_focus = true;
+	ui_set_bomb->draw_element = false;
+
 	//HUD  Mineral and Gass-------------------------------------------------
 	//Image
 	ui_mineral = app->gui->createImage(NULL, { 7, 202, 15, 13 });
@@ -425,6 +432,25 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		}
 	}
 	
+	if (ui == ui_set_bomb)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			app->entity_manager->set_bomb = true;
+			break;
+
+		}
+
+	}
+
 	if (ui == ui_leave_bunker)
 	{
 		switch (event)
@@ -715,10 +741,13 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				ui_create_bunker->disable_element();
 				ui_create_barraks->disable_element();
 				ui_create_factory->disable_element();
+				
 
 				ui_create_marine->disable_element();
 				ui_create_medic->disable_element();
 				ui_create_firebat->disable_element();
+
+				ui_set_bomb->disable_element();
 
 				break;
 
