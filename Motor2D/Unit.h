@@ -20,7 +20,7 @@ public:
 	vector<iPoint>		path;							// The path returned by the PathFinding that the unit follows...
 	float				speed;							// ...at some speed.
 	float				speed_multiplier = 1.0f;
-	iPoint				distance_to_center_selector;    // Useful for PathFinding for groups of units
+	iPoint				distance_to_center_selector = { 0, 0 };    // Useful for PathFinding for groups of units
 
 	bool				flying;							// Does it flies?
 	bool				area_attack = false;			// Can attack in area?

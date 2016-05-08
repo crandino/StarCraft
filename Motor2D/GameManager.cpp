@@ -14,7 +14,7 @@
 #include <map>
 #include "Entity.h"
 #include "Bomb.h"
-#include "PathFinding.h"
+#include "Unit.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -465,58 +465,50 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 	Entity *entity_to_add;
 	for (uint i = 0; i < wave->zergling_quantity; i++)
 	{
-		int posx = position.x + (wave->zergling_quantity * i * 2);
-		int posy = position.y + (wave->zergling_quantity * i * 2);
+		int posx = position.x + (i * 8);
+		int posy = position.y + (i * 8);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, ZERGLING);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->zergling_quantity * i * 2), command_center_position.y + (wave->zergling_quantity * i * 2) - 100);
-		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
-			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
+		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
 	}
 
 	for (uint i = 0; i < wave->hydralisk_quantity; i++)
 	{
-		int posx = position.x + (wave->hydralisk_quantity * i * 2);
-		int posy = position.y + (wave->hydralisk_quantity * i * 2);
+		int posx = position.x + (i * 8);
+		int posy = position.y + (i * 8);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, HYDRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->hydralisk_quantity * i * 2), command_center_position.y + (wave->hydralisk_quantity * i * 2) - 100);
-		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
-			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
+		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
 	}
 
 	for (uint i = 0; i < wave->ultralisk_quantity; i++)
 	{
-		int posx = position.x + (wave->ultralisk_quantity * i * 2);
-		int posy = position.y + (wave->ultralisk_quantity * i * 2);
+		int posx = position.x + (i * 8);
+		int posy = position.y + (i * 8);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->ultralisk_quantity * i * 2), command_center_position.y + (wave->ultralisk_quantity * i * 2) - 100);
-		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
-			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
+		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
 	}
 
 	for (uint i = 0; i < wave->mutalisk_quantity; i++)
 	{
-		int posx = position.x + (wave->mutalisk_quantity * i * 2);
-		int posy = position.y + (wave->mutalisk_quantity * i * 2);
+		int posx = position.x + (i * 8);
+		int posy = position.y + (i * 8);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, MUTALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		iPoint target = app->map->worldToMap(app->map->data.back(), command_center_position.x + (wave->mutalisk_quantity * i * 2), command_center_position.y + (wave->mutalisk_quantity * i * 2) - 100);
-		if (app->path->createPath(entity_to_add->tile_pos, target, entity_to_add->id) != -1)
-			entity_to_add->state = WAITING_PATH_MOVE_ALERT;
+		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
 	}
 }
 

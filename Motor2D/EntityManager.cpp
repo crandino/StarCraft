@@ -177,7 +177,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 	if (e->type == UNIT)
 	{
 		iPoint p = app->game_manager->command_center_position;
-		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
+		p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
 
 		Unit* unit = (Unit*)e;
 		if (unit->flying)
@@ -187,7 +187,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 			unit->has_target = true;
 			unit->state = MOVE_ALERT;
 		}
-		else if (app->path->createPath(e->tile_pos, p, e->id) != -1)
+		else if (app->path->createPath(e->tile_pos, p + unit->distance_to_center_selector, e->id) != -1)
 			unit->state = WAITING_PATH_MOVE_ALERT;
 	}
 }
