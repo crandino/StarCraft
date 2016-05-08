@@ -1,4 +1,6 @@
 #include "Hydralisk.h"
+#include "PathFinding.h"
+#include "ParticleManager.h"
 
 Hydralisk::Hydralisk(iPoint &p)
 {
@@ -164,61 +166,62 @@ Hydralisk::Hydralisk(iPoint &p)
 	dead.loop = false;
 	//----------------------------------------------
 
-	attack_right.frames.push_back({ 256, 0, 64, 64 });
-	attack_right.frames.push_back({ 256, 128, 64, 64 });
-	attack_right.frames.push_back({ 256, 256, 64, 64 });
-	attack_right.frames.push_back({ 256, 384, 64, 64 });
-	attack_right.frames.push_back({ 256, 512, 64, 64 });
-	attack_right.frames.push_back({ 256, 640, 64, 64 });
-	attack_right.frames.push_back({ 256, 768, 64, 64 });
+	attack_right.setAnimations(512, 0, 128, 128, 1, 5, 5);
 	attack_right.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_right);
 
-	attack_right_up.frames.push_back({ 128, 0, 64, 64 });
-	attack_right_up.frames.push_back({ 128, 128, 64, 64 });
-	attack_right_up.frames.push_back({ 128, 256, 64, 64 });
-	attack_right_up.frames.push_back({ 128, 384, 64, 64 });
-	attack_right_up.frames.push_back({ 128, 512, 64, 64 });
-	attack_right_up.frames.push_back({ 128, 640, 64, 64 });
-	attack_right_up.frames.push_back({ 128, 768, 64, 64 });
+	attack_right_up.setAnimations(256, 0, 128, 128, 1, 5, 5);
 	attack_right_up.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_right_up);
 
-	attack_up.frames.push_back({ 0, 64, 64, 64 });
-	attack_up.frames.push_back({ 0, 128, 64, 64 });
-	attack_up.frames.push_back({ 0, 192, 64, 64 });
+	attack_up.setAnimations(0, 0, 128, 128, 1, 5, 5);
 	attack_up.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_up);
 
-	attack_left_up.frames.push_back({ 896, 64, 64, 64 });
-	attack_left_up.frames.push_back({ 896, 128, 64, 64 });
-	attack_left_up.frames.push_back({ 896, 192, 64, 64 });
+	attack_left_up.setAnimations(1792, 0, 128, 128, 1, 5, 5);
 	attack_left_up.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_left_up);
 
-	attack_left.frames.push_back({ 768, 64, 64, 64 });
-	attack_left.frames.push_back({ 768, 128, 64, 64 });
-	attack_left.frames.push_back({ 768, 192, 64, 64 });
+	attack_left.setAnimations(1536, 0, 128, 128, 1, 5, 5);
 	attack_left.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_left);
 
-	attack_left_down.frames.push_back({ 640, 64, 64, 64 });
-	attack_left_down.frames.push_back({ 640, 128, 64, 64 });
-	attack_left_down.frames.push_back({ 640, 192, 64, 64 });
+	attack_left_down.setAnimations(1280, 0, 128, 128, 1, 5, 5);
 	attack_left_down.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_left_down);
 
-	attack_down.frames.push_back({ 512, 64, 64, 64 });
-	attack_down.frames.push_back({ 512, 128, 64, 64 });
-	attack_down.frames.push_back({ 512, 192, 64, 64 });
+	attack_down.setAnimations(1024, 0, 128, 128, 1, 5, 5);
 	attack_down.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_down);
 
-	attack_right_down.frames.push_back({ 384, 64, 64, 64 });
-	attack_right_down.frames.push_back({ 384, 128, 64, 64 });
-	attack_right_down.frames.push_back({ 384, 192, 64, 64 });
+	attack_right_down.setAnimations(768, 0, 128, 128, 1, 5, 5);
 	attack_right_down.speed = 0.008f;
 	attack_animation_pack.push_back(&attack_right_down);
+
+	// Attack Particle
+	attack_up_part.anim.setAnimations(0, 0, 88, 124, 1, 7, 7);
+	attack_up_part.anim.speed = 0.02f;
+
+	attack_right_up_part.anim.setAnimations(88, 0, 88, 124, 1, 7, 7);
+	attack_right_up_part.anim.speed = 0.02f;
+
+	attack_right_part.anim.setAnimations(176, 0, 88, 124, 1, 7, 7);
+	attack_right_part.anim.speed = 0.02f;
+
+	attack_right_down_part.anim.setAnimations(264, 0, 88, 124, 1, 7, 7);
+	attack_right_down_part.anim.speed = 0.02f;
+
+	attack_down_part.anim.setAnimations(352, 0, 88, 124, 1, 7, 7);
+	attack_down_part.anim.speed = 0.02f;
+
+	attack_left_down_part.anim.setAnimations(440, 0, 88, 124, 1, 7, 7);
+	attack_left_down_part.anim.speed = 0.02f;
+
+	attack_left_part.anim.setAnimations(528, 0, 88, 124, 1, 7, 7);
+	attack_left_part.anim.speed = 0.02f;
+
+	attack_left_up_part.anim.setAnimations(616, 0, 88, 124, 1, 7, 7);
+	attack_left_up_part.anim.speed = 0.02f;
 
 	current_animation = &walk_down;
 
@@ -226,6 +229,9 @@ Hydralisk::Hydralisk(iPoint &p)
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+	particle_offset = { 0, 0 };
+
+	attack_up_part.image = app->tex->loadTexture("Particles/Shots/Hydra_attack.png");
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
@@ -268,17 +274,36 @@ void Hydralisk::setAnimationFromDirection()
 	{
 	case(IDLE) :
 	case(MOVE) :
-	case(MOVE_ALERT) :
-	case(MOVE_ALERT_TO_ATTACK) :
-	case(WAITING_PATH_MOVE) :
-	case(WAITING_PATH_MOVE_ALERT) :
-	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
-	case(ATTACK) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
 		if (num_animation == move_animation_pack.size())
-			num_animation = 0;
+		num_animation = 0;
 		current_animation = &(*move_animation_pack.at(num_animation));
+	}
+
+		break;
+	case(MOVE_ALERT) :
+	{
+				   int num_animation = angle / (360 / move_animation_pack.size());
+				   if (num_animation == move_animation_pack.size())
+					   num_animation = 0;
+				   current_animation = &(*move_animation_pack.at(num_animation));
+				   break;
+	}
+	case(MOVE_ALERT_TO_ATTACK) :
+	{
+								   int num_animation = angle / (360 / move_animation_pack.size());
+								   if (num_animation == move_animation_pack.size())
+								   num_animation = 0;
+								   current_animation = &(*move_animation_pack.at(num_animation));
+				   break;
+	}
+	case(ATTACK) :
+	{
+					 int num_animation = angle / (360 / attack_animation_pack.size());
+					 if (num_animation == attack_animation_pack.size())
+			num_animation = 0;
+		current_animation = &(*attack_animation_pack.at(num_animation));
 		break;
 	}
 	case(DYING) :
@@ -287,5 +312,303 @@ void Hydralisk::setAnimationFromDirection()
 		break;
 	}
 	}
+}
+
+bool Hydralisk::update(float dt)
+{
+	checkUnitDirection();
+	setAnimationFromDirection();// This sets animation according to their angle direction
+	setParticleBehaviour();
+	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+	{
+		resetParticle();
+	}
+
+	switch (state)
+	{
+	case IDLE:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else if (faction == COMPUTER)
+				app->entity_manager->SetEnemyToAttackCommandCenter(this);
+			timer_to_check.start();
+		}
+		break;
+	case MOVE:
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case ATTACK:
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
+		{
+			if (area_attack)
+			{
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
+				while (targets.begin() != targets.end())
+				{
+					attackWithoutRange(targets.front());
+					targets.pop_front();
+				}
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+			}
+			else
+			if (!attack(target_to_attack))
+			{
+				state = IDLE;
+				target_to_attack = NULL;
+			}
+			timer_attack.start();
+
+			Entity* target = target_to_attack;
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+				newEntityFound();
+		}
+		break;
+	case DYING:
+		if (current_animation->finished())
+		{
+			to_delete = true;
+			coll->to_delete = true;
+		}
+		break;
+	case WAITING_PATH_MOVE:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
+			timer_to_check.start();
+		}
+		break;
+	}
+	return true;
+}
+
+void Hydralisk::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case IDLE:
+		resetParticle();
+		break;
+	case MOVE:
+		resetParticle();
+		break;
+	case MOVE_ALERT:
+		resetParticle();
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		resetParticle();
+		break;
+	case ATTACK:
+		if (current_animation == &attack_up)
+		{
+			if (particle != NULL && !attack_up_part.on)
+			{
+				resetParticle();
+			}
+			if (!attack_up_part.on)
+			{
+
+				particle_offset = { 15, -30};
+				particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				attack_up_part.on = true;
+			}
+
+		}
+
+		if (current_animation == &attack_right_up)
+		{
+			if (particle != NULL && !attack_right_up_part.on)
+			{
+				resetParticle();
+
+			}
+
+			if (!attack_right_up_part.on)
+			{
+				attack_right_up_part.on = true;
+				particle_offset = { 30, -20 };
+				particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+
+		}
+
+		if (current_animation == &attack_right)
+		{
+			if (particle != NULL && !attack_right_part.on)
+			{
+				resetParticle();
+
+			}
+
+			if (!attack_right_part.on)
+			{
+				attack_right_part.on = true;
+				particle_offset = { 30, -10 };
+				particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+
+		}
+
+		if (current_animation == &attack_right_down)
+		{
+			if (particle != NULL && !attack_right_down_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_right_down_part.on)
+			{
+				attack_right_down_part.on = true;
+				particle_offset = { 30, -10 };
+				particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+
+		}
+
+		if (current_animation == &attack_down)
+		{
+			if (particle != NULL && !attack_down_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_down_part.on)
+			{
+				attack_down_part.on = true;
+				particle_offset = { 25, 10 };
+				particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+
+		}
+
+		if (current_animation == &attack_left_down)
+		{
+			if (particle != NULL && !attack_left_down_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_down_part.on)
+			{
+				attack_left_down_part.on = true;
+				particle_offset = { -17, 5 };
+				particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+		}
+
+		if (current_animation == &attack_left)
+		{
+			if (particle != NULL && !attack_left_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_part.on)
+			{
+				attack_left_part.on = true;
+				particle_offset = { -30, -10 };
+				particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+
+		}
+
+		if (current_animation == &attack_left_up)
+		{
+			if (particle != NULL && !attack_left_up_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_up_part.on)
+			{
+				attack_left_up_part.on = true;
+				particle_offset = { -20, -12 };
+				particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+			}
+		}
+		break;
+	case DYING:
+		resetParticle();
+		break;
+	case WAITING_PATH_MOVE:
+		resetParticle();
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		resetParticle();
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		resetParticle();
+		break;
+	}
+}
+
+void Hydralisk::resetParticle()
+{
+		if (attack_up_part.on || attack_right_up_part.on || attack_right_part.on || attack_right_down_part.on || attack_down_part.on || attack_left_down_part.on || attack_left_part.on || attack_left_up_part.on)
+		{
+			attack_up_part.on = false;
+			attack_right_up_part.on = false;
+			attack_right_part.on = false;
+			attack_right_down_part.on = false;
+			attack_down_part.on = false;
+			attack_left_down_part.on = false;
+			attack_left_part.on = false;
+			attack_left_up_part.on = false;
+			particle->on = false;
+			particle->alive = false;
+		}
 }
 

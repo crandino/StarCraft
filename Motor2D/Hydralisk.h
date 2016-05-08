@@ -40,13 +40,27 @@ public:
 	Animation attack_left;
 	Animation attack_left_up;
 	vector<Animation*> attack_animation_pack;
+
+	//ATTACK Particle
+	Particle attack_up_part;
+	Particle attack_right_up_part;
+	Particle attack_right_part;
+	Particle attack_right_down_part;
+	Particle attack_down_part;
+	Particle attack_left_down_part;
+	Particle attack_left_part;
+	Particle attack_left_up_part;
 	
 	Hydralisk() {}
 	Hydralisk(iPoint &p);
 
 	~Hydralisk();
 
+	bool update(float dt);
+
 	void setAnimationFromDirection();
+	void setParticleBehaviour();
+	void resetParticle();
 
 };
 
