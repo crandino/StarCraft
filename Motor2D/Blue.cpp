@@ -6,8 +6,8 @@ Blue::Blue(iPoint &p)
 	// Positions and dimensions
 	center = { (float)p.x, (float)p.y };
 
-	tex_width = 96;
-	tex_height = 128;
+	tex_width = 145;
+	tex_height = 145;
 	collider_offset.set(0, 36);
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
