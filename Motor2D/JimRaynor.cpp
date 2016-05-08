@@ -254,7 +254,7 @@ JimRaynor::JimRaynor(iPoint &p)
 	offset_life = { -16, 16 };
 
 	// Lifes attributes
-	max_hp = 80;
+	max_hp = 300;
 	current_hp = 80.0f;
 	max_hp_bars = 6;
 

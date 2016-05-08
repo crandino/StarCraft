@@ -38,9 +38,9 @@ using namespace std;
 struct wave_positions
 {
 	iPoint north_west = { 1400, 1700};
-	iPoint north_east = { 1500, 1700 };
+	iPoint north_east = { 2350, 1700 };
 	iPoint south_west = { 1400, 2700 };
-	iPoint south_east = { 2600, 2700 };
+	iPoint south_east = { 2300, 2700 };
 };
 
 enum wave_positions_enum
@@ -613,9 +613,12 @@ void GameManager::startGame()
 	unsigned int size_marines_x = initial_size.marines_quantityX * 3;
 	unsigned int size_marines_y = initial_size.marines_quantityY ;
 
+	//---- Initial units ----
 	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
-	
 	app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR);
+	app->entity_manager->addEntity(iPoint(1520, 2150), MEDIC);
+	//--------
+
 
 	app->render->setCameraOnPosition(p);
 	
