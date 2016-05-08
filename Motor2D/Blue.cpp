@@ -84,12 +84,12 @@ bool Blue::update(float dt)
 void Blue::buff()
 {
 	list<Entity*> last_targets = targets;
-	targets = searchEntitiesInRange(this, range_to_attack);
-	
 	for (list<Entity*>::iterator it = last_targets.begin(); it != last_targets.end(); it++)
 	{
 		it._Ptr->_Myval->speed_multiplier /= 1.2f;
 	}
+
+	targets = searchEntitiesInRange(this, range_to_attack);
 	for (list<Entity*>::iterator it = targets.begin(); it != targets.end(); it++)
 	{
 		it._Ptr->_Myval->speed_multiplier *= 1.2f;

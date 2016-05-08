@@ -413,6 +413,7 @@ bool Tank::update(float dt)
 				path.clear();
 				has_target = false;
 				app->path->erase(id);
+				range_to_attack *= 2;
 			}
 		}
 		break;
@@ -425,6 +426,7 @@ bool Tank::update(float dt)
 				state = IDLE;
 				area_attack = false;
 				damage /= 2;
+				range_to_attack /= 2;
 			}
 		}
 		break;

@@ -84,12 +84,12 @@ bool Yellow::update(float dt)
 void Yellow::buff()
 {
 	list<Entity*> last_targets = targets;
-	targets = searchEntitiesInRange(this, range_to_attack);
-
 	for (list<Entity*>::iterator it = last_targets.begin(); it != last_targets.end(); it++)
 	{
 		it._Ptr->_Myval->attack_frequency_multiplier /= 1.2f;
 	}
+
+	targets = searchEntitiesInRange(this, range_to_attack);
 	for (list<Entity*>::iterator it = targets.begin(); it != targets.end(); it++)
 	{
 		it._Ptr->_Myval->attack_frequency_multiplier *= 1.2f;
