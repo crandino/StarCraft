@@ -4,7 +4,7 @@
 JimRaynor::JimRaynor(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("tmp_Jim_Raynor.png");
+	tex = app->tex->loadTexture("Units/JimRaynor.png");
 	tex_width = tex_height = 64;
 	//---------------Idle Animation----------------
 	idle_right.frames.push_back({ 256, 0, 64, 64 });
