@@ -311,6 +311,11 @@ public:
 		setParticleBehaviour();
 		coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 		followEntity();
+		if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+		{
+			resetParticle();
+			resetSpark();
+		}
 
 		switch (state)
 		{

@@ -482,7 +482,7 @@ void GameManager::checkingGameConditions()
 	if (command_center_destroyed || jim_raynor_dead)
 	{
 		game_state = LOSE;
-		start_game = false;
+		start_game = false;	
 	}
 
 	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > 5.0f)
@@ -700,10 +700,6 @@ void GameManager::restartGame()
 	{
 		it->second->coll->to_delete = true;
 		it->second->to_delete = true;
-		if (it->second->particle != NULL)
-		{
-			it->second->particle->alive = false;
-		}
 	}
 	//---------------------------------------------------------
 

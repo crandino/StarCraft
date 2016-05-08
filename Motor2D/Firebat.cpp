@@ -1,6 +1,7 @@
 #include "Firebat.h"
 #include "Bunker.h"
 #include "PathFinding.h"
+#include "GameManager.h"
 
 Firebat::Firebat(iPoint &p)
 {
@@ -380,6 +381,10 @@ bool Firebat::update(float dt)
 	setAnimationFromDirection();   // This sets animation according to their angle direction
 	setParticleBehaviour(); //IPL: well idk what happened... seems like is working well... we will do more tests... 
 	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+	{
+		resetParticle();
+	}
 
 	switch (state)
 	{
