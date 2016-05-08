@@ -8,7 +8,7 @@ Red::Red(iPoint &p)
 
 	tex_width = 145;
 	tex_height = 145;
-	collider_offset.set(0, 36);
+	collider_offset.set(25, 86);
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
