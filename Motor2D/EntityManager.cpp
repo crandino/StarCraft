@@ -133,6 +133,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 	// TERRAN BUILDINGS
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
+		building_to_place = (Building*)e;
 		building_mode = !direct_creation;
 		e = new CommandCenter(pos);
 		break;
@@ -147,21 +148,14 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		LOG("Creating Barrack");
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
-<<<<<<< HEAD
 		building_mode = !direct_creation;
-=======
-		building_mode = true;
 		create_barrack = false;
->>>>>>> origin/master
 		break;
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
-<<<<<<< HEAD
 		building_to_place = (Building*)e;
 		building_mode = !direct_creation;
-=======
->>>>>>> origin/master
 		break;
 	}
 
@@ -171,11 +165,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
 		// Building creation, special treatment
-<<<<<<< HEAD
 		if (e->type == BUILDING)
-=======
-		if (e->specialization == COMMANDCENTER || e->specialization == BOMB)
->>>>>>> origin/master
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
