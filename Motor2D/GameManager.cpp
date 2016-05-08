@@ -465,50 +465,58 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 	Entity *entity_to_add;
 	for (uint i = 0; i < wave->zergling_quantity; i++)
 	{
-		int posx = position.x + (i * 8);
-		int posy = position.y + (i * 8);
+		int posx = position.x + (i * 8) - (wave->zergling_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->zergling_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, ZERGLING);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
+		int dx = i - (wave->zergling_quantity / 2);
+		int dy = i - (wave->zergling_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 
 	for (uint i = 0; i < wave->hydralisk_quantity; i++)
 	{
-		int posx = position.x + (i * 8);
-		int posy = position.y + (i * 8);
+		int posx = position.x + (i * 8) - (wave->hydralisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->hydralisk_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, HYDRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
+		int dx = i - (wave->hydralisk_quantity / 2);
+		int dy = i - (wave->hydralisk_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 
 	for (uint i = 0; i < wave->ultralisk_quantity; i++)
 	{
-		int posx = position.x + (i * 8);
-		int posy = position.y + (i * 8);
+		int posx = position.x + (i * 8) - (wave->ultralisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->ultralisk_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
+		int dx = i - (wave->ultralisk_quantity / 2);
+		int dy = i - (wave->ultralisk_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 
 	for (uint i = 0; i < wave->mutalisk_quantity; i++)
 	{
-		int posx = position.x + (i * 8);
-		int posy = position.y + (i * 8);
+		int posx = position.x + (i * 8) - (wave->mutalisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->mutalisk_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, MUTALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		((Unit*)entity_to_add)->distance_to_center_selector = app->map->worldToMap(app->map->data.back(), (i * 8), (i * 8));
+		int dx = i - (wave->mutalisk_quantity / 2);
+		int dy = i - (wave->mutalisk_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 }
 
