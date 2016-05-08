@@ -13,10 +13,10 @@ Blue::Blue(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 	// Animations and FX
-	tex = app->tex->loadTexture("Building/Blue.png"); //Sprites/Animations etc..
-	idle.frames.push_back({ 0, 0, 96, 128 });
-	idle.speed = 1.0f;
-	idle.loop = false;
+	tex = app->tex->loadTexture("Building/Blue2.png"); //Sprites/Animations etc..
+	idle.setAnimations(0, 0, 145, 145, 15, 1, 15);
+	idle.speed = 0.009f;
+	idle.loop = true;
 	current_animation = &idle;
 
 	// Colliders

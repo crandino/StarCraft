@@ -14,9 +14,9 @@ Red::Red(iPoint &p)
 
 	// Animations and FX
 	tex = app->tex->loadTexture("Building/Red.png"); //Sprites/Animations etc..
-	idle.frames.push_back({ 0, 0, 96, 128 });
-	idle.speed = 1.0f;
-	idle.loop = false;
+	idle.setAnimations(0, 0, 145, 145, 15, 1, 15);
+	idle.speed = 0.009f;
+	idle.loop = true;
 	current_animation = &idle;
 
 	// Colliders
