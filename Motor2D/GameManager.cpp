@@ -359,7 +359,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
 
-			createWave(waves2_info[0], iPoint(625, 328));
+			createWave(waves2_info[0], wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
@@ -786,15 +786,27 @@ void GameManager::AddPointsEnemy(Entity* e)
 	if (e->specialization == ZERGLING)
 	{
 		mineral_resources += 25;
-		gas_resources += 0;
+		gas_resources += 25;
 	}
 
 	
 	else if (e->specialization == HYDRALISK)
 	{
 		mineral_resources += 30;
-		gas_resources += 25;
+		gas_resources += 40;
 	}
+	else if (e->specialization == MUTALISK)
+	{
+		mineral_resources += 30;
+		gas_resources += 60;
+	}
+	else if (e->specialization == ULTRALISK)
+	{
+		mineral_resources += 100;
+		gas_resources += 100;
+	}
+
+
 	
 
 }
