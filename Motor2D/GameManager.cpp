@@ -49,7 +49,7 @@ enum wave_positions_enum
 	NORTHEAST,
 	SOUTHWEST,
 	SOUTHEAST
-}wave_pos_enum;
+} wave_pos_enum;
 
 
 
@@ -212,8 +212,12 @@ bool GameManager::update(float dt)
 	
 	 wave_pos = positionRandomizer(random, wave_pos);
 
-	if (hold)
-		game_state = HOLD;
+	 if (hold)
+	 {
+		 game_state = HOLD;
+		 start_game = true;
+	 }
+		
 
 	switch (game_state)
 	{

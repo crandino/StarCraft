@@ -180,27 +180,27 @@ Tank::Tank(iPoint &p)
 
 	idle_siege_mode_up_turret.frames.push_back({ 0, 640, 128, 128 });
 	idle_siege_mode_up_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_up_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_up_turret);
 
 	idle_siege_mode_left_up_turret.frames.push_back({ 1792, 640, 128, 128 });
 	idle_siege_mode_left_up_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_left_up_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_left_up_turret);
 
 	idle_siege_mode_left_turret.frames.push_back({ 1536, 640, 128, 128 });
 	idle_siege_mode_left_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_left_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_left_turret);
 
 	idle_siege_mode_left_down_turret.frames.push_back({ 1280, 640, 128, 128 });
 	idle_siege_mode_left_down_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_left_down_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_left_down_turret);
 
 	idle_siege_mode_down_turret.frames.push_back({ 1024, 640, 128, 128 });
 	idle_siege_mode_down_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_down_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_down_turret);
 
 	idle_siege_mode_right_down_turret.frames.push_back({ 768, 640, 128, 128 });
 	idle_siege_mode_right_down_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_right_down_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_right_down_turret);
 
 	current_animation_turret = &idle_down_turret;
 
@@ -267,6 +267,10 @@ bool Tank::update(float dt)
 				newEntityFound();
 			timer_to_check.start();
 		}
+		break;
+	case IDLE_SIEGE_MODE:
+		break;
+	case ATTACK_SIEGE_MODE:
 		break;
 	case MOVE:
 		if (has_target)
@@ -365,12 +369,16 @@ bool Tank::update(float dt)
 		if (current_animation->finished())
 		{
 			current_animation_turret->resume();
+			if (current_animation_turret->finished())
+				state = IDLE_SIEGE_MODE;
 		}
 		break;
 	case SIEGE_MODE_OFF:
 		if (current_animation_turret->finished())
 		{
 			current_animation->resume();
+			if (current_animation->finished())
+				state = IDLE;
 		}
 		break;
 	}
@@ -393,9 +401,13 @@ void Tank::setAnimationFromDirection()
 		break;
 	}
 	case(IDLE_SIEGE_MODE):
+	case(ATTACK_SIEGE_MODE):
 	{
-		current_animation_turret->reset();
-		current_animation_turret->pause();
+		int num_animation = angle / (360 / idle_siege_mode_animation_turret_pack.size());
+		if (num_animation == idle_siege_mode_animation_turret_pack.size())
+			num_animation = 0;
+		current_animation_turret = &(*idle_siege_mode_animation_turret_pack.at(num_animation));
+		break;
 	}
 	case(MOVE) :
 	{
@@ -447,19 +459,6 @@ void Tank::setAnimationFromDirection()
 		current_animation = &(*idle_animation_pack.at(num_animation));
 		break;
 	}
-	case(SIEGE_MODE_ON) :
-	{
-		current_animation = &siege_mode_on;
-		current_animation_turret = &siege_mode_on_turret;
-		break;
-	}
-	case(SIEGE_MODE_OFF) :
-	{
-		current_animation = &siege_mode_off;
-		current_animation_turret = &siege_mode_off_turret;
-		break;
-	}
-
 	}
 }
 
@@ -490,13 +489,17 @@ void Tank::siegeMode(bool siege_mode_flag)
 			siege_mode_on.reset();
 			siege_mode_on_turret.reset();
 			siege_mode_on_turret.pause();
+			current_animation = &siege_mode_on;
+			current_animation_turret = &siege_mode_on_turret;
 			state = SIEGE_MODE_ON;
 		}
 		else
 		{
 			siege_mode_off_turret.reset();
 			siege_mode_off.reset();
-			siege_mode_off.pause();			
+			siege_mode_off.pause();
+			current_animation = &siege_mode_off;
+			current_animation_turret = &siege_mode_off_turret;
 			state = SIEGE_MODE_OFF;
 		}
 		siege_mode = siege_mode_flag;
