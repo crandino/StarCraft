@@ -84,7 +84,7 @@ bool EntityManager::start()
 	return true;
 }
 
-Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
+Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation)
 {
 	Entity *e = NULL;
 
@@ -136,25 +136,29 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	// TERRAN BUILDINGS
 	case(COMMANDCENTER) :
 		LOG("Creating Command Center");
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
 		e = new CommandCenter(pos);
 		break;
 	case(BUNKER) :
 		LOG("Creating Bunker");
 		e = new Bunker(pos);
 		building_to_place = (Building*)e;
-		building_mode = true;
+		building_mode = !direct_creation;
 		create_bunker = false;
 		break;
 	case(BARRACK) :
 		LOG("Creating Barrack");
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
-		building_mode = true;
+		building_mode = !direct_creation;
 		create_barrack = false;
 		break;
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
 		break;
 	case(BLUE) :
 		LOG("Creating Blue");
@@ -179,13 +183,13 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 		break;
 	}
 
-	if (e != NULL && building_mode != true)
+	if (e != NULL && direct_creation)
 	{
 		e->id = ++next_ID;
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
 		// Building creation, special treatment
-		if (e->specialization == COMMANDCENTER || e->specialization == BOMB)
+		if (e->type == BUILDING)
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
@@ -383,7 +387,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		app->game_manager->mineral_resources -= 25;
 		app->game_manager->gas_resources -= 50;
-		addEntity(position, BUNKER);
+		addEntity(position, BUNKER, false);
 	}
 
 	if (create_barrack)

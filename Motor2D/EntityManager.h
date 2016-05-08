@@ -100,15 +100,15 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	Entity* const addEntity(iPoint &pos, SPECIALIZATION type);
+	Entity* const addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation = true);
 	Entity* getEntity(uint id);
 	
-	void	SetEnemyToAttackCommandCenter(Entity* e);
-	Entity* searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
-	list<Entity*> searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
-	bool checkFocus(Unit* e);
-	Entity* searchEnemyToAttack(Entity* e);
-	Entity* searchAllyToHeal(Entity* e);
+	void				SetEnemyToAttackCommandCenter(Entity* e);
+	Entity*				searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
+	list<Entity*>		searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
+	bool				checkFocus(Unit* e);
+	Entity*				searchEnemyToAttack(Entity* e);
+	Entity*				searchAllyToHeal(Entity* e);
 
 	Entity* whichEntityOnMouse();
 
@@ -183,7 +183,7 @@ private:
 	void			handleSelection();
 	
 	//FOG_OF_WAR
-	void updateFogOfWar();
+	void            updateFogOfWar();
 };
 
 #endif // __EntityManager_H__
