@@ -164,21 +164,21 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		LOG("Creating Blue");
 		e = new Blue(pos);
 		building_to_place = (Building*)e;
-		building_mode = true;
+		building_mode = !direct_creation;
 		create_blue = false;
 		break;
 	case(YELLOW) :
 		LOG("Creating Yellow");
 		e = new Yellow(pos);
 		building_to_place = (Building*)e;
-		building_mode = true;
+		building_mode = !direct_creation;
 		create_yellow = false;
 		break;
 	case(RED) :
 		LOG("Creating Red");
 		e = new Red(pos);
 		building_to_place = (Building*)e;
-		building_mode = true;
+		building_mode = !direct_creation;
 		create_red = false;
 		break;
 	}
