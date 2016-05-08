@@ -72,8 +72,11 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
 
+
+
 	/*Player Info Load*/
-	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_int();
+	initial_size.marines_quantityX = node.child("InitialSizePlayer").attribute("marinesX").as_int();
+	initial_size.marines_quantityY = node.child("InitialSizePlayer").attribute("marinesY").as_int();
 	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_int();
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 	command_center_position.x = node.child("CommandCenterPosition").attribute("coordx").as_int();
@@ -206,25 +209,8 @@ bool GameManager::update(float dt)
 	iPoint wave_pos;
 
 	int random = rand() % 4 +1;
-
-	switch (random)
-	{
-		case(NORTHWEST):
-			wave_pos = wave_positions().north_west;
-		break;
-
-		case(NORTHEAST) :
-			wave_pos = wave_positions().north_east;
-		break;
-
-		case(SOUTHWEST) :
-			wave_pos = wave_positions().south_west;
-		break;
-
-		case(SOUTHEAST) :
-			wave_pos = wave_positions().south_east;
-		break;
-	}
+	
+	 wave_pos = positionRandomizer(random, wave_pos);
 
 	if (hold)
 		game_state = HOLD;
@@ -618,8 +604,8 @@ void GameManager::startGame()
 	retry_button->disable_element();
 	exit_button->disable_element();
 
-	unsigned int size_marines_x = SIZEMARINESX * 3;
-	unsigned int size_marines_y = SIZEMARINESY ;
+	unsigned int size_marines_x = initial_size.marines_quantityX * 3;
+	unsigned int size_marines_y = initial_size.marines_quantityY ;
 
 	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
 	
@@ -811,4 +797,28 @@ void GameManager::AddPointsEnemy(Entity* e)
 	}
 	
 
+}
+
+iPoint GameManager::positionRandomizer(int random, iPoint wave_pos)
+{
+	switch (random)
+	{
+	case(NORTHWEST) :
+		wave_pos = wave_positions().north_west;
+		break;
+
+	case(NORTHEAST) :
+		wave_pos = wave_positions().north_east;
+		break;
+
+	case(SOUTHWEST) :
+		wave_pos = wave_positions().south_west;
+		break;
+
+	case(SOUTHEAST) :
+		wave_pos = wave_positions().south_east;
+		break;
+	}
+
+	return wave_pos;
 }
