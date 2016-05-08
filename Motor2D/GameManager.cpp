@@ -14,6 +14,7 @@
 #include <map>
 #include "Entity.h"
 #include "Bomb.h"
+#include "Unit.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -33,6 +34,26 @@ using namespace std;
 #define COMMANDCENTERPOSITION {1500, 2250}
 */
 
+/*To Put into xml*/
+struct wave_positions
+{
+	iPoint north_west = { 1400, 1700};
+	iPoint north_east = { 1500, 1700 };
+	iPoint south_west = { 1400, 2700 };
+	iPoint south_east = { 2600, 2700 };
+};
+
+enum wave_positions_enum
+{
+	NORTHWEST = 1,
+	NORTHEAST,
+	SOUTHWEST,
+	SOUTHEAST
+}wave_pos_enum;
+
+
+
+
 GameManager::GameManager()
 {
 	name.assign("game_manager");
@@ -51,8 +72,11 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
 
+
+
 	/*Player Info Load*/
-	initial_size.marines_quantity = node.child("InitialSizePlayer").attribute("marines").as_int();
+	initial_size.marines_quantityX = node.child("InitialSizePlayer").attribute("marinesX").as_int();
+	initial_size.marines_quantityY = node.child("InitialSizePlayer").attribute("marinesY").as_int();
 	initial_size.scv_quantity = node.child("InitialSizePlayer").attribute("scv").as_int();
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 	command_center_position.x = node.child("CommandCenterPosition").attribute("coordx").as_int();
@@ -164,6 +188,11 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
+
+
+	srand(time(NULL));
+
+
 	return ret;
 }
 
@@ -177,6 +206,11 @@ bool GameManager::preUpdate()
 bool GameManager::update(float dt)
 {
 	bool ret = true;
+	iPoint wave_pos;
+
+	int random = rand() % 4 +1;
+	
+	 wave_pos = positionRandomizer(random, wave_pos);
 
 	if (hold)
 		game_state = HOLD;
@@ -210,7 +244,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
 			wave_state = MIDDLE_WAVE;
-			createWave(waves_info[current_wave], iPoint(1450, 1200));
+			createWave(waves_info[current_wave], wave_pos);
 			break;
 		}
 		case(MIDDLE_WAVE) :
@@ -268,7 +302,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
-			createWave(waves2_info[0], iPoint(1450, 1200));
+			createWave(waves2_info[0], wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
@@ -325,7 +359,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
 
-			createWave(waves2_info[0], iPoint(1450, 1200));
+			createWave(waves2_info[0], wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
@@ -448,7 +482,7 @@ void GameManager::checkingGameConditions()
 	if (command_center_destroyed || jim_raynor_dead)
 	{
 		game_state = LOSE;
-		start_game = false;
+		start_game = false;	
 	}
 
 	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > 5.0f)
@@ -464,46 +498,58 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 	Entity *entity_to_add;
 	for (uint i = 0; i < wave->zergling_quantity; i++)
 	{
-		int posx = position.x + (wave->zergling_quantity * i * 2);
-		int posy = position.y + (wave->zergling_quantity * i * 2);
+		int posx = position.x + (i * 8) - (wave->zergling_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->zergling_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, ZERGLING);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		int dx = i - (wave->zergling_quantity / 2);
+		int dy = i - (wave->zergling_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 
 	for (uint i = 0; i < wave->hydralisk_quantity; i++)
 	{
-		int posx = position.x + (wave->hydralisk_quantity * i * 2);
-		int posy = position.y + (wave->hydralisk_quantity * i * 2);
+		int posx = position.x + (i * 8) - (wave->hydralisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->hydralisk_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, HYDRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		int dx = i - (wave->hydralisk_quantity / 2);
+		int dy = i - (wave->hydralisk_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 
 	for (uint i = 0; i < wave->ultralisk_quantity; i++)
 	{
-		int posx = position.x + (wave->ultralisk_quantity * i * 2);
-		int posy = position.y + (wave->ultralisk_quantity * i * 2);
+		int posx = position.x + (i * 8) - (wave->ultralisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->ultralisk_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		int dx = i - (wave->ultralisk_quantity / 2);
+		int dy = i - (wave->ultralisk_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 
 	for (uint i = 0; i < wave->mutalisk_quantity; i++)
 	{
-		int posx = position.x + (wave->mutalisk_quantity * i * 2);
-		int posy = position.y + (wave->mutalisk_quantity * i * 2);
+		int posx = position.x + (i * 8) - (wave->mutalisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->mutalisk_quantity * 4);
 
 		iPoint position = { posx, posy };
 
 		entity_to_add = app->entity_manager->addEntity(position, MUTALISK);
 		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		int dx = i - (wave->mutalisk_quantity / 2);
+		int dy = i - (wave->mutalisk_quantity / 2);
+		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
 }
 
@@ -558,8 +604,8 @@ void GameManager::startGame()
 	retry_button->disable_element();
 	exit_button->disable_element();
 
-	unsigned int size_marines_x = SIZEMARINESX * 3;
-	unsigned int size_marines_y = SIZEMARINESY ;
+	unsigned int size_marines_x = initial_size.marines_quantityX * 3;
+	unsigned int size_marines_y = initial_size.marines_quantityY ;
 
 	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
 	
@@ -736,15 +782,51 @@ void GameManager::AddPointsEnemy(Entity* e)
 	if (e->specialization == ZERGLING)
 	{
 		mineral_resources += 25;
-		gas_resources += 0;
+		gas_resources += 25;
 	}
 
 	
 	else if (e->specialization == HYDRALISK)
 	{
 		mineral_resources += 30;
-		gas_resources += 25;
+		gas_resources += 40;
 	}
+	else if (e->specialization == MUTALISK)
+	{
+		mineral_resources += 30;
+		gas_resources += 60;
+	}
+	else if (e->specialization == ULTRALISK)
+	{
+		mineral_resources += 100;
+		gas_resources += 100;
+	}
+
+
 	
 
+}
+
+iPoint GameManager::positionRandomizer(int random, iPoint wave_pos)
+{
+	switch (random)
+	{
+	case(NORTHWEST) :
+		wave_pos = wave_positions().north_west;
+		break;
+
+	case(NORTHEAST) :
+		wave_pos = wave_positions().north_east;
+		break;
+
+	case(SOUTHWEST) :
+		wave_pos = wave_positions().south_west;
+		break;
+
+	case(SOUTHEAST) :
+		wave_pos = wave_positions().south_east;
+		break;
+	}
+
+	return wave_pos;
 }

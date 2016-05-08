@@ -147,13 +147,21 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		LOG("Creating Barrack");
 		e = new Barrack(pos);
 		building_to_place = (Building*)e;
+<<<<<<< HEAD
 		building_mode = !direct_creation;
+=======
+		building_mode = true;
+		create_barrack = false;
+>>>>>>> origin/master
 		break;
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
+<<<<<<< HEAD
 		building_to_place = (Building*)e;
 		building_mode = !direct_creation;
+=======
+>>>>>>> origin/master
 		break;
 	}
 
@@ -163,7 +171,11 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
 		// Building creation, special treatment
+<<<<<<< HEAD
 		if (e->type == BUILDING)
+=======
+		if (e->specialization == COMMANDCENTER || e->specialization == BOMB)
+>>>>>>> origin/master
 		{
 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
@@ -179,7 +191,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 	if (e->type == UNIT)
 	{
 		iPoint p = app->game_manager->command_center_position;
-		p = app->map->worldToMap(app->map->data.back(), p.x, p.y - 100); // With -100, we avoid a NoWalkable tile
+		p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
 
 		Unit* unit = (Unit*)e;
 		if (unit->flying)
@@ -189,7 +201,7 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 			unit->has_target = true;
 			unit->state = MOVE_ALERT;
 		}
-		else if (app->path->createPath(e->tile_pos, p, e->id) != -1)
+		else if (app->path->createPath(e->tile_pos, p + unit->distance_to_center_selector, e->id) != -1)
 			unit->state = WAITING_PATH_MOVE_ALERT;
 	}
 }
@@ -217,12 +229,19 @@ bool EntityManager::preUpdate()
 			{
 				if (it->second->specialization == COMMANDCENTER)
 					app->game_manager->command_center_destroyed = true;			
+				else if (it->second->specialization == BUNKER)
+				{
+					for (list<Bunker*>::iterator itb = app->gui->bunker_to_leave.begin(); itb != app->gui->bunker_to_leave.end();)
+					{
+						if (it->first == itb._Ptr->_Myval->id)
+							itb = app->gui->bunker_to_leave.erase(itb);
+						else
+							itb++;
+					}
+				}
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
-
-			if (it->second->specialization == JIM_RAYNOR)
-				app->game_manager->jim_raynor_dead = true;
 			
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
@@ -230,6 +249,19 @@ bool EntityManager::preUpdate()
 			{
 				if (!((Marine*)it->second)->inside_bunker)
 					RELEASE(it->second);
+			}
+			else if (it->second->specialization == FIREBAT)
+			{
+				if (!((Firebat*)it->second)->inside_bunker)
+					RELEASE(it->second);
+			}
+			else if (it->second->specialization == JIM_RAYNOR)
+			{
+				if (!((JimRaynor*)it->second)->inside_bunker)
+				{
+					app->game_manager->jim_raynor_dead = true;
+					RELEASE(it->second);
+				}
 			}
 			else
 				RELEASE(it->second);
@@ -265,6 +297,75 @@ bool EntityManager::preUpdate()
 		}
 	}
 
+	if (create_marine)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_barrack;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == BARRACK)
+			{
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->gas_resources -= 50;
+				app->game_manager->mineral_resources -= 75;
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
+
+				addEntity(position, MARINE);
+				create_marine = false;
+				break;
+			}
+		}
+	}
+
+	if (create_medic)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_barrack;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == BARRACK)
+			{
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->gas_resources -= 100;
+				app->game_manager->mineral_resources -= 75;
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
+
+				addEntity(position, MEDIC);
+				create_medic = false;
+				break;
+			}
+		}
+	}
+
+	if (create_firebat)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_barrack;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == BARRACK)
+			{
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->gas_resources -= 200;
+				app->game_manager->mineral_resources -= 50;
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
+
+				addEntity(position, FIREBAT);
+				create_firebat = false;
+				break;
+			}
+		}
+	}
+
 	if (create_bunker)
 	{
 		iPoint position;
@@ -273,6 +374,26 @@ bool EntityManager::preUpdate()
 		app->game_manager->mineral_resources -= 25;
 		app->game_manager->gas_resources -= 50;
 		addEntity(position, BUNKER, false);
+	}
+
+	if (create_barrack)
+	{
+		iPoint position;
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		app->game_manager->mineral_resources -= 250;
+		app->game_manager->gas_resources -= 250;
+		addEntity(position, BARRACK);
+	}
+
+	if (create_factory)
+	{
+		iPoint position;
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		app->game_manager->mineral_resources -= 300;
+		app->game_manager->gas_resources -= 300;
+		addEntity(position, FACTORY);
 	}
 
 	return true;
@@ -491,30 +612,53 @@ void EntityManager::handleSelection()
 					if (app->path->createPath(unit->tile_pos, target, unit->id) != -1)
 						unit->state = WAITING_PATH_MOVE;
 				}
+				
+				if (it->second->specialization == MARINE || it->second->specialization == FIREBAT || it->second->specialization == JIM_RAYNOR)
+				{
+					if (it->second->specialization == MARINE)
+						((Marine*)unit)->bunker_to_fill = NULL;
+					else if (it->second->specialization == FIREBAT)
+						((Firebat*)unit)->bunker_to_fill = NULL;
+					else //(it->second->specialization == JYM_RAYNOR)
+					{
+						JimRaynor *jim = (JimRaynor*)it->second;
+						jim->bunker_to_fill = NULL;
+						jim->bomb = NULL;
+						jim->bomb_activated = false;
+					}
+				}
 
 				if (e != NULL)
 				{
 					if ((it->second->specialization == MARINE && e->specialization == BUNKER))
 					{
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
-						app->gui->bunker_to_leave = (Bunker*)e;
+						app->gui->bunker_to_leave.push_back((Bunker*)e);
 					}
-
-					if (it->second->specialization == JIM_RAYNOR)
+					else if ((it->second->specialization == FIREBAT && e->specialization == BUNKER))
+					{
+						((Firebat*)unit)->bunker_to_fill = (Bunker*)e;
+						app->gui->bunker_to_leave.push_back((Bunker*)e);
+					}
+					else if (it->second->specialization == JIM_RAYNOR)
 					{
 						JimRaynor *jim = (JimRaynor*)it->second;
 						if (e->specialization == BOMB)
 							jim->bomb = (Bomb*)e;
 						else if (jim->bomb_taken && e->specialization == COMMANDCENTER)
 							jim->bomb_activated = true;
+						else if (e->specialization == BUNKER)
+						{
+							jim->bunker_to_fill = (Bunker*)e;
+							app->gui->bunker_to_leave.push_back((Bunker*)e);
+						}
 					}
-
-					if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
+					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
 					{
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();
 					}
-					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER)
+					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER && e->specialization != BOMB)
 					{
 						unit->target_to_attack = e;
 						unit->has_focus = true;
@@ -555,7 +699,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	for (; it != active_entities.end(); ++it)
 	{
 		if (it->second != e && it->second->state != DYING && 
-			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -572,19 +716,23 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range) //The method search and return the entity in the area
 {
 	list<Entity*> ret;
-	float value = range;
-	if (value == -1.0f)
-		value = e->range_of_vision;
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
+	if (e != NULL)
 	{
-		if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+		float value = range;
+		if (value == -1.0f)
+			value = e->range_of_vision;
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
 		{
-			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			if (d <= value)
+			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) 
+				&& (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
 			{
-				ret.push_back(it->second);
+				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+				if (d <= value)
+				{
+					ret.push_back(it->second);
+				}
 			}
 		}
 	}
@@ -618,7 +766,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction)
+		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && e->specialization != BOMB)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -654,7 +802,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && it->second->type == UNIT && 
+		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && e->specialization != BOMB && it->second->type == UNIT &&
 			it->second->specialization != TANK && it->second->current_hp < it->second->max_hp)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);

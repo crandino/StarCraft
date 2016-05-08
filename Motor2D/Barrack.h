@@ -47,6 +47,7 @@ public:
 		current_hp = 1000;
 		max_hp_bars = 30;
 		range_of_vision = 300;
+		app->gui->barrackAlive = true;
 	}
 
 	~Barrack()
@@ -61,6 +62,7 @@ public:
 		case IDLE:
 			break;
 		case DYING:
+			app->gui->barrackAlive = false;
 			if (timer_to_check.read() >= time_to_die)
 			{
 				to_delete = true;

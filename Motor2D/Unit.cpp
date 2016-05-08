@@ -35,7 +35,7 @@ bool Unit::attack(Entity* target_to_attack)
 		if (d <= range_to_attack)
 		{
 			ret = true;
-			if ((target_to_attack->current_hp -= damage) <= 0.0f)
+			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				ret = false;
 				target_to_attack->state = DYING;
@@ -52,7 +52,7 @@ void Unit::attackWithoutRange(Entity* target_to_attack)
 {
 	if (target_to_attack != NULL && target_to_attack->state != DYING)
 	{
-		if ((target_to_attack->current_hp -= damage) <= 0.0f)
+		if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 		{
 			target_to_attack->state = DYING;
 
@@ -68,7 +68,7 @@ void Unit::move(float dt)
 	{
 		float pixels_to_move = 0;
 		float total_pixels_moved = 0;
-		float total_pixels_to_move = speed / 100 * dt;
+		float total_pixels_to_move = (speed * speed_multiplier) / 100 * dt;
 
 		if (total_pixels_to_move >= 4)
 			pixels_to_move = 4;
@@ -190,7 +190,7 @@ bool Unit::update(float dt)
 			move(dt);
 		break;
 	case ATTACK:
-		if (timer_attack.read() >= attack_frequency)
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
 			if (area_attack)
 			{

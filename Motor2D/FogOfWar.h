@@ -35,7 +35,7 @@ public:
 	void softenSection(int x1, int y1, int x2, int y2, float fadeRatio = 1.5f);
 
 	//Alpha the non-visible tiles will have
-	uint maxAlpha = 255;
+	uint maxAlpha = 175;
 
 	uint** map;
 

@@ -44,7 +44,7 @@ public:
 	Animation			 dead;
 
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Jim_Raynor
-	//bool			     inside_bunker = false;		// It's inside?
+	bool			     inside_bunker = false;		// It's inside?
 
 	Entity*				 bomb;
 	bool				 bomb_taken;

@@ -59,6 +59,7 @@ enum SPECIALIZATION  // Second specialization
 	COMMANDCENTER, 
 	BUNKER,
 	BARRACK,
+	FACTORY,
 	BOMB,
 };
 
@@ -123,6 +124,13 @@ public:
 	//GUI
 	bool	create_bunker = false;
 	bool	create_SCV = false;
+	bool	create_marine = false;
+	bool	create_firebat = false;
+	bool	create_medic = false;
+	bool	create_tank = false;
+	bool    create_barrack = false;
+	bool    create_factory = false;
+
 	bool	selector_init;
 
 	/* -------- Methods for building -----------------------*/

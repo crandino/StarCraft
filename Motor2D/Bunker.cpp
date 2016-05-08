@@ -33,9 +33,8 @@ Bunker::Bunker(iPoint &p)
 	max_capacity = 4;
 
 	range_of_vision = range_to_attack = 150;
-	damage = 5.0f; //we change it according to the amount of marines inside;
+	damage = 0.0f; //we change it according to the amount of marines inside;
 	attack_frequency = 200.0f;
-	damage_increase_ratio = 1.5f;
 
 	state = IDLE;
 	faction = PLAYER;
@@ -71,7 +70,7 @@ bool Bunker::update(float dt)
 		if (units_inside.size() > 0)
 		{
 			app->audio->playFx(fx_attack);
-			if ((timer_attack.read() >= attack_frequency))
+			if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 			{
 				if (!attack())
 					state = IDLE;
@@ -106,10 +105,28 @@ bool Bunker::getEntityInside(Unit* entity)
 	{
 		units_inside.insert(pair<uint, Unit*>(entity->id, entity));
 		entity->to_delete = true;
-		Marine *m = (Marine*)entity;
-		m->inside_bunker = true;		
-		m->coll->disable();	
-		m->bunker_to_fill = NULL;
+		if (entity->specialization == MARINE)
+		{
+			Marine *u = (Marine*)entity;
+			u->inside_bunker = true;
+			u->coll->disable();
+			u->bunker_to_fill = NULL;
+		}
+		else if (entity->specialization == FIREBAT)
+		{
+			Firebat *u = (Firebat*)entity;
+			u->inside_bunker = true;
+			u->coll->disable();
+			u->bunker_to_fill = NULL;
+		}
+		else if (entity->specialization == JIM_RAYNOR)
+		{
+			JimRaynor *u = (JimRaynor*)entity;
+			u->inside_bunker = true;
+			u->coll->disable();
+			u->bunker_to_fill = NULL;
+		}
+
 		return true;
 	}
 
@@ -152,8 +169,10 @@ bool Bunker::attack()
 		d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
 		if (d <= range_to_attack)
 		{
-			target_to_attack->current_hp -= (damage * damage_increase_ratio) * units_inside.size();
-			if (target_to_attack->current_hp <= 0.0f)
+			damage = 0.0f;
+			for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end(); it++)
+				damage += it->second->damage / 2;
+			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				state = IDLE;
 				target_to_attack->state = DYING;

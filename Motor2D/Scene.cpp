@@ -55,8 +55,7 @@ bool Scene::start()
 	//Setting up fog of war module
 
 	list<MapData>::iterator map = app->map->data.begin();
-	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 2);
-	app->fog_of_war->maps[1]->maxAlpha = 175;
+	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 1);
 		
 	return true;
 }
@@ -98,11 +97,11 @@ bool Scene::update(float dt)
 
 	// Paint Layers -- Draw or undraw the map
 	if (app->input->getKey(SDL_SCANCODE_P) == KEY_REPEAT)
-		app->map->setLayerProperty("PROTOTYPE_LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
+		app->map->setLayerProperty("FINAL_MAP_LOGIC.tmx", "Logic_Layer", "NoDraw", 0);
 
 	// Paint Layers -- Draw or undraw the map
 	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
-		app->map->setLayerProperty("PROTOTYPE_LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
+		app->map->setLayerProperty("FINAL_MAP_LOGIC.tmx", "Logic_Layer", "NoDraw", 1);
 
 	// Transition experiments
 	/*if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)

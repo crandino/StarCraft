@@ -71,7 +71,7 @@ public:
 	void setAnimationFromDirection();
 	bool update(float dt);
 	void setParticleBehaviour();
-	void resetFireParticle();
+	void resetParticle();
 
 };
 

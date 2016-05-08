@@ -19,7 +19,8 @@ public:
 	bool				has_focus = false;						// If the unit make focus
 	vector<iPoint>		path;							// The path returned by the PathFinding that the unit follows...
 	float				speed;							// ...at some speed.
-	iPoint				distance_to_center_selector;    // Useful for PathFinding for groups of units
+	float				speed_multiplier = 1.0f;
+	iPoint				distance_to_center_selector = { 0, 0 };    // Useful for PathFinding for groups of units
 
 	bool				flying;							// Does it flies?
 	bool				area_attack = false;			// Can attack in area?

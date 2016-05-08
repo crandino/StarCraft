@@ -127,28 +127,28 @@ bool Gui::start()
 	ui_create_barraks->draw_element = false;
 
 	//Create Turrets
-	ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });//Disabled section { 522, 125, 37, 34 }
-	ui_create_turrets->setLocalPos(597, 358);
-	ui_create_turrets->interactive = false;
-	ui_create_turrets->can_focus = true;
-	ui_create_turrets->setListener(this);
-	ui_create_turrets->draw_element = false;
+	//ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });//Disabled section { 522, 125, 37, 34 }
+	//ui_create_turrets->setLocalPos(597, 358);
+	//ui_create_turrets->interactive = false;
+	//ui_create_turrets->can_focus = true;
+	//ui_create_turrets->setListener(this);
+	//ui_create_turrets->draw_element = false;
 
 	//Create factory
 	ui_create_factory = app->gui->createImage(NULL, { 377, 64, 37, 34 });//Disabled section { 561, 125, 37, 34 }
-	ui_create_factory->setLocalPos(505, 398);
+	ui_create_factory->setLocalPos(597, 358);
 	ui_create_factory->interactive = false;
 	ui_create_factory->can_focus = true;
 	ui_create_factory->setListener(this);
 	ui_create_factory->draw_element = false;
 	
 	//Create starport
-	ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
-	ui_create_starport->setLocalPos(551, 398);
-	ui_create_starport->interactive = false;
-	ui_create_starport->can_focus = true;
-	ui_create_starport->setListener(this);
-	ui_create_starport->draw_element = false;
+	//ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
+	//ui_create_starport->setLocalPos(551, 398);
+	//ui_create_starport->interactive = false;
+	//ui_create_starport->can_focus = true;
+	//ui_create_starport->setListener(this);
+	//ui_create_starport->draw_element = false;
 
 	//SCV Button
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });//Disabled section { 440, 89, 37, 34 }
@@ -251,7 +251,7 @@ bool Gui::start()
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	// Create the GuiMinimap
-	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/minimap.png");
+	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/finalminimap.png");
 	mini_map->setLocalPos(6, 348);
 
 	return true;
@@ -294,6 +294,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			else
 			{
 				buildingMenuOpened = false;
+				ui_create_builds->setSection({ 298, 28, 37, 34 });
 				ui_create_builds->setLocalPos(551, 358);
 
 			}
@@ -315,7 +316,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			if (app->game_manager->mineral_resources >= 50)
-				app->entity_manager->create_SCV = true;
+			app->entity_manager->create_SCV = true;
 			info_scv->draw_element = false;
 			break;
 
@@ -339,14 +340,88 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
-			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 25)
-				app->entity_manager->create_bunker = true;
+			app->entity_manager->create_bunker = true;
 			info_bunker->draw_element = false;
 			break;
 
 				/*case(MOUSE_LCLICK_DOWN_REPEAT) :
 				app->entity_manager->create_bunker = true;
 				break;*/
+		}
+	}
+
+	if (ui == ui_create_barraks)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			app->entity_manager->create_barrack = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_marine)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 75)
+			app->entity_manager->create_marine = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_medic)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 100 || app->game_manager->mineral_resources >= 75)
+			app->entity_manager->create_medic = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_firebat)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			if (app->game_manager->gas_resources >= 200 || app->game_manager->mineral_resources >= 50)
+			app->entity_manager->create_firebat = true;
+			break;
+
 		}
 	}
 	
@@ -356,8 +431,16 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 			//Method to leave the bunker
 		case(MOUSE_LCLICK_DOWN) :
-			
-			bunker_to_leave->getEntitiesOutside();
+			for (list<Bunker*>::iterator it = bunker_to_leave.begin(); it != bunker_to_leave.end();)
+			{
+				if (app->entity_manager->selection.begin()->first == it._Ptr->_Myval->id)
+				{
+					it._Ptr->_Myval->getEntitiesOutside();
+					it = bunker_to_leave.erase(it);
+				}
+				else
+					it++;
+			}
 			break;
 		}
 	}
@@ -370,6 +453,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 	{
 	case (COMMANDCENTER) :
 		commandCenterOpened = true;
+		barrackMenuOpened = false;
 			  if(!buildingMenuOpened)
 			  {
 				  //Desactivate quad background
@@ -388,10 +472,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_leave_bunker->disable_element();
 				  ui_create_bunker->disable_element();
 				  ui_create_barraks->disable_element();
-				  ui_create_turrets->disable_element();
 				  ui_create_factory->disable_element();
-				  ui_create_starport->disable_element();
-
+				
 				  ui_create_marine->disable_element();
 				  ui_create_medic->disable_element();
 				  ui_create_firebat->disable_element();
@@ -404,9 +486,11 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 		      break;
 			  
 		  case (BUNKER) :
+
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
 
@@ -426,9 +510,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->disable_element();
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
+
 
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
@@ -440,13 +523,14 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  break;
 
 		  case (BARRACK) :
+			  barrackMenuOpened = true;
+			  commandCenterOpened = false;
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
-
-			  barrackMenuOpened = true;
 
 			  //Activate default entities
 			  rectangle_command->draw_element = false;
@@ -464,9 +548,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->disable_element();
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
+
 
 			  ui_create_marine->enable_element();
 			  ui_create_medic->enable_element();
@@ -478,6 +561,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  if (buildingMenuOpened)
 			  {
 		     	  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
 				  ui_create_builds->setLocalPos(551, 358);
 			  }
 
@@ -498,9 +582,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_leave_bunker->disable_element();
 			  ui_create_bunker->disable_element();
 			  ui_create_barraks->disable_element();
-			  ui_create_turrets->disable_element();
 			  ui_create_factory->disable_element();
-			  ui_create_starport->disable_element();
 
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
@@ -508,18 +590,147 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  break;
 			  
-		  case (NOTYPE) :
-			  //if (!buildingMenuOpened) {
+		  case (MEDIC) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
 
+
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+			  
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+			  
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+			  
+			  break;
+
+		  case (FIREBAT) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+			  
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+			  
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+			  
+			  break;
+
+		  case (JIM_RAYNOR) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+			  
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+			  
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+			  
+			  break;
+
+		  case (SCV) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+
+				//Activate default entities
+				rectangle_command->draw_element = true;
+				rectangle_command_2->draw_element = true;
+				rectangle_command_3->draw_element = true;
+				rectangle_command_4->draw_element = true;
+				rectangle_command_5->draw_element = true;
+				rectangle_command_6->draw_element = true;
+				rectangle_command_7->draw_element = true;
+				rectangle_command_8->draw_element = true;
+				rectangle_command_9->draw_element = true;
+
+				ui_create_bot->disable_element();
+				ui_create_builds->disable_element();
+				ui_leave_bunker->disable_element();
+				ui_create_bunker->disable_element();
+				ui_create_barraks->disable_element();
+				ui_create_factory->disable_element();
+
+				ui_create_marine->disable_element();
+				ui_create_medic->disable_element();
+				ui_create_firebat->disable_element();
+
+				break;
+
+		  case (NOTYPE) :
 				  //Desactivate all the options of Entities
 				  ui_create_bot->disable_element();
 				  ui_create_builds->disable_element();
 				  ui_leave_bunker->disable_element();
 				  ui_create_bunker->disable_element();
-				  ui_create_barraks->disable_element();						
-				  ui_create_turrets->disable_element();						
+				  ui_create_barraks->disable_element();											
 				  ui_create_factory->disable_element();
-				  ui_create_starport->disable_element();
+				 
 				  
 				  //Activate default entities
 				  rectangle_command->draw_element = true;
@@ -567,22 +778,31 @@ bool Gui::update(float dt)
 		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
 		cursor->current_animation = &cursor->left_disp;
 	}
-	else if (pos.x > (app->render->camera.w - cursor_offset.x)) // Right
+	else if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT)
+		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
+	else if (pos.x >(app->render->camera.w - cursor_offset.x)) // Right
 	{
 		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
 		cursor->current_animation = &cursor->right_disp;
 	}
+	else if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_LEFT) != KEY_REPEAT)
+		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
+
 	// Checking displacement for Y axis.
 	if (pos.y < cursor_offset.y) // Up
 	{
 		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
 		cursor->current_animation = &cursor->up_disp;
 	}
-	else if (pos.y > (app->render->camera.h - cursor_offset.y)) // Down
+	else if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_DOWN) != KEY_REPEAT)
+		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
+	else if (pos.y >(app->render->camera.h - cursor_offset.y)) // Down
 	{
 		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 		cursor->current_animation = &cursor->down_disp;
-	}		
+	}
+	else if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_UP) != KEY_REPEAT)
+		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 
 	const GuiElements* mouse_hover = findMouseHover();
 	if (mouse_hover &&
@@ -651,6 +871,14 @@ bool Gui::postUpdate()
 			drawHudSelection(BARRACK);
 		if (itm->second->specialization == SPECIALIZATION::MARINE)
 			drawHudSelection(MARINE);
+		if (itm->second->specialization == SPECIALIZATION::MEDIC)
+			drawHudSelection(MEDIC);
+		if (itm->second->specialization == SPECIALIZATION::FIREBAT)
+			drawHudSelection(FIREBAT);
+		if (itm->second->specialization == SPECIALIZATION::SCV)
+			drawHudSelection(SCV);
+		if (itm->second->specialization == SPECIALIZATION::JIM_RAYNOR)
+			drawHudSelection(JIM_RAYNOR);
 	}
 	
 	// CRZ -> A possible option of blitting according to Y value.
@@ -822,8 +1050,8 @@ void Gui::openBuildingMenu()
 	rectangle_command_2->draw_element = false;
 	rectangle_command_3->draw_element = false;
 	rectangle_command_4->draw_element = false;
-	rectangle_command_5->draw_element = false;
-	rectangle_command_6->draw_element = false;
+	rectangle_command_5->draw_element = true;
+	rectangle_command_6->draw_element = true;
 	rectangle_command_7->draw_element = true;
 	rectangle_command_8->draw_element = true;
 	rectangle_command_9->draw_element = true;
@@ -832,22 +1060,20 @@ void Gui::openBuildingMenu()
 
 	//Activate new images
 	ui_create_bot->disable_element();
-	ui_create_builds->setLocalPos(597, 398);
+	ui_create_builds->setLocalPos(505, 398);
+	ui_create_builds->setSection({ 338, 28, 37, 34 });
 	ui_create_builds->enable_element();
 
 	ui_create_bunker->enable_element();
 	ui_create_barraks->enable_element();
-	ui_create_turrets->enable_element();
 	ui_create_factory->enable_element();
-	ui_create_starport->enable_element();
-
+	
 }
 
 void Gui::controlIconsSprite()
 {
 	if (buildingMenuOpened)
 	{
-		//Buildings
 		//Bunker
 		if (app->game_manager->gas_resources < 75 || app->game_manager->mineral_resources < 100)
 		{
@@ -860,37 +1086,44 @@ void Gui::controlIconsSprite()
 			ui_create_bunker->enable_element();
 		}
 		//Barracks 
-		ui_create_barraks->setSection({ 482, 125, 37, 34 });
-		ui_create_barraks->unable_element();
-		//Turrets
-		ui_create_turrets->setSection({ 522, 125, 37, 34 });
-		ui_create_turrets->unable_element();
-		//Starport
-		ui_create_starport->setSection({ 440, 162, 37, 34 });
-		ui_create_starport->unable_element();
+		if (!barrackAlive && app->game_manager->gas_resources >= 250 && app->game_manager->mineral_resources >= 250)
+		{
+			ui_create_barraks->setSection({ 298, 64, 37, 34 });
+			ui_create_barraks->enable_element();
+		}
+		else
+		{
+			ui_create_barraks->setSection({ 482, 125, 37, 34 });
+			ui_create_barraks->unable_element();
+		}
 		//Factory
-		ui_create_factory->setSection({ 561, 125, 37, 34 });
-		ui_create_factory->unable_element();
-
-		commandCenterOpened = false;
-		barrackMenuOpened = false;
+		if (!factoryAlive && app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 300)
+		{
+			ui_create_factory->setSection({ 377, 64, 37, 34 });
+			ui_create_factory->enable_element();
+		}
+		else
+		{
+			ui_create_factory->setSection({ 561, 125, 37, 34 });
+			ui_create_factory->unable_element();
+		}
 	}
 
 	if (commandCenterOpened)
 	{
-		if (app->game_manager->mineral_resources < 50)
+		if (!buildingMenuOpened)
 		{
-			ui_create_bot->setSection({ 440, 89, 37, 34 });
-			ui_create_bot->unable_element();
+			if (app->game_manager->mineral_resources < 50)
+			{
+				ui_create_bot->setSection({ 440, 89, 37, 34 });
+				ui_create_bot->unable_element();
+			}
+			else
+			{
+				ui_create_bot->setSection({ 256, 28, 37, 34 });
+				ui_create_bot->enable_element();
+			}
 		}
-		else
-		{
-			ui_create_bot->setSection({ 256, 28, 37, 34 });
-			ui_create_bot->enable_element();
-		}
-
-	 buildingMenuOpened = false;
-	 barrackMenuOpened = false;
 	}
 
 	if (barrackMenuOpened)
@@ -903,7 +1136,7 @@ void Gui::controlIconsSprite()
 		}
 		else
 		{
-			ui_create_marine->setSection({ 339, 152, 37, 34 });
+			ui_create_marine->setSection({ 338, 152, 37, 34 });
 			ui_create_marine->enable_element();
 		}
 
@@ -915,16 +1148,24 @@ void Gui::controlIconsSprite()
 		}
 		else
 		{
-			ui_create_medic->setSection({ 382, 152, 36, 34 });
+			ui_create_medic->setSection({ 381, 152, 37, 34 });
 			ui_create_medic->enable_element();
 		}
 
-		//Factory
-		ui_create_factory->setSection({ 561, 125, 37, 34 });
-		ui_create_factory->unable_element();
+		//Create Firebat
+		if (app->game_manager->gas_resources < 200 || app->game_manager->mineral_resources < 50)
+		{
+			ui_create_firebat->setSection({ 293, 192, 37, 34 });
+			ui_create_firebat->unable_element();
+		}
+		else
+		{
+			ui_create_firebat->setSection({ 293, 152, 37, 33 });
+			ui_create_firebat->enable_element();
+		}
+		
 
-		buildingMenuOpened = false;
-		commandCenterOpened = false;
+		
 	}
 }
 

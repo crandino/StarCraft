@@ -108,10 +108,14 @@ public:
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
 	GuiImage* ui_create_bunker = nullptr;
-	GuiImage* ui_create_turrets = nullptr;
+	//GuiImage* ui_create_turrets = nullptr;
 	GuiImage* ui_create_factory = nullptr;
-	GuiImage* ui_create_starport = nullptr;
+	//GuiImage* ui_create_starport = nullptr;
 	GuiImage* ui_create_barraks = nullptr;
+
+	//Control Barracks and Factories
+	bool barrackAlive = false;
+	bool factoryAlive = false;
 
 	//Barracks HUD-------------------------
 	GuiImage* ui_create_marine = nullptr;
@@ -128,7 +132,7 @@ public:
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
-	Bunker* bunker_to_leave;
+	list<Bunker*> bunker_to_leave;
 
 	//HUD Label-----------------------------
 	GuiLabel* number_of_wave = nullptr;

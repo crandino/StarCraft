@@ -46,65 +46,65 @@ Medic::Medic(iPoint &p)
 	walk_right.speed = 0.02f;
 	move_animation_pack.push_back(&walk_right);
 
-	walk_right_up3.setAnimations(192, 384, 64, 64, 1, 7, 7);
-	walk_right_up3.speed = 0.02f;
-	move_animation_pack.push_back(&walk_right_up3);
+	//walk_right_up3.setAnimations(192, 384, 64, 64, 1, 7, 7);
+	//walk_right_up3.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_right_up3);
 
 	walk_right_up2.setAnimations(128, 384, 64, 64, 1, 7, 7);
 	walk_right_up2.speed = 0.02f;
 	move_animation_pack.push_back(&walk_right_up2);
 
-	walk_right_up1.setAnimations(64, 384, 64, 64, 1, 7, 7);
-	walk_right_up1.speed = 0.02f;
-	move_animation_pack.push_back(&walk_right_up1);
+	//walk_right_up1.setAnimations(64, 384, 64, 64, 1, 7, 7);
+	//walk_right_up1.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_right_up1);
 
 	walk_up.setAnimations(0, 384, 64, 64, 1, 7, 7);
 	walk_up.speed = 0.02f;
 	move_animation_pack.push_back(&walk_up);
 
-	walk_left_up3.setAnimations(960, 384, 64, 64, 1, 7, 7);
-	walk_left_up3.speed = 0.02f;
-	move_animation_pack.push_back(&walk_left_up3);
+	//walk_left_up3.setAnimations(960, 384, 64, 64, 1, 7, 7);
+	//walk_left_up3.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_left_up3);
 
 	walk_left_up2.setAnimations(896, 384, 64, 64, 1, 7, 7);
 	walk_left_up2.speed = 0.02f;
 	move_animation_pack.push_back(&walk_left_up2);
 
-	walk_left_up1.setAnimations(832, 384, 64, 64, 1, 7, 7);
-	walk_left.speed = 0.02f;
-	move_animation_pack.push_back(&walk_left_up1);
+	//walk_left_up1.setAnimations(832, 384, 64, 64, 1, 7, 7);
+	//walk_left.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_left_up1);
 
 	walk_left.setAnimations(768, 384, 64, 64, 1, 7, 7);
 	walk_left.speed = 0.02f;
 	move_animation_pack.push_back(&walk_left);
 
-	walk_left_down3.setAnimations(704, 384, 64, 64, 1, 7, 7);
-	walk_left_down3.speed = 0.02f;
-	move_animation_pack.push_back(&walk_left_down3);
+	//walk_left_down3.setAnimations(704, 384, 64, 64, 1, 7, 7);
+	//walk_left_down3.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_left_down3);
 
 	walk_left_down2.setAnimations(640, 384, 64, 64, 1, 7, 7);
 	walk_left_down2.speed = 0.02f;
 	move_animation_pack.push_back(&walk_left_down2);
 
-	walk_left_down1.setAnimations(576, 384, 64, 64, 1, 7, 7);
-	walk_left_down1.speed = 0.02f;
-	move_animation_pack.push_back(&walk_left_down1);
+	//walk_left_down1.setAnimations(576, 384, 64, 64, 1, 7, 7);
+	//walk_left_down1.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_left_down1);
 
 	walk_down.setAnimations(512, 384, 64, 64, 1, 7, 7);
 	walk_down.speed = 0.02f;
 	move_animation_pack.push_back(&walk_down);
 
-	walk_right_down3.setAnimations(448, 384, 64, 64, 1, 7, 7);
-	walk_right_down3.speed = 0.02f;
-	move_animation_pack.push_back(&walk_right_down3);
+	//walk_right_down3.setAnimations(448, 384, 64, 64, 1, 7, 7);
+	//walk_right_down3.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_right_down3);
 
 	walk_right_down2.setAnimations(384, 384, 64, 64, 1, 7, 7);
 	walk_right_down2.speed = 0.02f;
 	move_animation_pack.push_back(&walk_right_down2);
 
-	walk_right_down1.setAnimations(320, 384, 64, 64, 1, 7, 7);
-	walk_right_down1.speed = 0.02f;
-	move_animation_pack.push_back(&walk_right_down1);
+	//walk_right_down1.setAnimations(320, 384, 64, 64, 1, 7, 7);
+	//walk_right_down1.speed = 0.02f;
+	//move_animation_pack.push_back(&walk_right_down1);
 
 	//------------------------------------------------
 
@@ -113,65 +113,65 @@ Medic::Medic(iPoint &p)
 	heal_right.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_right);
 
-	heal_right_up3.setAnimations(192, 256, 64, 64, 1, 2, 2);
-	heal_right_up3.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_right_up3);
+	//heal_right_up3.setAnimations(192, 256, 64, 64, 1, 2, 2);
+	//heal_right_up3.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_right_up3);
 
 	heal_right_up2.setAnimations(128, 256, 64, 64, 1, 2, 2);
 	heal_right_up2.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_right_up2);
 
-	heal_right_up1.setAnimations(64, 256, 64, 64, 1, 2, 2);
-	heal_right_up1.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_right_up1);
+	//heal_right_up1.setAnimations(64, 256, 64, 64, 1, 2, 2);
+	//heal_right_up1.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_right_up1);
 
 	heal_up.setAnimations(0, 256, 64, 64, 1, 2, 2);
 	heal_up.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_up);
 
-	heal_left_up3.setAnimations(960, 256, 64, 64, 1, 2, 2);
-	heal_left_up3.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_left_up3);
+	//heal_left_up3.setAnimations(960, 256, 64, 64, 1, 2, 2);
+	//heal_left_up3.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_left_up3);
 
 	heal_left_up2.setAnimations(896, 256, 64, 64, 1, 2, 2);
 	heal_left_up2.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_left_up2);
 
-	heal_left_up1.setAnimations(832, 256, 64, 64, 1, 2, 2);
-	heal_left.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_left_up1);
+	//heal_left_up1.setAnimations(832, 256, 64, 64, 1, 2, 2);
+	//heal_left.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_left_up1);
 
 	heal_left.setAnimations(768, 256, 64, 64, 1, 2, 2);
 	heal_left.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_left);
 
-	heal_left_down3.setAnimations(704, 256, 64, 64, 1, 2, 2);
-	heal_left_down3.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_left_down3);
+	//heal_left_down3.setAnimations(704, 256, 64, 64, 1, 2, 2);
+	//heal_left_down3.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_left_down3);
 
 	heal_left_down2.setAnimations(640, 256, 64, 64, 1, 2, 2);
 	heal_left_down2.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_left_down2);
 
-	heal_left_down1.setAnimations(576, 256, 64, 64, 1, 2, 2);
-	heal_left_down1.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_left_down1);
+	//heal_left_down1.setAnimations(576, 256, 64, 64, 1, 2, 2);
+	//heal_left_down1.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_left_down1);
 
 	heal_down.setAnimations(512, 256, 64, 64, 1, 2, 2);
 	heal_down.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_down);
 
-	heal_right_down3.setAnimations(448, 256, 64, 64, 1, 2, 2);
-	heal_right_down3.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_right_down3);
+	//heal_right_down3.setAnimations(448, 256, 64, 64, 1, 2, 2);
+	//heal_right_down3.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_right_down3);
 
 	heal_right_down2.setAnimations(384, 256, 64, 64, 1, 2, 2);
 	heal_right_down2.speed = 0.01f;
 	heal_animation_pack.push_back(&heal_right_down2);
 
-	heal_right_down1.setAnimations(320, 256, 64, 64, 1, 2, 2);
-	heal_right_down1.speed = 0.01f;
-	heal_animation_pack.push_back(&heal_right_down1);
+	//heal_right_down1.setAnimations(320, 256, 64, 64, 1, 2, 2);
+	//heal_right_down1.speed = 0.01f;
+	//heal_animation_pack.push_back(&heal_right_down1);
 
 	// DEAD ANIMATION---------------------------------
 	dead.frames.push_back({ 0, 832, 64, 64 });
@@ -334,7 +334,7 @@ bool Medic::update(float dt)
 		if (has_target) move(dt);
 		break;
 	case ATTACK:
-		if (timer_attack.read() >= attack_frequency)
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
 			if (!heal())
 			{
@@ -407,7 +407,7 @@ void Medic::move(float dt)
 	{
 		float pixels_to_move = 0;
 		float total_pixels_moved = 0;
-		float total_pixels_to_move = speed / 100 * dt;
+		float total_pixels_to_move = (speed * speed_multiplier) / 100 * dt;
 
 		if (total_pixels_to_move >= 4)
 			pixels_to_move = 4;

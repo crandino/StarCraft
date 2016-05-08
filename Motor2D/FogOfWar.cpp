@@ -265,6 +265,11 @@ void FogOfWar::draw()
 	int max_map_height = maps.front()->getHeight();
 	int max_map_width = maps.front()->getWidth();
 
+	SDL_Rect r = { 0, 0, tileW, tileH };
+
+	//Next function enables the blending of the texture
+	SDL_SetTextureBlendMode(fow, SDL_BLENDMODE_BLEND);
+
 	//Drawing all fog maps
 	for (vector<FogMap*>::reverse_iterator currentMap = maps.rbegin(); currentMap != maps.rend(); ++currentMap)
 	{
@@ -277,10 +282,7 @@ void FogOfWar::draw()
 				for (int x = startX; x <= endX && x < max_map_width; ++x)
 				{
 					//Now the fog is just black rectangles with diferents alphas. Diferent methods will be explained.
-					SDL_Rect r = { 0, 0, tileW, tileH };
 
-					//Next function enables the blending of the texture
-					SDL_SetTextureBlendMode(fow, SDL_BLENDMODE_BLEND);
 					//This other, changes its alpha
 					SDL_SetTextureAlphaMod(fow, (*currentMap)->map[x][y]);
 

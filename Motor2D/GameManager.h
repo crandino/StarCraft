@@ -87,7 +87,8 @@ struct SizeWave
 
 struct initialSizePlayer
 {
-	uint marines_quantity;
+	uint marines_quantityX;
+	uint marines_quantityY;
 	uint medic_quantity;
 	uint scv_quantity;
 };
@@ -231,6 +232,7 @@ private:
 
 	// Check the conditions to finish the game
 	void				checkingGameConditions();
+	iPoint				positionRandomizer(int random, iPoint wave_pos);
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
 	

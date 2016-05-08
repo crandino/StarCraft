@@ -64,7 +64,8 @@ public:
 	// Graphics
 	SDL_Texture		*tex;
 	Animation		*current_animation;
-	Particle		*particle;
+	Particle		*particle;					//Pointer to control the particles on entities
+	Particle		*particle_aux;				//Auxiliar pointer to control more particles
 	iPoint			particle_offset;
 	int		     	tex_width, tex_height;		// Dimensions of the sections of the frames
 
@@ -81,8 +82,10 @@ public:
 	// Attack values and properties
 	Entity			*target_to_attack = NULL;		// Which entity to attack
 	float			damage;							// Value of its weapons
+	float			damage_multiplier = 1.0f;
 	Timer			timer_attack;					// To check time between attacks
 	float			attack_frequency;				// How many miliseconds will wait to attack again?
+	float			attack_frequency_multiplier = 1.0f;
 	int				range_of_vision;				// How far can this entity detect another entity?
 	int				range_to_attack;				// How far can this entity attack another entity?
 
