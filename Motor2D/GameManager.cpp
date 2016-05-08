@@ -34,6 +34,26 @@ using namespace std;
 #define COMMANDCENTERPOSITION {1500, 2250}
 */
 
+/*To Put into xml*/
+struct wave_positions
+{
+	iPoint north_west = { 1400, 1700};
+	iPoint north_east = { 1500, 1700 };
+	iPoint south_west = { 1400, 2700 };
+	iPoint south_east = { 2600, 2700 };
+};
+
+enum wave_positions_enum
+{
+	NORTHWEST = 1,
+	NORTHEAST,
+	SOUTHWEST,
+	SOUTHEAST
+}wave_pos_enum;
+
+
+
+
 GameManager::GameManager()
 {
 	name.assign("game_manager");
@@ -165,6 +185,11 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
+
+
+	srand(time(NULL));
+
+
 	return ret;
 }
 
@@ -178,6 +203,28 @@ bool GameManager::preUpdate()
 bool GameManager::update(float dt)
 {
 	bool ret = true;
+	iPoint wave_pos;
+
+	int random = rand() % 4 +1;
+
+	switch (random)
+	{
+		case(NORTHWEST):
+			wave_pos = wave_positions().north_west;
+		break;
+
+		case(NORTHEAST) :
+			wave_pos = wave_positions().north_east;
+		break;
+
+		case(SOUTHWEST) :
+			wave_pos = wave_positions().south_west;
+		break;
+
+		case(SOUTHEAST) :
+			wave_pos = wave_positions().south_east;
+		break;
+	}
 
 	if (hold)
 		game_state = HOLD;
@@ -211,7 +258,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
 			wave_state = MIDDLE_WAVE;
-			createWave(waves_info[current_wave], iPoint(625, 328));
+			createWave(waves_info[current_wave], wave_pos);
 			break;
 		}
 		case(MIDDLE_WAVE) :
@@ -269,7 +316,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
-			createWave(waves2_info[0], iPoint(625, 328));
+			createWave(waves2_info[0], wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
