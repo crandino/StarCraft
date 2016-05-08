@@ -24,6 +24,9 @@
 #include "CommandCenter.h"
 #include "Bunker.h"
 #include "Barrack.h"
+#include "Blue.h"
+#include "Yellow.h"
+#include "Red.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -152,6 +155,27 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type)
 	case(BOMB) :
 		LOG("Bomb created");
 		e = new Bomb(pos);
+		break;
+	case(BLUE) :
+		LOG("Creating Blue");
+		e = new Blue(pos);
+		building_to_place = (Building*)e;
+		building_mode = true;
+		create_blue = false;
+		break;
+	case(YELLOW) :
+		LOG("Creating Yellow");
+		e = new Yellow(pos);
+		building_to_place = (Building*)e;
+		building_mode = true;
+		create_yellow = false;
+		break;
+	case(RED) :
+		LOG("Creating Red");
+		e = new Red(pos);
+		building_to_place = (Building*)e;
+		building_mode = true;
+		create_red = false;
 		break;
 	}
 
@@ -932,7 +956,7 @@ void EntityManager::entityManualCreation()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, MARINE);
+		addEntity(position, BLUE);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_KP_2) == KEY_DOWN)

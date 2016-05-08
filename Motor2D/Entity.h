@@ -83,6 +83,7 @@ public:
 	Entity			*target_to_attack = NULL;		// Which entity to attack
 	float			damage;							// Value of its weapons
 	float			damage_multiplier = 1.0f;
+	float			speed_multiplier = 1.0f;
 	Timer			timer_attack;					// To check time between attacks
 	float			attack_frequency;				// How many miliseconds will wait to attack again?
 	float			attack_frequency_multiplier = 1.0f;
@@ -134,9 +135,9 @@ public:
 		return app->entity_manager->searchAllyToHeal(this);
 	}
 
-	virtual list<Entity*> searchEntitiesInRange(float area_range)
+	virtual list<Entity*> searchEntitiesInRange(Entity* origin, float area_range)
 	{
-		return app->entity_manager->searchEntitiesInRange(target_to_attack, true, area_range);
+		return app->entity_manager->searchEntitiesInRange(origin, true, area_range);
 	}
 
 	virtual Entity* searchEnemy()

@@ -304,7 +304,7 @@ bool Tank::update(float dt)
 		{
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(area_range);
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
 				while (targets.begin() != targets.end())
 				{
 					attackWithoutRange(targets.front());

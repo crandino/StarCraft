@@ -61,6 +61,9 @@ enum SPECIALIZATION  // Second specialization
 	BARRACK,
 	FACTORY,
 	BOMB,
+	BLUE,
+	YELLOW,
+	RED,
 };
 
 class Entity;
@@ -130,6 +133,9 @@ public:
 	bool	create_tank = false;
 	bool    create_barrack = false;
 	bool    create_factory = false;
+	bool	create_blue = false;
+	bool	create_yellow = false;
+	bool	create_red = false;
 
 	bool	selector_init;
 

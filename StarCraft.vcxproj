@@ -72,6 +72,7 @@
     <ClInclude Include="Motor2D\App.h" />
     <ClInclude Include="Motor2D\Audio.h" />
     <ClInclude Include="Motor2D\Barrack.h" />
+    <ClInclude Include="Motor2D\Blue.h" />
     <ClInclude Include="Motor2D\Bomb.h" />
     <ClInclude Include="Motor2D\Brofiler.h" />
     <ClInclude Include="Motor2D\Building.h" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Motor2D\Point2d.h" />
     <ClInclude Include="Motor2D\PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="Motor2D\PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Motor2D\Red.h" />
     <ClInclude Include="Motor2D\Render.h" />
     <ClInclude Include="Motor2D\Scene.h" />
     <ClInclude Include="Motor2D\Gui.h" />
@@ -118,11 +120,13 @@
     <ClInclude Include="Motor2D\Unit.h" />
     <ClInclude Include="Motor2D\Vector2D.h" />
     <ClInclude Include="Motor2D\Window.h" />
+    <ClInclude Include="Motor2D\Yellow.h" />
     <ClInclude Include="Motor2D\Zergling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Motor2D\App.cpp" />
     <ClCompile Include="Motor2D\Audio.cpp" />
+    <ClCompile Include="Motor2D\Blue.cpp" />
     <ClCompile Include="Motor2D\Bomb.cpp" />
     <ClCompile Include="Motor2D\Bunker.cpp" />
     <ClCompile Include="Motor2D\Collision.cpp" />
@@ -150,6 +154,7 @@
     <ClCompile Include="Motor2D\PathFinding.cpp" />
     <ClCompile Include="Motor2D\PerfTimer.cpp" />
     <ClCompile Include="Motor2D\PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Motor2D\Red.cpp" />
     <ClCompile Include="Motor2D\Render.cpp" />
     <ClCompile Include="Motor2D\Scene.cpp" />
     <ClCompile Include="Motor2D\Gui.cpp" />
@@ -159,6 +164,7 @@
     <ClCompile Include="Motor2D\Ultralisk.cpp" />
     <ClCompile Include="Motor2D\Unit.cpp" />
     <ClCompile Include="Motor2D\Window.cpp" />
+    <ClCompile Include="Motor2D\Yellow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Game\config.xml">
