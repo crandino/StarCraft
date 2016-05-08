@@ -619,6 +619,11 @@ void GameManager::startGame()
 
 	app->render->setCameraOnPosition(p);
 	
+
+	resources = 0;
+	mineral_resources = 0;
+	gas_resources = 0;
+
 	timer_between_waves.start();
 }
 
