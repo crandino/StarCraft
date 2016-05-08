@@ -24,6 +24,9 @@
 #include "CommandCenter.h"
 #include "Bunker.h"
 #include "Barrack.h"
+#include "Blue.h"
+#include "Yellow.h"
+#include "Red.h"
 
 
 EntityManager::EntityManager() : Module()
@@ -156,6 +159,27 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		e = new Bomb(pos);
 		building_to_place = (Building*)e;
 		building_mode = !direct_creation;
+		break;
+	case(BLUE) :
+		LOG("Creating Blue");
+		e = new Blue(pos);
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
+		create_blue = false;
+		break;
+	case(YELLOW) :
+		LOG("Creating Yellow");
+		e = new Yellow(pos);
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
+		create_yellow = false;
+		break;
+	case(RED) :
+		LOG("Creating Red");
+		e = new Red(pos);
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
+		create_red = false;
 		break;
 	}
 
@@ -584,6 +608,13 @@ void EntityManager::handleSelection()
 			if (it->second->type == UNIT && it->second->state != DYING)
 			{
 				Unit *unit = (Unit*)it->second;
+
+				if (it->second->specialization == TANK)
+				{
+					if (((Tank*)unit)->siege_mode)
+						continue;
+				}
+
 				if (selection.size() == 1)
 				{
 					if (unit->flying)
@@ -936,7 +967,7 @@ void EntityManager::entityManualCreation()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, MARINE);
+		addEntity(position, BLUE);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_KP_2) == KEY_DOWN)

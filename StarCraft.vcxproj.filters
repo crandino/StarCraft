@@ -110,6 +110,15 @@
     <ClCompile Include="Motor2D\JimRaynor.cpp">
       <Filter>Entities\Terran_Units</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Blue.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Yellow.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Red.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
     <ClCompile Include="Motor2D\Ultralisk.cpp">
       <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
@@ -264,6 +273,15 @@
     </ClInclude>
     <ClInclude Include="Motor2D\JimRaynor.h">
       <Filter>Entities\Terran_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Blue.h">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Yellow.h">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Red.h">
+      <Filter>Entities\Terran_Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\Ultralisk.h">
       <Filter>Entities\Zerg_Units</Filter>

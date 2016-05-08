@@ -83,6 +83,8 @@ public:
 	void setAnimationFromDirection();
 	void draw();
 	void siegeMode(bool siegeModeFlag);
+	void checkUnitDirection();
+	void newEntityFound();
 
 };
 
