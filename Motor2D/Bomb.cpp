@@ -30,7 +30,7 @@ Bomb::Bomb(iPoint &p)
 	attack_frequency = 200.0f;
 
 	state = IDLE;
-	faction = PLAYER;
+	faction = COMPUTER;
 	selection_type = { 261, 1, 94, 56 };
 	circle_selection_offset = { 0, 25 };
 }

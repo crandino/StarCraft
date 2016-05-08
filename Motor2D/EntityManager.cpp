@@ -644,7 +644,7 @@ void EntityManager::handleSelection()
 						((Scv*)unit)->target_to_attack = (Building*)e;
 						unit->newEntityFound();
 					}
-					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER)
+					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER && e->specialization != BOMB)
 					{
 						unit->target_to_attack = e;
 						unit->has_focus = true;
@@ -685,7 +685,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	for (; it != active_entities.end(); ++it)
 	{
 		if (it->second != e && it->second->state != DYING && 
-			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -710,7 +710,8 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		for (; it != active_entities.end(); ++it)
 		{
-			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)))
+			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) 
+				&& (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
 			{
 				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -751,7 +752,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction)
+		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && e->specialization != BOMB)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -787,7 +788,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && it->second->type == UNIT && 
+		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && e->specialization != BOMB && it->second->type == UNIT &&
 			it->second->specialization != TANK && it->second->current_hp < it->second->max_hp)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
