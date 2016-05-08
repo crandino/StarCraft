@@ -107,9 +107,11 @@
     <ClCompile Include="Motor2D\Bomb.cpp">
       <Filter>Entities\Terran_Buildings</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\Ultralisk.cpp" />
     <ClCompile Include="Motor2D\JimRaynor.cpp">
       <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Ultralisk.cpp">
+      <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,9 +262,11 @@
     <ClInclude Include="Motor2D\Bomb.h">
       <Filter>Entities\Terran_Buildings</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\Ultralisk.h" />
     <ClInclude Include="Motor2D\JimRaynor.h">
       <Filter>Entities\Terran_Units</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\Ultralisk.h">
+      <Filter>Entities\Zerg_Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
