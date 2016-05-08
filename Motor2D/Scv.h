@@ -331,7 +331,7 @@ public:
 			if (has_target) move(dt);
 			break;
 		case ATTACK://ATTACK == REPAIR for SCV
-			if (timer_attack.read() >= attack_frequency)
+			if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 			{
 				if(!repair())
 					state = IDLE;

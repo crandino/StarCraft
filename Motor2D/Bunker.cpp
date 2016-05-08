@@ -70,7 +70,7 @@ bool Bunker::update(float dt)
 		if (units_inside.size() > 0)
 		{
 			app->audio->playFx(fx_attack);
-			if ((timer_attack.read() >= attack_frequency))
+			if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 			{
 				if (!attack())
 					state = IDLE;
@@ -172,7 +172,7 @@ bool Bunker::attack()
 			damage = 0.0f;
 			for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end(); it++)
 				damage += it->second->damage / 2;
-			if ((target_to_attack->current_hp -= damage) <= 0.0f)
+			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				state = IDLE;
 				target_to_attack->state = DYING;

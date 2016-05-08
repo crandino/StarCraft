@@ -218,14 +218,14 @@ bool Mutalisk::attack(Entity* target_to_attack)
 		if (d <= range_to_attack)
 		{
 			ret = true;
-			if ((target_to_attack->current_hp -= damage) <= 0.0f)
+			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				ret = false;
 				target_to_attack->state = DYING;
 				app->game_manager->total_units_killed_currentFrame++;
 			}
 			Entity* second_target_to_attack = target_to_attack->searchNearestAlly();
-			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= damage) <= 0.0f)
+			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				second_target_to_attack->state = DYING;
 				app->game_manager->total_units_killed_currentFrame++;

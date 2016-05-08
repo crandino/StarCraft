@@ -429,7 +429,7 @@ bool Firebat::update(float dt)
 			move(dt);
 		break;
 	case ATTACK:
-		if (timer_attack.read() >= attack_frequency)
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
 			if (area_attack)
 			{

@@ -334,7 +334,7 @@ bool Medic::update(float dt)
 		if (has_target) move(dt);
 		break;
 	case ATTACK:
-		if (timer_attack.read() >= attack_frequency)
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
 			if (!heal())
 			{
