@@ -55,8 +55,7 @@ bool Scene::start()
 	//Setting up fog of war module
 
 	list<MapData>::iterator map = app->map->data.begin();
-	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 2);
-	app->fog_of_war->maps[1]->maxAlpha = 175;
+	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 1);
 		
 	return true;
 }
