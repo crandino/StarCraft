@@ -135,9 +135,9 @@ public:
 		return app->entity_manager->searchAllyToHeal(this);
 	}
 
-	virtual list<Entity*> searchEntitiesInRange(Entity* origin, float area_range)
+	virtual list<Entity*> searchEntitiesInRange(Entity* origin, float area_range, bool can_attack_to_flying = true)
 	{
-		return app->entity_manager->searchEntitiesInRange(origin, true, area_range);
+		return app->entity_manager->searchEntitiesInRange(origin, true, area_range, can_attack_to_flying);
 	}
 
 	virtual Entity* searchEnemy()

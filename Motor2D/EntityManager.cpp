@@ -734,7 +734,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	return ret;
 }
 
-list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range) //The method search and return the entity in the area
+list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range, bool can_attack_to_flying) //The method search and return the entity in the area
 {
 	list<Entity*> ret;
 	if (e != NULL)
@@ -748,6 +748,13 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) 
 				&& (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
 			{
+				if (!can_attack_to_flying)
+				{
+					if (it->second->type == UNIT && ((Unit*)it->second)->flying)
+					{
+						continue;
+					}
+				}
 				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 				if (d <= value)
@@ -779,7 +786,7 @@ bool EntityManager::checkFocus(Unit* e)
 	return ret;
 }
 
-Entity* EntityManager::searchEnemyToAttack(Entity* e)
+Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying)
 {
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
@@ -789,6 +796,13 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e)
 	{
 		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && e->specialization != BOMB)
 		{
+			if (!can_attack_to_flying)
+			{
+				if (it->second->type == UNIT && ((Unit*)it->second)->flying)
+				{
+					continue;
+				}
+			}
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 			uint maxHP = it->second->current_hp;

@@ -391,7 +391,7 @@ bool Firebat::update(float dt)
 	case IDLE:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchEnemy();
+			target_to_attack = searchEnemy(false);
 			if (target_to_attack != NULL)
 				newEntityFound();
 			timer_to_check.start();
@@ -404,7 +404,7 @@ bool Firebat::update(float dt)
 	case MOVE_ALERT:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchEnemy();
+			target_to_attack = searchEnemy(false);
 			if (target_to_attack != NULL)
 				newEntityFound();
 			timer_to_check.start();
@@ -415,7 +415,7 @@ bool Firebat::update(float dt)
 	case MOVE_ALERT_TO_ATTACK:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchEnemy();
+			target_to_attack = searchEnemy(false);
 			if (target_to_attack != NULL)
 				newEntityFound();
 			else
@@ -433,7 +433,7 @@ bool Firebat::update(float dt)
 		{
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
 				while (targets.begin() != targets.end())
 				{
 					attackWithoutRange(targets.front());
@@ -454,7 +454,7 @@ bool Firebat::update(float dt)
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
-			target_to_attack = searchEnemy();
+			target_to_attack = searchEnemy(false);
 			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
 				newEntityFound();
 		}
