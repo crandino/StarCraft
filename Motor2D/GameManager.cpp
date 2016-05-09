@@ -449,6 +449,16 @@ bool GameManager::update(float dt)
 	}
 	}
 
+	//Find Jim
+	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+	{
+		if (jim_position != NULL)
+		{
+			app->render->camera.x = -jim_position->x + (app->render->camera.w / 2);
+			app->render->camera.y = -jim_position->y + (app->render->camera.h / 2);
+		}
+	}
+
 	//ADRI
 	//-------------------------UI-----------------------------
 	//Change the number of WAVE HUD ingame-----------------------
@@ -637,7 +647,7 @@ void GameManager::startGame()
 
 	//---- Initial units ----
 	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
-	app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR);
+	jim_position = &app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR)->center;
 	app->entity_manager->addEntity(iPoint(1520, 2150), MEDIC);
 	//--------
 

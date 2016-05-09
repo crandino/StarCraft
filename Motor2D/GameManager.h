@@ -183,6 +183,9 @@ public:
 	bool command_center_destroyed = false;
 	bool jim_raynor_dead = false;
 
+	//Find Jim
+	fPoint*				 jim_position = NULL;
+
 	//Sound
 	unsigned int fx_click;
 	unsigned int fx_win;
