@@ -89,6 +89,9 @@ public:
 	iPoint cursor_offset;
 	iPoint map_limits;
 	float scroll_speed;
+	fPoint last_attack_position;
+	list<fPoint> lasts_attack_position;
+	Timer timer_to_ping_attack;
 
 	//Sounds
 	unsigned int fx_click_1;
@@ -156,6 +159,9 @@ public:
 
 	// HUD Minimap
 	GuiMinimap* mini_map;
+
+	//Raynor indicator Image
+	GuiImage* raynor_indicator = nullptr;
 
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling

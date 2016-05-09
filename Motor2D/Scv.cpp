@@ -225,26 +225,27 @@ bool Scv::update(float dt)
 	case ATTACK://ATTACK == REPAIR for SCV
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
-			static uint fx = rand() % 5 + 1;
+			static uint fx;
+			fx = rand() % 5 + 1;
 			if (fx == 1)
 			{
-				//app->audio->playFx(fx_repair_1, 0);
+				app->audio->playFx(app->entity_manager->fx_scv_repair_1, 0);
 			}
 			if (fx == 2)
 			{
-				//app->audio->playFx(fx_repair_2, 0);
+				app->audio->playFx(app->entity_manager->fx_scv_repair_2, 0);
 			}
 			if (fx == 3)
 			{
-				//app->audio->playFx(fx_repair_3, 0);
+				app->audio->playFx(app->entity_manager->fx_scv_repair_3, 0);
 			}
 			if (fx == 4)
 			{
-				//app->audio->playFx(fx_repair_4, 0);
+				app->audio->playFx(app->entity_manager->fx_scv_repair_4, 0);
 			}
 			if (fx == 5)
 			{
-				//app->audio->playFx(fx_repair_5, 0);
+				app->audio->playFx(app->entity_manager->fx_scv_repair_5, 0);
 			}
 
 			if (!repair())
@@ -256,7 +257,7 @@ bool Scv::update(float dt)
 		}
 		break;
 	case DYING:
-		//app->audio->playFx(fx_death, 0);
+		app->audio->playFx(app->entity_manager->fx_scv_death, 0);
 		if (current_animation->finished())
 		{
 			to_delete = true;

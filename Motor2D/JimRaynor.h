@@ -56,6 +56,7 @@ public:
 	~JimRaynor();
 
 	bool start();
+	bool update(float dt);
 	void move(float dt);
 	void setAnimationFromDirection();
 	void draw();

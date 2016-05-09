@@ -42,3 +42,8 @@ void GuiImage::draw() const
 	if (parent && parent->cut_childs)
 		app->render->ResetViewPort();
 }
+
+void GuiImage::draw_static() const
+{
+	app->render->blit(texture, rect.x + app->render->camera.x, rect.y + app->render->camera.y, (SDL_Rect*)&section, 0.0f);
+}

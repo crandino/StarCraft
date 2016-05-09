@@ -28,6 +28,8 @@ public:
 	bool getEntitiesOutside();
 	bool attack();
 
+	bool raynor_inside = false;
+
 };
 
 #endif !__BUNKER_H__

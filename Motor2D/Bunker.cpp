@@ -1,6 +1,7 @@
 #include "Bunker.h"
 #include "PathFinding.h"
 #include "p2Log.h"
+#include "GuiImage.h"
 
 Bunker::Bunker(iPoint &p)
 {
@@ -129,6 +130,9 @@ bool Bunker::getEntityInside(Unit* entity)
 			u->inside_bunker = true;
 			u->coll->disable();
 			u->bunker_to_fill = NULL;
+			raynor_inside = true;
+			app->gui->raynor_indicator->setLocalPos(center.x - 16, pos.y);
+			app->gui->raynor_indicator->enable_element();
 		}
 
 		return true;
@@ -153,7 +157,13 @@ bool Bunker::getEntitiesOutside()
 			}
 
 			app->entity_manager->active_entities.insert(pair<uint, Unit*>(it->second->id, it->second));
-
+			
+			if (it->second->specialization == JIM_RAYNOR)
+			{
+				app->gui->raynor_indicator->disable_element();
+				raynor_inside = false;
+			}
+				
 			Marine *m = (Marine*)it->second;
 			m->coll->enable();
 			m->to_delete = false;

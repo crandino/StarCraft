@@ -67,6 +67,8 @@ public:
 	float		area_range;
 
 	bool		siege_mode = false;
+	bool		sound_active = true;
+	Timer		sound_time;
 
 	//FX
 	uint fx_sige_mode_on;

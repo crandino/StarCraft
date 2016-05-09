@@ -254,8 +254,8 @@ Hydralisk::Hydralisk(iPoint &p)
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 130;
-	damage = 5.0f;
-	attack_frequency = 200.0f;
+	damage = 10.0f;
+	attack_frequency = 1000.0f;
 	time_to_die = 500.0f;
 
 	// PathFinding and movement variables
@@ -372,6 +372,7 @@ bool Hydralisk::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
+			app->audio->playFx(app->entity_manager->fx_hydralisk_attack, 0);
 			if (area_attack)
 			{
 				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
@@ -387,11 +388,11 @@ bool Hydralisk::update(float dt)
 				}
 			}
 			else
-			if (!attack(target_to_attack))
-			{
-				state = IDLE;
-				target_to_attack = NULL;
-			}
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
@@ -401,6 +402,7 @@ bool Hydralisk::update(float dt)
 		}
 		break;
 	case DYING:
+		app->audio->playFx(app->entity_manager->fx_hydralisk_death, 0);
 		if (current_animation->finished())
 		{
 			to_delete = true;
@@ -460,12 +462,10 @@ void Hydralisk::setParticleBehaviour()
 			}
 			if (!attack_up_part.on)
 			{
-
-				particle_offset = { 15, -30};
+				particle_offset = { 15, -30 };
 				particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
 				attack_up_part.on = true;
 			}
-
 		}
 
 		if (current_animation == &attack_right_up)

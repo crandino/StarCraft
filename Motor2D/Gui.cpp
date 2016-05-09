@@ -44,7 +44,14 @@ bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
 
-	
+	last_attack_position.x = app->game_manager->command_center_position.x;
+	last_attack_position.y = app->game_manager->command_center_position.y;
+
+	//Raynor indicator Image
+	raynor_indicator = app->gui->createImage("raynor_indicator.png");
+	raynor_indicator->disable_element();
+	raynor_indicator->static_image = true;
+
 	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
@@ -385,6 +392,25 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
 			app->entity_manager->create_barrack = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_factory)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			//app->audio->playFx(fx_click_1, 0);
+			app->entity_manager->create_factory = true;
 			break;
 
 		}
@@ -833,6 +859,54 @@ bool Gui::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
+	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		if (lasts_attack_position.size() > 0)
+			last_attack_position = lasts_attack_position.back();
+		app->render->camera.x = (app->render->camera.w / 2) - last_attack_position.x;
+		app->render->camera.y = (app->render->camera.h / 2) - last_attack_position.y;
+		if (app->render->camera.x >= 0)
+			app->render->camera.x = 0;
+		else if ((app->render->camera.x - app->render->camera.w) <= -map_limits.x)
+			app->render->camera.x = -map_limits.x + app->render->camera.w;
+		if (app->render->camera.y >= 0)
+			app->render->camera.y = 0;
+		else if ((app->render->camera.y - app->render->camera.h) <= -map_limits.y)
+			app->render->camera.y = -map_limits.y + app->render->camera.h;
+	}
+
+	if (timer_to_ping_attack.readSec() >= 1.0f)
+	{
+		timer_to_ping_attack.start();
+		if (lasts_attack_position.size() > 0)
+		{
+			iPoint first_ping = { -1, -1 };
+			iPoint second_ping = { -1, -1 };
+			for (list<fPoint>::iterator it = lasts_attack_position.begin(); it != lasts_attack_position.end(); it++)
+			{
+				if ((it._Ptr->_Myval.x < (-app->render->camera.x) || it._Ptr->_Myval.x >((-app->render->camera.x) + app->render->camera.w)) &&
+					(it._Ptr->_Myval.y < (-app->render->camera.y) || it._Ptr->_Myval.y >((-app->render->camera.y) + app->render->camera.h)))
+				{
+					if (first_ping.x == -1 && first_ping.y == -1)
+					{
+						first_ping.x = it._Ptr->_Myval.x;
+						first_ping.y = it._Ptr->_Myval.y;
+						mini_map->activePing(first_ping);
+					}
+					else if ((first_ping.x - 250 > it._Ptr->_Myval.x || first_ping.x + 250 < it._Ptr->_Myval.x) &&
+						(first_ping.y - 250 > it._Ptr->_Myval.y || first_ping.y + 250 < it._Ptr->_Myval.y))
+					{
+						second_ping.x = it._Ptr->_Myval.x;
+						second_ping.y = it._Ptr->_Myval.y;
+						mini_map->activePing(second_ping);
+					}
+				}
+			}
+			last_attack_position = lasts_attack_position.back();
+			lasts_attack_position.clear();
+		}
+	}
+
 	// Cursor -> check for camera displacement.
 	iPoint pos = cursor->getLocalPos();
 	cursor->current_animation = &cursor->idle;
@@ -966,7 +1040,12 @@ bool Gui::postUpdate()
 		if (gui->draw_element == true)
 		{
 			if (gui->getType() != CURSOR)
-				gui->draw();
+			{
+				if (gui->getType() == IMAGE && gui->static_image)
+					gui->draw_static();
+				else
+					gui->draw();
+			}
 		}
 
 		if (debug == true && gui->draw_element == true)

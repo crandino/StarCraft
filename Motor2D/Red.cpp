@@ -65,6 +65,14 @@ bool Red::update(float dt)
 		break;
 	case DYING:
 		//current_animation = &dead;
+		if (targets.size() > 0)
+		{
+			for (list<Entity*>::iterator it = targets.begin(); it != targets.end(); it++)
+			{
+				it._Ptr->_Myval->damage_multiplier /= 1.2f;
+			}
+			targets.clear();
+		}
 		if (timer_to_check.read() >= time_to_die)
 		{
 			to_delete = true;
