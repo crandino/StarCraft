@@ -51,7 +51,6 @@ bool Textures::cleanUp()
 	for(item; item != textures.end(); item++)
 	{
 		SDL_DestroyTexture(*item);
-		
 	}
 
 	textures.clear();

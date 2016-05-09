@@ -56,6 +56,7 @@ bool Scene::start()
 
 	list<MapData>::iterator map = app->map->data.begin();
 	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 1);
+	fog_of_war_timer.start();
 		
 	return true;
 }
@@ -63,6 +64,13 @@ bool Scene::start()
 // Called each loop iteration
 bool Scene::preUpdate()
 {
+	if ((uint)fog_of_war_timer.read() > 500) // Every 0.5 seconds, the fog of war is reset to maxAlpha value (175);
+	{
+		fog_of_war_timer.start();
+		app->fog_of_war->clearMap(0);
+	}
+		
+	
 	return true;
 }
 

@@ -56,6 +56,7 @@ bool FileSystem::awake(pugi::xml_node &node)
 
 bool FileSystem::cleanUp()
 {
+	LOG("Cleaning FileSystem");
 	removeAllSearchPaths();
 	return true;
 }

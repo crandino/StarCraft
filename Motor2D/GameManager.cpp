@@ -418,16 +418,12 @@ bool GameManager::update(float dt)
 
 	case(WIN):
 	{
-
-		if (timer_between_waves.readSec() > gameInfo.time_before_end)
-		{ 
-			if (!is_victory_screen_on)
-			{
-				app->audio->stopMusic();
-				restartGame();
-				displayVictoryScreen();
-				app->audio->playFx(fx_win, 0);
-			}
+		if (!is_victory_screen_on)
+		{
+			app->audio->stopMusic();
+			restartGame();
+			displayVictoryScreen();
+			app->audio->playFx(fx_win, 0);
 		}
 		break;
 	}
@@ -738,6 +734,8 @@ void GameManager::restartGame()
 		it->second->to_delete = true;
 	}
 	//---------------------------------------------------------
+
+	//app->fog_of_war->clearMap();
 
 	current_wave = 0;
 	score = 0;

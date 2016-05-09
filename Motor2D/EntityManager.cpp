@@ -1138,7 +1138,7 @@ void EntityManager::entityManualCreation()
 	{
 		app->input->getMousePosition(position);
 		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, BARRACK);
+		addEntity(position, BARRACK, false);
 	}
 }
 
@@ -1154,22 +1154,7 @@ void EntityManager::updateFogOfWar()
 		{
 			 if (it->second->faction == PLAYER)
 				app->fog_of_war->drawCircle(it->second->center.x, it->second->center.y, it->second->range_of_vision);
-			it++;
+			++it;
 		}
 	}
-
-	/*if (buildingList.empty() == false)
-	{
-		std::list<Building*>::iterator buildIt = buildingList.begin();
-		{
-			while (buildIt != buildingList.end())
-			{
-				if ((*buildIt)->stats.player == PLAYER && (*buildIt)->state != BS_DEAD)
-				{
-					App->fogOfWar->DrawCircle((*buildIt)->GetCollider().x + (*buildIt)->GetCollider().w / 2, (*buildIt)->GetCollider().y + (*buildIt)->GetCollider().h / 2, 250);
-				}
-				buildIt++;
-			}
-		}
-	}*/
 }

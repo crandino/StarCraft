@@ -59,9 +59,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(gui);
 	addModule(game_manager);
 	addModule(entity_manager);
-	addModule(scene);
 	addModule(collision);
 	addModule(fog_of_war);
+	addModule(scene);
 	addModule(particle);
 	// render last to swap buffer
 	addModule(render);
@@ -305,7 +305,7 @@ bool App::cleanUp()
 		ret = (*item)->cleanUp();
 		++item;
 	}
-
+	
 	return ret;
 }
 

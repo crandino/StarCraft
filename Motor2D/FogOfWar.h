@@ -78,7 +78,7 @@ public:
 
 private:
 	//Create a new FogMap
-	int createMap(int w, int h, int maxAlpha = 255);
+	int createMap(int w, int h, int maxAlpha = 175);
 
 public:
 	//List of Fog maps

@@ -52,6 +52,10 @@ private:
 	//ROF
 	SDL_Texture* start_menu_img = nullptr;
 
+	// FogOfWar Timer
+	// This timer will clean the fog of war 3 times per second.
+	Timer fog_of_war_timer;
+
 public:
    
 	//GuiImage* ui_terran = nullptr;

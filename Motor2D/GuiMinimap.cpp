@@ -101,28 +101,27 @@ void GuiMinimap::draw() const
 		for (std::map<uint, Entity*>::iterator it = active_entities->begin(); it != active_entities->end(); ++it)
 		{
 			Entity* entity = it->second;
+			iPoint quad_pos = worldToMinimap({ (int)entity->center.x, (int)entity->center.y });
 
 			// Set drawing quad for each unit
 			// Choose quad color
-			Uint8 r, g, b;
-			switch (entity->faction)
-			{
-			case FACTION::PLAYER:
-				r = 0;
-				g = 0;
-				b = 255;
-				break;
-
-			case FACTION::COMPUTER:
-				r = 255;
-				g = 0;
-				b = 0;
-				break;
-			}
-
 			// send to render
-			iPoint quad_pos = worldToMinimap({ (int)entity->center.x, (int)entity->center.y });
-			app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, r, g, b);
+			
+			switch (entity->specialization)
+			{
+			case ZERGLING:
+			case MUTALISK:
+			case HYDRALISK:
+			case ULTRALISK:
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 255, 0, 0);
+				break;
+			case JIM_RAYNOR:
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 2, 2 }, 255, 255, 0);
+				break;
+			default:
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 0, 0, 255);
+				break;
+			}	
 		}
 	}
 
@@ -135,7 +134,7 @@ void GuiMinimap::draw() const
 		if (it->ping_active)
 			app->render->DrawQuad({ (int)it->ping_position.x - it->current_ping_width / 2,
 									(int)it->ping_position.y - it->current_ping_height / 2,
-									 it->current_ping_width, it->current_ping_height }, 255, 0, 0, 255, false);
+									 it->current_ping_width, it->current_ping_height }, 255, 0, 0, 255, false, false);
 	}
 		
 }

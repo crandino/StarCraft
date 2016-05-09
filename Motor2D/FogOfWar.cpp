@@ -224,9 +224,7 @@ bool FogOfWar::setUp(uint graphicalW, uint graphicalH, uint _tileW, uint _tileH,
 
 	//Create as many maps as necessary
 	for (uint n = 0; n < nMaps; n++)
-	{
 		createMap(graphicalW / _tileW, graphicalH / _tileH);
-	}
 
 	//Save the width and height of each tile
 	tileW = _tileW;
