@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Render.h"
 #include "Textures.h"
+#include "p2Log.h"
 
 // -------------- Structure Fog Map -----------------------------------------------------------------------------
 
@@ -117,8 +118,6 @@ void FogMap::copyTo(FogMap* output)
 			output->map[x][y] = map[x][y];
 		}
 	}
-
-
 }
 
 bool FogMap::isVisible(int x, int y)
@@ -259,8 +258,8 @@ void FogOfWar::draw()
 	int startY = -app->render->camera.y / tileH;
 
 	int hud_terran_height = 100;   // Pixels height of Terran HUD
-	int endX = app->render->camera.w - app->render->camera.x / tileW + 1;
-	int endY = (app->render->camera.h - hud_terran_height) - app->render->camera.y / tileH + 1;
+	int endX = ((app->render->camera.w - app->render->camera.x) / tileW ) + 1;
+	int endY = (((app->render->camera.h - hud_terran_height) - app->render->camera.y) / tileH )+ 1;
 
 	int max_map_height = maps.front()->getHeight();
 	int max_map_width = maps.front()->getWidth();
@@ -268,7 +267,7 @@ void FogOfWar::draw()
 	SDL_Rect r = { 0, 0, tileW, tileH };
 
 	//Next function enables the blending of the texture
-	SDL_SetTextureBlendMode(fow, SDL_BLENDMODE_BLEND);
+	//SDL_SetTextureBlendMode(fow, SDL_BLENDMODE_BLEND);
 
 	//Drawing all fog maps
 	for (vector<FogMap*>::reverse_iterator currentMap = maps.rbegin(); currentMap != maps.rend(); ++currentMap)
@@ -282,7 +281,6 @@ void FogOfWar::draw()
 				for (int x = startX; x <= endX && x < max_map_width; ++x)
 				{
 					//Now the fog is just black rectangles with diferents alphas. Diferent methods will be explained.
-
 					//This other, changes its alpha
 					SDL_SetTextureAlphaMod(fow, (*currentMap)->map[x][y]);
 
@@ -326,7 +324,6 @@ void FogOfWar::drawCircle(int x, int y, uint radius, bool visible, int map)
 			maps[n]->drawCircle(tileX, tileY, tileRadius, visible);
 		}
 	}
-
 }
 
 void FogOfWar::clearMap(int map)
@@ -388,6 +385,8 @@ int FogOfWar::createMap(int w, int h, int maxAlpha)
 {
 	FogMap* tmp = NULL;
 	fow = app->tex->loadTexture("maps/FogOfWar.png");
+	//Next function enables the blending of the texture
+	SDL_SetTextureBlendMode(fow, SDL_BLENDMODE_BLEND);
 
 	tmp = new FogMap(w, h);
 	if (tmp)
