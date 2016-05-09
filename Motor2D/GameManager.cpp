@@ -38,7 +38,7 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 1400, 1700};
+	iPoint north_west = { 1400, 1700 };
 	iPoint north_east = { 2350, 1700 };
 	iPoint south_west = { 1400, 2700 };
 	iPoint south_east = { 2300, 2700 };
@@ -46,10 +46,10 @@ struct wave_position
 
 struct bomb_position
 {
-	iPoint north_west = { 50, 200 };
-	iPoint north_east = { 2800, 600 };
-	iPoint south_west = { 700, 1200 };
-	iPoint south_east = { 700, 1200 };
+	iPoint north_west = { 100, 50 };
+	iPoint north_east = { 3650, 600 };
+	iPoint south_west = { 100, 3650 };
+	iPoint south_east = { 3600, 3800 };
 };
 
 
@@ -300,7 +300,7 @@ bool GameManager::update(float dt)
 			LOG("The bomb has landed look for it."); //Audio voice
 
 			bomb_pos = positionRandomizerBomb(random, bomb_pos);
-			bomb = (Bomb*)app->entity_manager->addEntity(iPoint(1600, 2250), BOMB);
+			bomb = (Bomb*)app->entity_manager->addEntity(bomb_pos, BOMB);
 			app->gui->mini_map->activePing(bomb_pos);
 			game_state = SECOND_PHASE;
 		}
