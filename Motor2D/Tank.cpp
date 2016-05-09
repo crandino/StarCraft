@@ -425,7 +425,7 @@ bool Tank::update(float dt)
 					{
 						state = IDLE_SIEGE_MODE;
 						area_attack = true;
-						damage += 45;
+						damage *= 1.5f;// = 45 without buff
 						path.clear();
 						has_target = false;
 						app->path->erase(id);
@@ -456,7 +456,7 @@ bool Tank::update(float dt)
 				{
 					state = IDLE;
 					area_attack = false;
-					damage -= 45;
+					damage /= 1.5f;// = 45 without buff
 					range_to_attack /= 2;
 				}
 			}
