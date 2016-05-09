@@ -7,10 +7,17 @@
 
 
 // class GuiLabel ---------------------------------------------------
-GuiLabel::GuiLabel(const char* text, int kind_of_font) : GuiElements()
+GuiLabel::GuiLabel(const char* text, int kind_of_font, iPoint pos) : GuiElements()
 {
+	this->pos = pos;
 	setText(text,kind_of_font);
 	type = LABEL;
+}
+
+GuiLabel::GuiLabel(const char* text, int kind_of_font)
+{
+		setText(text, kind_of_font);
+		type = LABEL;
 }
 
 // --------------------------
@@ -42,8 +49,14 @@ const SDL_Texture* GuiLabel::getTexture() const
 }
 
 // --------------------------
-void GuiLabel::draw() const
+void GuiLabel::draw()
 {
-	iPoint p = getScreenPos();
-	app->render->blit(texture, p.x, p.y, NULL, 0.0f);
+	iPoint tmpPos = getScreenPos();
+	
+	tmpPos.x += 320;
+	tmpPos.y += 240;
+
+	pos = tmpPos;
+
+	app->render->blit(texture, pos.x, pos.y, NULL, 0.0f);
 }

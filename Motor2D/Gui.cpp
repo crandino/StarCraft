@@ -281,6 +281,13 @@ bool Gui::start()
 	fx_click_error = app->audio->loadFx("Audio/FX/UI/Click_Error.wav");
 	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
 
+	label_game_starts = createLabel("Welcome to Last Hope !!!", 1);
+
+	//label_information_about_the_game = createLabel("Welcome to Last Hope !!! You are going to be tested.", 1);
+
+
+
+
 	return true;
 }
 
@@ -1221,14 +1228,7 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 
 	return ret;
 }
-// Create a simple label
-/*GuiLabel* Gui::createLabel(const char* text, const int x, const int y)
-{
-	GuiLabel* label = new GuiLabel(text, x, y);
-	elements.push_back(label);
 
-	return label;
-}*/
 
 GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
 {
@@ -1236,8 +1236,23 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
 
 	if (text != NULL)
 	{
-		ret = new GuiLabel(text,kind_of_font);
+		ret = new GuiLabel(text, kind_of_font);
 		elements.push_back(ret);
+		app->game_manager->labels.push_back(ret);
+	}
+
+	return ret;
+}
+
+GuiLabel* Gui::createLabel(const char* text, int kind_of_font, iPoint pos)
+{
+	GuiLabel* ret = NULL;
+
+	if (text != NULL)
+	{
+		ret = new GuiLabel(text,kind_of_font,pos);
+		elements.push_back(ret);
+		app->game_manager->labels.push_back(ret);
 	}
 
 	return ret;
