@@ -471,6 +471,29 @@ bool EntityManager::preUpdate()
 		}
 	}
 
+	if (create_tank)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_factory;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == FACTORY)
+			{
+				iPoint position;
+				pos_factory = it->second->pos;
+				app->game_manager->gas_resources -= 300;
+				app->game_manager->mineral_resources -= 200;
+				position.x = pos_factory.x + 30;
+				position.y = pos_factory.y + 120;
+
+				addEntity(position, TANK);
+				create_tank = false;
+				break;
+			}
+		}
+	}
+
 	if (create_marine)
 	{
 		map<uint, Entity*>::iterator it = active_entities.begin();

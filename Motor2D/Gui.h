@@ -131,9 +131,13 @@ public:
 	GuiImage* ui_create_firebat = nullptr;
 	GuiImage* ui_set_bomb = nullptr;
 
+	//Factory HUD-----------------------
+	GuiImage* ui_create_tank = nullptr;
+
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;
 	bool barrackMenuOpened = false;
+	bool factoryMenuOpened = false;
 
 	void openBuildingMenu();
 

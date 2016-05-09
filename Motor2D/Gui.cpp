@@ -164,6 +164,14 @@ bool Gui::start()
 	ui_create_bot->interactive = false;
 	ui_create_bot->can_focus = true;
 	ui_create_bot->draw_element = false;
+
+	//Tank Button
+	ui_create_tank = app->gui->createImage(NULL, { 255, 234, 36, 33 });//Disabled section { 297, 234, 36, 33 }
+	ui_create_tank->setLocalPos(505, 358);
+	ui_create_tank->setListener(this);
+	ui_create_tank->interactive = false;
+	ui_create_tank->can_focus = true;
+	ui_create_tank->draw_element = false;
 	
 	//Bunker buttons------------------------------------------------------------
 	ui_leave_bunker = app->gui->createImage(NULL, { 255, 152, 36, 33 });//Disabled section { 254, 192, 37, 34 }
@@ -457,7 +465,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->gas_resources >= 100 || app->game_manager->mineral_resources >= 75)
+			if (app->game_manager->gas_resources >= 100 && app->game_manager->mineral_resources >= 75)
 			{
 				app->entity_manager->create_medic = true;
 			}
@@ -484,9 +492,36 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->gas_resources >= 200 || app->game_manager->mineral_resources >= 50)
+			if (app->game_manager->gas_resources >= 200 && app->game_manager->mineral_resources >= 50)
 			{
 				app->entity_manager->create_firebat = true;
+			}
+			else
+			{
+				app->audio->playFx(fx_click_error, 0);
+				app->audio->playFx(fx_not_enough_minerales, 0);
+			}
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_tank)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
+			if (app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 200)
+			{
+				app->entity_manager->create_tank = true;
 			}
 			else
 			{
@@ -547,6 +582,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 	case (COMMANDCENTER) :
 		commandCenterOpened = true;
 		barrackMenuOpened = false;
+		factoryMenuOpened = false;
 			  if(!buildingMenuOpened)
 			  {
 				  //Desactivate quad background
@@ -570,6 +606,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_create_marine->disable_element();
 				  ui_create_medic->disable_element();
 				  ui_create_firebat->disable_element();
+
+				  ui_create_tank->disable_element();
 
 				  //Activate new images
 				  ui_create_bot->enable_element();
@@ -610,6 +648,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_medic->disable_element();
 			  ui_create_firebat->disable_element();
 
+			  ui_create_tank->disable_element();
+
+
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
 
@@ -618,6 +659,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 		  case (BARRACK) :
 			  barrackMenuOpened = true;
 			  commandCenterOpened = false;
+			  factoryMenuOpened = false;
 			  if (buildingMenuOpened)
 			  {
 				  buildingMenuOpened = false;
@@ -647,6 +689,48 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_marine->enable_element();
 			  ui_create_medic->enable_element();
 			  ui_create_firebat->enable_element();
+
+			  ui_create_tank->disable_element();
+
+
+			  break;
+
+		  case (FACTORY) :
+			  factoryMenuOpened = true;
+			  barrackMenuOpened = false;
+			  commandCenterOpened = false;
+
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+			  //Activate default entities
+			  rectangle_command->draw_element = false;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+
+
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+
+			  ui_create_tank->enable_element();
 
 			  break;
 
@@ -681,6 +765,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_medic->disable_element();
 			  ui_create_firebat->disable_element();
 
+			  ui_create_tank->disable_element();
+
+
 			  break;
 			  
 		  case (MEDIC) :
@@ -713,6 +800,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
 			  ui_create_firebat->disable_element();
+
+			  ui_create_tank->disable_element();
+
 			  
 			  break;
 
@@ -746,6 +836,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
 			  ui_create_firebat->disable_element();
+
+			  ui_create_tank->disable_element();
+
 			  
 			  break;
 
@@ -779,6 +872,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_marine->disable_element();
 			  ui_create_medic->disable_element();
 			  ui_create_firebat->disable_element();
+
+			  ui_create_tank->disable_element();
+
 			  
 			  break;
 
@@ -816,6 +912,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				ui_set_bomb->disable_element();
 
+				ui_create_tank->disable_element();
+
+
 				break;
 
 		  case (NOTYPE) :
@@ -842,6 +941,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_create_marine->disable_element();
 				  ui_create_medic->disable_element();
 				  ui_create_firebat->disable_element();
+
+				  ui_create_tank->disable_element();
+
 			  
 			  break;
 	}
@@ -1013,6 +1115,8 @@ bool Gui::postUpdate()
 			drawHudSelection(BUNKER);
 		if (itm->second->specialization == SPECIALIZATION::BARRACK)
 			drawHudSelection(BARRACK);
+		if (itm->second->specialization == SPECIALIZATION::FACTORY)
+			drawHudSelection(FACTORY);
 		if (itm->second->specialization == SPECIALIZATION::MARINE)
 			drawHudSelection(MARINE);
 		if (itm->second->specialization == SPECIALIZATION::MEDIC)
@@ -1260,7 +1364,7 @@ void Gui::controlIconsSprite()
 
 	if (commandCenterOpened)
 	{
-		if (!buildingMenuOpened)
+		if (!buildingMenuOpened && !factoryMenuOpened)
 		{
 			if (app->game_manager->mineral_resources < 50)
 			{
@@ -1312,9 +1416,20 @@ void Gui::controlIconsSprite()
 			ui_create_firebat->setSection({ 293, 152, 37, 33 });
 			ui_create_firebat->enable_element();
 		}
-		
+	}
 
-		
+	if (factoryMenuOpened) 
+	{
+		if (app->game_manager->gas_resources < 300 || app->game_manager->mineral_resources < 200)
+		{
+			ui_create_tank->setSection({ 297, 234, 36, 33 });
+			ui_create_tank->unable_element();
+		}
+		else
+		{
+			ui_create_tank->setSection({ 255, 234, 36, 33 });
+			ui_create_tank->enable_element();
+		}
 	}
 }
 
