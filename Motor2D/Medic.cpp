@@ -232,6 +232,27 @@ bool Medic::start()
 {
 	// Sounds
 	fx_heal = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Heal.wav");
+	fx_death = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Death.wav");
+
+	fx_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_1.wav");
+	fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_2.wav");
+	fx_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_3.wav");
+	fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_4.wav");
+
+	fx_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_1.wav");
+	fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_2.wav");
+	fx_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_3.wav");
+	fx_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_4.wav");
+
+	fx_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_1.wav");
+	fx_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_2.wav");
+	fx_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_3.wav");
+	fx_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_4.wav");
+	fx_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_5.wav");
+	fx_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_6.wav");
+	fx_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_7.wav");
+
+	fx_ready = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Ready.wav");
 
 	return true;
 }
@@ -336,16 +357,18 @@ bool Medic::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
+			app->audio->playFx(fx_heal, 0);
 			if (!heal())
 			{
 				state = IDLE;
 				target_to_attack = NULL;
 			}
-			app->audio->playFx(fx_heal, 0);
+			
 			timer_attack.start();
 		}
 		break;
 	case DYING:
+		app->audio->playFx(fx_death, 0);
 		if (current_animation->finished())
 		{
 			to_delete = true;
