@@ -15,6 +15,7 @@
 #include "Entity.h"
 #include "Bomb.h"
 #include "Unit.h"
+#include "GuiMinimap.h"
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
@@ -245,6 +246,7 @@ bool GameManager::update(float dt)
 			app->audio->playFx(fx_wave_incoming, 0);
 			wave_state = MIDDLE_WAVE;
 			createWave(waves_info[current_wave], wave_pos);
+			app->gui->mini_map->activePing(wave_pos);
 			break;
 		}
 		case(MIDDLE_WAVE) :
@@ -304,6 +306,9 @@ bool GameManager::update(float dt)
 
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
+
+			app->gui->mini_map->activePing(wave_pos);
+
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
@@ -362,6 +367,7 @@ bool GameManager::update(float dt)
 
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
+			app->gui->mini_map->activePing(wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
