@@ -25,7 +25,6 @@ bool ParticleManager::awake(pugi::xml_node &node)
 {
 	LOG("Particle Manager: Awake");
 	//textureFile.assign(node.child("particle_manager").first_attribute().as_string());
-	std::srand(time(NULL));
 
 	return true;
 }

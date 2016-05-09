@@ -22,6 +22,8 @@
 
 #include <iostream> 
 #include <sstream> 
+#include <stdlib.h>
+#include <time.h>
 
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
@@ -130,6 +132,8 @@ bool App::awake()
 // Called before the first frame
 bool App::start()
 {
+	srand(time(NULL));
+
 	avg_fps = 0.0f;
 	seconds_since_startup = 0.0f;
 	last_frame_ms = 0;

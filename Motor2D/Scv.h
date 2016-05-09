@@ -423,7 +423,6 @@ public:
 		case ATTACK://ATTACK == REPAIR for SCV
 			if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 			{
-				srand(time(NULL));
 				static uint fx = rand() % 5 + 1;
 				if (fx == 1)
 				{

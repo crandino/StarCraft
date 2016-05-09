@@ -140,8 +140,62 @@ public:
 	bool	create_yellow = false;
 	bool	create_red = false;
 
-
 	bool	selector_init;
+
+	//Sounds (FX)
+
+	//Marine
+	unsigned int fx_marine_attack;
+	unsigned int fx_marine_death_1;
+	unsigned int fx_marine_death_2;
+
+	unsigned int fx_marine_acknowledgement_1;
+	unsigned int fx_marine_acknowledgement_2;
+	unsigned int fx_marine_acknowledgement_3;
+	unsigned int fx_marine_acknowledgement_4;
+
+	unsigned int fx_marine_affirmation_1;
+	unsigned int fx_marine_affirmation_2;
+	unsigned int fx_marine_affirmation_3;
+	unsigned int fx_marine_affirmation_4;
+
+	unsigned int fx_marine_annoyance_1;
+	unsigned int fx_marine_annoyance_2;
+	unsigned int fx_marine_annoyance_3;
+	unsigned int fx_marine_annoyance_4;
+	unsigned int fx_marine_annoyance_5;
+	unsigned int fx_marine_annoyance_6;
+	unsigned int fx_marine_annoyance_7;
+
+	unsigned int fx_marine_ready;
+
+	//Firebat
+	unsigned int fx_firebat_attack_1;
+	unsigned int fx_firebat_attack_2;
+	unsigned int fx_firebat_death_1;
+	unsigned int fx_firebat_death_2;
+	unsigned int fx_firebat_death_3;
+
+	unsigned int fx_firebat_acknowledgement_1;
+	unsigned int fx_firebat_acknowledgement_2;
+	unsigned int fx_firebat_acknowledgement_3;
+	unsigned int fx_firebat_acknowledgement_4;
+
+	unsigned int fx_firebat_affirmation_1;
+	unsigned int fx_firebat_affirmation_2;
+	unsigned int fx_firebat_affirmation_3;
+	unsigned int fx_firebat_affirmation_4;
+
+	unsigned int fx_firebat_annoyance_1;
+	unsigned int fx_firebat_annoyance_2;
+	unsigned int fx_firebat_annoyance_3;
+	unsigned int fx_firebat_annoyance_4;
+	unsigned int fx_firebat_annoyance_5;
+	unsigned int fx_firebat_annoyance_6;
+	unsigned int fx_firebat_annoyance_7;
+
+	unsigned int fx_firebat_ready;
+
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
@@ -182,6 +236,9 @@ private:
 
 	void			calculateSelector();
 	void			onCollision(Collider* c1, Collider* c2);	
+
+	//Sounds
+	bool loadEntityFX();
 
 	void			entityManualCreation();
 	void			handleSelection();

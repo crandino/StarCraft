@@ -300,7 +300,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_LCLICK_DOWN) :
-
+			app->audio->playFx(fx_click_1, 0);
 			if (!buildingMenuOpened)
 				openBuildingMenu();
 			else
@@ -361,6 +361,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->entity_manager->create_bunker = true;
+			app->audio->playFx(fx_click_1, 0);
 			info_bunker->draw_element = false;
 			break;
 
@@ -382,6 +383,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
 			app->entity_manager->create_barrack = true;
 			break;
 
@@ -400,8 +402,17 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
 			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 75)
-			app->entity_manager->create_marine = true;
+			{
+				app->entity_manager->create_marine = true;
+
+			}
+			else
+			{
+				app->audio->playFx(fx_click_error, 0);
+				app->audio->playFx(fx_not_enough_minerales, 0);
+			}
 			break;
 
 		}
@@ -419,8 +430,16 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
 			if (app->game_manager->gas_resources >= 100 || app->game_manager->mineral_resources >= 75)
-			app->entity_manager->create_medic = true;
+			{
+				app->entity_manager->create_medic = true;
+			}
+			else
+			{
+				app->audio->playFx(fx_click_error, 0);
+				app->audio->playFx(fx_not_enough_minerales, 0);
+			}
 			break;
 
 		}
@@ -438,8 +457,16 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
 			if (app->game_manager->gas_resources >= 200 || app->game_manager->mineral_resources >= 50)
-			app->entity_manager->create_firebat = true;
+			{
+				app->entity_manager->create_firebat = true;
+			}
+			else
+			{
+				app->audio->playFx(fx_click_error, 0);
+				app->audio->playFx(fx_not_enough_minerales, 0);
+			}
 			break;
 
 		}
@@ -457,6 +484,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
 			app->entity_manager->set_bomb = true;
 			break;
 

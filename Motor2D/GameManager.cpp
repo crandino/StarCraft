@@ -202,8 +202,6 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
-	srand(time(NULL));
-
 	return ret;
 }
 

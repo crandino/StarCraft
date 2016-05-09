@@ -28,7 +28,6 @@
 #include "Yellow.h"
 #include "Red.h"
 
-
 EntityManager::EntityManager() : Module()
 {
 	name.assign("EntityManager");
@@ -71,6 +70,65 @@ bool EntityManager::awake(pugi::xml_node &node)
 	return true;
 }
 
+bool EntityManager::loadEntityFX()
+{
+	//Marine
+	fx_marine_attack = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Attack.wav");
+	
+	fx_marine_death_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Death_1.wav");
+	fx_marine_death_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Death_2.wav");
+	
+	fx_marine_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_1.wav");
+	fx_marine_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_2.wav");
+	fx_marine_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_3.wav");
+	fx_marine_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_4.wav");
+	
+	fx_marine_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_1.wav");
+	fx_marine_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_2.wav");
+	fx_marine_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_3.wav");
+	fx_marine_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_4.wav");
+	
+	fx_marine_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_1.wav");
+	fx_marine_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_2.wav");
+	fx_marine_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_3.wav");
+	fx_marine_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_4.wav");
+	fx_marine_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_5.wav");
+	fx_marine_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_6.wav");
+	fx_marine_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_7.wav");
+	
+	fx_marine_ready = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Ready.wav");
+
+	//Firebat
+	fx_firebat_attack_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_1.wav");
+	fx_firebat_attack_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_2.wav");
+	
+	fx_firebat_death_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_1.wav");
+	fx_firebat_death_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_2.wav");
+	fx_firebat_death_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_3.wav");
+	
+	fx_firebat_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_1.wav");
+	fx_firebat_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_2.wav");
+	fx_firebat_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_3.wav");
+	fx_firebat_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_4.wav");
+	
+	fx_firebat_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_1.wav");
+	fx_firebat_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_2.wav");
+	fx_firebat_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_3.wav");
+	fx_firebat_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_4.wav");
+	
+	fx_firebat_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_1.wav");
+	fx_firebat_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_2.wav");
+	fx_firebat_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_3.wav");
+	fx_firebat_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_4.wav");
+	fx_firebat_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_5.wav");
+	fx_firebat_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_6.wav");
+	fx_firebat_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_7.wav");
+	
+	fx_firebat_ready = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Ready.wav");
+
+	return true;
+}
+
 // Called before the first frame
 bool EntityManager::start()
 {
@@ -80,6 +138,8 @@ bool EntityManager::start()
 		(*it)->start();
 
     building_tile = app->tex->loadTexture("maps/Path_Tiles.png");
+
+	loadEntityFX();
 
 	return true;
 }

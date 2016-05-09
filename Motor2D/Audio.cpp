@@ -164,7 +164,7 @@ unsigned int Audio::loadFx(const char* path)
 	}
 	else
 	{
-		fx.push_back(chunk);
+		fx.push_back(chunk);	
 		ret = fx.size();
 	}
 
@@ -183,6 +183,7 @@ bool Audio::playFx(unsigned int id, int repeat)
 	{
 		list<Mix_Chunk*>::iterator i = fx.begin();
 		advance(i, id - 1);
+		Mix_VolumeChunk((*i), MIX_MAX_VOLUME / 2);
 		Mix_PlayChannel(-1, (*i), repeat);
 
 		ret = true;
