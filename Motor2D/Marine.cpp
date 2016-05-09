@@ -1,5 +1,8 @@
 #include "Marine.h"
 #include "Bunker.h"
+#include "PathFinding.h"
+#include <stdlib.h>
+#include <time.h>
 
 Marine::Marine(iPoint &p)
 {
@@ -276,7 +279,159 @@ Marine::~Marine()
 bool Marine::start()
 {
 	// Sounds
-	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
+	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Attack.wav");
+
+	fx_death_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Death_1.wav");
+	fx_death_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Death_2.wav");
+
+	fx_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_1.wav");
+	fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_2.wav");
+	fx_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_3.wav");
+	fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Acknowledgement_4.wav");
+
+	fx_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_1.wav");
+	fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_2.wav");
+	fx_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_3.wav");
+	fx_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Affirmation_4.wav");
+
+	fx_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_1.wav");
+	fx_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_2.wav");
+	fx_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_3.wav");
+	fx_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_4.wav");
+	fx_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_5.wav");
+	fx_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_6.wav");
+	fx_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Annoyance_7.wav");
+
+	fx_ready = app->audio->loadFx("Audio/FX/Units/Terran/Marine/Ready.wav");
+
+	return true;
+}
+
+bool Marine::update(float dt)
+{
+	checkUnitDirection();
+	setAnimationFromDirection();   // This sets animation according to their angle direction
+	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+
+	switch (state)
+	{
+	case IDLE:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else if (faction == COMPUTER)
+				app->entity_manager->SetEnemyToAttackCommandCenter(this);
+			timer_to_check.start();
+		}
+		break;
+	case MOVE:
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case ATTACK:
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
+		{
+			app->audio->playFx(fx_attack, 0);
+			if (area_attack)
+			{
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
+				while (targets.begin() != targets.end())
+				{
+					attackWithoutRange(targets.front());
+					targets.pop_front();
+				}
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+			}
+			else
+			if (!attack(target_to_attack))
+			{
+				state = IDLE;
+				target_to_attack = NULL;
+			}
+			timer_attack.start();
+
+			Entity* target = target_to_attack;
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+				newEntityFound();
+		}
+		break;
+	case DYING:
+		srand(time(NULL));
+		static uint fx = rand() % 2 + 1;
+		if (fx == 1)
+		{
+			app->audio->playFx(fx_death_1, 0);
+		}
+		if (fx == 2)
+		{
+			app->audio->playFx(fx_death_2, 0);
+		}
+
+		if (current_animation->finished())
+		{
+			to_delete = true;
+			coll->to_delete = true;
+		}
+		break;
+	case WAITING_PATH_MOVE:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
+			timer_to_check.start();
+		}
+		break;
+	}
 	return true;
 }
 

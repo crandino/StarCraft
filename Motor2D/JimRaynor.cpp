@@ -255,7 +255,7 @@ JimRaynor::JimRaynor(iPoint &p)
 
 	// Lifes attributes
 	max_hp = 300;
-	current_hp = 80.0f;
+	current_hp = 300.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties
