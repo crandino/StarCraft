@@ -158,6 +158,9 @@ public:
 	// HUD Minimap
 	GuiMinimap* mini_map;
 
+	//Raynor indicator Image
+	GuiImage* raynor_indicator = nullptr;
+
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling
 	W_32 = { 28, 9, 32, 19 }; Mutalisk

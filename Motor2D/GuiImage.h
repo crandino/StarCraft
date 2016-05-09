@@ -6,12 +6,14 @@
 class GuiImage : public GuiElements
 {
 public:
+
 	GuiImage(const SDL_Texture* texture);
 	GuiImage(const SDL_Texture* texture, const SDL_Rect& section);
 	~GuiImage();
 
 	void setSection(const SDL_Rect& section);
 	void draw() const;
+	void draw_static() const;
 
 private:
 

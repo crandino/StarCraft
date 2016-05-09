@@ -24,6 +24,7 @@ class Ultralisk;
 class CommandCenter;
 class Barrack;
 class Bunker;
+class Factory;
 
 class Bomb;
 
@@ -221,6 +222,7 @@ private:
 	CommandCenter	*command_center;
 	Bunker			*bunker;
 	Barrack         *barrack;
+	Factory         *factory;
 
 	bool debug = false;
 

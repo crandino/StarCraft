@@ -286,6 +286,9 @@
     <ClInclude Include="Motor2D\Ultralisk.h">
       <Filter>Entities\Zerg_Units</Filter>
     </ClInclude>
+    <ClInclude Include="Motor2D\Factory.h">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tools">
