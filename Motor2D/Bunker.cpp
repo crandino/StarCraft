@@ -16,6 +16,8 @@ Bunker::Bunker(iPoint &p)
 	// Animations and FX
 	tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
 	fx_attack = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+	fx_entering = app->audio->loadFx("Audio/FX/Buildings/BunkerOpenDoor.wav");
+	fx_leaving = app->audio->loadFx("Audio/FX/Buildings/BunkerCloseDoor.wav");
 	idle.frames.push_back({ 0, 0, 96, 128 });
 	idle.speed = 1.0f;
 	idle.loop = false;
@@ -27,6 +29,7 @@ Bunker::Bunker(iPoint &p)
 	// Another stuff
 	specialization = BUNKER;
 	max_hp = 350;
+
 	current_hp = 350.0f;
 	max_hp_bars = 10;
 	offset_life = { -23, 35 };
@@ -103,6 +106,7 @@ bool Bunker::getEntityInside(Unit* entity)
 
 	if (units_inside.size() < max_capacity)
 	{
+		app->audio->playFx(fx_entering, 0);
 		units_inside.insert(pair<uint, Unit*>(entity->id, entity));
 		entity->to_delete = true;
 		if (entity->specialization == MARINE)
@@ -140,6 +144,7 @@ bool Bunker::getEntitiesOutside()
 	{
 		for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end();)
 		{
+			app->audio->playFx(fx_leaving, 0);
 			if (!app->path->isWalkable(it->second->tile_pos))
 			{
 				it->second->tile_pos = app->path->findNearestWalkableTile(it->second->tile_pos, app->game_manager->command_center_position, 25);
