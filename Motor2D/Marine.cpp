@@ -390,6 +390,7 @@ bool Marine::update(float dt)
 		}
 		break;
 	case DYING:
+	{
 		srand(time(NULL));
 		static uint fx = rand() % 2 + 1;
 		if (fx == 1)
@@ -407,6 +408,7 @@ bool Marine::update(float dt)
 			coll->to_delete = true;
 		}
 		break;
+	}	
 	case WAITING_PATH_MOVE:
 		if (app->path->getPathFound(id, path))
 		{

@@ -491,6 +491,7 @@ bool Firebat::update(float dt)
 		}
 		break;
 	case DYING:
+	{
 		srand(time(NULL));
 		static uint fx = rand() % 3 + 1;
 		if (fx == 1)
@@ -512,6 +513,8 @@ bool Firebat::update(float dt)
 			coll->to_delete = true;
 		}
 		break;
+	}
+		
 	case WAITING_PATH_MOVE:
 		if (app->path->getPathFound(id, path))
 		{
