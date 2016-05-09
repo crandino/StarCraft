@@ -224,7 +224,8 @@ bool Mutalisk::attack(Entity* target_to_attack)
 				target_to_attack->state = DYING;
 				app->game_manager->total_units_killed_currentFrame++;
 			}
-			app->gui->last_attack_position = target_to_attack->center;
+			if (target_to_attack->faction == PLAYER)
+				app->gui->last_attack_position = target_to_attack->center;
 			Entity* second_target_to_attack = target_to_attack->searchNearestAlly();
 			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
