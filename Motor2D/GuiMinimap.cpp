@@ -1,8 +1,10 @@
 #include "GuiMinimap.h"
 #include "Entity.h"
 #include "Input.h"
-
 #include "p2Log.h"
+
+#include <time.h>
+#include <stdlib.h>
 
 GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
 {
@@ -10,7 +12,6 @@ GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
 	interactive = true;
 	draw_element = true;
 }
-
 
 bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* texture)
 {
@@ -25,10 +26,9 @@ bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* textur
 	//set scale
 	calculateScale();
 
-	max_ping_width = max_ping_height = area.w * 2;
-
-	ping_duration = 4000;
-	ping_speed = 0.05f;
+	// set pings
+	ping_set.fill(PingInfo(area.w * 2, area.w * 2, area.w, area.h));
+	srand(time(NULL));
 
 	return ret;
 }
@@ -47,16 +47,21 @@ void GuiMinimap::update()
 	}
 
 	// Ping update
-	if (ping_active)
+	for (array<PingInfo, 4>::iterator it = ping_set.begin(); it != ping_set.end(); ++it)
 	{
-		if ((uint)ping_timer.read() < ping_duration)
-			updatePing();
-		else
-			ping_active = false;
-	}	
+		if (!it->ping_active)
+			continue;
+		it->updatePing();
+	}
 
+	
 	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		activePing({ 500, 500 });
+	{
+		iPoint random_point = { rand() % 5072, rand() % 5072 };
+		LOG("Ping point: %d, %d", random_point.x, random_point.y);
+   		activePing(random_point);
+	}
+		
 }
 
 bool GuiMinimap::cleanUp()
@@ -138,8 +143,14 @@ void GuiMinimap::draw() const
 	iPoint pos = worldToMinimap({ -app->render->camera.x, -app->render->camera.y });
 	app->render->DrawQuad({ pos.x, pos.y, area.w, area.h }, 255, 255, 255, 255, false);
 
-	if (ping_active)
-		app->render->DrawQuad({ (int)ping_position.x - ping_width / 2, (int)ping_position.y - ping_height / 2, ping_width, ping_height }, 255, 0, 0, 255, false);
+	for (array<PingInfo, 4>::const_iterator it = ping_set.begin(); it != ping_set.end(); ++it)
+	{
+		if (it->ping_active)
+			app->render->DrawQuad({ (int)it->ping_position.x - it->current_ping_width / 2,
+									(int)it->ping_position.y - it->current_ping_height / 2,
+									 it->current_ping_width, it->current_ping_height }, 255, 0, 0, 255, false);
+	}
+		
 }
 
 void GuiMinimap::calculateScale()
@@ -153,22 +164,13 @@ void GuiMinimap::calculateScale()
 
 void GuiMinimap::activePing(iPoint attack_position)
 {
-	ping_active = true;
-	ping_position = worldToMinimap(attack_position);
-
-	ping_width = max_ping_width;
-	ping_height = max_ping_height;
-
-	ping_timer.start();
-}
-
-bool GuiMinimap::updatePing()
-{
-	if (ping_width > area.w && ping_height > area.h)
+	for (array<PingInfo, 4>::iterator it = ping_set.begin(); it != ping_set.end(); ++it)
 	{
-		ping_width -= ping_speed * app->getDt();
-		ping_height -= ping_speed * app->getDt();
-	}	
-	
-	return true;
+		if (it->ping_active)
+			continue;
+
+		it->ping_position = worldToMinimap(attack_position);
+		it->initiate();
+		break;
+	}
 }
