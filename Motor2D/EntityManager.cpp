@@ -137,7 +137,7 @@ bool EntityManager::start()
 	for (list<Entity*>::iterator it = list_of_entity_classes.begin(); it != list_of_entity_classes.end(); ++it)
 		(*it)->start();
 
-    building_tile = app->tex->loadTexture("maps/Path_Tiles.png");
+    building_tile = app->tex->loadTexture("maps/PathTiles2.png");
 
 	loadEntityFX();
 
@@ -957,12 +957,12 @@ void EntityManager::choosePlaceForBuilding()
 			point_to_draw = app->map->mapToWorld(app->map->data.back(), x, y);
 			if (app->path->isWalkable({ x, y }))
 			{
-				SDL_Rect r = { 1, 1, 8, 8 };
+				SDL_Rect r = { 0, 0, 16, 16 };
 				app->render->blit(building_tile, point_to_draw.x, point_to_draw.y, &r);
 			}
 			else
 			{
-				SDL_Rect r = { 10, 1, 8, 8 };
+				SDL_Rect r = { 16, 0, 16, 16 };
 				app->render->blit(building_tile, point_to_draw.x, point_to_draw.y, &r);
 			}
 		}
