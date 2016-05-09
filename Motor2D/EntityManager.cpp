@@ -177,6 +177,70 @@ bool EntityManager::loadEntityFX()
 
 	fx_tank_ready = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Ready.wav");
 
+	//SCV
+	fx_scv_repair_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_1.wav");
+	fx_scv_repair_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_2.wav");
+	fx_scv_repair_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_3.wav");;
+	fx_scv_repair_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_4.wav");;
+	fx_scv_repair_5 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_5.wav");;
+
+	fx_scv_death = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Death.wav");
+
+	fx_scv_error_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Error_1.wav");
+	fx_scv_error_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Error_2.wav");
+
+	fx_scv_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_1.wav");
+	fx_scv_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_2.wav");
+	fx_scv_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_3.wav");
+	fx_scv_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_4.wav");
+
+	fx_scv_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_1.wav");
+	fx_scv_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_2.wav");
+	fx_scv_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_3.wav");
+	fx_scv_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_4.wav");
+
+	fx_scv_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_1.wav");
+	fx_scv_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_2.wav");
+	fx_scv_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_3.wav");
+	fx_scv_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_4.wav");
+	fx_scv_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_5.wav");
+	fx_scv_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_6.wav");
+	fx_scv_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_7.wav");
+
+	fx_scv_ready = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Ready.wav");
+
+	//Jim Raynor
+	fx_jimraynor_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Acknowledgement_1.wav");
+	fx_jimraynor_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Acknowledgement_2.wav");
+	fx_jimraynor_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Acknowledgement_3.wav");
+	fx_jimraynor_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Acknowledgement_4.wav");
+
+	fx_jimraynor_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Affirmation_1.wav");
+	fx_jimraynor_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Affirmation_2.wav");
+	fx_jimraynor_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Affirmation_3.wav");
+	fx_jimraynor_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Affirmation_4.wav");
+
+	fx_jimraynor_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Annoyance_1.wav");
+	fx_jimraynor_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Annoyance_2.wav");
+	fx_jimraynor_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Annoyance_3.wav");
+	fx_jimraynor_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/JimRaynor/Annoyance_4.wav");
+
+	//Zergling
+	fx_zergling_death = app->audio->loadFx("Audio/FX/Units/Zerg/Zergling/Death.wav");
+
+	//Hydralisk
+	fx_hydralisk_attack = app->audio->loadFx("Audio/FX/Units/Zerg/Hydralisk/Attack.wav");
+	fx_hydralisk_death = app->audio->loadFx("Audio/FX/Units/Zerg/Hydralisk/Death.wav");
+
+	//Mutalisk
+	fx_mutalisk_death = app->audio->loadFx("Audio/FX/Units/Zerg/Mutalisk/Death.wav");
+
+	//Ultralisk
+	fx_ultralisk_attack_1 = app->audio->loadFx("Audio/FX/Units/Zerg/Ultralisk/Attack_1.wav");
+	fx_ultralisk_attack_2 = app->audio->loadFx("Audio/FX/Units/Zerg/Ultralisk/Attack_2.wav");
+	fx_ultralisk_attack_3 = app->audio->loadFx("Audio/FX/Units/Zerg/Ultralisk/Attack_3.wav");
+	fx_ultralisk_death = app->audio->loadFx("Audio/FX/Units/Zerg/Ultralisk/Death.wav");
+
 	return true;
 }
 

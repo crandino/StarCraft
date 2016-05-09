@@ -50,13 +50,11 @@ public:
 	bool				 bomb_taken;
 	bool				 bomb_activated;
 
-	unsigned int		 fx_attack;
-
 	JimRaynor() {};
 	JimRaynor(iPoint &p);
 	~JimRaynor();
 
-	bool start();
+	bool update(float dt);
 	void move(float dt);
 	void setAnimationFromDirection();
 };

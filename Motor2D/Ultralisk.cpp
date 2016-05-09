@@ -1,4 +1,5 @@
 #include "Ultralisk.h"
+#include "PathFinding.h"
 
 Ultralisk::Ultralisk(iPoint &p)
 {
@@ -184,6 +185,138 @@ Ultralisk::Ultralisk(iPoint &p)
 Ultralisk::~Ultralisk()
 {
 	SDL_DestroyTexture(tex);
+}
+
+bool Ultralisk::update(float dt)
+{
+	checkUnitDirection();
+	setAnimationFromDirection();   // This sets animation according to their angle direction
+	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+
+	switch (state)
+	{
+	case IDLE:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else if (faction == COMPUTER)
+				app->entity_manager->SetEnemyToAttackCommandCenter(this);
+			timer_to_check.start();
+		}
+		break;
+	case MOVE:
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		if (timer_to_check.read() >= TIME_TO_CHECK)
+		{
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				newEntityFound();
+			else
+			{
+				has_target = false;
+				state = IDLE;
+			}
+			timer_to_check.start();
+		}
+		if (has_target)
+			move(dt);
+		break;
+	case ATTACK:
+		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
+		{
+			static uint fx;
+			fx = rand() % 3 + 1;
+			if (fx == 1)
+			{
+				app->audio->playFx(app->entity_manager->fx_ultralisk_attack_1, 0);
+			}
+			if (fx == 2)
+			{
+				app->audio->playFx(app->entity_manager->fx_ultralisk_attack_2, 0);
+			}
+			if (fx == 3)
+			{
+				app->audio->playFx(app->entity_manager->fx_ultralisk_attack_3, 0);
+			}
+		
+			if (area_attack)
+			{
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
+				while (targets.begin() != targets.end())
+				{
+					attackWithoutRange(targets.front());
+					targets.pop_front();
+				}
+				if (!attack(target_to_attack))
+				{
+					state = IDLE;
+					target_to_attack = NULL;
+				}
+			}
+			else
+			if (!attack(target_to_attack))
+			{
+				state = IDLE;
+				target_to_attack = NULL;
+			}
+			timer_attack.start();
+
+			Entity* target = target_to_attack;
+			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+				newEntityFound();
+		}
+		break;
+	case DYING:
+		app->audio->playFx(app->entity_manager->fx_ultralisk_death, 0);
+		if (current_animation->finished())
+		{
+			to_delete = true;
+			coll->to_delete = true;
+		}
+		break;
+	case WAITING_PATH_MOVE:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT;
+			timer_to_check.start();
+		}
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		if (app->path->getPathFound(id, path))
+		{
+			has_target = true;
+			state = MOVE_ALERT_TO_ATTACK;
+			timer_to_check.start();
+		}
+		break;
+	}
+	return true;
 }
 
 // Method that assign an animation according to its orientation

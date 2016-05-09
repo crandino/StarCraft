@@ -57,6 +57,7 @@ public:
 
 	~Ultralisk();
 
+	bool update(float dt);
 	void setAnimationFromDirection();
 
 };

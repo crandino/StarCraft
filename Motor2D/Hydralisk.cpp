@@ -372,6 +372,7 @@ bool Hydralisk::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
+			app->audio->playFx(app->entity_manager->fx_hydralisk_attack, 0);
 			if (area_attack)
 			{
 				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
@@ -401,6 +402,7 @@ bool Hydralisk::update(float dt)
 		}
 		break;
 	case DYING:
+		app->audio->playFx(app->entity_manager->fx_hydralisk_death, 0);
 		if (current_animation->finished())
 		{
 			to_delete = true;

@@ -145,6 +145,8 @@ public:
 
 	//Sounds (FX)
 
+	//Terran-------------------------------------------
+
 	//Marine
 	unsigned int fx_marine_attack;
 	unsigned int fx_marine_death_1;
@@ -247,6 +249,72 @@ public:
 
 	unsigned int fx_tank_ready;
 
+	//SCV
+	unsigned int fx_scv_repair_1;
+	unsigned int fx_scv_repair_2;
+	unsigned int fx_scv_repair_3;
+	unsigned int fx_scv_repair_4;
+	unsigned int fx_scv_repair_5;
+
+	unsigned int fx_scv_death;
+
+	unsigned int fx_scv_error_1;
+	unsigned int fx_scv_error_2;
+
+	unsigned int fx_scv_acknowledgement_1;
+	unsigned int fx_scv_acknowledgement_2;
+	unsigned int fx_scv_acknowledgement_3;
+	unsigned int fx_scv_acknowledgement_4;
+
+	unsigned int fx_scv_affirmation_1;
+	unsigned int fx_scv_affirmation_2;
+	unsigned int fx_scv_affirmation_3;
+	unsigned int fx_scv_affirmation_4;
+
+	unsigned int fx_scv_annoyance_1;
+	unsigned int fx_scv_annoyance_2;
+	unsigned int fx_scv_annoyance_3;
+	unsigned int fx_scv_annoyance_4;
+	unsigned int fx_scv_annoyance_5;
+	unsigned int fx_scv_annoyance_6;
+	unsigned int fx_scv_annoyance_7;
+
+	unsigned int fx_scv_ready;
+
+	//Jim Raynor (Attack and deaths are the same as marine)
+	unsigned int fx_jimraynor_acknowledgement_1;
+	unsigned int fx_jimraynor_acknowledgement_2;
+	unsigned int fx_jimraynor_acknowledgement_3;
+	unsigned int fx_jimraynor_acknowledgement_4;
+
+	unsigned int fx_jimraynor_affirmation_1;
+	unsigned int fx_jimraynor_affirmation_2;
+	unsigned int fx_jimraynor_affirmation_3;
+	unsigned int fx_jimraynor_affirmation_4;
+
+	unsigned int fx_jimraynor_annoyance_1;
+	unsigned int fx_jimraynor_annoyance_2;
+	unsigned int fx_jimraynor_annoyance_3;
+	unsigned int fx_jimraynor_annoyance_4;
+
+	//Zerg---------------------------------------------
+
+	//Zergling
+	unsigned int fx_zergling_death;
+	
+
+	//Hydralisk
+	unsigned int fx_hydralisk_attack;
+	unsigned int fx_hydralisk_death;
+
+	//Mutalisk
+	unsigned int fx_mutalisk_death;
+
+	//Ultralisk
+	unsigned int fx_ultralisk_attack_1;
+	unsigned int fx_ultralisk_attack_2;
+	unsigned int fx_ultralisk_attack_3;
+	unsigned int fx_ultralisk_death;
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();

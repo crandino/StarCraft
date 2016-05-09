@@ -3,8 +3,6 @@
 
 #include "Unit.h"
 #include "ParticleManager.h"
-#include <time.h>
-#include <stdlib.h>
 
 class Scv : public Unit
 {
@@ -66,38 +64,6 @@ public:
 	
 	//Dead Particle
 	Particle	dead;
-
-	////Sounds
-	//unsigned int	fx_repair_1;
-	//unsigned int	fx_repair_2;
-	//unsigned int	fx_repair_3;
-	//unsigned int	fx_repair_4;
-	//unsigned int	fx_repair_5;
-
-	//unsigned int	fx_death;
-
-	//unsigned int	fx_error_1;
-	//unsigned int	fx_error_2;
-
-	//unsigned int fx_acknowledgement_1;
-	//unsigned int fx_acknowledgement_2;
-	//unsigned int fx_acknowledgement_3;
-	//unsigned int fx_acknowledgement_4;
-
-	//unsigned int fx_affirmation_1;
-	//unsigned int fx_affirmation_2;
-	//unsigned int fx_affirmation_3;
-	//unsigned int fx_affirmation_4;
-
-	//unsigned int fx_annoyance_1;
-	//unsigned int fx_annoyance_2;
-	//unsigned int fx_annoyance_3;
-	//unsigned int fx_annoyance_4;
-	//unsigned int fx_annoyance_5;
-	//unsigned int fx_annoyance_6;
-	//unsigned int fx_annoyance_7;
-
-	//unsigned int fx_ready;
 
 	int				repair_power;
 
@@ -263,7 +229,7 @@ public:
 		range_of_vision = 300;
 		range_to_attack = 50;
 		damage = 5.0f;
-		attack_frequency = 200.0f;
+		attack_frequency = 500.0f;
 		repair_power = 10;
 
 		// PathFinding and movement variables
@@ -274,42 +240,6 @@ public:
 	{
 		SDL_DestroyTexture(tex);
 	}
-
-	/*bool start()
-	{
-		fx_repair_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_1.wav");
-		fx_repair_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_2.wav");
-		fx_repair_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_3.wav");;
-		fx_repair_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_4.wav");;
-		fx_repair_5 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Repair_5.wav");;
-
-		fx_death = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Death.wav");
-
-		fx_error_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Error_1.wav");
-		fx_error_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Error_2.wav");
-
-		fx_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_1.wav");
-		fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_2.wav");
-		fx_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_3.wav");
-		fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_4.wav");
-
-		fx_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_1.wav");
-		fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_2.wav");
-		fx_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_3.wav");
-		fx_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_4.wav");
-
-		fx_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_1.wav");
-		fx_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_2.wav");
-		fx_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_3.wav");
-		fx_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_4.wav");
-		fx_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_5.wav");
-		fx_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_6.wav");
-		fx_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Annoyance_7.wav");
-
-		fx_ready = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Ready.wav");
-
-		return true;
-	}*/
 
 	//void setAnimationFromDirection()
 	//{
@@ -423,26 +353,27 @@ public:
 		case ATTACK://ATTACK == REPAIR for SCV
 			if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 			{
-				static uint fx = rand() % 5 + 1;
+				static uint fx;
+				fx = rand() % 5 + 1;
 				if (fx == 1)
 				{
-					//app->audio->playFx(fx_repair_1, 0);
+					app->audio->playFx(app->entity_manager->fx_scv_repair_1, 0);
 				}
 				if (fx == 2)
 				{
-					//app->audio->playFx(fx_repair_2, 0);
+					app->audio->playFx(app->entity_manager->fx_scv_repair_2, 0);
 				}
 				if (fx == 3)
 				{
-					//app->audio->playFx(fx_repair_3, 0);
+					app->audio->playFx(app->entity_manager->fx_scv_repair_3, 0);
 				}
 				if (fx == 4)
 				{
-					//app->audio->playFx(fx_repair_4, 0);
+					app->audio->playFx(app->entity_manager->fx_scv_repair_4, 0);
 				}
 				if (fx == 5)
 				{
-					//app->audio->playFx(fx_repair_5, 0);
+					app->audio->playFx(app->entity_manager->fx_scv_repair_5, 0);
 				}
 
 				if (!repair())
@@ -454,7 +385,7 @@ public:
 			}
 			break;
 		case DYING:
-			//app->audio->playFx(fx_death, 0);
+			app->audio->playFx(app->entity_manager->fx_scv_death, 0);
 			if (current_animation->finished())
 			{
 				to_delete = true;
