@@ -3,9 +3,6 @@
 #include "Input.h"
 #include "p2Log.h"
 
-#include <time.h>
-#include <stdlib.h>
-
 GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
 {
 	type = MINIMAP;
@@ -28,7 +25,6 @@ bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* textur
 
 	// set pings
 	ping_set.fill(PingInfo(area.w * 2, area.w * 2, area.w, area.h));
-	srand(time(NULL));
 
 	return ret;
 }
@@ -53,15 +49,6 @@ void GuiMinimap::update()
 			continue;
 		it->updatePing();
 	}
-
-	
-	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		iPoint random_point = { rand() % 5072, rand() % 5072 };
-		LOG("Ping point: %d, %d", random_point.x, random_point.y);
-   		activePing(random_point);
-	}
-		
 }
 
 bool GuiMinimap::cleanUp()
