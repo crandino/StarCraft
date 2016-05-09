@@ -16,12 +16,58 @@ Bunker::Bunker(iPoint &p)
 
 	// Animations and FX
 	tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
+	attack_up.image = app->tex->loadTexture("Particles/Shots/Bunker_On_Attack2.png");
+	explosion.image = app->tex->loadTexture("Particles/Explosion/Small_Explosion.png");
 	fx_attack = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 	fx_entering = app->audio->loadFx("Audio/FX/Buildings/BunkerOpenDoor.wav");
 	fx_leaving = app->audio->loadFx("Audio/FX/Buildings/BunkerCloseDoor.wav");
+
+	//IDLE Animations
 	idle.frames.push_back({ 0, 0, 96, 128 });
 	idle.speed = 1.0f;
 	idle.loop = false;
+
+	//Particle Animations
+	attack_up.anim.setAnimations(0, 0, 64, 64, 2, 1, 2);
+	attack_up.anim.speed = 0.009f;
+	attack_up.anim.loop = true;
+
+	attack_right_up.anim.setAnimations(128, 0, 64, 64, 2, 1, 2);
+	attack_right_up.anim.speed = 0.009f;
+	attack_right_up.anim.loop = true;
+
+	attack_right.anim.setAnimations(128, 0, 64, 64, 2, 1, 2);
+	attack_right.anim.speed = 0.009f;
+	attack_right.anim.loop = true;
+
+	attack_right_down.anim.setAnimations(256, 0, 64, 64, 2, 1, 2);
+	attack_right_down.anim.speed = 0.009f;
+	attack_right_down.anim.loop = true;
+
+	attack_down.anim.setAnimations(384, 0, 64, 64, 2, 1, 2);
+	attack_down.anim.speed = 0.009f;
+	attack_down.anim.loop = true;
+
+	attack_left_down.anim.setAnimations(640, 0, 64, 64, 2, 1, 2);
+	attack_left_down.anim.speed = 0.009f;
+	attack_left_down.anim.loop = true;
+
+	attack_left.anim.setAnimations(512, 0, 64, 64, 2, 1, 2);
+	attack_left.anim.speed = 0.009f;
+	attack_left.anim.loop = true;
+
+	attack_left_up.anim.setAnimations(512, 0, 64, 64, 2, 1, 2);
+	attack_left_up.anim.speed = 0.009f;
+	attack_left_up.anim.loop = true;
+
+	//Explosion
+
+	explosion.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	explosion.anim.speed = 0.009f;
+	explosion.anim.loop = false;
+
+
+
 	current_animation = &idle;
 
 	// Colliders
@@ -53,6 +99,13 @@ Bunker::~Bunker()
 
 bool Bunker::update(float dt)
 {
+	checkDirection();
+	setParticleBehaviour();
+	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+	{
+		resetParticle();
+	}
+
 	switch (state)
 	{
 	case IDLE:
@@ -197,4 +250,177 @@ bool Bunker::attack()
 		}
 	}
 	return ret;
+}
+void Bunker::checkDirection()
+{
+	if (state == ATTACK && target_to_attack != NULL)
+	{
+		direction = { (target_to_attack->tile_pos.x - tile_pos.x), (target_to_attack->tile_pos.y - tile_pos.y) };
+	}
+	angle = round(direction.getAngle());
+}
+
+void Bunker::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case IDLE:
+		resetParticle();
+		break;
+	case ATTACK:
+		if (angle > 360)
+		{
+			angle -= 360.f;
+		}
+		// From 0 to 180 degrees
+		if (angle >= 0.f && angle < 45.0f)
+		{
+			if (particle != NULL && !attack_right.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_right.on)
+			{
+
+				particle_offset = { 21, -12 };
+				particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_right.on = true;
+			}
+		}
+
+		if (angle >= 45.f && angle < 90.0f)
+		{
+			if (particle != NULL && !attack_right_up.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_right_up.on)
+			{
+
+				particle_offset = { 21, -12 };
+				particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_right_up.on = true;
+			}
+		}
+
+		if (angle >= 90.f && angle < 135.f)
+		{
+			if (particle != NULL && !attack_up.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_up.on)
+			{
+
+				particle_offset = { 0, -25 };
+				particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_up.on = true;
+			}
+		}
+
+		if (angle >= 135.f && angle < 180.f)
+		{
+			if (particle != NULL && !attack_left_up.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_up.on)
+			{
+
+				particle_offset = { -12, -19 };
+				particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_left_up.on = true;
+			}
+		}
+
+		// From 180 to 360 degrees
+		if (angle >= 180.f && angle < 225.f)
+		{
+			if (particle != NULL && !attack_left.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left.on)
+			{
+
+				particle_offset = { -12, -19 };
+				particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_left.on = true;
+			}
+		}
+
+		if (angle >= 225.f && angle < 270.f)
+		{
+			if (particle != NULL && !attack_left_down.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_down.on)
+			{
+
+				particle_offset = { -14, -7 };
+				particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_left_down.on = true;
+			}
+		}
+
+		if (angle >= 270.f && angle < 315.f)
+		{
+			if (particle != NULL && !attack_down.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_down.on)
+			{
+
+				particle_offset = { 0, -5 };
+				particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_down.on = true;
+			}
+		}
+
+		if (angle >= 315.f && angle < 360.f)
+		{
+			if (particle != NULL && !attack_right_down.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_right_down.on)
+			{
+
+				particle_offset = { 18, -6 };
+				particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+				attack_right_down.on = true;
+			}
+		}
+		break;
+	case DYING:
+		resetParticle();
+		particle = app->particle->addParticle(explosion, center.x, center.y, 0, 0, 1, explosion.image);
+		break;
+	}
+}
+void Bunker::resetParticle()
+{
+	if (attack_up.on || attack_right_up.on || attack_right.on || attack_right_down.on || attack_down.on || attack_left_down.on || attack_left.on || attack_left_up.on)
+	{
+		attack_up.on = false;
+		attack_right_up.on = false;
+		attack_right.on = false;
+		attack_right_down.on = false;
+		attack_down.on = false;
+		attack_left_down.on = false;
+		attack_left.on = false;
+		attack_left_up.on = false;
+		particle->on = false;
+		particle->alive = false;
+	}
 }
