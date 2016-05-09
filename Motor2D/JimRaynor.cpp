@@ -353,7 +353,7 @@ void JimRaynor::move(float dt)
 						bomb->coll->to_delete = true;
 						bomb = NULL;
 						bomb_taken = true;
-						speed_multiplier *= 0.5f;
+					
 					}
 					else if (bomb_activated)
 					{
