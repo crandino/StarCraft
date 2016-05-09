@@ -261,6 +261,11 @@ bool Gui::start()
 	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/finalminimap.png");
 	mini_map->setLocalPos(6, 348);
 
+	//Sounds
+	fx_click_1 = app->audio->loadFx("Audio/FX/UI/Click_1.wav");
+	fx_click_error = app->audio->loadFx("Audio/FX/UI/Click_Error.wav");
+	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
+
 	return true;
 }
 
@@ -322,9 +327,17 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
+			app->audio->playFx(fx_click_1, 0);
 			if (app->game_manager->mineral_resources >= 50)
-			app->entity_manager->create_SCV = true;
-			info_scv->draw_element = false;
+			{
+				app->entity_manager->create_SCV = true;
+				info_scv->draw_element = false;
+			}
+			else
+			{
+				app->audio->playFx(fx_click_error, 0);
+				app->audio->playFx(fx_not_enough_minerales, 0);
+			}
 			break;
 
 			/*case(MOUSE_LCLICK_DOWN_REPEAT) :

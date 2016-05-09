@@ -126,7 +126,7 @@ bool GameManager::start()
 
 	fx_win = app->audio->loadFx("Audio/FX/UI/YouWin.wav");
 	fx_lose = app->audio->loadFx("Audio/FX/UI/YouLose.wav");
-	fx_click = app->audio->loadFx("Audio/FX/UI/Click_1.wav");
+	fx_click = app->audio->loadFx("Audio/FX/UI/Click_2.wav");
 	fx_wave_incoming = app->audio->loadFx("Audio/FX/InoffVoice/Wave_Incoming.wav");
 
 	//Backgorund audio (DEBUG include)

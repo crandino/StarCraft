@@ -90,6 +90,11 @@ public:
 	iPoint map_limits;
 	float scroll_speed;
 
+	//Sounds
+	unsigned int fx_click_1;
+	unsigned int fx_click_error;
+	unsigned int fx_not_enough_minerales;
+
 	//HUD Ingame----------------------------- 
 	GuiImage* ui_terran = nullptr;
 	GuiImage* rectangle_map = nullptr;
