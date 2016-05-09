@@ -58,6 +58,7 @@ struct GameInformation
 	uint total_waves;
 	
 	//Time
+	float time_before_game_starts;
 	float time_before_waves_phase1;
 	float time_before_waves_phase2;
 	float time_before_waves_phase3;

@@ -148,7 +148,7 @@ bool Gui::start()
 	ui_create_factory->can_focus = true;
 	ui_create_factory->setListener(this);
 	ui_create_factory->draw_element = false;
-	
+
 	//Create starport
 	//ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
 	//ui_create_starport->setLocalPos(551, 398);
@@ -172,7 +172,7 @@ bool Gui::start()
 	ui_create_tank->interactive = false;
 	ui_create_tank->can_focus = true;
 	ui_create_tank->draw_element = false;
-	
+
 	//Bunker buttons------------------------------------------------------------
 	ui_leave_bunker = app->gui->createImage(NULL, { 255, 152, 36, 33 });//Disabled section { 254, 192, 37, 34 }
 	ui_leave_bunker->setLocalPos(505, 358);
@@ -248,7 +248,7 @@ bool Gui::start()
 	info_bunker->setLocalPos(545, 323);
 	info_bunker->interactive = false;
 	info_bunker->draw_element = false;
-	
+
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
 	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
@@ -267,7 +267,7 @@ bool Gui::start()
 	green_life = { 486, 3, 4, 5 };
 	yellow_life = { 496, 3, 4, 5 };
 	red_life = { 501, 3, 4, 5 };
-	white_life = { 491, 3, 4, 5 };	
+	white_life = { 491, 3, 4, 5 };
 
 	// To show walkability on building mode-------------------------
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
@@ -281,8 +281,8 @@ bool Gui::start()
 	fx_click_error = app->audio->loadFx("Audio/FX/UI/Click_Error.wav");
 	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
 
-	label_game_starts = createLabel("Welcome to Last Hope !!!", 1);
-
+	label_game_starts = createLabel("Welcome to Last Hope !!!", 1, iPoint(0, 180));
+	app->game_manager->labels.push_back(label_game_starts);
 	//label_information_about_the_game = createLabel("Welcome to Last Hope !!! You are going to be tested.", 1);
 
 
@@ -1238,7 +1238,6 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
 	{
 		ret = new GuiLabel(text, kind_of_font);
 		elements.push_back(ret);
-		app->game_manager->labels.push_back(ret);
 	}
 
 	return ret;
@@ -1252,7 +1251,6 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font, iPoint pos)
 	{
 		ret = new GuiLabel(text,kind_of_font,pos);
 		elements.push_back(ret);
-		app->game_manager->labels.push_back(ret);
 	}
 
 	return ret;

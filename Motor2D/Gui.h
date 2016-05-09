@@ -71,10 +71,11 @@ public:
 	bool cleanUp();
 
 	// Gui creation functions
-	GuiImage* createImage(const char* filename);
-	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
+	GuiImage*  createImage(const char* filename);
+	GuiImage*  createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
-	GuiLabel* createLabel(const char* text, int kind_of_font);
+	GuiLabel*  createLabel(const char* text, int kind_of_font, iPoint pos);
+	GuiLabel*  createLabel(const char* text, int kind_of_font);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 
 	const GuiElements* findMouseHover();
@@ -195,6 +196,7 @@ public:
 	GuiLabel*		label_wave_starts = nullptr;
 
 
+	
 
 
 private:
