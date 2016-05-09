@@ -8,9 +8,7 @@ Unit::Unit()
 };
 
 Unit::~Unit()
-{
-	SDL_DestroyTexture(tex);
-}
+{ }
 
 void Unit::calculePos()
 {

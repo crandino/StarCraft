@@ -82,7 +82,7 @@ bool Textures::unloadTexture(SDL_Texture* texture)
 {
 	list<SDL_Texture*>::iterator item = textures.begin();
 
-	for(item; item != textures.end(); item++)
+	for(item; item != textures.end(); ++item)
 	{
 		if(texture == (*item))
 		{

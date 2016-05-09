@@ -122,6 +122,9 @@
     <ClCompile Include="Motor2D\Ultralisk.cpp">
       <Filter>Entities\Zerg_Units</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Scv.cpp">
+      <Filter>Entities\Terran_Units</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">

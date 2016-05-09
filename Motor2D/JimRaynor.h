@@ -52,13 +52,13 @@ public:
 
 	unsigned int		 fx_attack;
 
-	JimRaynor() {};
 	JimRaynor(iPoint &p);
 	~JimRaynor();
 
 	bool start();
 	void move(float dt);
 	void setAnimationFromDirection();
+	void draw();
 };
 
 #endif __Jim_Raynor_H__

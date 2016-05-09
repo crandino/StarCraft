@@ -8,7 +8,6 @@
 Firebat::Firebat(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("Units/firebat.png");
 	tex_width = tex_height = 32;
 	//---------------Idle Animation----------------
 	idle_right.setAnimations(128, 64, 32, 32, 1, 1, 1);
@@ -186,9 +185,7 @@ Firebat::Firebat(iPoint &p)
 }
 
 Firebat::~Firebat()
-{
-	SDL_DestroyTexture(tex);
-}
+{ }
 
 void Firebat::move(float dt)
 {
@@ -680,6 +677,14 @@ void Firebat::setParticleBehaviour()
 		particle = app->particle->addParticle(explosion_dead, center.x, center.y, 0, 0, 1, explosion_dead.image);
 		break;
 	}
+}
+
+void Firebat::draw()
+{
+	//FOG_OF_WAR 4 - "Draw" function of a unit. Called each frame for each unit.
+	//Rendering the unit only if it is visible
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->firebat_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }
 
 

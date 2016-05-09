@@ -41,19 +41,20 @@ public:
 	vector<Animation*>   attack_animation_pack;
 
 	// Dead animation
-	Animation	dead;	
+	Animation			 dead;	
 
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the marine
 	bool			     inside_bunker = false;		// It's inside?
 
-	Marine() {};
+
+	// ---- Methods ----
 	Marine(iPoint &p);
 	~Marine();
 
 	bool update(float dt);
-
 	void move(float dt);
 	void setAnimationFromDirection();
+	void draw();
 	
 };
 

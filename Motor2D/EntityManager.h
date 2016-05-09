@@ -55,6 +55,7 @@ enum SPECIALIZATION  // Second specialization
 	TANK,
 	FIREBAT,
 	JIM_RAYNOR,
+
 	// Buildings
 	COMMANDCENTER, 
 	BUNKER,
@@ -142,8 +143,15 @@ public:
 
 	bool	selector_init;
 
-	//Sounds (FX)
+	// Enttity Textures
+	SDL_Texture *marine_tex;
+	SDL_Texture *scv_tex;
+	SDL_Texture *medic_tex;
+	SDL_Texture *firebat_tex;
+	SDL_Texture *jim_raynor_tex;
+	SDL_Texture *tank_tex;
 
+	//Sounds (FX)
 	//Marine
 	unsigned int fx_marine_attack;
 	unsigned int fx_marine_death_1;
@@ -201,28 +209,9 @@ public:
 	void choosePlaceForBuilding();
 
 private:
+	
 	uint			 next_ID;
-	list<Entity*>    list_of_entity_classes;   // Useful to call all start for each entity class.
-
-	// Units
-	Marine			*marine;
-	Scv				*scv;
-	Medic			*medic;
-	Firebat			*firebat;
-	Tank            *tank;
-	JimRaynor		*Jim_Raynor;
-
-	Zergling		*zergling;
-	Mutalisk		*mutalisk;
-	Hydralisk		*hydralisk;
-	Ultralisk       *ultralisk;
-
-	// Buildings
-	CommandCenter	*command_center;
-	Bunker			*bunker;
-	Barrack         *barrack;
-
-	bool debug = false;
+	bool			 debug = false;
 
 	// CRZ -> Variables to build buildings.
 	bool			building_mode;
@@ -237,7 +226,9 @@ private:
 	void			calculateSelector();
 	void			onCollision(Collider* c1, Collider* c2);	
 
-	//Sounds
+	// Textures
+	void loadEntityTex();
+	// Sounds
 	bool loadEntityFX();
 
 	void			entityManualCreation();

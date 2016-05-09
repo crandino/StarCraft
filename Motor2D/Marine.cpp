@@ -7,7 +7,6 @@
 Marine::Marine(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("Units/Blue_Marine.png");
 	tex_width = tex_height = 64;
 	//---------------Idle Animation----------------
 	idle_right.frames.push_back({ 256, 0, 64, 64 });
@@ -273,7 +272,7 @@ Marine::Marine(iPoint &p)
 
 Marine::~Marine()
 {
-	SDL_DestroyTexture(tex);
+
 }
 
 bool Marine::update(float dt)
@@ -562,5 +561,13 @@ void Marine::setAnimationFromDirection()
 	}
 
 	}
+}
+
+void Marine::draw()
+{
+	//FOG_OF_WAR 4 - "Draw" function of a unit. Called each frame for each unit.
+	//Rendering the unit only if it is visible
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->marine_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }
 

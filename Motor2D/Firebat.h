@@ -58,14 +58,14 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
 	bool			     inside_bunker = false;		// It's inside?
 
-	Firebat() {}
 	Firebat(iPoint &p);
-
 	~Firebat();
-	void move(float dt);
 
+	void move(float dt);
 	void setAnimationFromDirection();
 	bool update(float dt);
+	void draw();
+
 	void setParticleBehaviour();
 	void resetParticle();
 

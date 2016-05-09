@@ -5,7 +5,6 @@
 Tank::Tank(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("Units/Blue_tank.png");
 	tex_width = tex_height = 128;
 
 	//---------------Idle Animation----------------
@@ -242,9 +241,7 @@ Tank::Tank(iPoint &p)
 }
 
 Tank::~Tank()
-{
-	SDL_DestroyTexture(tex);
-}
+{ }
 
 bool Tank::update(float dt)
 {
@@ -524,9 +521,9 @@ bool Tank::start()
 
 void Tank::draw()
 {
-	app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+	app->render->blit(app->entity_manager->tank_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	// The turret must be corrected by some pixels, but it will be done in a future, after alpha presentation.
-	app->render->blit(tex, pos.x, pos.y - 10, &(current_animation_turret->getCurrentFrame()));
+	app->render->blit(app->entity_manager->tank_tex, pos.x, pos.y - 10, &(current_animation_turret->getCurrentFrame()));
 }
 
 void Tank::siegeMode(bool siege_mode_flag)

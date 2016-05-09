@@ -158,6 +158,7 @@
     <ClCompile Include="Motor2D\Render.cpp" />
     <ClCompile Include="Motor2D\Scene.cpp" />
     <ClCompile Include="Motor2D\Gui.cpp" />
+    <ClCompile Include="Motor2D\Scv.cpp" />
     <ClCompile Include="Motor2D\Tank.cpp" />
     <ClCompile Include="Motor2D\Textures.cpp" />
     <ClCompile Include="Motor2D\Timer.cpp" />

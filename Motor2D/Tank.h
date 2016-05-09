@@ -74,7 +74,6 @@ public:
 	uint fx_missile_none_siege;
 	uint fx_missile_siege;
 
-	Tank() {}
 	Tank(iPoint &p);
 	~Tank();
 
@@ -82,6 +81,7 @@ public:
 	bool update(float dt);
 	void setAnimationFromDirection();
 	void draw();
+
 	void siegeMode(bool siegeModeFlag);
 	void checkUnitDirection();
 	void newEntityFound();
