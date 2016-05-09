@@ -58,9 +58,32 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
 	bool			     inside_bunker = false;		// It's inside?
 
-	list<uint> fx_list;
+	//Sounds
 	unsigned int fx_attack_1;
 	unsigned int fx_attack_2;
+	unsigned int fx_death_1;
+	unsigned int fx_death_2;
+	unsigned int fx_death_3;
+
+	unsigned int fx_acknowledgement_1;
+	unsigned int fx_acknowledgement_2;
+	unsigned int fx_acknowledgement_3;
+	unsigned int fx_acknowledgement_4;
+
+	unsigned int fx_affirmation_1;
+	unsigned int fx_affirmation_2;
+	unsigned int fx_affirmation_3;
+	unsigned int fx_affirmation_4;
+
+	unsigned int fx_annoyance_1;
+	unsigned int fx_annoyance_2;
+	unsigned int fx_annoyance_3;
+	unsigned int fx_annoyance_4;
+	unsigned int fx_annoyance_5;
+	unsigned int fx_annoyance_6;
+	unsigned int fx_annoyance_7;
+
+	unsigned int fx_ready;
 
 	Firebat() {}
 	Firebat(iPoint &p);
