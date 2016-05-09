@@ -233,7 +233,8 @@ private:
 
 	// Check the conditions to finish the game
 	void				checkingGameConditions();
-	iPoint				positionRandomizer(int random, iPoint wave_pos);
+	iPoint				positionRandomizerWave(int random, iPoint wave_pos);
+	iPoint				positionRandomizerBomb(int random, iPoint bomb_pos);
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
 	

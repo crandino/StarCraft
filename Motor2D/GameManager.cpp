@@ -36,13 +36,22 @@ using namespace std;
 */
 
 /*To Put into xml*/
-struct wave_positions
+struct wave_position
 {
 	iPoint north_west = { 1400, 1700};
 	iPoint north_east = { 2350, 1700 };
 	iPoint south_west = { 1400, 2700 };
 	iPoint south_east = { 2300, 2700 };
 };
+
+struct bomb_position
+{
+	iPoint north_west = { 50, 200 };
+	iPoint north_east = { 2800, 600 };
+	iPoint south_west = { 700, 1200 };
+	iPoint south_east = { 700, 1200 };
+};
+
 
 enum wave_positions_enum
 {
@@ -52,6 +61,13 @@ enum wave_positions_enum
 	SOUTHEAST
 } wave_pos_enum;
 
+enum bomb_position_enum
+{
+	BOMBPOS1,
+	BOMBPOS2,
+	BOMBPOS3,
+	BOMBPOS4
+};
 
 
 
@@ -202,10 +218,12 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 	iPoint wave_pos;
+	iPoint bomb_pos;
 
 	int random = rand() % 4 +1;
-	
-	 wave_pos = positionRandomizer(random, wave_pos);
+	int randombomb = rand() % 4 + 1;
+
+	 wave_pos = positionRandomizerWave(random, wave_pos);
 
 	 if (hold)
 	 {
@@ -280,7 +298,10 @@ bool GameManager::update(float dt)
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
 		{
 			LOG("The bomb has landed look for it."); //Audio voice
+
+			bomb_pos = positionRandomizerBomb(random, bomb_pos);
 			bomb = (Bomb*)app->entity_manager->addEntity(iPoint(1600, 2250), BOMB);
+			app->gui->mini_map->activePing(bomb_pos);
 			game_state = SECOND_PHASE;
 		}
 		break;
@@ -824,24 +845,50 @@ void GameManager::AddPointsEnemy(Entity* e)
 
 }
 
-iPoint GameManager::positionRandomizer(int random, iPoint wave_pos)
+iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
+{
+	switch (random)
+	{
+	case(BOMBPOS1) :
+		bomb_pos = bomb_position().north_west;
+		break;
+
+	case(BOMBPOS2) :
+		bomb_pos = bomb_position().north_east;
+		break;
+
+	case(BOMBPOS3) :
+		bomb_pos = bomb_position().south_west;
+		break;
+
+	case(SOUTHEAST) :
+		bomb_pos = bomb_position().south_east;
+		break;
+	}
+
+	return bomb_pos;
+}
+
+
+
+iPoint GameManager::positionRandomizerWave(int random, iPoint wave_pos)
 {
 	switch (random)
 	{
 	case(NORTHWEST) :
-		wave_pos = wave_positions().north_west;
+		wave_pos = wave_position().north_west;
 		break;
 
 	case(NORTHEAST) :
-		wave_pos = wave_positions().north_east;
+		wave_pos = wave_position().north_east;
 		break;
 
 	case(SOUTHWEST) :
-		wave_pos = wave_positions().south_west;
+		wave_pos = wave_position().south_west;
 		break;
 
 	case(SOUTHEAST) :
-		wave_pos = wave_positions().south_east;
+		wave_pos = wave_position().south_east;
 		break;
 	}
 

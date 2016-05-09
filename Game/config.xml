@@ -33,7 +33,7 @@
     <!-- Game Information -->
     <totalWaves value = "1"/>
     <timeBetweenWavesPhase1 value = "1.0f"/>
-    <timeBetweenWavesPhase2 value = "15.0f"/>
+    <timeBetweenWavesPhase2 value = "1.0f"/>
     <timeBetweenWavesPhase3 value = "10.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "20.0f"/>  
