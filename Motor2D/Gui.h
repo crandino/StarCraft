@@ -90,6 +90,8 @@ public:
 	iPoint map_limits;
 	float scroll_speed;
 	fPoint last_attack_position;
+	list<fPoint> lasts_attack_position;
+	Timer timer_to_ping_attack;
 
 	//Sounds
 	unsigned int fx_click_1;

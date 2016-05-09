@@ -197,6 +197,56 @@ public:
 
 	unsigned int fx_firebat_ready;
 
+	//Medic
+	unsigned int fx_medic_heal;
+	unsigned int fx_medic_death;
+
+	unsigned int fx_medic_acknowledgement_1;
+	unsigned int fx_medic_acknowledgement_2;
+	unsigned int fx_medic_acknowledgement_3;
+	unsigned int fx_medic_acknowledgement_4;
+
+	unsigned int fx_medic_affirmation_1;
+	unsigned int fx_medic_affirmation_2;
+	unsigned int fx_medic_affirmation_3;
+	unsigned int fx_medic_affirmation_4;
+
+	unsigned int fx_medic_annoyance_1;
+	unsigned int fx_medic_annoyance_2;
+	unsigned int fx_medic_annoyance_3;
+	unsigned int fx_medic_annoyance_4;
+	unsigned int fx_medic_annoyance_5;
+	unsigned int fx_medic_annoyance_6;
+	unsigned int fx_medic_annoyance_7;
+
+	unsigned int fx_medic_ready;
+
+	//SiegeTank
+	unsigned int fx_tank_sige_mode_on;
+	unsigned int fx_tank_sige_mode_off;
+
+	unsigned int fx_tank_death;
+
+	unsigned int fx_tank_missile_none_siege;
+	unsigned int fx_tank_missile_siege;
+
+	unsigned int fx_tank_acknowledgement_1;
+	unsigned int fx_tank_acknowledgement_2;
+	unsigned int fx_tank_acknowledgement_3;
+	unsigned int fx_tank_acknowledgement_4;
+
+	unsigned int fx_tank_affirmation_1;
+	unsigned int fx_tank_affirmation_2;
+	unsigned int fx_tank_affirmation_3;
+	unsigned int fx_tank_affirmation_4;
+
+	unsigned int fx_tank_annoyance_1;
+	unsigned int fx_tank_annoyance_2;
+	unsigned int fx_tank_annoyance_3;
+	unsigned int fx_tank_annoyance_4;
+
+	unsigned int fx_tank_ready;
+
 
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();

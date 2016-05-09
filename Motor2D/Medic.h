@@ -63,36 +63,11 @@ public:
 
 	int			healing_power;
 
-	////Sounds
-	//unsigned int fx_heal;
-	//unsigned int fx_death;
-
-	//unsigned int fx_acknowledgement_1;
-	//unsigned int fx_acknowledgement_2;
-	//unsigned int fx_acknowledgement_3;
-	//unsigned int fx_acknowledgement_4;
-
-	//unsigned int fx_affirmation_1;
-	//unsigned int fx_affirmation_2;
-	//unsigned int fx_affirmation_3;
-	//unsigned int fx_affirmation_4;
-
-	//unsigned int fx_annoyance_1;
-	//unsigned int fx_annoyance_2;
-	//unsigned int fx_annoyance_3;
-	//unsigned int fx_annoyance_4;
-	//unsigned int fx_annoyance_5;
-	//unsigned int fx_annoyance_6;
-	//unsigned int fx_annoyance_7;
-
-	//unsigned int fx_ready;
-
 	Medic() {}
 	Medic(iPoint &p);
 
 	~Medic();
 
-	//bool start();
 	bool update(float dt);
 
 	void setAnimationFromDirection();

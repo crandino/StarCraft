@@ -129,6 +129,54 @@ bool EntityManager::loadEntityFX()
 	
 	fx_firebat_ready = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Ready.wav");
 
+	//Medic
+	fx_medic_heal = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Heal.wav");
+	fx_medic_death = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Death.wav");
+	
+	fx_medic_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_1.wav");
+	fx_medic_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_2.wav");
+	fx_medic_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_3.wav");
+	fx_medic_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Acknowledgement_4.wav");
+	
+	fx_medic_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_1.wav");
+	fx_medic_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_2.wav");
+	fx_medic_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_3.wav");
+	fx_medic_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Affirmation_4.wav");
+	
+	fx_medic_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_1.wav");
+	fx_medic_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_2.wav");
+	fx_medic_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_3.wav");
+	fx_medic_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_4.wav");
+	fx_medic_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_5.wav");
+	fx_medic_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_6.wav");
+	fx_medic_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Annoyance_7.wav");
+	
+	fx_medic_ready = app->audio->loadFx("Audio/FX/Units/Terran/Medic/Ready.wav");
+
+	//SiegeTank
+	fx_tank_sige_mode_on = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_On.wav");
+	fx_tank_sige_mode_off = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_Off.wav");
+	fx_tank_missile_none_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileNoneSiege.wav");
+	fx_tank_missile_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileSiege.wav");
+	fx_tank_death = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Death.wav");
+
+	fx_tank_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Acknowledgement_1.wav");
+	fx_tank_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Acknowledgement_2.wav");
+	fx_tank_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Acknowledgement_3.wav");
+	fx_tank_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Acknowledgement_4.wav");
+
+	fx_tank_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Affirmation_1.wav");
+	fx_tank_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Affirmation_2.wav");
+	fx_tank_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Affirmation_3.wav");
+	fx_tank_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Affirmation_4.wav");
+
+	fx_tank_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Annoyance_1.wav");
+	fx_tank_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Annoyance_2.wav");
+	fx_tank_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Annoyance_3.wav");
+	fx_tank_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Annoyance_4.wav");
+
+	fx_tank_ready = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/Ready.wav");
+
 	return true;
 }
 
