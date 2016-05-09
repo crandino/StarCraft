@@ -201,7 +201,7 @@ bool Firebat::start()
 	fx_death_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_3.wav");
 
 	fx_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_1.wav");
-	fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebate/Acknowledgement_2.wav");
+	fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_2.wav");
 	fx_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_3.wav");
 	fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_4.wav");
 

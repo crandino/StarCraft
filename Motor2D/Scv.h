@@ -294,7 +294,7 @@ public:
 		fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Acknowledgement_4.wav");
 
 		fx_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_1.wav");
-		fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/ffirmation_2.wav");
+		fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_2.wav");
 		fx_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_3.wav");
 		fx_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/SCV/Affirmation_4.wav");
 
