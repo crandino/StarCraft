@@ -127,6 +127,7 @@ bool GameManager::start()
 	fx_win = app->audio->loadFx("Audio/FX/UI/YouWin.wav");
 	fx_lose = app->audio->loadFx("Audio/FX/UI/YouLose.wav");
 	fx_click = app->audio->loadFx("Audio/FX/UI/Click_1.wav");
+	fx_wave_incoming = app->audio->loadFx("Audio/FX/InoffVoice/Wave_Incoming.wav");
 
 	//Backgorund audio (DEBUG include)
 	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
@@ -244,6 +245,8 @@ bool GameManager::update(float dt)
 		case(BEGINNING_WAVE) :
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
+
+			app->audio->playFx(fx_wave_incoming, 0);
 			wave_state = MIDDLE_WAVE;
 			createWave(waves_info[current_wave], wave_pos);
 			break;
@@ -303,6 +306,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
+			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
@@ -360,6 +364,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
 
+			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;

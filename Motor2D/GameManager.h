@@ -184,9 +184,10 @@ public:
 	bool jim_raynor_dead = false;
 
 	//Sound
-	unsigned int fx_click;	
+	unsigned int fx_click;
 	unsigned int fx_win;
 	unsigned int fx_lose;
+	unsigned int fx_wave_incoming;
 	
 	//Wave Control
 	bool isWaveClear();
