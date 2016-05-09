@@ -190,38 +190,38 @@ Firebat::~Firebat()
 	SDL_DestroyTexture(tex);
 }
 
-bool Firebat::start()
-{
-	// Sounds
-	fx_attack_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_1.wav");
-	fx_attack_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_2.wav");
-
-	fx_death_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_1.wav");
-	fx_death_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_2.wav");
-	fx_death_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_3.wav");
-
-	fx_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_1.wav");
-	fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_2.wav");
-	fx_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_3.wav");
-	fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_4.wav");
-
-	fx_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_1.wav");
-	fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_2.wav");
-	fx_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_3.wav");
-	fx_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_4.wav");
-
-	fx_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_1.wav");
-	fx_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_2.wav");
-	fx_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_3.wav");
-	fx_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_4.wav");
-	fx_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_5.wav");
-	fx_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_6.wav");
-	fx_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_7.wav");
-
-	fx_ready = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Ready.wav");
-
-	return true;
-}
+//bool Firebat::start()
+//{
+//	// Sounds
+//	fx_attack_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_1.wav");
+//	fx_attack_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Attack_2.wav");
+//
+//	fx_death_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_1.wav");
+//	fx_death_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_2.wav");
+//	fx_death_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Death_3.wav");
+//
+//	fx_acknowledgement_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_1.wav");
+//	fx_acknowledgement_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_2.wav");
+//	fx_acknowledgement_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_3.wav");
+//	fx_acknowledgement_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Acknowledgement_4.wav");
+//
+//	fx_affirmation_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_1.wav");
+//	fx_affirmation_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_2.wav");
+//	fx_affirmation_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_3.wav");
+//	fx_affirmation_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Affirmation_4.wav");
+//
+//	fx_annoyance_1 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_1.wav");
+//	fx_annoyance_2 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_2.wav");
+//	fx_annoyance_3 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_3.wav");
+//	fx_annoyance_4 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_4.wav");
+//	fx_annoyance_5 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_5.wav");
+//	fx_annoyance_6 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_6.wav");
+//	fx_annoyance_7 = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Annoyance_7.wav");
+//
+//	fx_ready = app->audio->loadFx("Audio/FX/Units/Terran/Firebat/Ready.wav");
+//
+//	return true;
+//}
 
 void Firebat::move(float dt)
 {
@@ -455,11 +455,11 @@ bool Firebat::update(float dt)
 			static uint fx = rand() % 2 + 1;
 			if (fx == 1)
 			{
-				app->audio->playFx(fx_attack_1, 0);
+				//app->audio->playFx(fx_attack_1, 0);
 			}
 			if (fx == 2)
 			{
-				app->audio->playFx(fx_attack_2, 0);
+				//app->audio->playFx(fx_attack_2, 0);
 			}
 
 			if (area_attack)
@@ -496,15 +496,15 @@ bool Firebat::update(float dt)
 		static uint fx = rand() % 3 + 1;
 		if (fx == 1)
 		{
-			app->audio->playFx(fx_death_1, 0);
+			//app->audio->playFx(fx_death_1, 0);
 		}
 		if (fx == 2)
 		{
-			app->audio->playFx(fx_death_2, 0);
+			//app->audio->playFx(fx_death_2, 0);
 		}
 		if (fx == 3)
 		{
-			app->audio->playFx(fx_death_3, 0);
+			//app->audio->playFx(fx_death_3, 0);
 		}
 
 		if (current_animation->finished())

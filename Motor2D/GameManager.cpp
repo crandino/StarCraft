@@ -131,10 +131,6 @@ bool GameManager::start()
 
 	//Backgorund audio (DEBUG include)
 	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
-	for (unsigned int i = 0; i <= 3; i++)
-	{
-		app->audio->volumeDown();
-	}
 
 	start_image = app->tex->loadTexture("Screens/Start_Image.png");
 
@@ -701,10 +697,6 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_UP) :
 			retry_button->setSection({ 384, 0, 104, 28 });
 			app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
-			for (unsigned int i = 0; i <= 3; i++)
-			{
-				app->audio->volumeDown();
-			}
 			game_state = PREPARATION;			
 			break;
 		}
