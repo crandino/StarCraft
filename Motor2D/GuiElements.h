@@ -13,6 +13,8 @@ public:
 
 	virtual void draw() const
 	{}
+	virtual void draw_static() const
+	{}
 	virtual void debugDraw() const;
 	virtual void update(const GuiElements* mouse_hover, const GuiElements* focus)
 	{}
@@ -43,6 +45,7 @@ public:
 	bool can_focus = false;
 	bool draw_element = true;
 	GuiElements* parent = nullptr; 
+	bool static_image = false;
 
 	//FX
 	unsigned int fx_click;

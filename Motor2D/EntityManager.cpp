@@ -24,6 +24,7 @@
 #include "CommandCenter.h"
 #include "Bunker.h"
 #include "Barrack.h"
+#include "Factory.h"
 #include "Blue.h"
 #include "Yellow.h"
 #include "Red.h"
@@ -66,6 +67,8 @@ bool EntityManager::awake(pugi::xml_node &node)
 	list_of_entity_classes.push_back(bunker);
 	barrack = new Barrack();
 	list_of_entity_classes.push_back(barrack);
+	factory = new Factory();
+	list_of_entity_classes.push_back(factory);
 
 	return true;
 }
@@ -254,6 +257,13 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		building_to_place = (Building*)e;
 		building_mode = !direct_creation;
 		create_bunker = false;
+		break;
+	case(FACTORY) :
+		LOG("Creating Factory");
+		e = new Factory(pos);
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
+		create_factory = false;
 		break;
 	case(BARRACK) :
 		LOG("Creating Barrack");
@@ -505,7 +515,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		app->game_manager->mineral_resources -= 250;
 		app->game_manager->gas_resources -= 250;
-		addEntity(position, BARRACK);
+		addEntity(position, BARRACK, false);
 	}
 
 	if (create_factory)
@@ -515,7 +525,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		app->game_manager->mineral_resources -= 300;
 		app->game_manager->gas_resources -= 300;
-		addEntity(position, FACTORY);
+		addEntity(position, FACTORY, false);
 	}
 
 	return true;

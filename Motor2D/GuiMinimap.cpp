@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Input.h"
 #include "p2Log.h"
+#include "Bunker.h"
 
 GuiMinimap::GuiMinimap(SDL_Rect map_rect) : rect(map_rect), GuiElements()
 {
@@ -116,8 +117,15 @@ void GuiMinimap::draw() const
 				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 255, 0, 0);
 				break;
 			case JIM_RAYNOR:
-				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 2, 2 }, 255, 255, 0);
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 255, 0);
 				break;
+			case BUNKER:
+			{
+				 if (((Bunker*)entity)->raynor_inside)
+					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 255, 255, 0);
+				 else
+				    app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 0, 0, 255);
+			}
 			default:
 				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 0, 0, 255);
 				break;

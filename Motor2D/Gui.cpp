@@ -47,6 +47,11 @@ bool Gui::start()
 	last_attack_position.x = app->game_manager->command_center_position.x;
 	last_attack_position.y = app->game_manager->command_center_position.y;
 
+	//Raynor indicator Image
+	raynor_indicator = app->gui->createImage("raynor_indicator.png");
+	raynor_indicator->disable_element();
+	raynor_indicator->static_image = true;
+
 	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
@@ -387,6 +392,25 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
 			app->entity_manager->create_barrack = true;
+			break;
+
+		}
+	}
+
+	if (ui == ui_create_factory)
+	{
+		switch (event)
+		{
+
+		case(MOUSE_ENTERS) :
+			break;
+
+		case(MOUSE_LEAVES) :
+			break;
+
+		case(MOUSE_LCLICK_DOWN) :
+			//app->audio->playFx(fx_click_1, 0);
+			app->entity_manager->create_factory = true;
 			break;
 
 		}
@@ -1016,7 +1040,12 @@ bool Gui::postUpdate()
 		if (gui->draw_element == true)
 		{
 			if (gui->getType() != CURSOR)
-				gui->draw();
+			{
+				if (gui->getType() == IMAGE && gui->static_image)
+					gui->draw_static();
+				else
+					gui->draw();
+			}
 		}
 
 		if (debug == true && gui->draw_element == true)
