@@ -44,8 +44,8 @@ bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
 
-	app->render->camera.x = -app->game_manager->command_center_position.x + app->render->camera.w;
-	app->render->camera.x = -app->game_manager->command_center_position.y + app->render->camera.h;
+	last_attack_position.x = app->game_manager->command_center_position.x;
+	last_attack_position.y = app->game_manager->command_center_position.y;
 
 	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
