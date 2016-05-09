@@ -353,13 +353,13 @@ void JimRaynor::move(float dt)
 						bomb->coll->to_delete = true;
 						bomb = NULL;
 						bomb_taken = true;
-						speed_multiplier *= 0.2f;
+						speed_multiplier *= 0.5f;
 					}
 					else if (bomb_activated)
 					{
 						// Last phase of the game
 						app->game_manager->game_state = BOMB_ACTIVATION;
-						speed_multiplier *= 5.0f;
+						speed_multiplier /= 0.5f;
 					}
 					else if (bunker_to_fill != NULL)
 						bunker_to_fill->getEntityInside(this);

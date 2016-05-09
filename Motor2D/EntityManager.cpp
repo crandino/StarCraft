@@ -620,18 +620,41 @@ void EntityManager::handleSelection()
 					if (unit->flying)
 					{
 						unit->path.clear();
-						unit->path.push_back(unit->target_to_attack->tile_pos);
+						unit->path.push_back(target_position);
 						unit->has_target = true;
-						unit->state = MOVE;
+						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+							unit->state = MOVE_ALERT;
+						else
+							unit->state = MOVE;
 					}
 					else if (app->path->createPath(unit->tile_pos, target_position, unit->id) != -1)
-						unit->state = WAITING_PATH_MOVE;
+					{
+						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+							unit->state = WAITING_PATH_MOVE_ALERT;
+						else
+							unit->state = WAITING_PATH_MOVE;
+					}
 				}
 				else
 				{
 					iPoint target = target_position + unit->distance_to_center_selector;
-					if (app->path->createPath(unit->tile_pos, target, unit->id) != -1)
-						unit->state = WAITING_PATH_MOVE;
+					if (unit->flying)
+					{
+						unit->path.clear();
+						unit->path.push_back(target);
+						unit->has_target = true;
+						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+							unit->state = MOVE_ALERT;
+						else
+							unit->state = MOVE;
+					}
+					else if (app->path->createPath(unit->tile_pos, target, unit->id) != -1)
+					{
+						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+							unit->state = WAITING_PATH_MOVE_ALERT;
+						else
+							unit->state = WAITING_PATH_MOVE;
+					}
 				}
 				
 				if (it->second->specialization == MARINE || it->second->specialization == FIREBAT || it->second->specialization == JIM_RAYNOR)
