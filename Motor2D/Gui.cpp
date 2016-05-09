@@ -44,7 +44,9 @@ bool Gui::start()
 {
 	atlas = app->tex->loadTexture(atlas_file_name.data());
 
-	
+	app->render->camera.x = -app->game_manager->command_center_position.x + app->render->camera.w;
+	app->render->camera.x = -app->game_manager->command_center_position.y + app->render->camera.h;
+
 	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
 	ui_terran->setLocalPos(0, 292);
@@ -835,6 +837,8 @@ bool Gui::update(float dt)
 
 	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+		if (lasts_attack_position.size() > 0)
+			last_attack_position = lasts_attack_position.back();
 		app->render->camera.x = (app->render->camera.w / 2) - last_attack_position.x;
 		app->render->camera.y = (app->render->camera.h / 2) - last_attack_position.y;
 		if (app->render->camera.x >= 0)
@@ -845,6 +849,38 @@ bool Gui::update(float dt)
 			app->render->camera.y = 0;
 		else if ((app->render->camera.y - app->render->camera.h) <= -map_limits.y)
 			app->render->camera.y = -map_limits.y + app->render->camera.h;
+	}
+
+	if (timer_to_ping_attack.readSec() >= 1.0f)
+	{
+		timer_to_ping_attack.start();
+		if (lasts_attack_position.size() > 0)
+		{
+			iPoint first_ping = { -1, -1 };
+			iPoint second_ping = { -1, -1 };
+			for (list<fPoint>::iterator it = lasts_attack_position.begin(); it != lasts_attack_position.end(); it++)
+			{
+				if ((it._Ptr->_Myval.x < (-app->render->camera.x) || it._Ptr->_Myval.x >((-app->render->camera.x) + app->render->camera.w)) &&
+					(it._Ptr->_Myval.y < (-app->render->camera.y) || it._Ptr->_Myval.y >((-app->render->camera.y) + app->render->camera.h)))
+				{
+					if (first_ping.x == -1 && first_ping.y == -1)
+					{
+						first_ping.x = it._Ptr->_Myval.x;
+						first_ping.y = it._Ptr->_Myval.y;
+						mini_map->activePing(first_ping);
+					}
+					else if ((first_ping.x - 250 > it._Ptr->_Myval.x || first_ping.x + 250 < it._Ptr->_Myval.x) &&
+						(first_ping.y - 250 > it._Ptr->_Myval.y || first_ping.y + 250 < it._Ptr->_Myval.y))
+					{
+						second_ping.x = it._Ptr->_Myval.x;
+						second_ping.y = it._Ptr->_Myval.y;
+						mini_map->activePing(second_ping);
+					}
+				}
+			}
+			last_attack_position = lasts_attack_position.back();
+			lasts_attack_position.clear();
+		}
 	}
 
 	// Cursor -> check for camera displacement.

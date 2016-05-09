@@ -44,7 +44,7 @@ bool Unit::attack(Entity* target_to_attack)
 					app->game_manager->total_units_killed_currentFrame++;
 			}
 			if (target_to_attack->faction == PLAYER)
-				app->gui->last_attack_position = target_to_attack->center;
+				app->gui->lasts_attack_position.push_back(target_to_attack->center);
 		}
 	}
 	return ret;
