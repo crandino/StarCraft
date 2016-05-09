@@ -697,11 +697,6 @@ void EntityManager::handleSelection()
 							app->gui->bunker_to_leave.push_back((Bunker*)e);
 						}
 					}
-					else if (it->second->specialization == SCV && (e->type == BUILDING || e->specialization == TANK))
-					{
-						((Scv*)unit)->target_to_attack = (Building*)e;
-						unit->newEntityFound();
-					}
 					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER && e->specialization != BOMB)
 					{
 						unit->target_to_attack = e;
@@ -852,7 +847,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying)
 	return ret;
 }
 
-Entity* EntityManager::searchAllyToHeal(Entity* e)
+Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 {
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
@@ -860,8 +855,10 @@ Entity* EntityManager::searchAllyToHeal(Entity* e)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && e->specialization != BOMB && it->second->type == UNIT &&
-			it->second->specialization != TANK && it->second->current_hp < it->second->max_hp)
+		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && e->specialization != BOMB && 
+			((!search_only_buildings && it->second->type == UNIT && it->second->specialization != TANK) ||
+			(search_only_buildings && (it->second->type == BUILDING || it->second->specialization == TANK))) 
+			&& it->second->current_hp < it->second->max_hp)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);

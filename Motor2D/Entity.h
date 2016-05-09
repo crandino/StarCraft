@@ -130,9 +130,9 @@ public:
 		return app->entity_manager->searchNearestEntityInRange(this, true);
 	}
 
-	virtual Entity* searchAllyToHeal()
+	virtual Entity* searchAllyToHeal(bool search_only_buildings = false)
 	{
-		return app->entity_manager->searchAllyToHeal(this);
+		return app->entity_manager->searchAllyToHeal(this, search_only_buildings);
 	}
 
 	virtual list<Entity*> searchEntitiesInRange(Entity* origin, float area_range, bool can_attack_to_flying = true)

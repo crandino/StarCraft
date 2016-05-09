@@ -108,7 +108,7 @@ public:
 	list<Entity*>		searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f, bool can_attack_to_flying = true);
 	bool				checkFocus(Unit* e);
 	Entity*				searchEnemyToAttack(Entity* e, bool can_attack_to_flying = true);
-	Entity*				searchAllyToHeal(Entity* e);
+	Entity*				searchAllyToHeal(Entity* e, bool search_only_buildings = false);
 
 	Entity* whichEntityOnMouse();
 

@@ -384,14 +384,40 @@ public:
 		switch (state)
 		{
 		case IDLE:
+			if (timer_to_check.read() >= TIME_TO_CHECK)
+			{
+				target_to_attack = searchAllyToHeal(true);
+				if (target_to_attack != NULL)
+					newEntityFound();
+				timer_to_check.start();
+			}
 			break;
 		case MOVE:
 			if (has_target) move(dt);
 			break;
 		case MOVE_ALERT:
+			if (timer_to_check.read() >= TIME_TO_CHECK)
+			{
+				target_to_attack = searchAllyToHeal(true);
+				if (target_to_attack != NULL)
+					newEntityFound();
+				timer_to_check.start();
+			}
 			if (has_target) move(dt);
 			break;
 		case MOVE_ALERT_TO_ATTACK:
+			if (timer_to_check.read() >= TIME_TO_CHECK)
+			{
+				target_to_attack = searchAllyToHeal(true);
+				if (target_to_attack != NULL)
+					newEntityFound();
+				else
+				{
+					has_target = false;
+					state = IDLE;
+				}
+				timer_to_check.start();
+			}
 			if (has_target) move(dt);
 			break;
 		case ATTACK://ATTACK == REPAIR for SCV
@@ -420,8 +446,11 @@ public:
 					//app->audio->playFx(fx_repair_5, 0);
 				}
 
-				if(!repair())
+				if (!repair())
+				{
 					state = IDLE;
+					target_to_attack = NULL;
+				}
 				timer_attack.start();
 			}
 			break;
