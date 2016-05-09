@@ -231,8 +231,8 @@ Tank::Tank(iPoint &p)
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
-	damage = 5.0f;
-	attack_frequency = 200.0f;
+	damage = 30.0f;
+	attack_frequency = 3000.0f;
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;
@@ -280,6 +280,7 @@ bool Tank::update(float dt)
 	case ATTACK_SIEGE_MODE:
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
+			app->audio->playFx(app->entity_manager->fx_tank_missile_siege, 0);
 			if (area_attack)
 			{
 				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
@@ -342,6 +343,7 @@ bool Tank::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
+			app->audio->playFx(app->entity_manager->fx_tank_missile_none_siege, 0);
 			if (area_attack)
 			{
 				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
@@ -371,6 +373,7 @@ bool Tank::update(float dt)
 		}
 		break;
 	case DYING:
+		app->audio->playFx(app->entity_manager->fx_tank_death, 0);
 		if (current_animation->finished())
 		{
 			to_delete = true;
@@ -402,34 +405,63 @@ bool Tank::update(float dt)
 		}
 		break;
 	case SIEGE_MODE_ON:
-		if (current_animation->finished())
 		{
-			current_animation_turret->resume();
+			sound_active = true;
+			sound_time.start();
+			if (sound_active == false && sound_time.readSec() >= 3)
+			{
+				sound_time.start();
+			}
+			else
+			{
+				app->audio->playFx(app->entity_manager->fx_tank_sige_mode_on, 0);
+				sound_active = false;
+			}
+
+			if (current_animation->finished())
+				{
+					current_animation_turret->resume();
+					if (current_animation_turret->finished())
+					{
+						state = IDLE_SIEGE_MODE;
+						area_attack = true;
+						damage += 45;
+						path.clear();
+						has_target = false;
+						app->path->erase(id);
+						range_to_attack *= 2;
+					}
+				}
+			break;
+		}
+		
+	case SIEGE_MODE_OFF:
+		{
+			sound_active = true;
+			sound_time.start();
+			if (sound_active == false && sound_time.readSec() >= 3)
+			{
+				sound_time.start();
+			}
+			else
+			{
+				app->audio->playFx(app->entity_manager->fx_tank_sige_mode_off, 0);
+				sound_active = false;
+			}
+
 			if (current_animation_turret->finished())
 			{
-				state = IDLE_SIEGE_MODE;
-				area_attack = true;
-				damage *= 2;
-				path.clear();
-				has_target = false;
-				app->path->erase(id);
-				range_to_attack *= 2;
+				current_animation->resume();
+				if (current_animation->finished())
+				{
+					state = IDLE;
+					area_attack = false;
+					damage -= 45;
+					range_to_attack /= 2;
+				}
 			}
+			break; 
 		}
-		break;
-	case SIEGE_MODE_OFF:
-		if (current_animation_turret->finished())
-		{
-			current_animation->resume();
-			if (current_animation->finished())
-			{
-				state = IDLE;
-				area_attack = false;
-				damage /= 2;
-				range_to_attack /= 2;
-			}
-		}
-		break;
 	}
 	return true;
 
@@ -509,17 +541,6 @@ void Tank::setAnimationFromDirection()
 		break;
 	}
 	}
-}
-
-bool Tank::start()
-{
-	//Sounds (file names must be changed)
-	fx_sige_mode_on = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_Off.wav");
-	fx_sige_mode_turret = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_On.wav");
-	fx_missile_none_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileNoneSiege.wav");
-	fx_missile_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileSiege.wav");
-
-	return true;
 }
 
 void Tank::draw()
