@@ -833,6 +833,20 @@ bool Gui::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
+	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		app->render->camera.x = (app->render->camera.w / 2) - last_attack_position.x;
+		app->render->camera.y = (app->render->camera.h / 2) - last_attack_position.y;
+		if (app->render->camera.x >= 0)
+			app->render->camera.x = 0;
+		else if ((app->render->camera.x - app->render->camera.w) <= -map_limits.x)
+			app->render->camera.x = -map_limits.x + app->render->camera.w;
+		if (app->render->camera.y >= 0)
+			app->render->camera.y = 0;
+		else if ((app->render->camera.y - app->render->camera.h) <= -map_limits.y)
+			app->render->camera.y = -map_limits.y + app->render->camera.h;
+	}
+
 	// Cursor -> check for camera displacement.
 	iPoint pos = cursor->getLocalPos();
 	cursor->current_animation = &cursor->idle;

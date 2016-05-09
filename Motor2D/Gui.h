@@ -89,6 +89,7 @@ public:
 	iPoint cursor_offset;
 	iPoint map_limits;
 	float scroll_speed;
+	fPoint last_attack_position;
 
 	//Sounds
 	unsigned int fx_click_1;
