@@ -30,7 +30,7 @@ bool Map::awake(pugi::xml_node& config)
 bool Map::start()
 {
 	app->map->load("FINAL_MAP.tmx");
-	app->map->load("FINAL_MAP_LOGIC.tmx"); // This is the logic map where the units will be moving
+	app->map->load("FINAL_MAP_LOGIC_16.tmx"); // This is the logic map where the units will be moving
 
 	return true;
 }
