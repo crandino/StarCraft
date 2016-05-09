@@ -9,7 +9,7 @@
   <window>
     <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
-                fullscreen='false' 
+                fullscreen='true' 
                 resizable='false'
                 windowed='false' />
     <name>StarCraft</name>
