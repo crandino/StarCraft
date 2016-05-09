@@ -66,7 +66,6 @@ public:
 	Medic(iPoint &p);
 	~Medic();
 
-	//bool start();
 	bool update(float dt);
 
 	void setAnimationFromDirection();

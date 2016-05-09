@@ -23,6 +23,7 @@
 #include "CommandCenter.h"
 #include "Bunker.h"
 #include "Barrack.h"
+#include "Factory.h"
 #include "Blue.h"
 #include "Yellow.h"
 #include "Red.h"
@@ -228,8 +229,7 @@ bool EntityManager::loadEntityFX()
 bool EntityManager::start()
 {
 	next_ID = 0;
-
-	building_tile = app->tex->loadTexture("maps/Path_Tiles.png");
+	building_tile = app->tex->loadTexture("maps/PathTiles2.png");
 
 	loadEntityFX();
 	loadEntityTex();
@@ -299,6 +299,13 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		building_to_place = (Building*)e;
 		building_mode = !direct_creation;
 		create_bunker = false;
+		break;
+	case(FACTORY) :
+		LOG("Creating Factory");
+		e = new Factory(pos);
+		building_to_place = (Building*)e;
+		building_mode = !direct_creation;
+		create_factory = false;
 		break;
 	case(BARRACK) :
 		LOG("Creating Barrack");
@@ -550,7 +557,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		app->game_manager->mineral_resources -= 250;
 		app->game_manager->gas_resources -= 250;
-		addEntity(position, BARRACK);
+		addEntity(position, BARRACK, false);
 	}
 
 	if (create_factory)
@@ -560,7 +567,7 @@ bool EntityManager::preUpdate()
 		position = app->render->screenToWorld(position.x, position.y);
 		app->game_manager->mineral_resources -= 300;
 		app->game_manager->gas_resources -= 300;
-		addEntity(position, FACTORY);
+		addEntity(position, FACTORY, false);
 	}
 
 	return true;
@@ -1045,12 +1052,12 @@ void EntityManager::choosePlaceForBuilding()
 			point_to_draw = app->map->mapToWorld(app->map->data.back(), x, y);
 			if (app->path->isWalkable({ x, y }))
 			{
-				SDL_Rect r = { 1, 1, 8, 8 };
+				SDL_Rect r = { 0, 0, 16, 16 };
 				app->render->blit(building_tile, point_to_draw.x, point_to_draw.y, &r);
 			}
 			else
 			{
-				SDL_Rect r = { 10, 1, 8, 8 };
+				SDL_Rect r = { 16, 0, 16, 16 };
 				app->render->blit(building_tile, point_to_draw.x, point_to_draw.y, &r);
 			}
 		}

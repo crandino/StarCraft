@@ -230,8 +230,8 @@ Tank::Tank(iPoint &p)
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
-	damage = 5.0f;
-	attack_frequency = 200.0f;
+	damage = 30.0f;
+	attack_frequency = 3000.0f;
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;
@@ -461,7 +461,6 @@ bool Tank::update(float dt)
 	}
 	}
 	return true;
-
 }
 
 // Method that assign an animation according to its orientation
@@ -538,17 +537,6 @@ void Tank::setAnimationFromDirection()
 		break;
 	}
 	}
-}
-
-bool Tank::start()
-{
-	//Sounds (file names must be changed)
-	fx_sige_mode_on = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_Off.wav");
-	fx_sige_mode_turret = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/SiegeMode_On.wav");
-	fx_missile_none_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileNoneSiege.wav");
-	fx_missile_siege = app->audio->loadFx("Audio/FX/Units/Terran/SiegeTank/TankMissileSiege.wav");
-
-	return true;
 }
 
 void Tank::draw()

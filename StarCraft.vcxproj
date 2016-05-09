@@ -81,6 +81,7 @@
     <ClInclude Include="Motor2D\CommandCenter.h" />
     <ClInclude Include="Motor2D\Entity.h" />
     <ClInclude Include="Motor2D\EntityManager.h" />
+    <ClInclude Include="Motor2D\Factory.h" />
     <ClInclude Include="Motor2D\FileSystem.h" />
     <ClInclude Include="Motor2D\Firebat.h" />
     <ClInclude Include="Motor2D\FogOfWar.h" />

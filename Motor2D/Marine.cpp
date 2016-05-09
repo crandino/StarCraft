@@ -1,8 +1,6 @@
 #include "Marine.h"
 #include "Bunker.h"
 #include "PathFinding.h"
-#include <stdlib.h>
-#include <time.h>
 
 Marine::Marine(iPoint &p)
 {

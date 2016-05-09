@@ -3,8 +3,6 @@
 
 #include "Unit.h"
 #include "ParticleManager.h"
-#include <time.h>
-#include <stdlib.h>
 
 class Scv : public Unit
 {
@@ -66,11 +64,12 @@ public:
 
 	//Dead Particle
 	Particle	dead;
+
 	int			repair_power;
 
 	Scv(iPoint &p);
 	~Scv();
-
+			
 	bool update(float dt);
 	bool repair();
 	void move(float dt);

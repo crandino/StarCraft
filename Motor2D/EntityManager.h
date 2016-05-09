@@ -24,6 +24,7 @@ class Ultralisk;
 class CommandCenter;
 class Barrack;
 class Bunker;
+class Factory;
 
 class Bomb;
 
@@ -152,6 +153,8 @@ public:
 	SDL_Texture *tank_tex;
 
 	//Sounds (FX)
+	//Terran-------------------------------------------
+
 	//Terran-------------------------------------------
 
 	//Marine
@@ -309,7 +312,6 @@ public:
 	//Zergling
 	unsigned int fx_zergling_death;
 
-
 	//Hydralisk
 	unsigned int fx_hydralisk_attack;
 	unsigned int fx_hydralisk_death;
@@ -323,13 +325,13 @@ public:
 	unsigned int fx_ultralisk_attack_3;
 	unsigned int fx_ultralisk_death;
 
-
 	/* -------- Methods for building -----------------------*/
 	void choosePlaceForBuilding();
 
 private:
 	
 	uint			 next_ID;
+
 	bool			 debug = false;
 
 	// CRZ -> Variables to build buildings.

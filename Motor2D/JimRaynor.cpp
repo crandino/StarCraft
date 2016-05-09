@@ -276,13 +276,6 @@ JimRaynor::JimRaynor(iPoint &p)
 JimRaynor::~JimRaynor()
 { }
 
-bool JimRaynor::start()
-{
-	// Sounds
-	fx_attack = app->audio->loadFx("Audio/FX/Units/Terran/Attack.wav");
-	return true;
-}
-
 bool JimRaynor::update(float dt)
 {
 	checkUnitDirection();
@@ -352,11 +345,11 @@ bool JimRaynor::update(float dt)
 				}
 			}
 			else
-				if (!attack(target_to_attack))
-				{
-					state = IDLE;
-					target_to_attack = NULL;
-				}
+			if (!attack(target_to_attack))
+			{
+				state = IDLE;
+				target_to_attack = NULL;
+			}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;

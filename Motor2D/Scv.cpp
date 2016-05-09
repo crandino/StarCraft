@@ -1,5 +1,6 @@
 #include "Scv.h"
 #include "PathFinding.h"
+#include "Scv.h"
 
 Scv::Scv(iPoint &p)
 {

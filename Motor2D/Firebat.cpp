@@ -2,8 +2,6 @@
 #include "Bunker.h"
 #include "PathFinding.h"
 #include "GameManager.h"
-#include <stdlib.h>
-#include <time.h>
 
 Firebat::Firebat(iPoint &p)
 {
