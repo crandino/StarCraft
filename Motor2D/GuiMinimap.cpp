@@ -40,7 +40,7 @@ void GuiMinimap::update()
 		app->input->getMousePosition(mouse_pos);
 
 		if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
-			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x - rect.x, mouse_pos.y - rect.y }));
+			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x, mouse_pos.y }));
 	}
 
 	// Ping update
@@ -62,8 +62,8 @@ bool GuiMinimap::cleanUp()
 iPoint GuiMinimap::minimapToWorld(const iPoint &mini_map_pos) const
 {
 	iPoint world_pos;
-	world_pos.x = mini_map_pos.x / scale.x;
-	world_pos.y = mini_map_pos.y / scale.y;
+	world_pos.x = (mini_map_pos.x - rect.x) / scale.x;
+	world_pos.y = (mini_map_pos.y - rect.y) / scale.y;
 
 	// The method will never return the exact corners as world positions.
 	if (world_pos.x <= (app->render->camera.w / 2))
@@ -194,4 +194,15 @@ void GuiMinimap::activePing(iPoint attack_position)
 		it->initiate();
 		break;
 	}
+}
+
+bool GuiMinimap::isMouseInside()
+{
+	iPoint mouse_pos;
+	app->input->getMousePosition(mouse_pos);
+
+	if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
+		return true;
+
+	return false;
 }
