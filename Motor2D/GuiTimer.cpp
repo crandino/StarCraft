@@ -16,6 +16,7 @@ void GuiTimer::update()
 		int time = timer_associated->read();
 		time = total_time - time;
 
+		// If countdown has not finished...
 		if (time >= 0)
 		{
 			seconds = (time / 1000) % 60;
@@ -26,8 +27,7 @@ void GuiTimer::update()
 			crono.setText(c, 0);
 		}
 		else
-			active = false;
-		
+			active = false;		
 	}	
 }
 
