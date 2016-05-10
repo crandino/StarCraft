@@ -153,16 +153,22 @@ public:
 	//Wireframes
 	SDL_Texture* atlas_wireframes = nullptr;
 	//Bunkers
+	GuiLabel* bunkerName = nullptr;
 	GuiImage* bunkerWireframe = nullptr;
 	GuiLabel* bunkerInfo = nullptr;
+	GuiLabel* bunkerInfo2 = nullptr;
 	//Command Center
+	GuiLabel* commandCenterName = nullptr;
 	GuiImage* commandCenterWireframe = nullptr;
 	GuiLabel* commandCenterInfo = nullptr;
 	//Factory
+	GuiLabel* factoryName = nullptr;
 	GuiImage* factoryWireframe = nullptr;
 	GuiLabel* factoryInfo = nullptr;
 	//Barracks
+	GuiLabel* barrackName = nullptr;
 	GuiImage* barrackWireframe = nullptr;
+	GuiLabel* barrackInfo = nullptr;
 	//Marine
 	GuiImage* marineWireframe = nullptr;
 	//Medic

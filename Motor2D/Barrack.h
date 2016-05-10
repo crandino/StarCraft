@@ -9,6 +9,9 @@ public:
 
 	Animation idle;
 
+	//Barrack Info
+	char barrack_info[20];
+
 public:
 
 	Barrack() {}
@@ -57,6 +60,9 @@ public:
 
 	bool update(float dt)
 	{
+		sprintf_s(barrack_info, 20, "%u / 1000", current_hp);
+		app->gui->barrackInfo->setText(barrack_info, 2);
+
 		switch (state)
 		{
 		case IDLE:
@@ -65,6 +71,7 @@ public:
 			app->gui->barrackAlive = false;
 			if (timer_to_check.read() >= time_to_die)
 			{
+				current_hp = 0;
 				to_delete = true;
 				coll->to_delete = true;
 			}
