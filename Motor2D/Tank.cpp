@@ -488,23 +488,7 @@ void Tank::setAnimationFromDirection()
 		break;
 	}
 	case(MOVE) :
-	{
-		int num_animation = angle / (360 / move_animation_pack.size());
-		if (num_animation == move_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*move_animation_pack.at(num_animation));
-		current_animation_turret = &(*idle_animation_turret_pack.at(num_animation));
-		break;
-	}
 	case(MOVE_ALERT) :
-	{
-		int num_animation = angle / (360 / move_animation_pack.size());
-		if (num_animation == move_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*move_animation_pack.at(num_animation));
-		current_animation_turret = &(*idle_animation_turret_pack.at(num_animation));
-		break;
-	}
 	case(MOVE_ALERT_TO_ATTACK) :
 	{
 		int num_animation = angle / (360 / move_animation_pack.size());
@@ -513,22 +497,9 @@ void Tank::setAnimationFromDirection()
 		current_animation = &(*move_animation_pack.at(num_animation));
 		break;
 	}
+	case ATTACK:
 	case(WAITING_PATH_MOVE) :
-	{
-		int num_animation = angle / (360 / idle_animation_pack.size());
-		if (num_animation == idle_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*idle_animation_pack.at(num_animation));
-		break;
-	}
 	case(WAITING_PATH_MOVE_ALERT) :
-	{
-		int num_animation = angle / (360 / idle_animation_pack.size());
-		if (num_animation == idle_animation_pack.size())
-			num_animation = 0;
-		current_animation = &(*idle_animation_pack.at(num_animation));
-		break;
-	}
 	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
 	{
 		int num_animation = angle / (360 / idle_animation_pack.size());
