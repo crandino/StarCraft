@@ -149,6 +149,13 @@ public:
 
 	void controlIconsSprite();
 
+	//Wireframes and Info
+	//Wireframes
+	SDL_Texture* atlas_wireframes = nullptr;
+	//Bunkers
+	GuiImage* bunkerWireframe = nullptr;
+	GuiLabel* bunkerInfo = nullptr;
+
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
 	list<Bunker*> bunker_to_leave;
@@ -161,12 +168,6 @@ public:
 	GuiLabel* preparation_message2 = nullptr;
 	GuiLabel* second_phase_message1 = nullptr;
 	GuiLabel* second_phase_message2 = nullptr;
-
-
-
-
-
-
 
 	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;

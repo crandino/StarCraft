@@ -46,6 +46,9 @@ public:
 
 	bool raynor_inside = false;
 
+	//Bunker Info
+	char bunker_info[16];
+
 };
 
 #endif !__BUNKER_H__

@@ -307,6 +307,19 @@ bool Gui::start()
 	fx_click_error = app->audio->loadFx("Audio/FX/UI/Click_Error.wav");
 	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
 
+	//Wireframes and Info-------------------------------------------------------------------
+	atlas_wireframes = app->tex->loadTexture("wireframes.png");
+	//Bunker Wireframe
+	bunkerWireframe = app->gui->createImage(atlas_wireframes, { 796, 222, 66, 45 });
+	bunkerWireframe->setLocalPos(186, 407);
+	bunkerWireframe->can_focus = false;
+	bunkerWireframe->disable_element();
+	//Info 
+	bunkerInfo = app->gui->createLabel("", 2);
+	bunkerInfo->setLocalPos(291, 417);
+	bunkerInfo->disable_element();
+	bunkerInfo->can_focus = false;
+
 	return true;
 }
 
@@ -654,6 +667,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Activate new images
 				  ui_create_bot->enable_element();
 				  ui_create_builds->enable_element();
+
+				  //Wireframes
+				  bunkerWireframe->disable_element();
+				  bunkerInfo->disable_element();
 			  }
 			  
 		      break;
@@ -692,6 +709,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->disable_element();
 
+			  //Wireframe 
+			  bunkerWireframe->enable_element();
+			  bunkerInfo->enable_element();
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -734,6 +754,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->disable_element();
 
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
 
 			  break;
 
@@ -774,6 +797,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->enable_element();
 
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
+
 			  break;
 
 		  case (MARINE) :
@@ -809,6 +836,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->disable_element();
 
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
 
 			  break;
 			  
@@ -845,6 +875,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->disable_element();
 
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
 			  
 			  break;
 
@@ -881,6 +914,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->disable_element();
 
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
 			  
 			  break;
 
@@ -917,6 +953,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  ui_create_tank->disable_element();
 
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
 			  
 			  break;
 
@@ -956,6 +995,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				ui_create_tank->disable_element();
 
+				//Wireframes
+				bunkerWireframe->disable_element();
+				bunkerInfo->disable_element();
 
 				break;
 
@@ -986,7 +1028,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				  ui_create_tank->disable_element();
 
-			  
+				  //Wireframes
+				  bunkerWireframe->disable_element();
+				  bunkerInfo->disable_element();
+
 			  break;
 	}
 }
@@ -1130,11 +1175,6 @@ bool Gui::update(float dt)
 			gui_test->update();
 		}
 	}
-
-
-
-
-
 
 	//Icons Control 
 	controlIconsSprite();
@@ -1508,5 +1548,3 @@ void Gui::controlIconsSprite()
 		}
 	}
 }
-
-

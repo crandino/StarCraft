@@ -2,6 +2,7 @@
 #include "PathFinding.h"
 #include "p2Log.h"
 #include "GuiImage.h"
+#include "GuiLabel.h"
 
 Bunker::Bunker(iPoint &p)
 {
@@ -99,6 +100,11 @@ Bunker::~Bunker()
 
 bool Bunker::update(float dt)
 {
+	//Bunker info for gui----------------------------------------------
+	sprintf_s(bunker_info, 16, "Soldiers: %u / 4", units_inside.size() );
+	app->gui->bunkerInfo->setText(bunker_info, 2);
+	//------------------------------------------------------------------
+
 	checkDirection();
 	setParticleBehaviour();
 	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
