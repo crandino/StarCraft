@@ -202,6 +202,11 @@ Tank::Tank(iPoint &p)
 	idle_siege_mode_right_down_turret.loop = false;
 	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_right_down_turret);
 
+	//Dead Particle
+	dead.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	dead.anim.speed = 0.02f;
+	dead.anim.loop = false;
+
 	current_animation_turret = &idle_down_turret;
 
 	// Positions and information
@@ -249,6 +254,7 @@ bool Tank::update(float dt)
 {
 	checkUnitDirection();
 	setAnimationFromDirection();   // This sets animation according to their angle direction
+	setParticleBehaviour();
 	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
 	if (app->input->getKey(SDL_SCANCODE_Q) == KEY_DOWN)
@@ -599,4 +605,40 @@ void Tank::newEntityFound()
 	}
 	else if (app->path->createPath(tile_pos, target_to_attack->tile_pos, id) != -1) //the path to the selected entity is constructed
 		state = WAITING_PATH_MOVE_ALERT_TO_ATTACK;
+}
+
+void Tank::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case IDLE:
+		break;
+	case MOVE:
+		break;
+	case MOVE_ALERT:
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		break;
+	case ATTACK:
+		break;
+	case DYING:
+		particle = app->particle->addParticle(dead, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
+		break;
+	case WAITING_PATH_MOVE:
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		break;
+	case SIEGE_MODE_ON:
+		break;
+	case SIEGE_MODE_OFF:
+		break;
+	case IDLE_SIEGE_MODE:
+		break;
+	case ATTACK_SIEGE_MODE:
+		break;
+	default:
+		break;
+	}
 }

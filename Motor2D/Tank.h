@@ -61,7 +61,7 @@ public:
 	vector<Animation*>   idle_siege_mode_animation_turret_pack;
 
 	// Dead animation
-	Animation	dead;
+	Particle	dead;
 
 	bool		area_attack;
 	float		area_range;
@@ -81,6 +81,7 @@ public:
 	void siegeMode(bool siegeModeFlag);
 	void checkUnitDirection();
 	void newEntityFound();
+	void setParticleBehaviour();
 
 };
 
