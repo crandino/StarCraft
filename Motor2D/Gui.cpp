@@ -16,6 +16,7 @@
 #include "GuiMinimap.h"
 #include "GuiTimer.h"
 #include "GuiResources.h"
+#include "GuiInfo.h"
 
 #include "Bunker.h"
 #include "Tank.h"
@@ -245,34 +246,6 @@ bool Gui::start()
 	number_of_minerals->setLocalPos(508, 4);
 	number_of_minerals->interactive = false;
 	
-	background_messages = app->gui->createImage("UI_Panel_Messages.png");
-	background_messages->setLocalPos(-85, -3);
-	background_messages->disable_element();
-
-
-
-	//Text Messages
-	preparation_message = app->gui->createLabel("Starcraft: Last Hope", 2, TEXTMESSAGES);
-	preparation_message->setLocalPos(20,40);
-	preparation_message->disable_element();
-	
-
-
-	preparation_message2 = app->gui->createLabel("Keep Raynor alive", 2, TEXTMESSAGES);
-	preparation_message2->setLocalPos(10, 38);
-	preparation_message2->disable_element();
-
-
-	second_phase_message1 = app->gui->createLabel("The bomb has landed. Find it and take it to the command center", 2, TEXTMESSAGES);
-	second_phase_message1->setLocalPos(10, 25);
-	second_phase_message1->disable_element();
-	
-
-	second_phase_message2 = app->gui->createLabel("A bigger zerg combat force has been detected. Be fast.", 2, TEXTMESSAGES);
-	second_phase_message2->setLocalPos(10, 38);
-	second_phase_message2->disable_element();
-
-
 	//Image
 	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });
 	ui_gas->setLocalPos(550, 6);
@@ -281,7 +254,6 @@ bool Gui::start()
 	number_of_gass = app->gui->createLabel("0", 2);
 	number_of_gass->setLocalPos(568, 4);
 	number_of_gass->interactive = false;
-
 
 	//HUD Info SCV and Bunker------------------------------------------------
 	/*info_scv = app->gui->createImage(NULL, { 440, 4, 77, 36 });
@@ -402,6 +374,16 @@ bool Gui::start()
 	barrackName->can_focus = false;
 
 	return true;
+}
+
+GuiInfo* Gui::createInfo(iPoint pos, const char *tex_path)
+{
+	GuiInfo* ret = nullptr;
+	ret = new GuiInfo(pos, tex_path);
+
+	elements.push_back(ret);
+
+	return ret;
 }
 
 GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associated)
@@ -1526,8 +1508,8 @@ bool Gui::update(float dt)
 	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)
 	{
 		GuiElements* gui_test = *node;
-		gui_test->update(mouse_hover, focus);
-		if (gui_test->getType() == CURSOR || gui_test->getType() == MINIMAP || gui_test->getType() == TIMER)
+		//gui_test->update(mouse_hover, focus);
+		if (gui_test->getType() != IMAGE || gui_test->getType() != LABEL )
 		{
 			gui_test->update();
 		}
@@ -1713,22 +1695,6 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
 
 	return ret;
 }
-
-GuiLabel* Gui::createLabel(const char* text, int kind_of_font, GUI_TYPES type)
-{
-	GuiLabel* ret = NULL;
-
-	if (text != NULL)
-	{
-		ret = new GuiLabel(text, kind_of_font, type);
-
-		elements.push_back(ret);
-		app->game_manager->labels.push_back(ret);
-	}
-
-	return ret;
-}
-
 
 //Create cursor
 GuiCursor* Gui::createCursor(const SDL_Texture* texture){

@@ -18,7 +18,7 @@
 #include "GuiMinimap.h"
 
 #include "GuiImage.h"
-#include "GuiLabel.h"
+#include "GuiInfo.h"
 #include "GuiTimer.h"
 
 using namespace std;
@@ -70,7 +70,7 @@ enum bomb_position_enum
 	BOMBPOS4
 };
 
-
+// ---- GAME MANAGER -----
 
 GameManager::GameManager()
 {
@@ -90,8 +90,6 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_waves_phase3 = node.child("timeBetweenWavesPhase3").attribute("value").as_uint();
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
-
-
 
 	/*Player Info Load*/
 	initial_size.marines_quantityX = node.child("InitialSizePlayer").attribute("marinesX").as_int();
@@ -131,7 +129,8 @@ bool GameManager::awake(pugi::xml_node &node)
 		waves2_info.push_back(wave);
 	}
 
-	hold = node.child("hold").attribute("value").as_bool();
+	if (node.child("hold").attribute("value").as_bool())
+		game_state = HOLD;
 
 	return ret;
 }
@@ -142,6 +141,8 @@ bool GameManager::start()
 	bool ret = true;
 
 	LOG("LAST HOPE GAME STARTS!");
+
+	info_message = app->gui->createInfo({ -82, 0}, "UI_Panel_Messages_edit.png");
 
 	fx_win = app->audio->loadFx("Audio/FX/UI/YouWin.wav");
 	fx_lose = app->audio->loadFx("Audio/FX/UI/YouLose.wav");
@@ -226,14 +227,7 @@ bool GameManager::update(float dt)
 	int random = rand() % 4 +1;
 	int randombomb = rand() % 4 + 1;
 
-	 wave_pos = positionRandomizerWave(random, wave_pos);
-
-	 if (hold)
-	 {
-		 game_state = HOLD;
-		 start_game = true;
-	 }
-		
+	wave_pos = positionRandomizerWave(random, wave_pos);
 
 	switch (game_state)
 	{
@@ -244,7 +238,7 @@ bool GameManager::update(float dt)
 	case(PREPARATION) :
 	{
 		LOG("PREPARATION");
-		if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)
+		/*if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)*/
 			startGame();
 
 		break;
@@ -305,7 +299,7 @@ bool GameManager::update(float dt)
 			LOG("The bomb has landed look for it."); //Audio voice
 
 			bomb_pos = positionRandomizerBomb(random, bomb_pos);
-			bomb = (Bomb*)app->entity_manager->addEntity(bomb_pos, BOMB);
+			app->entity_manager->addEntity(bomb_pos, BOMB);
 			app->gui->mini_map->activePing(bomb_pos);
 			game_state = SECOND_PHASE;
 			timer_between_game_states.start();
@@ -448,6 +442,7 @@ bool GameManager::update(float dt)
 	}
 	case(HOLD) :
 	{
+		start_game = true;
 		break;
 	}	
 	case(QUIT): //When close button is pressed
@@ -597,85 +592,16 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		int dy = i - (wave->mutalisk_quantity / 2);
 		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
 	}
+
+	char c[200];
+	sprintf_s(c, "Next wave!\n  Zerglings = %d\n  Hydralisks = %d\n  Mutalisks = %d\n  Ultralisks = %d\n",
+		wave->zergling_quantity, wave->hydralisk_quantity, wave->mutalisk_quantity, wave->ultralisk_quantity);
+	info_message->newInfo(c, 15000);
 }
 
 bool GameManager::postUpdate()
-{/*
-	if (game_state == PREPARATION)//It draws the messages simulating a kind of console in preparation game state
-	{
-
-		if (timer_between_waves.readSec() >= 15.0f && timer_between_waves.readSec() >= 10.0f)
-		{
-			app->gui->text_message->setText("Jim Raynor must survive", 2);
-			app->gui->text_message->setLocalPos(10, 228);
-			app->gui->text_message->draw();
-		}
-
-		if (timer_between_waves.readSec() < 10.0f && timer_between_waves.readSec() > 5.0f)
-		{
-			app->gui->text_message->setText("Resist the upcoming waves", 2);
-			app->gui->text_message->setLocalPos(10, 228);
-			app->gui->text_message->draw();
-		}	
-
-		if (timer_between_waves.readSec() < 5.0f)
-			app->gui->text_message->draw();
-	
-
-		if (timer_between_waves.readSec() < 7.0f)
-		{
-			app->gui->background_messages->unable_element();
-			labels.at(0)->unable_element();
-		}
-		else if ( timer_between_waves.readSec() > 7.0f)
-		{
-			
-			labels.at(0)->setLocalPos(10,25);
-			labels.at(0)->unable_element();
-			labels.at(1)->unable_element();
-		}
-		
-	}
-	if (game_state == FIRST_PHASE )
-	{
-        labels.at(0)->disable_element();
-		labels.at(1)->disable_element();
-		app->gui->background_messages->disable_element();
-
-	}
-
-	if (game_state == SECOND_PHASE && wave_state == WAITING_FOR_WAVE_TO_START)//It draws the messages simulating a kind of console in preparation game state
-	{
-
-		if (3.0f < timer_between_waves.readSec() < 15.0f)
-		{
-			app->gui->background_messages->unable_element();
-			labels.at(2)->setLocalPos(10, 25);
-			labels.at(2)->unable_element();
-			labels.at(3)->unable_element();
-		}	
-
-
-	}
-
-
-	if (game_state == FINAL_PHASE)
-	{
-		app->gui->background_messages->disable_element();
-		labels.at(2)->disable_element();
-		labels.at(3)->disable_element();
-	}
-
-	
-
-
-	*/
-	return true;
-}
-
-void GameManager::addPoints(uint totalUnitsKilledCurrentFrame)
 {
-	total_score += zergling_score * totalUnitsKilledCurrentFrame;
+	return true;
 }
 
 bool GameManager::isWaveClear() 
@@ -824,14 +750,7 @@ void GameManager::restartGame()
 	}
 	//---------------------------------------------------------
 
-	//app->fog_of_war->clearMap();
-
 	current_wave = 0;
-	score = 0;
-	enemy_count = 0;
-	kill_count = 0;
-	score_current_wave = 0;
-	total_score = 0;
 	
 	resources = 0;
 	mineral_resources = 0;

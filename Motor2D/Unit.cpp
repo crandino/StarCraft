@@ -37,9 +37,6 @@ bool Unit::attack(Entity* target_to_attack)
 			{
 				ret = false;
 				target_to_attack->state = DYING;
-
-				if (faction == PLAYER)
-					app->game_manager->total_units_killed_currentFrame++;
 			}
 			if (target_to_attack->faction == PLAYER)
 				app->gui->lasts_attack_position.push_back(target_to_attack->center);
@@ -55,9 +52,6 @@ void Unit::attackWithoutRange(Entity* target_to_attack)
 		if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 		{
 			target_to_attack->state = DYING;
-
-			if (faction == PLAYER)
-				app->game_manager->total_units_killed_currentFrame++;
 		}
 	}
 }

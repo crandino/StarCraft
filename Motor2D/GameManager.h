@@ -46,15 +46,12 @@ enum WAVE_STATE
 	WAITING_FOR_WAVE_TO_START,
 	BEGINNING_WAVE,
 	MIDDLE_WAVE,
-	END_WAVE,
-	PHASE_END
+	END_WAVE
 };
 
-class GuiImage;
 using namespace std;
 
-//XML information
-
+//  -------- XML information ------------
 struct GameInformation
 {
 	uint total_waves;
@@ -80,7 +77,6 @@ struct SizeWave
 		ultralisk_quantity = ultra;
 	}
 
-
 	uint zergling_quantity;
 	uint hydralisk_quantity;
 	uint mutalisk_quantity;
@@ -95,33 +91,18 @@ struct initialSizePlayer
 	uint medic_quantity;
 	uint scv_quantity;
 };
+//  -------- XML information ------------
 
-//Class that manages the game. The win lose cycle, the points earned, the resources, waves etc..
 
-/*
-Place a timer, entity manager communicate zerg list/map etc..
-*/
+//Class that manages the game. The win lose cycle, the points earned, the resources, waves etc...
 class GameManager : public Module
 {
 public:
-
-	int score = 0;
-	int enemy_count = 0;
-	uint kill_count = 0;
-	iPoint initial_position;
-
-	/*---- Wave Creation ----*/
-	int center;
-	int radius_spawn_offset = 30;
-	uint total_kills_game = 0;
-	uint total_units_killed_currentFrame = 0;
 
 	//-------------Resources------------------
 	int       mineral_resources = 0;
 	int       gas_resources = 0;
 	int       resources = 0;
-
-public:
 
 	GameManager();
 
@@ -151,38 +132,13 @@ public:
 	void displayDefeatScreen();
 
 	void createMarines(iPoint position,unsigned int sizex, unsigned int sizey);
-
 	void eraseEnemiesIfKilled();
 
 	void AddPointsEnemy(Entity* e);
 
 public:
 	
-	//Score system attributes
-	uint score_current_wave = 0;
-	uint total_score = 0;
-	//Start/Exit Button
-	SDL_Texture* start_image = nullptr;
-	GuiImage* start_screen = nullptr;
-	GuiImage* start_button = nullptr;
-	GuiImage* close_button = nullptr;	
-	
-	//Victory Screen
-	SDL_Texture* victory_atlas = nullptr;
-	GuiImage* victory_screen = nullptr;
-	bool is_victory_screen_on = false;
-
-	//Defeat Screen
-	GuiImage* defeat_screen = nullptr;
-	SDL_Texture* defeat_atlas = nullptr;
-	bool is_defeat_screen_on = false;
-
-	//Ending Buttons
-	GuiImage* retry_button = nullptr;
-	GuiImage* exit_button = nullptr;
-
 	//Lose Conditions
-	// 
 	bool command_center_destroyed = false;
 	bool jim_raynor_dead = false;
 
@@ -208,7 +164,6 @@ public:
 
 	GameInformation gameInfo;
 
-
 	//States
 
 	GAME_STATE			 game_state;
@@ -226,7 +181,6 @@ private:
 	uint				 current_wave;
 	uint				 current_wave2 = 0;
 	map<uint, Entity*>	 current_wave_entities;
-	uint				 previous_unit_killed = 0;
 	uint				 wave2_power_counter = 0;
 
 	//Time Management attributes
@@ -246,13 +200,32 @@ private:
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
 	
-	
-
-
 	//Phase 2 
 	int					incrementPhase2WavePower();
 
-	bool				hold = false;
+	// ----------- GUI -------------------
+	//Start/Exit Button
+	SDL_Texture* start_image = nullptr;
+	GuiImage* start_screen = nullptr;
+	GuiImage* start_button = nullptr;
+	GuiImage* close_button = nullptr;
+
+	//Victory Screen
+	SDL_Texture* victory_atlas = nullptr;
+	GuiImage* victory_screen = nullptr;
+	bool is_victory_screen_on = false;
+
+	//Defeat Screen
+	GuiImage* defeat_screen = nullptr;
+	SDL_Texture* defeat_atlas = nullptr;
+	bool is_defeat_screen_on = false;
+
+	//Ending Buttons
+	GuiImage* retry_button = nullptr;
+	GuiImage* exit_button = nullptr;
+
+	// Info Message
+	GuiInfo		*info_message;
 };
 
 #endif

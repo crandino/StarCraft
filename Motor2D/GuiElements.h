@@ -16,8 +16,8 @@ public:
 	virtual void draw_static() const
 	{}
 	virtual void debugDraw() const;
-	virtual void update(const GuiElements* mouse_hover, const GuiElements* focus)
-	{}
+	/*virtual void update(const GuiElements* mouse_hover, const GuiElements* focus)
+	{}*/
 	virtual void update()
 	{}
 	void checkInput(const GuiElements* mouse_hover, const GuiElements* focus);
@@ -51,7 +51,7 @@ public:
 	unsigned int fx_click;
 
 protected:
-	GUI_TYPES type = UNKNOWN;
+	GUI_TYPES type;
 	Module* listener = nullptr;
 	bool have_focus = false;
 	SDL_Rect rect;

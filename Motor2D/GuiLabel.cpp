@@ -5,14 +5,7 @@
 #include "Textures.h"
 #include "Input.h"
 
-
-// class GuiLabel ---------------------------------------------------
-GuiLabel::GuiLabel(const char* text, int kind_of_font, GUI_TYPES type) : GuiElements()
-{
-	setText(text,kind_of_font);
-	this->type = type;
-}
-
+// class Label
 GuiLabel::GuiLabel(const char* text, int kind_of_font) : GuiElements()
 {
 	setText(text, kind_of_font);
@@ -26,16 +19,13 @@ GuiLabel::~GuiLabel()
 		app->tex->unloadTexture(texture);
 }
 
-
-
 // --------------------------
-void GuiLabel::setText(const char* text, int font)
+void GuiLabel::setText(const char* text, int font, uint max_wrapping)
 {
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);
 
-
-	texture = app->fonts->print(text, { 255, 255, 255, 255 },font);
+	texture = app->fonts->print(text, { 255, 255, 255, 255 },font, max_wrapping);
 	int w, h;
 	app->tex->GetSize(texture, (uint&)w, (uint&)h);
 	setSize(w, h);
