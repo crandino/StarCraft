@@ -1138,7 +1138,7 @@ bool Gui::update(float dt)
 		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 
 	Entity* entity_on_mouse = app->entity_manager->whichEntityOnMouse();
-	if (entity_on_mouse != NULL)
+	if (entity_on_mouse != NULL && app->fog_of_war->isVisible(entity_on_mouse->center.x, entity_on_mouse->center.y))
 	{
 		if (entity_on_mouse->faction == PLAYER)
 		{
