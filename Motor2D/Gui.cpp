@@ -309,7 +309,8 @@ bool Gui::start()
 
 	//Wireframes and Info-------------------------------------------------------------------
 	atlas_wireframes = app->tex->loadTexture("wireframes.png");
-	//Bunker Wireframe
+
+	//Bunker Wireframe-----------------------
 	bunkerWireframe = app->gui->createImage(atlas_wireframes, { 796, 222, 66, 45 });
 	bunkerWireframe->setLocalPos(186, 407);
 	bunkerWireframe->can_focus = false;
@@ -319,6 +320,28 @@ bool Gui::start()
 	bunkerInfo->setLocalPos(291, 417);
 	bunkerInfo->disable_element();
 	bunkerInfo->can_focus = false;
+
+	//CommandCenter Wireframe-----------------------
+	commandCenterWireframe = app->gui->createImage(atlas_wireframes, {4, 213, 65, 60 });
+	commandCenterWireframe->setLocalPos(186, 393);
+	commandCenterWireframe->can_focus = false;
+	commandCenterWireframe->disable_element();
+	//Info
+	commandCenterInfo = app->gui->createLabel("", 2);
+	commandCenterInfo->setLocalPos(190, 455);
+	commandCenterInfo->disable_element();
+	commandCenterInfo->can_focus = false;
+
+	//Factory Wireframe--------------------------
+	//factoryWireframe = app->gui->createImage(atlas_wireframes, { , , 66, 45 });
+	//factoryWireframe->setLocalPos(186, 407);
+	//factoryWireframe->can_focus = false;
+	//factoryWireframe->disable_element();
+	////Info
+	//factoryInfo = app->gui->createLabel("", 2);
+	//factoryInfo->setLocalPos();
+	//factoryInfo->disable_element();
+	//factoryInfo->can_focus = false;
 
 	return true;
 }
@@ -675,6 +698,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Wireframes
 				  bunkerWireframe->disable_element();
 				  bunkerInfo->disable_element();
+
+				  commandCenterWireframe->enable_element();
+				  commandCenterInfo->enable_element();
 			  }
 			  
 		      break;
@@ -716,6 +742,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframe 
 			  bunkerWireframe->enable_element();
 			  bunkerInfo->enable_element();
+
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -762,6 +791,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
 
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
+
 			  break;
 
 		  case (FACTORY) :
@@ -805,6 +837,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
 
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
+
 			  break;
 
 		  case (MARINE) :
@@ -844,6 +879,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
 
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
+
 			  break;
 			  
 		  case (MEDIC) :
@@ -882,6 +920,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
 			  
 			  break;
 
@@ -921,6 +962,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
 			  
 			  break;
 
@@ -960,6 +1004,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
 			  
 			  break;
 
@@ -1003,6 +1050,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				bunkerWireframe->disable_element();
 				bunkerInfo->disable_element();
 
+				commandCenterWireframe->disable_element();
+				commandCenterInfo->disable_element();
+
 				break;
 
 		  case (NOTYPE) :
@@ -1035,6 +1085,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Wireframes
 				  bunkerWireframe->disable_element();
 				  bunkerInfo->disable_element();
+
+				  commandCenterWireframe->disable_element();
+				  commandCenterInfo->disable_element();
 
 			  break;
 	}

@@ -2,12 +2,16 @@
 #define __COMMANDCENTER_H__
 
 #include "Building.h"
+#include "GuiLabel.h"
 
 class CommandCenter : public Building
 {
 public:
 
 	Animation idle;
+
+	//Command Center Info
+	char commandCenter_info[20];
 
 public:
 
@@ -57,6 +61,9 @@ public:
 
 	bool update(float dt)
 	{
+		sprintf_s(commandCenter_info, 20, "%u / 1500", current_hp);
+		app->gui->commandCenterInfo->setText(commandCenter_info, 2);
+
 		switch (state)
 		{
 		case IDLE:
@@ -64,6 +71,7 @@ public:
 		case DYING:
 			if (timer_to_check.read() >= time_to_die)
 			{
+				current_hp = 0;
 				to_delete = true;
 				coll->to_delete = true;
 			}

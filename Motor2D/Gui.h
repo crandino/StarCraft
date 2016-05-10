@@ -155,6 +155,25 @@ public:
 	//Bunkers
 	GuiImage* bunkerWireframe = nullptr;
 	GuiLabel* bunkerInfo = nullptr;
+	//Command Center
+	GuiImage* commandCenterWireframe = nullptr;
+	GuiLabel* commandCenterInfo = nullptr;
+	//Factory
+	GuiImage* factoryWireframe = nullptr;
+	GuiLabel* factoryInfo = nullptr;
+	//Barracks
+	GuiImage* barrackWireframe = nullptr;
+	//Marine
+	GuiImage* marineWireframe = nullptr;
+	//Medic
+	GuiImage* medicWireframe = nullptr;
+	//Firebat
+	GuiImage* firebatWireframe = nullptr;
+	//Tank
+	GuiImage* tankWireframe = nullptr;
+	//Raynor
+	GuiImage* raynorWireframe = nullptr;
+
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
