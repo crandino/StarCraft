@@ -401,6 +401,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			if (app->game_manager->mineral_resources >= 50)
 			{
 				app->entity_manager->create_SCV = true;
+				app->audio->playFx(app->entity_manager->fx_scv_ready, 0);
 				info_scv->draw_element = false;
 			}
 			else
@@ -495,7 +496,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 75)
 			{
 				app->entity_manager->create_marine = true;
-
+				app->audio->playFx(app->entity_manager->fx_marine_ready, 0);
 			}
 			else
 			{
@@ -523,6 +524,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			if (app->game_manager->gas_resources >= 100 && app->game_manager->mineral_resources >= 75)
 			{
 				app->entity_manager->create_medic = true;
+				app->audio->playFx(app->entity_manager->fx_medic_ready, 0);
 			}
 			else
 			{
@@ -550,6 +552,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			if (app->game_manager->gas_resources >= 200 && app->game_manager->mineral_resources >= 50)
 			{
 				app->entity_manager->create_firebat = true;
+				app->audio->playFx(app->entity_manager->fx_firebat_ready, 0);
 			}
 			else
 			{
@@ -577,6 +580,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			if (app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 200)
 			{
 				app->entity_manager->create_tank = true;
+				app->audio->playFx(app->entity_manager->fx_tank_ready, 0);
 			}
 			else
 			{
