@@ -269,7 +269,7 @@ bool Tank::update(float dt)
 	case IDLE_SIEGE_MODE:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchEnemy(false);
+			target_to_attack = searchEnemy(false, min_area_range);
 			if (target_to_attack != NULL)
 				newEntityFound();
 			timer_to_check.start();
