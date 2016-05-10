@@ -176,7 +176,7 @@ bool ParticleManager::loadParticlesFile(pugi::xml_document& file)
 	return ret;
 }
 
-Particle* ParticleManager::addParticle(const Particle& p, int x, int y, int offset_x, int offset_y, Uint32 secLife, SDL_Texture* texture, unsigned int sfx, uint32 delay)
+Particle* ParticleManager::addParticle(const Particle& p, int x, int y, int offset_x, int offset_y, float secLife, SDL_Texture* texture, unsigned int sfx, uint32 delay)
 {
 	Particle* part = NULL;
 
@@ -261,7 +261,7 @@ BurstEmisor* ParticleManager::addBurst(int x,int y)
 // PARTICLE--------------------------------
 
 
-Particle::Particle() : fx(0), life(0), fxPlayed(false), alive(false)
+Particle::Particle() : fx(0), life(0.0f), fxPlayed(false), alive(false)
 {
 	position.setZero();
 	speed.setZero();

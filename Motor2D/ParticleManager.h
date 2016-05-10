@@ -36,7 +36,7 @@ public:
 
 	bool cleanActiveEmisors();
 
-	Particle* addParticle(const Particle& p, int x, int y, int offset_x, int offset_y, Uint32 secLife = INT_MAX, SDL_Texture* texture = NULL,
+	Particle* addParticle(const Particle& p, int x, int y, int offset_x, int offset_y, float secLife, SDL_Texture* texture = NULL,
 		unsigned int sfx = 0, uint32 delay = 0);
 
 
@@ -73,7 +73,7 @@ struct Particle
 	fPoint				offset;
 	fPoint				initialPosition;
 	fPoint				speed;
-	Uint32				life;	// Time the particle life
+	float				life;	// Time the particle life
 	bool				fxPlayed;
 	Timer				timer;
 	SDL_Texture*		image = NULL;
