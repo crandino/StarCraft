@@ -11,7 +11,7 @@
 
 struct SDL_Texture;
 class Timer;
-class Particle;
+struct Particle;
 class Emisor;
 class FireEmisor;
 class BurstEmisor;

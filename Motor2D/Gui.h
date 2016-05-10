@@ -11,6 +11,7 @@ class GuiCursor;
 class GuiImage;
 class GuiLabel;
 class GuiMinimap;
+class GuiInfo;
 class GuiTimer;
 class GuiResources;
 using namespace std;
@@ -37,11 +38,10 @@ enum GUI_EVENTS
 
 enum GUI_TYPES
 {
-	UNKNOWN,
 	IMAGE,
 	CURSOR,
 	LABEL,
-	TEXTMESSAGES,
+	INFO,
 	MINIMAP,
 	TIMER,
 	RESOURCES
@@ -81,9 +81,9 @@ public:
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
-	GuiLabel* createLabel(const char* text, int kind_of_font, GUI_TYPES type);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
+	GuiInfo* createInfo(iPoint pos, const char *tex_path);
 	GuiResources* createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos,bool draw_element = false);
 
 

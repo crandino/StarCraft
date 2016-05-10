@@ -90,6 +90,7 @@
     <ClInclude Include="Motor2D\GuiCursor.h" />
     <ClInclude Include="Motor2D\GuiElements.h" />
     <ClInclude Include="Motor2D\GuiImage.h" />
+    <ClInclude Include="Motor2D\GuiInfo.h" />
     <ClInclude Include="Motor2D\GuiLabel.h" />
     <ClInclude Include="Motor2D\GuiResources.h" />
     <ClInclude Include="Motor2D\GuiTimer.h" />

@@ -10,12 +10,11 @@ struct SDL_Texture;
 class GuiLabel : public GuiElements
 {
 public:
-	GuiLabel(const char* text, int kind_of_font);
-	GuiLabel(const char* text, int kind_of_font, GUI_TYPES type);
 
+	GuiLabel(const char* text, int kind_of_font);	
 	~GuiLabel();
 
-	void setText(const char* text, int font);
+	void setText(const char* text, int font, uint max_wrapping = 680);
 	const SDL_Texture* getTexture() const;
 	void draw() const;
 

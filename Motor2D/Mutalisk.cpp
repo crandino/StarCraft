@@ -339,7 +339,6 @@ bool Mutalisk::attack(Entity* target_to_attack)
 			{
 				ret = false;
 				target_to_attack->state = DYING;
-				app->game_manager->total_units_killed_currentFrame++;
 			}
 			if (target_to_attack->faction == PLAYER)
 				app->gui->lasts_attack_position.push_back(target_to_attack->center);
@@ -347,7 +346,6 @@ bool Mutalisk::attack(Entity* target_to_attack)
 			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				second_target_to_attack->state = DYING;
-				app->game_manager->total_units_killed_currentFrame++;
 			}
 		}
 	}

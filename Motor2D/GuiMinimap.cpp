@@ -42,7 +42,7 @@ void GuiMinimap::update()
 		if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
 			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x, mouse_pos.y }));
 	}
-
+	
 	// Ping update
 	for (array<PingInfo, 4>::iterator it = ping_set.begin(); it != ping_set.end(); ++it)
 	{
@@ -113,71 +113,72 @@ void GuiMinimap::draw() const
 		}
 	}
 
-		//print units
-		if (active_entities != NULL)
+	//print units
+	if (active_entities != NULL)
+	{
+		for (std::map<uint, Entity*>::iterator it = active_entities->begin(); it != active_entities->end(); ++it)
 		{
-			for (std::map<uint, Entity*>::iterator it = active_entities->begin(); it != active_entities->end(); ++it)
+			Entity* entity = it->second;
+ 			iPoint quad_pos = worldToMinimap({ (int)entity->center.x, (int)entity->center.y });
+
+			// Set drawing quad for each unit
+			// Choose quad color
+			// send to render
+
+			switch (entity->specialization)
 			{
-				Entity* entity = it->second;
-				iPoint quad_pos = worldToMinimap({ (int)entity->center.x, (int)entity->center.y });
-
-				// Set drawing quad for each unit
-				// Choose quad color
-				// send to render
-
-				switch (entity->specialization)
+			case ZERGLING:
+			case MUTALISK:
+			case HYDRALISK:
+			case ULTRALISK:
+				if (!debug)
 				{
-				case ZERGLING:
-				case MUTALISK:
-				case HYDRALISK:
-				case ULTRALISK:
-					if (!debug)
-					{
-						if (app->fog_of_war->isVisible(entity->center.x, entity->center.y))
-							app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 255, 0, 0);
-					}
-					else 
+					if (app->fog_of_war->isVisible(entity->center.x, entity->center.y))
 						app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 255, 0, 0);
-
-					break;
-				case JIM_RAYNOR:
-					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 255, 0);
-					break;
-				case BUNKER:
-					if (((Bunker*)entity)->raynor_inside)
-					   app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 255, 255, 0);
-					else
-					   app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 0, 0, 255);
-					break;
-				case BOMB:
-					if (!debug)
-					{
-						if (app->fog_of_war->isVisible(entity->center.x, entity->center.y))
-							app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 0, 255);
-					}
-					else
-						app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 0, 255);
-					break;
-				default:
-					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 0, 0, 255);
-					break;
 				}
+				else 
+					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 255, 0, 0);
+
+				break;
+			case JIM_RAYNOR:
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 255, 0);
+				break;
+			case BUNKER:
+				if (((Bunker*)entity)->raynor_inside)
+					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 255, 255, 0);
+				else
+					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 0, 0, 255);
+				break;
+			case BOMB:
+				if (!debug)
+				{
+					if (app->fog_of_war->isVisible(entity->center.x, entity->center.y))
+						app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 0, 255);
+				}
+				else
+					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 0, 255);
+				break;
+			default:
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 0, 0, 255);
+				break;
 			}
-
 		}
+	}
 
-		// print area
-		iPoint pos = worldToMinimap({ -app->render->camera.x, -app->render->camera.y });
-		app->render->DrawQuad({ pos.x, pos.y, area.w, area.h }, 255, 255, 255, 255, false);
+	// print area
+	iPoint pos = worldToMinimap({ -app->render->camera.x, -app->render->camera.y });
+	app->render->DrawQuad({ pos.x, pos.y, area.w, area.h }, 255, 255, 255, 255, false);
 
-		for (array<PingInfo, 4>::const_iterator it = ping_set.begin(); it != ping_set.end(); ++it)
+	for (array<PingInfo, 4>::const_iterator it = ping_set.begin(); it != ping_set.end(); ++it)
+	{
+		if (it->ping_active)
 		{
-			if (it->ping_active)
-				app->render->DrawQuad({ (int)it->ping_position.x - it->current_ping_width / 2,
-				(int)it->ping_position.y - it->current_ping_height / 2,
-				it->current_ping_width, it->current_ping_height }, 255, 0, 0, 255, false, false);
+			pos = worldToMinimap({ it->ping_position.x, it->ping_position.y });
+			app->render->DrawQuad({ pos.x - it->current_ping_width / 2,
+				pos.y - it->current_ping_height / 2,
+				it->current_ping_width, it->current_ping_height }, 255, 0, 0, 255, false);
 		}
-
+	}		
 }
 
 void GuiMinimap::calculateScale()
@@ -196,7 +197,7 @@ void GuiMinimap::activePing(iPoint attack_position)
 		if (it->ping_active)
 			continue;
 
-		it->ping_position = worldToMinimap(attack_position);
+		it->ping_position = attack_position;
 		it->initiate();
 		break;
 	}

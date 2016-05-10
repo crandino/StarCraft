@@ -87,15 +87,15 @@ TTF_Font* const Fonts::load(const char* path, int size)
 }
 
 // Print text using font
-SDL_Texture* Fonts::print(const char* text, SDL_Color color, int kind_of_font, TTF_Font* font)
+SDL_Texture* Fonts::print(const char* text, SDL_Color color, int kind_of_font, uint max_wrapping, TTF_Font* font)
 {
 	SDL_Texture* ret = NULL;
 	SDL_Surface* surface;
 
 	if (kind_of_font == 1)
-		surface = TTF_RenderText_Blended(default, text, color);
+		surface = TTF_RenderText_Blended_Wrapped(default, text, color, max_wrapping);
 	else
-		surface = TTF_RenderText_Blended(default_2, text, color);
+		surface = TTF_RenderText_Blended_Wrapped(default_2, text, color, max_wrapping);
 
 	if (surface == NULL)
 	{
