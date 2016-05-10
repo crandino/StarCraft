@@ -125,6 +125,9 @@
     <ClCompile Include="Motor2D\Scv.cpp">
       <Filter>Entities\Terran_Units</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\GuiTimer.cpp">
+      <Filter>UI_elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -291,6 +294,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\Factory.h">
       <Filter>Entities\Terran_Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\GuiTimer.h">
+      <Filter>UI_elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

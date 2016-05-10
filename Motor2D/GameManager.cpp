@@ -19,6 +19,7 @@
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
+#include "GuiTimer.h"
 
 using namespace std;
 
@@ -201,6 +202,9 @@ bool GameManager::start()
 	exit_button->setListener(this);
 
 	game_state = INITIAL_SCREEN;
+
+	// Create Graphic Timers
+	wave_timer = app->gui->createTimer({ 200, 6 }, NULL, timer_between_game_states);
 
 	return ret;
 }
@@ -650,16 +654,16 @@ void GameManager::startGame()
 	jim_position = &app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR)->center;
 	app->entity_manager->addEntity(iPoint(1520, 2150), MEDIC);
 	//--------
-
-
+	
 	app->render->setCameraOnPosition(p);
 	
-
 	resources = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
 
 	timer_between_waves.start();
+	wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
+	wave_timer->initiate();
 }
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)

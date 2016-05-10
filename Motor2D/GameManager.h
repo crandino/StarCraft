@@ -8,6 +8,8 @@
 #include "Gui.h"
 #include "PugiXml\src\pugixml.hpp"
 
+class GuiTimer;
+
 //Number to change the number of waves
 #define TOTALWAVES 2
 #define WAVETIME1 5.0f //120 = 2 minutes per wave in the future or some other game designish number
@@ -208,7 +210,6 @@ public:
 	//States
 
 	GAME_STATE			 game_state;
-
 	WAVE_STATE			 wave_state;
 
 	vector<SizeWave*>	 waves_info;
@@ -228,6 +229,7 @@ private:
 	//Time Management attributes
 	Timer				 timer_between_waves;
 	Timer				 timer_between_game_states;
+	GuiTimer			 *wave_timer;
 
 	bool				 start_game = false;
 

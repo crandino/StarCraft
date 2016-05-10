@@ -11,6 +11,7 @@ class GuiCursor;
 class GuiImage;
 class GuiLabel;
 class GuiMinimap;
+class GuiTimer;
 using namespace std;
 
 
@@ -39,7 +40,8 @@ enum GUI_TYPES
 	IMAGE,
 	CURSOR,
 	LABEL,
-	MINIMAP
+	MINIMAP,
+	TIMER
 };
 
 // ---------------------------------------------------
@@ -76,6 +78,7 @@ public:
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
+	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
@@ -160,6 +163,9 @@ public:
 	//HUD Info SCV and Bunker-----------------
 	GuiImage* info_scv = nullptr;
 	GuiImage* info_bunker = nullptr;
+
+	// HUD Graphic Timers
+	GuiTimer *wave_timer;
 
 	// HUD Minimap
 	GuiMinimap* mini_map;
