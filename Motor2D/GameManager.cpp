@@ -600,10 +600,10 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 }
 
 bool GameManager::postUpdate()
-{
+{/*
 	if (game_state == PREPARATION)//It draws the messages simulating a kind of console in preparation game state
 	{
-/*
+
 		if (timer_between_waves.readSec() >= 15.0f && timer_between_waves.readSec() >= 10.0f)
 		{
 			app->gui->text_message->setText("Jim Raynor must survive", 2);
@@ -621,7 +621,7 @@ bool GameManager::postUpdate()
 		if (timer_between_waves.readSec() < 5.0f)
 			app->gui->text_message->draw();
 	
-*/
+
 		if (timer_between_waves.readSec() < 7.0f)
 		{
 			app->gui->background_messages->unable_element();
@@ -669,7 +669,7 @@ bool GameManager::postUpdate()
 	
 
 
-
+	*/
 	return true;
 }
 
