@@ -42,7 +42,7 @@ CommandCenter::~CommandCenter()
 bool CommandCenter::update(float dt)
 {
 	sprintf_s(commandCenter_info, 20, "%u / 1500", current_hp);
-	app->gui->commandCenterInfo->setText(commandCenter_info, 2);
+	app->gui->commandCenterInfo->setText(commandCenter_info, 3);
 
 	switch (state)
 	{

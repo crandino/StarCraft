@@ -39,6 +39,7 @@ public:
 	list<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
 	_TTF_Font*			default_2;
+	_TTF_Font*			default_3;
 };
 
 

@@ -473,13 +473,13 @@ bool GameManager::update(float dt)
 	//Change the number of RESOURCES HUD ingame-----------------------
 	char n2[20];
 	sprintf_s(n2, 20, "%i", mineral_resources);
-	app->gui->number_of_minerals->setText(n2, 2);
+	app->gui->number_of_minerals->setText(n2, 3);
 
 
 	//Change the number of RESOURCES HUD ingame-----------------------
 	char n3[20];
 	sprintf_s(n3, 20, "%i", gas_resources);
-	app->gui->number_of_gass->setText(n3, 2);
+	app->gui->number_of_gass->setText(n3, 3);
 
 	//ROGER: Add resources
 	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)

@@ -43,7 +43,7 @@ Barrack::~Barrack()
 bool Barrack::update(float dt)
 {
 	sprintf_s(barrack_info, 20, "%u / 1000", current_hp);
-	app->gui->barrackInfo->setText(barrack_info, 2);
+	app->gui->barrackInfo->setText(barrack_info, 3);
 
 	switch (state)
 	{

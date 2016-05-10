@@ -66,6 +66,7 @@
 
   <fonts>
     <default_font size="24" file="Font/Starcraft_Normal.ttf"/>
+    <resources_font size="12" file="Font/OpenSans-Regular.ttf"/>
     <default_font size="12" file="Font/OpenSans-Regular.ttf"/>
   </fonts>
   

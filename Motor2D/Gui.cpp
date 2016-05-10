@@ -242,7 +242,7 @@ bool Gui::start()
 	ui_mineral->setLocalPos(490, 6);
 
 	//Number of minerals
-	number_of_minerals = app->gui->createLabel("0", 2);
+	number_of_minerals = app->gui->createLabel("0", 3);
 	number_of_minerals->setLocalPos(508, 4);
 	number_of_minerals->interactive = false;
 	
@@ -251,7 +251,7 @@ bool Gui::start()
 	ui_gas->setLocalPos(550, 6);
 
 	//Label gass
-	number_of_gass = app->gui->createLabel("0", 2);
+	number_of_gass = app->gui->createLabel("0", 3);
 	number_of_gass->setLocalPos(568, 4);
 	number_of_gass->interactive = false;
 
@@ -333,12 +333,12 @@ bool Gui::start()
 	bunkerWireframe->can_focus = false;
 	bunkerWireframe->disable_element();
 	//Info 
-	bunkerInfo = app->gui->createLabel("a", 2);
+	bunkerInfo = app->gui->createLabel("a", 3);
 	bunkerInfo->setLocalPos(280, 417);
 	bunkerInfo->disable_element();
 	bunkerInfo->can_focus = false;
 	//Name
-	bunkerName = app->gui->createLabel("Bunker", 2);
+	bunkerName = app->gui->createLabel("Bunker", 3);
 	bunkerName->setLocalPos(280, 391);
 	bunkerName->disable_element();
 	bunkerName->can_focus = false;
@@ -349,12 +349,12 @@ bool Gui::start()
 	commandCenterWireframe->can_focus = false;
 	commandCenterWireframe->disable_element();
 	//Info
-	commandCenterInfo = app->gui->createLabel("a", 2);
+	commandCenterInfo = app->gui->createLabel("a", 3);
 	commandCenterInfo->setLocalPos(190, 455);
 	commandCenterInfo->disable_element();
 	commandCenterInfo->can_focus = false;
 	//Name
-	commandCenterName = app->gui->createLabel("Command Center", 2);
+	commandCenterName = app->gui->createLabel("Command Center", 3);
 	commandCenterName->setLocalPos(265, 391);
 	commandCenterName->disable_element();
 	commandCenterName->can_focus = false;
@@ -365,12 +365,12 @@ bool Gui::start()
 	factoryWireframe->can_focus = false;
 	factoryWireframe->disable_element();
 	//Info
-	factoryInfo = app->gui->createLabel("a", 2);
+	factoryInfo = app->gui->createLabel("a", 3);
 	factoryInfo->setLocalPos(190, 455);
 	factoryInfo->disable_element();
 	factoryInfo->can_focus = false;
 	//Name
-	factoryName = app->gui->createLabel("Factory", 2);
+	factoryName = app->gui->createLabel("Factory", 3);
 	factoryName->setLocalPos(280, 391);
 	factoryName->disable_element();
 	factoryName->can_focus = false;
@@ -381,12 +381,12 @@ bool Gui::start()
 	barrackWireframe->can_focus = false;
 	barrackWireframe->disable_element();
 	//Info
-	barrackInfo = app->gui->createLabel("a", 2);
+	barrackInfo = app->gui->createLabel("a", 3);
 	barrackInfo->setLocalPos(190, 455);
 	barrackInfo->disable_element();
 	barrackInfo->can_focus = false;
 	//Name
-	barrackName = app->gui->createLabel("Barrack", 2);
+	barrackName = app->gui->createLabel("Barrack", 3);
 	barrackName->setLocalPos(280, 391);
 	barrackName->disable_element();
 	barrackName->can_focus = false;
@@ -1723,10 +1723,10 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 	return label;
 }*/
 
-GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
-{
-	GuiLabel* ret = NULL;
-
+GuiLabel* Gui::createLabel(const char* text, int kind_of_font) //1 for default Starcrfat font
+{                                                              //2 for resources font
+	GuiLabel* ret = NULL;                                      //3 for default sans font
+	                                                           //change the size of those fonts at the config.xml
 	if (text != NULL)
 	{
 		ret = new GuiLabel(text,kind_of_font);

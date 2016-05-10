@@ -38,8 +38,12 @@ bool Fonts::awake(pugi::xml_node& conf)
 		pugi::xml_node		node = conf.child("default_font");
 		node = node.next_sibling("default_font");
 
-		const char* path2 = node.attribute("file").as_string(DEFAULT_FONT);
-		int size2 = node.attribute("size").as_int(DEFAULT_FONT_SIZE);
+		const char* path3 = node.attribute("file").as_string(DEFAULT_FONT);
+		int size3 = node.attribute("size").as_int(DEFAULT_FONT_SIZE);
+		default_3 = load(path3, size3);
+
+		const char* path2 = conf.child("resources_font").attribute("file").as_string(DEFAULT_FONT);
+		int size2 = conf.child("resources_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
 		default_2 = load(path2, size2);
 
 	}
@@ -94,8 +98,10 @@ SDL_Texture* Fonts::print(const char* text, SDL_Color color, int kind_of_font, u
 
 	if (kind_of_font == 1)
 		surface = TTF_RenderText_Blended_Wrapped(default, text, color, max_wrapping);
-	else
+	else if (kind_of_font == 2)
 		surface = TTF_RenderText_Blended_Wrapped(default_2, text, color, max_wrapping);
+	else
+		surface = TTF_RenderText_Blended_Wrapped(default_3, text, color, max_wrapping);
 
 	if (surface == NULL)
 	{
