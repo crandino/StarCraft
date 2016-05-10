@@ -95,6 +95,22 @@ void GuiMinimap::draw() const
 	//print map
 	if (tex != NULL)
 		app->render->blit(tex, rect.x - app->render->camera.x, rect.y - app->render->camera.y);
+	//FOG_OF_WAR 
+	//fog of war on mini map
+	//uint iterations = 0;
+	//for (int x = 0; x < 4096; x += 32) //the map is iterated
+	//{
+	//	for (int y = 0; y < 4096; y += 32)
+	//	{
+	//		if (app->fog_of_war->isVisible(x, y) == false) //if a non-visible tile is found we print it as a black pixel 
+	//		{
+	//			iPoint fog_pos = worldToMinimap({ x, y });
+	//			app->render->DrawQuad({ fog_pos.x, fog_pos.y, 1, 1 }, 0, 0, 0, 175);
+	//		}
+	//		++iterations;
+	//	}
+	//}
+	//LOG("Fog of War does %d", iterations);
 
 	//print units
 	if (active_entities != NULL)
@@ -114,6 +130,7 @@ void GuiMinimap::draw() const
 			case MUTALISK:
 			case HYDRALISK:
 			case ULTRALISK:
+				if (app->fog_of_war->isVisible(entity->center.x, entity->center.y))
 				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 255, 0, 0);
 				break;
 			case JIM_RAYNOR:
@@ -133,8 +150,9 @@ void GuiMinimap::draw() const
 				break;
 			}	
 		}
-	}
 
+	}
+	
 	// print area
 	iPoint pos = worldToMinimap({ -app->render->camera.x, -app->render->camera.y });
 	app->render->DrawQuad({ pos.x, pos.y, area.w, area.h }, 255, 255, 255, 255, false);
