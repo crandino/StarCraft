@@ -148,6 +148,9 @@ bool Scene::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
+	//FOG_OF_WAR
+	app->entity_manager->updateFogOfWar();
+
 	if (!debug)
 	app->fog_of_war->draw();
 
@@ -163,6 +166,7 @@ bool Scene::postUpdate()
 	{
 		fog_of_war_timer.start();
 		app->fog_of_war->clearMap(0);
+		app->entity_manager->updateFogOfWar();
 	}
 
 	bool ret = true;

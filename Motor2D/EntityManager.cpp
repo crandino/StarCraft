@@ -609,8 +609,6 @@ bool EntityManager::update(float dt)
 	for (; it != active_entities.end(); ++it)
 			it->second->update(dt);
 
-	//FOG_OF_WAR
-	updateFogOfWar();
 	return true;
 }
 
