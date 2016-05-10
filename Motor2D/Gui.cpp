@@ -240,6 +240,18 @@ bool Gui::start()
 	preparation_message2->interactive = false;
 	preparation_message2->getType();
 
+	second_phase_message1 = app->gui->createLabel("The bomb has landed. Find it and take it to the command center", 2, TEXTMESSAGES);
+	second_phase_message1->setLocalPos(10, 240);
+	second_phase_message1->interactive = false;
+	second_phase_message1->getType();
+
+	second_phase_message2 = app->gui->createLabel("A bigger zerg combat force has been detected. Be fast.", 2, TEXTMESSAGES);
+	second_phase_message2->setLocalPos(10, 240);
+	second_phase_message2->interactive = false;
+	second_phase_message2->getType();
+
+
+
 
 	//Image
 	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });

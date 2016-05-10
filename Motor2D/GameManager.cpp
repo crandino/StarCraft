@@ -586,19 +586,36 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 bool GameManager::postUpdate()
 {
-	
-	if (game_state == PREPARATION && timer_between_waves.readSec() < 7.0f)
+	if (game_state == PREPARATION)//It draws the messages simulating a kind of console in preparation game state
 	{
-		labels.at(0)->draw();
-	}
-		
+		if (timer_between_waves.readSec() < 7.0f)
+			labels.at(0)->draw();
 
-	else if (game_state == PREPARATION && timer_between_waves.readSec() > 7.0f)
+		else if ( timer_between_waves.readSec() > 7.0f)
+		{
+			labels.at(0)->setLocalPos(10,228);
+			labels.at(0)->draw();
+			labels.at(1)->draw();
+		}	
+	}
+
+	if (game_state == SECOND_PHASE && game_state == WAITING_FOR_WAVE_TO_START)//It draws the messages simulating a kind of console in preparation game state
 	{
-		labels.at(0)->setLocalPos(10,228);
-		labels.at(0)->draw();
-		labels.at(1)->draw();
-	}	
+		if (timer_between_waves.readSec() < 7.0f)
+			labels.at(1)->draw();
+
+		else if (timer_between_waves.readSec() > 7.0f)
+		{
+			labels.at(1)->setLocalPos(10, 228);
+			labels.at(1)->draw();
+			labels.at(2)->draw();
+		}
+	}
+
+
+
+
+
 
 	return true;
 }

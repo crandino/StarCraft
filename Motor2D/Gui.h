@@ -155,7 +155,8 @@ public:
 	//MESSAGES FOR THE PLAYER
 	GuiLabel* preparation_message = nullptr;
 	GuiLabel* preparation_message2 = nullptr;
-
+	GuiLabel* second_phase_message1 = nullptr;
+	GuiLabel* second_phase_message2 = nullptr;
 
 
 

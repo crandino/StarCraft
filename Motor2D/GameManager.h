@@ -203,7 +203,7 @@ public:
 
 	GameInformation gameInfo;
 
-	//Info text messages
+	//Info label
 	vector<GuiLabel*>	labels;
 
 
