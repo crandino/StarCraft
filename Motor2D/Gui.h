@@ -12,6 +12,7 @@ class GuiImage;
 class GuiLabel;
 class GuiMinimap;
 class GuiTimer;
+class GuiResources;
 using namespace std;
 
 
@@ -42,7 +43,8 @@ enum GUI_TYPES
 	LABEL,
 	TEXTMESSAGES,
 	MINIMAP,
-	TIMER
+	TIMER,
+	RESOURCES
 
 };
 
@@ -82,6 +84,8 @@ public:
 	GuiLabel* createLabel(const char* text, int kind_of_font, GUI_TYPES type);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
+	GuiResources* createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos);
+
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
@@ -204,6 +208,9 @@ public:
 	//HUD Info SCV and Bunker-----------------
 	GuiImage* info_scv = nullptr;
 	GuiImage* info_bunker = nullptr;
+
+	GuiResources* info_scv2 = nullptr;
+
 
 	// HUD Graphic Timers
 	GuiTimer *wave_timer;

@@ -15,6 +15,7 @@
 #include "GuiLabel.h"
 #include "GuiMinimap.h"
 #include "GuiTimer.h"
+#include "GuiResources.h"
 
 #include "Bunker.h"
 
@@ -267,6 +268,10 @@ bool Gui::start()
 	info_scv->interactive = false;
 	info_scv->draw_element = false;
 
+	info_scv2 = app->gui->createResourceInfo("asdfasdfasdf", "100", "100", {505,300});
+	info_scv2->interactive = false;
+	info_scv2->draw_element = false;
+
 	info_bunker = app->gui->createImage(NULL, { 440, 43, 126, 33 });
 	info_bunker->setLocalPos(545, 323);
 	info_bunker->interactive = false;
@@ -390,6 +395,16 @@ GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associ
 	return ret;
 }
 
+GuiResources* Gui::createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos)
+{
+	GuiResources* ret = nullptr;
+	ret = new GuiResources(_entity_name, _mineral, _gas, pos);
+
+	elements.push_back(ret);
+
+	return ret;
+}
+
 GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex)
 {
 	GuiMinimap* ret = nullptr;
@@ -441,10 +456,12 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_ENTERS) :
 			info_scv->draw_element = true;
+			info_scv2->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
 			info_scv->draw_element = false;
+			info_scv2->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
