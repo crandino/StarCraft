@@ -46,8 +46,6 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the marine
 	bool			     inside_bunker = false;		// It's inside?
 
-	uint dead_timer;
-
 	// ---- Methods ----
 	Marine(iPoint &p);
 	~Marine();

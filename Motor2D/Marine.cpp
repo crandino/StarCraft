@@ -263,9 +263,6 @@ Marine::Marine(iPoint &p)
 	range_to_attack = 100;
 	damage = 5.0f;
 	attack_frequency = 200.0f;
-	
-	//Sounds
-	dead_timer = 0;
 
 	// PathFinding and movement variables
 	speed = 10.0f;	
@@ -360,19 +357,15 @@ bool Marine::update(float dt)
 		break;
 	case DYING:
 	{
-		if (dead_timer < 1)
+		static uint fx;
+		fx = rand() % 2 + 1;
+		if (fx == 1)
 		{
-			static uint fx;
-			fx = rand() % 2 + 1;
-			if (fx == 1)
-			{
-				app->audio->playFx(app->entity_manager->fx_marine_death_1, 0);
-			}
-			if (fx == 2)
-			{
-				app->audio->playFx(app->entity_manager->fx_marine_death_2, 0);
-			}
-			dead_timer += 1;
+			app->audio->playFx(app->entity_manager->fx_marine_death_1, 0);
+		}
+		if (fx == 2)
+		{
+			app->audio->playFx(app->entity_manager->fx_marine_death_2, 0);
 		}
 
 		if (current_animation->finished())
