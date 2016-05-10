@@ -471,15 +471,18 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == COMMANDCENTER)
 			{
-				iPoint position;
-				pos_commander = it->second->pos;
-				app->game_manager->mineral_resources -= 50;
-				position.x = pos_commander.x + 20;
-				position.y = pos_commander.y + 100;
+				if (app->game_manager->mineral_resources >=50)
+				{
+					iPoint position;
+					pos_commander = it->second->pos;
+					app->game_manager->mineral_resources -= 50;
+					position.x = pos_commander.x + 20;
+					position.y = pos_commander.y + 100;
 
-				addEntity(position, SCV);
-				create_SCV = false;
-				break;
+					addEntity(position, SCV);
+					create_SCV = false;
+					break;
+				}
 			}
 		}
 	}
@@ -493,16 +496,24 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == FACTORY)
 			{
-				iPoint position;
-				pos_factory = it->second->pos;
-				app->game_manager->gas_resources -= 300;
-				app->game_manager->mineral_resources -= 200;
-				position.x = pos_factory.x + 30;
-				position.y = pos_factory.y + 120;
+				if (app->game_manager->mineral_resources >= 200 && app->game_manager->gas_resources >= 300)
+				{
+					iPoint position;
+					pos_factory = it->second->pos;
+					app->game_manager->gas_resources -= 300;
+					app->game_manager->mineral_resources -= 200;
+					position.x = pos_factory.x + 30;
+					position.y = pos_factory.y + 120;
 
-				addEntity(position, TANK);
-				create_tank = false;
-				break;
+					addEntity(position, TANK);
+					create_tank = false;
+					break;
+				}
+				else
+				{
+					create_tank = false;
+					break;
+				}
 			}
 		}
 	}
@@ -516,16 +527,25 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == BARRACK)
 			{
-				iPoint position;
-				pos_barrack = it->second->pos;
-				app->game_manager->gas_resources -= 50;
-				app->game_manager->mineral_resources -= 75;
-				position.x = pos_barrack.x + 30;
-				position.y = pos_barrack.y + 120;
+				if (app->game_manager->mineral_resources >= 75 && app->game_manager->gas_resources >= 50)
+				{
+					iPoint position;
+					pos_barrack = it->second->pos;
+					app->game_manager->gas_resources -= 50;
+					app->game_manager->mineral_resources -= 75;
+					position.x = pos_barrack.x + 30;
+					position.y = pos_barrack.y + 120;
 
-				addEntity(position, MARINE);
-				create_marine = false;
-				break;
+					addEntity(position, MARINE);
+					create_marine = false;
+					break;
+				}
+				else
+				{
+					create_marine = false;
+					break;
+				}
+		
 			}
 		}
 	}
@@ -539,16 +559,25 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == BARRACK)
 			{
-				iPoint position;
-				pos_barrack = it->second->pos;
-				app->game_manager->gas_resources -= 100;
-				app->game_manager->mineral_resources -= 75;
-				position.x = pos_barrack.x + 30;
-				position.y = pos_barrack.y + 120;
+				if (app->game_manager->mineral_resources >= 75 && app->game_manager->gas_resources >= 100)
+				{
+					iPoint position;
+					pos_barrack = it->second->pos;
+					app->game_manager->gas_resources -= 100;
+					app->game_manager->mineral_resources -= 75;
+					position.x = pos_barrack.x + 30;
+					position.y = pos_barrack.y + 120;
 
-				addEntity(position, MEDIC);
-				create_medic = false;
-				break;
+					addEntity(position, MEDIC);
+					create_medic = false;
+					break;
+				}
+				else
+				{
+					create_medic = false;
+					break;
+				}
+
 			}
 		}
 	}
@@ -562,48 +591,80 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == BARRACK)
 			{
-				iPoint position;
-				pos_barrack = it->second->pos;
-				app->game_manager->gas_resources -= 200;
-				app->game_manager->mineral_resources -= 50;
-				position.x = pos_barrack.x + 30;
-				position.y = pos_barrack.y + 120;
+				if (app->game_manager->mineral_resources >= 50 && app->game_manager->gas_resources >= 200)
+				{
+					iPoint position;
+					pos_barrack = it->second->pos;
+					app->game_manager->gas_resources -= 200;
+					app->game_manager->mineral_resources -= 50;
+					position.x = pos_barrack.x + 30;
+					position.y = pos_barrack.y + 120;
 
-				addEntity(position, FIREBAT);
-				create_firebat = false;
-				break;
+					addEntity(position, FIREBAT);
+					create_firebat = false;
+					break;
+				}
+				else
+				{
+					create_firebat = false;
+					break;
+				}
 			}
 		}
 	}
 
 	if (create_bunker)
 	{
-		iPoint position;
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		app->game_manager->mineral_resources -= 25;
-		app->game_manager->gas_resources -= 50;
-		addEntity(position, BUNKER, false);
+		if (app->game_manager->mineral_resources >=25 && app->game_manager->gas_resources >=50)
+		{
+			iPoint position;
+			app->input->getMousePosition(position);
+			position = app->render->screenToWorld(position.x, position.y);
+			app->game_manager->mineral_resources -= 25;
+			app->game_manager->gas_resources -= 50;
+			addEntity(position, BUNKER, false);
+		}
+		else
+		{
+			create_bunker = false;
+		}
+
 	}
 
 	if (create_barrack)
 	{
-		iPoint position;
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		app->game_manager->mineral_resources -= 250;
-		app->game_manager->gas_resources -= 250;
-		addEntity(position, BARRACK, false);
+		if (app->game_manager->mineral_resources >= 250 && app->game_manager->gas_resources >= 250)
+		{
+			iPoint position;
+			app->input->getMousePosition(position);
+			position = app->render->screenToWorld(position.x, position.y);
+			app->game_manager->mineral_resources -= 250;
+			app->game_manager->gas_resources -= 250;
+			addEntity(position, BARRACK, false);
+		}
+		else
+		{
+			create_barrack = false;
+		}
+
 	}
 
 	if (create_factory)
 	{
-		iPoint position;
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		app->game_manager->mineral_resources -= 300;
-		app->game_manager->gas_resources -= 300;
-		addEntity(position, FACTORY, false);
+		if (app->game_manager->mineral_resources >= 300 && app->game_manager->gas_resources >= 300)
+		{
+			iPoint position;
+			app->input->getMousePosition(position);
+			position = app->render->screenToWorld(position.x, position.y);
+			app->game_manager->mineral_resources -= 300;
+			app->game_manager->gas_resources -= 300;
+			addEntity(position, FACTORY, false);
+		}
+		else
+		{
+			create_factory = false;
+		}
+
 	}
 
 	return true;

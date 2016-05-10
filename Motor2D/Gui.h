@@ -215,10 +215,15 @@ public:
 
 
 	//HUD Info SCV and Bunker-----------------
-	GuiImage* info_scv = nullptr;
-	GuiImage* info_bunker = nullptr;
-	GuiResources* info_scv2 = nullptr;
 	GuiResources* info_bunker2 = nullptr;
+	GuiResources* info_barraks = nullptr;
+	GuiResources* info_factory = nullptr;
+
+	GuiResources* info_scv2 = nullptr;
+	GuiResources* info_marine = nullptr;
+	GuiResources* info_firebat = nullptr;
+	GuiResources* info_medic = nullptr;
+	GuiResources* info_tank = nullptr;
 
 
 	// HUD Graphic Timers

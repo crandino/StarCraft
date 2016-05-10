@@ -284,22 +284,40 @@ bool Gui::start()
 
 
 	//HUD Info SCV and Bunker------------------------------------------------
-	/*info_scv = app->gui->createImage(NULL, { 440, 4, 77, 36 });
-	info_scv->setLocalPos(505, 320);
-	info_scv->interactive = false;
-	info_scv->draw_element = false;*/
 
-	info_scv2 = app->gui->createResourceInfo("SCV", "50", "-", {505,290});
-	info_scv2->interactive = false;
-	info_scv2->draw_element = false;
-
-	/*info_bunker = app->gui->createImage(NULL, { 440, 43, 126, 33 });
-	info_bunker->setLocalPos(545, 323);
-	info_bunker->interactive = false;
-	info_bunker->draw_element = false;*/
 	info_bunker2 = app->gui->createResourceInfo("Bunker", "25", "50", { 505, 290 });
 	info_bunker2->interactive = false;
 	info_bunker2->draw_element = false;
+
+	info_barraks = app->gui->createResourceInfo("Barrak", "250", "250", { 505, 290 });
+	info_barraks->interactive = false;
+	info_barraks->draw_element = false;
+
+	info_factory = app->gui->createResourceInfo("Factory", "300", "300", { 505, 290 });
+	info_factory->interactive = false;
+	info_factory->draw_element = false;
+
+	info_scv2 = app->gui->createResourceInfo("SCV", "50", "-", { 505, 290 });
+	info_scv2->interactive = false;
+	info_scv2->draw_element = false;
+
+	info_marine = app->gui->createResourceInfo("Marine", "75", "50", { 505, 290 });
+	info_marine->interactive = false;
+	info_marine->draw_element = false;
+
+	info_medic = app->gui->createResourceInfo("Medic", "75", "100", { 505, 290 });
+	info_medic->interactive = false;
+	info_medic->draw_element = false;
+
+	info_firebat = app->gui->createResourceInfo("Firebat", "50", "200", { 505, 290 });
+	info_firebat->interactive = false;
+	info_firebat->draw_element = false;
+
+	info_tank = app->gui->createResourceInfo("Tank", "200", "300", { 505, 290 });
+	info_tank->interactive = false;
+	info_tank->draw_element = false;
+
+
 
 	
 	// CURSOR-----------------------------------------------------------------
@@ -543,14 +561,17 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
+			info_barraks->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
+			info_barraks->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
 			app->entity_manager->create_barrack = true;
+			info_barraks->draw_element = false;
 			break;
 
 		}
@@ -562,14 +583,17 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
+			info_factory->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
+			info_factory->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
 			//app->audio->playFx(fx_click_1, 0);
 			app->entity_manager->create_factory = true;
+			info_factory->draw_element = false;
 			break;
 
 		}
@@ -581,9 +605,11 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
+			info_marine->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
+			info_marine->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
@@ -592,11 +618,13 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			{
 				app->entity_manager->create_marine = true;
 				app->audio->playFx(app->entity_manager->fx_marine_ready, 0);
+				info_marine->draw_element = false;
 			}
 			else
 			{
 				app->audio->playFx(fx_click_error, 0);
 				app->audio->playFx(fx_not_enough_minerales, 0);
+				info_marine->draw_element = false;
 			}
 			break;
 
@@ -609,9 +637,11 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
+			info_medic->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
+			info_medic->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
@@ -620,11 +650,13 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			{
 				app->entity_manager->create_medic = true;
 				app->audio->playFx(app->entity_manager->fx_medic_ready, 0);
+				info_medic->draw_element = false;
 			}
 			else
 			{
 				app->audio->playFx(fx_click_error, 0);
 				app->audio->playFx(fx_not_enough_minerales, 0);
+				info_medic->draw_element = false;
 			}
 			break;
 
@@ -637,9 +669,11 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
+			info_firebat->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
+			info_firebat->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
@@ -648,11 +682,13 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			{
 				app->entity_manager->create_firebat = true;
 				app->audio->playFx(app->entity_manager->fx_firebat_ready, 0);
+				info_firebat->draw_element = false;
 			}
 			else
 			{
 				app->audio->playFx(fx_click_error, 0);
 				app->audio->playFx(fx_not_enough_minerales, 0);
+				info_firebat->draw_element = false;
 			}
 			break;
 
@@ -665,9 +701,11 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
+			info_tank->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
+			info_tank->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
@@ -676,11 +714,13 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			{
 				app->entity_manager->create_tank = true;
 				app->audio->playFx(app->entity_manager->fx_tank_ready, 0);
+				info_tank->draw_element = false;
 			}
 			else
 			{
 				app->audio->playFx(fx_click_error, 0);
 				app->audio->playFx(fx_not_enough_minerales, 0);
+				info_tank->draw_element = false;
 			}
 			break;
 
@@ -1815,10 +1855,10 @@ void Gui::controlIconsSprite()
 	if (buildingMenuOpened)
 	{
 		//Bunker
-		if (app->game_manager->gas_resources < 75 || app->game_manager->mineral_resources < 100)
+		if (app->game_manager->gas_resources < 25 || app->game_manager->mineral_resources < 50)
 		{
 			ui_create_bunker->setSection({ 440, 125, 37, 34 });
-			ui_create_bunker->unable_element();
+			ui_create_bunker->draw_element;
 		}
 		else
 		{
@@ -1834,7 +1874,7 @@ void Gui::controlIconsSprite()
 		else
 		{
 			ui_create_barraks->setSection({ 482, 125, 37, 34 });
-			ui_create_barraks->unable_element();
+			ui_create_barraks->draw_element;
 		}
 		//Factory
 		if (!factoryAlive && app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 300)
@@ -1845,7 +1885,7 @@ void Gui::controlIconsSprite()
 		else
 		{
 			ui_create_factory->setSection({ 561, 125, 37, 34 });
-			ui_create_factory->unable_element();
+			ui_create_factory->draw_element;
 		}
 	}
 
@@ -1872,7 +1912,7 @@ void Gui::controlIconsSprite()
 		if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 75)
 		{
 			ui_create_marine->setSection({ 338, 192, 37, 34 });
-			ui_create_marine->unable_element();
+			ui_create_marine->draw_element;
 		}
 		else
 		{
@@ -1884,7 +1924,7 @@ void Gui::controlIconsSprite()
 		if (app->game_manager->gas_resources < 100 || app->game_manager->mineral_resources < 75)
 		{
 			ui_create_medic->setSection({ 381, 192, 37, 34 });
-			ui_create_medic->unable_element();
+			ui_create_medic->draw_element;
 		}
 		else
 		{
@@ -1896,7 +1936,7 @@ void Gui::controlIconsSprite()
 		if (app->game_manager->gas_resources < 200 || app->game_manager->mineral_resources < 50)
 		{
 			ui_create_firebat->setSection({ 293, 192, 37, 34 });
-			ui_create_firebat->unable_element();
+			ui_create_firebat->draw_element;
 		}
 		else
 		{
@@ -1910,7 +1950,7 @@ void Gui::controlIconsSprite()
 		if (app->game_manager->gas_resources < 300 || app->game_manager->mineral_resources < 200)
 		{
 			ui_create_tank->setSection({ 297, 234, 36, 33 });
-			ui_create_tank->unable_element();
+			ui_create_tank->draw_element;
 		}
 		else
 		{
