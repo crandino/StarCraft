@@ -27,6 +27,7 @@
 #include "Blue.h"
 #include "Yellow.h"
 #include "Red.h"
+#include "GuiMinimap.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -788,7 +789,10 @@ void EntityManager::handleSelection()
 		// Target position is where the player has clicked to move his units.
 		iPoint target_position;
 		app->input->getMousePosition(target_position);
-		target_position = app->render->screenToWorld(target_position.x, target_position.y);
+		if (app->gui->mini_map->isMouseInside())
+			target_position = app->gui->mini_map->minimapToWorld({ target_position.x, target_position.y });
+		else 
+			target_position = app->render->screenToWorld(target_position.x, target_position.y);
 		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
 
 		//Bunker and bomb useful method

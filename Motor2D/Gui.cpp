@@ -232,24 +232,28 @@ bool Gui::start()
 	//Text Messages
 	preparation_message = app->gui->createLabel("Welcome to Last Hope!", 2, TEXTMESSAGES);
 	preparation_message->setLocalPos(10,240);
-	preparation_message->interactive = false;
-	preparation_message->getType();
+	preparation_message->disable_element();
+	
 
 
 	preparation_message2 = app->gui->createLabel("Destroy each wave. Keep Raynor alive (yellow marine)", 2, TEXTMESSAGES);
 	preparation_message2->setLocalPos(10, 240);
-	preparation_message2->interactive = false;
-	preparation_message2->getType();
+	preparation_message2->disable_element();
+
 
 	second_phase_message1 = app->gui->createLabel("The bomb has landed. Find it and take it to the command center", 2, TEXTMESSAGES);
 	second_phase_message1->setLocalPos(10, 240);
-	second_phase_message1->interactive = false;
-	second_phase_message1->getType();
+	second_phase_message1->disable_element();
+	
 
 	second_phase_message2 = app->gui->createLabel("A bigger zerg combat force has been detected. Be fast.", 2, TEXTMESSAGES);
 	second_phase_message2->setLocalPos(10, 240);
-	second_phase_message2->interactive = false;
-	second_phase_message2->getType();
+	second_phase_message2->disable_element();
+
+	background_messages = app->gui->createImage("UI_Panel_Messages.png");
+	background_messages->setLocalPos(-85, -3);
+	background_messages->disable_element();
+
 
 	//Image
 	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });
@@ -1603,6 +1607,7 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font, GUI_TYPES type)
 	if (text != NULL)
 	{
 		ret = new GuiLabel(text, kind_of_font, type);
+		elements.push_back(ret);
 		app->game_manager->labels.push_back(ret);
 	}
 
