@@ -235,6 +235,7 @@ Tank::Tank(iPoint &p)
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;
+	min_area_range = 32.0f;
 
 	// PathFinding and movement variables
 	speed = 12.0f;
@@ -268,7 +269,7 @@ bool Tank::update(float dt)
 	case IDLE_SIEGE_MODE:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
 		{
-			target_to_attack = searchEnemy(false);
+			target_to_attack = searchEnemy(false, min_area_range);
 			if (target_to_attack != NULL)
 				newEntityFound();
 			timer_to_check.start();
@@ -280,7 +281,7 @@ bool Tank::update(float dt)
 			app->audio->playFx(app->entity_manager->fx_tank_missile_siege, 0);
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false, false);
 				while (targets.begin() != targets.end())
 				{
 					attackWithoutRange(targets.front());
@@ -301,7 +302,7 @@ bool Tank::update(float dt)
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
-			target_to_attack = searchEnemy(false);
+			target_to_attack = searchEnemy(false, min_area_range);
 			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
 				newEntityFound();
 		}

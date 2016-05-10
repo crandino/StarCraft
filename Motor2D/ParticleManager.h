@@ -63,6 +63,13 @@ private:
 public:
 	pugi::xml_document particle_file;
 
+	SDL_Texture* firebat_particle;
+	SDL_Texture* scv_glow;
+	SDL_Texture* scv_Spark;
+	SDL_Texture* bunker_attack;
+	SDL_Texture* hydralisk_particle;
+	SDL_Texture* explosion_small;
+
 };
 
 struct Particle

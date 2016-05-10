@@ -9,7 +9,7 @@ public:
 
 	Animation idle;
 
-	//Command Center Info
+	//Factory Info
 	char factory_info[20];
 
 public:

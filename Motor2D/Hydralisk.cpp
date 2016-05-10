@@ -231,8 +231,6 @@ Hydralisk::Hydralisk(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 	particle_offset = { 0, 0 };
 
-	attack_up_part.image = app->tex->loadTexture("Particles/Shots/Hydra_attack.png");
-
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
 	collider_offset = { -10, -14 };
@@ -467,7 +465,7 @@ void Hydralisk::setParticleBehaviour()
 					if (timer_particle.read() >= particle_frequency)
 					{
 						particle_offset = { 15, -30 };
-						particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+						particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 						attack_up_part.on = true;
 						timer_particle.start();
 						
@@ -489,7 +487,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 					attack_right_up_part.on = true;
 					particle_offset = { 30, -20 };
-					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 					timer_particle.start();
 				}
 				attack_right_up_part.on = false;			
@@ -511,7 +509,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 				attack_right_part.on = true;
 				particle_offset = { 30, -10 };
-				particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 				timer_particle.start();
 				}
 				attack_right_part.on = false;
@@ -532,7 +530,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 				attack_right_down_part.on = true;
 				particle_offset = { 30, -10 };
-				particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 				timer_particle.start();
 				}
 				attack_right_down_part.on = false;
@@ -553,7 +551,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 				attack_down_part.on = true;
 				particle_offset = { 25, 10 };
-				particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 				timer_particle.start();
 				}
 				attack_down_part.on = false;
@@ -574,7 +572,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 				attack_left_down_part.on = true;
 				particle_offset = { -17, 5 };
-				particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 				timer_particle.start();
 				}
 				attack_left_down_part.on = false;
@@ -594,7 +592,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 				attack_left_part.on = true;
 				particle_offset = { -30, -10 };
-				particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 				timer_particle.start();
 				}
 				attack_left_part.on = false;
@@ -615,7 +613,7 @@ void Hydralisk::setParticleBehaviour()
 				{
 				attack_left_up_part.on = true;
 				particle_offset = { -20, -12 };
-				particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
 				timer_particle.start();
 				}
 				attack_left_up_part.on = false;

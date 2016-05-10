@@ -38,6 +38,10 @@ Bomb::Bomb(iPoint &p)
 }
 
 Bomb::~Bomb()
-{
+{ }
 
+void Bomb::draw()
+{
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->bomb_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

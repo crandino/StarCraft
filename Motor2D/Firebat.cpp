@@ -149,8 +149,7 @@ Firebat::Firebat(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 	particle_offset = { 0, 0 };
 
-	fire_up.image = app->tex->loadTexture("Particles/Shots/firebat_particles.png");
-	explosion_dead.image = app->tex->loadTexture("Particles/Explosion/Small_Explosion.png");
+
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
@@ -426,7 +425,7 @@ bool Firebat::update(float dt)
 			
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false, false);
 				while (targets.begin() != targets.end())
 				{
 					attackWithoutRange(targets.front());
@@ -550,7 +549,7 @@ void Firebat::setParticleBehaviour()
 			{
 
 				particle_offset = { 5, -45 };
-				particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 				fire_up.on = true;
 
 			}
@@ -569,7 +568,7 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_right_up.on = true;
 				particle_offset = { 45, -40 };
-				particle = app->particle->addParticle(fire_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 
 		}
@@ -586,7 +585,7 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_right.on = true;
 				particle_offset = { 60, -5 };
-				particle = app->particle->addParticle(fire_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 
 		}
@@ -602,7 +601,7 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_right_down.on = true;
 				particle_offset = { 46, 30 };
-				particle = app->particle->addParticle(fire_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 
 		}
@@ -618,7 +617,7 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_down.on = true;
 				particle_offset = { 2, 40 };
-				particle = app->particle->addParticle(fire_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 
 		}
@@ -634,7 +633,7 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_left_down.on = true;
 				particle_offset = { -45, 30 };
-				particle = app->particle->addParticle(fire_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 		}
 
@@ -649,7 +648,7 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_left.on = true;
 				particle_offset = { -60, -5 };
-				particle = app->particle->addParticle(fire_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 
 		}
@@ -665,14 +664,14 @@ void Firebat::setParticleBehaviour()
 			{
 				fire_left_up.on = true;
 				particle_offset = { -45, -40 };
-				particle = app->particle->addParticle(fire_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, fire_up.image);
+				particle = app->particle->addParticle(fire_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
 			}
 
 		}
 		break;
 	case DYING:
 		resetParticle();
-		particle = app->particle->addParticle(explosion_dead, center.x, center.y, 0, 0, 1, explosion_dead.image);
+		particle = app->particle->addParticle(explosion_dead, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
 		break;
 	}
 }

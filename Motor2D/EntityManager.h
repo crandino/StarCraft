@@ -109,7 +109,7 @@ public:
 	Entity*				searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	list<Entity*>		searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f, bool can_attack_to_flying = true);
 	bool				checkFocus(Unit* e);
-	Entity*				searchEnemyToAttack(Entity* e, bool can_attack_to_flying = true);
+	Entity*				searchEnemyToAttack(Entity* e, bool can_attack_to_flying = true, float min_area_range = -1.0f);
 	Entity*				searchAllyToHeal(Entity* e, bool search_only_buildings = false);
 
 	Entity* whichEntityOnMouse();
@@ -158,6 +158,8 @@ public:
 	SDL_Texture *hydralisk_tex;
 	SDL_Texture *ultralisk_tex;
 	SDL_Texture *mutalisk_tex;
+	SDL_Texture *bunker_tex;
+	SDL_Texture *bomb_tex;
 
 	//Terran-------------------------------------------
 

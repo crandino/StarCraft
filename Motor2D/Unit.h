@@ -34,7 +34,7 @@ public:
 	virtual ~Unit();
 
 	virtual void calculePos();
-	virtual Entity* searchEnemy(bool can_attack_to_flying = true);
+	virtual Entity* searchEnemy(bool can_attack_to_flying = true, float min_area_range = -999.0f);
 
 	virtual bool attack(Entity* target_to_attack);
 	virtual void attackWithoutRange(Entity* target_to_attack);
