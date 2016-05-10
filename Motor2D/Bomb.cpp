@@ -6,7 +6,9 @@ Bomb::Bomb(iPoint &p)
 	tex_width = 43;
 	tex_height = 42;
 	collider_offset.set(15, 15);
+	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
+	center = { (float)p.x, (float)p.y };
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 	// Animations and FX

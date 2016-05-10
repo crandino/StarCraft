@@ -1092,6 +1092,21 @@ bool Gui::update(float dt)
 	else if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_UP) != KEY_REPEAT)
 		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 
+	Entity* entity_on_mouse = app->entity_manager->whichEntityOnMouse();
+	if (entity_on_mouse != NULL)
+	{
+		if (entity_on_mouse->faction == PLAYER)
+		{
+			if (entity_on_mouse->type == UNIT)
+				cursor->current_animation = &cursor->allie;
+			else if (entity_on_mouse->type == BUILDING)
+				cursor->current_animation = &cursor->building;
+		}
+		else if (entity_on_mouse->faction == COMPUTER)
+			cursor->current_animation = &cursor->enemy;
+	}
+
+
 	const GuiElements* mouse_hover = findMouseHover();
 	if (mouse_hover &&
 		mouse_hover->can_focus == true &&

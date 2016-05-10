@@ -126,6 +126,8 @@ void GuiMinimap::draw() const
 				 else
 				    app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 0, 0, 255);
 			}
+			case BOMB:
+				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 255, 0);
 			default:
 				app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 0, 0, 255);
 				break;

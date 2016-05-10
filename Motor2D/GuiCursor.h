@@ -22,6 +22,10 @@ public:
 	Animation  right_disp;
 	Animation  up_disp;
 	Animation  down_disp;
+
+	Animation  allie;
+	Animation  building;
+	Animation  enemy;
 };
 
 

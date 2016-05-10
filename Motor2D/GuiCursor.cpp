@@ -58,6 +58,60 @@ GuiCursor::GuiCursor(const SDL_Texture* texture)
 	down_disp.speed = 0.02f;
 	down_disp.loop = true;
 
+	//Cursor hover allie animaion
+	allie.frames.push_back({ 2, 94, 40, 42 });
+	allie.frames.push_back({ 46, 94, 40, 42 });
+	allie.frames.push_back({ 90, 94, 40, 42 });
+	allie.frames.push_back({ 134, 94, 40, 42 });
+	allie.frames.push_back({ 178, 94, 40, 42 });
+	allie.frames.push_back({ 222, 94, 40, 42 });
+	allie.frames.push_back({ 266, 94, 40, 42 });
+	allie.frames.push_back({ 310, 94, 40, 42 });
+	allie.frames.push_back({ 354, 94, 40, 42 });
+	allie.frames.push_back({ 398, 94, 40, 42 });
+	allie.frames.push_back({ 442, 94, 40, 42 });
+	allie.frames.push_back({ 486, 94, 40, 42 });
+	allie.frames.push_back({ 530, 94, 40, 42 });
+	allie.frames.push_back({ 574, 94, 40, 42 });
+	allie.speed = 0.01f;
+	allie.loop = true;
+
+	//Cursor hover building animaion
+	building.frames.push_back({ 2, 140, 40, 42 });
+	building.frames.push_back({ 46, 140, 40, 42 });
+	building.frames.push_back({ 90, 140, 40, 42 });
+	building.frames.push_back({ 134, 140, 40, 42 });
+	building.frames.push_back({ 178, 140, 40, 42 });
+	building.frames.push_back({ 222, 140, 40, 42 });
+	building.frames.push_back({ 266, 140, 40, 42 });
+	building.frames.push_back({ 310, 140, 40, 42 });
+	building.frames.push_back({ 354, 140, 40, 42 });
+	building.frames.push_back({ 398, 140, 40, 42 });
+	building.frames.push_back({ 442, 140, 40, 42 });
+	building.frames.push_back({ 486, 140, 40, 42 });
+	building.frames.push_back({ 530, 140, 40, 42 });
+	building.frames.push_back({ 574, 140, 40, 42 });
+	building.speed = 0.01f;
+	building.loop = true;
+
+	//Cursor hover enemy animaion
+	enemy.frames.push_back({ 2, 186, 40, 42 });
+	enemy.frames.push_back({ 46, 186, 40, 42 });
+	enemy.frames.push_back({ 90, 186, 40, 42 });
+	enemy.frames.push_back({ 134, 186, 40, 42 });
+	enemy.frames.push_back({ 178, 186, 40, 42 });
+	enemy.frames.push_back({ 222, 186, 40, 42 });
+	enemy.frames.push_back({ 266, 186, 40, 42 });
+	enemy.frames.push_back({ 310, 186, 40, 42 });
+	enemy.frames.push_back({ 354, 186, 40, 42 });
+	enemy.frames.push_back({ 398, 186, 40, 42 });
+	enemy.frames.push_back({ 442, 186, 40, 42 });
+	enemy.frames.push_back({ 486, 186, 40, 42 });
+	enemy.frames.push_back({ 530, 186, 40, 42 });
+	enemy.frames.push_back({ 574, 186, 40, 42 });
+	enemy.speed = 0.01f;
+	enemy.loop = true;
+
 	type = CURSOR;
 }
 
