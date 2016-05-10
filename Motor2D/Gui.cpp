@@ -284,19 +284,23 @@ bool Gui::start()
 
 
 	//HUD Info SCV and Bunker------------------------------------------------
-	info_scv = app->gui->createImage(NULL, { 440, 4, 77, 36 });
+	/*info_scv = app->gui->createImage(NULL, { 440, 4, 77, 36 });
 	info_scv->setLocalPos(505, 320);
 	info_scv->interactive = false;
-	info_scv->draw_element = false;
+	info_scv->draw_element = false;*/
 
-	info_scv2 = app->gui->createResourceInfo("asdfasdfasdf", "100", "100", {505,300});
+	info_scv2 = app->gui->createResourceInfo("SCV", "50", "-", {505,290});
 	info_scv2->interactive = false;
 	info_scv2->draw_element = false;
 
-	info_bunker = app->gui->createImage(NULL, { 440, 43, 126, 33 });
+	/*info_bunker = app->gui->createImage(NULL, { 440, 43, 126, 33 });
 	info_bunker->setLocalPos(545, 323);
 	info_bunker->interactive = false;
-	info_bunker->draw_element = false;
+	info_bunker->draw_element = false;*/
+	info_bunker2 = app->gui->createResourceInfo("Bunker", "100", "75", { 505, 290 });
+	info_bunker2->interactive = false;
+	info_bunker2->draw_element = false;
+
 	
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
@@ -416,10 +420,10 @@ GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associ
 	return ret;
 }
 
-GuiResources* Gui::createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos)
+GuiResources* Gui::createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas, iPoint pos, bool draw_element)
 {
 	GuiResources* ret = nullptr;
-	ret = new GuiResources(_entity_name, _mineral, _gas, pos);
+	ret = new GuiResources(_entity_name, _mineral, _gas, pos, draw_element);
 
 	elements.push_back(ret);
 
@@ -476,12 +480,12 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		switch (event)
 		{
 		case(MOUSE_ENTERS) :
-			info_scv->draw_element = true;
+			//info_scv->draw_element = true;
 			info_scv2->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
-			info_scv->draw_element = false;
+			//info_scv->draw_element = false;
 			info_scv2->draw_element = false;
 			break;
 
@@ -491,7 +495,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			{
 				app->entity_manager->create_SCV = true;
 				app->audio->playFx(app->entity_manager->fx_scv_ready, 0);
-				info_scv->draw_element = false;
+				info_scv2->draw_element = false;
 			}
 			else
 			{
@@ -512,17 +516,19 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 
 		case(MOUSE_ENTERS) :
-			info_bunker->draw_element = true;
+			//info_bunker->draw_element = true;
+			info_bunker2->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
-			info_bunker->draw_element = false;
+			//info_bunker->draw_element = false;
+			info_bunker2->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->entity_manager->create_bunker = true;
 			app->audio->playFx(fx_click_1, 0);
-			info_bunker->draw_element = false;
+			info_bunker2->draw_element = false;
 			break;
 
 				/*case(MOUSE_LCLICK_DOWN_REPEAT) :

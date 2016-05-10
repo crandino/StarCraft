@@ -9,7 +9,7 @@ class GuiResources : public GuiElements
 {
 public:
 	//Constructor
-	GuiResources(const char* _entity_name, const char* _mineral, const char* _gas, iPoint pos);
+	GuiResources(const char* _entity_name, const char* _mineral, const char* _gas, iPoint pos, bool draw_element = false);
 
 	~GuiResources()
 	{}
@@ -31,8 +31,6 @@ private:
 	GuiImage*    window;
 	GuiImage*    mineral_image;
 	GuiImage*    gas_image;
-
-
 
 };
 
