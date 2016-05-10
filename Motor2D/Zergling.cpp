@@ -3,7 +3,6 @@
 Zergling::Zergling(iPoint &p)
 {
 	// Graphics
-	tex = app->tex->loadTexture("Units/New_Zergling64.png");
 	tex_width = tex_height = 64;
 
 	//------------------Idle Animation------------------
@@ -293,4 +292,10 @@ void Zergling::setAnimationFromDirection()
 		break;
 	}
 	}
+}
+
+void Zergling::draw()
+{
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->zergling_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

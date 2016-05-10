@@ -155,9 +155,8 @@ public:
 	SDL_Texture *jim_raynor_tex;
 	SDL_Texture *tank_tex;
 	SDL_Texture *zergling_tex;
-
-	//Sounds (FX)
-	//Terran-------------------------------------------
+	SDL_Texture *hydralisk_tex;
+	SDL_Texture *ultralisk_tex;
 
 	//Terran-------------------------------------------
 
@@ -335,7 +334,6 @@ public:
 private:
 	
 	uint			 next_ID;
-
 	bool			 debug = false;
 
 	// CRZ -> Variables to build buildings.

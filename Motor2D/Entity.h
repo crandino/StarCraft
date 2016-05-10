@@ -38,9 +38,6 @@ enum STATE
 
 class Entity
 {
-private:
-
-	bool debug = true;
 
 public:
 

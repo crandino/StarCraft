@@ -53,6 +53,8 @@ void EntityManager::loadEntityTex()
 	jim_raynor_tex = app->tex->loadTexture("Units/JimRaynor.png");
 	tank_tex = app->tex->loadTexture("Units/Blue_tank.png");
 	zergling_tex = app->tex->loadTexture("Units/New_Zergling64.png");
+	hydralisk_tex = app->tex->loadTexture("Units/Hydralisk.png");
+	ultralisk_tex = app->tex->loadTexture("Units/ultralisk2.png");
 }
 
 bool EntityManager::loadEntityFX()
@@ -646,6 +648,7 @@ bool EntityManager::cleanUp()
 	app->tex->unloadTexture(jim_raynor_tex);
 	app->tex->unloadTexture(tank_tex);
 	app->tex->unloadTexture(zergling_tex);
+	app->tex->unloadTexture(hydralisk_tex);
 
 	return true;
 }

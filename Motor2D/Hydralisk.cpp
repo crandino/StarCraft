@@ -5,7 +5,6 @@
 Hydralisk::Hydralisk(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("Units/Hydralisk.png");
 	tex_width = tex_height = 128;
 
 	//--------------Walking Animations--------------
@@ -441,8 +440,6 @@ bool Hydralisk::update(float dt)
 
 void Hydralisk::setParticleBehaviour()
 {
-	
-
 	switch (state)
 	{
 	case IDLE:
@@ -642,18 +639,23 @@ void Hydralisk::setParticleBehaviour()
 
 void Hydralisk::resetParticle()
 {
-		if (attack_up_part.on || attack_right_up_part.on || attack_right_part.on || attack_right_down_part.on || attack_down_part.on || attack_left_down_part.on || attack_left_part.on || attack_left_up_part.on)
-		{
-			attack_up_part.on = false;
-			attack_right_up_part.on = false;
-			attack_right_part.on = false;
-			attack_right_down_part.on = false;
-			attack_down_part.on = false;
-			attack_left_down_part.on = false;
-			attack_left_part.on = false;
-			attack_left_up_part.on = false;
-			particle->on = false;
-			particle->alive = false;
-		}
+	if (attack_up_part.on || attack_right_up_part.on || attack_right_part.on || attack_right_down_part.on || attack_down_part.on || attack_left_down_part.on || attack_left_part.on || attack_left_up_part.on)
+	{
+		attack_up_part.on = false;
+		attack_right_up_part.on = false;
+		attack_right_part.on = false;
+		attack_right_down_part.on = false;
+		attack_down_part.on = false;
+		attack_left_down_part.on = false;
+		attack_left_part.on = false;
+		attack_left_up_part.on = false;
+		particle->on = false;
+		particle->alive = false;
+	}
+}
+void Hydralisk::draw()
+{
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->hydralisk_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }
 

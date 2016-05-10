@@ -48,7 +48,7 @@ public:
 
 	// Method that assign an animation according to its orientation
 	void setAnimationFromDirection();
-
+	void draw();
 };
 
 #endif !__ZERGLING_H__

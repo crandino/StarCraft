@@ -4,7 +4,6 @@
 Ultralisk::Ultralisk(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("Units/ultralisk2.png");
 	tex_width = tex_height = 128;
 
 	//--------------IDLE Animation------------------
@@ -379,4 +378,10 @@ void Ultralisk::setAnimationFromDirection()
 	current_animation = &dead;
 	break;
 	}
+}
+
+void Ultralisk::draw()
+{
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->ultralisk_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }
