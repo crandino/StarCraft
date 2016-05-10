@@ -32,6 +32,7 @@
 
     <!-- Game Information -->
     <totalWaves value = "1"/>
+
     <timeBeforeGameStarts value ="14.0f"/>
     <timeBetweenWavesPhase1 value = "1.0f"/>
     <timeBetweenWavesPhase2 value = "14.0f"/>

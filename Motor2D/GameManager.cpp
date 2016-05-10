@@ -19,6 +19,7 @@
 
 #include "GuiImage.h"
 #include "GuiLabel.h"
+#include "GuiTimer.h"
 
 using namespace std;
 
@@ -202,6 +203,9 @@ bool GameManager::start()
 	exit_button->setListener(this);
 
 	game_state = INITIAL_SCREEN;
+
+	// Create Graphic Timers
+	wave_timer = app->gui->createTimer({ 200, 6 }, NULL, timer_between_game_states);
 
 	return ret;
 }
@@ -452,6 +456,16 @@ bool GameManager::update(float dt)
 	}
 	}
 
+	//Find Jim
+	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+	{
+		if (jim_position != NULL)
+		{
+			app->render->camera.x = -jim_position->x + (app->render->camera.w / 2);
+			app->render->camera.y = -jim_position->y + (app->render->camera.h / 2);
+		}
+	}
+
 	//ADRI
 	//-------------------------UI-----------------------------
 	//Change the number of WAVE HUD ingame-----------------------
@@ -671,19 +685,19 @@ void GameManager::startGame()
 
 	//---- Initial units ----
 	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
-	app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR);
+	jim_position = &app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR)->center;
 	app->entity_manager->addEntity(iPoint(1520, 2150), MEDIC);
 	//--------
-
-
+	
 	app->render->setCameraOnPosition(p);
 	
-
 	resources = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
 
 	timer_between_waves.start();
+	wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
+	wave_timer->initiate();
 }
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)

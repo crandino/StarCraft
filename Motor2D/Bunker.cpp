@@ -268,137 +268,140 @@ void Bunker::setParticleBehaviour()
 		resetParticle();
 		break;
 	case ATTACK:
-		if (angle > 360)
+		if (units_inside.size() > 0)
 		{
-			angle -= 360.f;
-		}
-		// From 0 to 180 degrees
-		if (angle >= 0.f && angle < 45.0f)
-		{
-			if (particle != NULL && !attack_right.on)
+			if (angle > 360)
 			{
-				resetParticle();
+				angle -= 360.f;
+			}
+			// From 0 to 180 degrees
+			if (angle >= 0.f && angle < 45.0f)
+			{
+				if (particle != NULL && !attack_right.on)
+				{
+					resetParticle();
+				}
+
+				if (!attack_right.on)
+				{
+
+					particle_offset = { 21, -12 };
+					particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_right.on = true;
+				}
 			}
 
-			if (!attack_right.on)
+			if (angle >= 45.f && angle < 90.0f)
 			{
+				if (particle != NULL && !attack_right_up.on)
+				{
+					resetParticle();
+				}
 
-				particle_offset = { 21, -12 };
-				particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_right.on = true;
-			}
-		}
+				if (!attack_right_up.on)
+				{
 
-		if (angle >= 45.f && angle < 90.0f)
-		{
-			if (particle != NULL && !attack_right_up.on)
-			{
-				resetParticle();
-			}
-
-			if (!attack_right_up.on)
-			{
-
-				particle_offset = { 21, -12 };
-				particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_right_up.on = true;
-			}
-		}
-
-		if (angle >= 90.f && angle < 135.f)
-		{
-			if (particle != NULL && !attack_up.on)
-			{
-				resetParticle();
+					particle_offset = { 21, -12 };
+					particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_right_up.on = true;
+				}
 			}
 
-			if (!attack_up.on)
+			if (angle >= 90.f && angle < 135.f)
 			{
+				if (particle != NULL && !attack_up.on)
+				{
+					resetParticle();
+				}
 
-				particle_offset = { 0, -25 };
-				particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_up.on = true;
-			}
-		}
+				if (!attack_up.on)
+				{
 
-		if (angle >= 135.f && angle < 180.f)
-		{
-			if (particle != NULL && !attack_left_up.on)
-			{
-				resetParticle();
-			}
-
-			if (!attack_left_up.on)
-			{
-
-				particle_offset = { -12, -19 };
-				particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_left_up.on = true;
-			}
-		}
-
-		// From 180 to 360 degrees
-		if (angle >= 180.f && angle < 225.f)
-		{
-			if (particle != NULL && !attack_left.on)
-			{
-				resetParticle();
+					particle_offset = { 0, -25 };
+					particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_up.on = true;
+				}
 			}
 
-			if (!attack_left.on)
+			if (angle >= 135.f && angle < 180.f)
 			{
+				if (particle != NULL && !attack_left_up.on)
+				{
+					resetParticle();
+				}
 
-				particle_offset = { -12, -19 };
-				particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_left.on = true;
-			}
-		}
+				if (!attack_left_up.on)
+				{
 
-		if (angle >= 225.f && angle < 270.f)
-		{
-			if (particle != NULL && !attack_left_down.on)
-			{
-				resetParticle();
-			}
-
-			if (!attack_left_down.on)
-			{
-
-				particle_offset = { -14, -7 };
-				particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_left_down.on = true;
-			}
-		}
-
-		if (angle >= 270.f && angle < 315.f)
-		{
-			if (particle != NULL && !attack_down.on)
-			{
-				resetParticle();
+					particle_offset = { -12, -19 };
+					particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_left_up.on = true;
+				}
 			}
 
-			if (!attack_down.on)
+			// From 180 to 360 degrees
+			if (angle >= 180.f && angle < 225.f)
 			{
+				if (particle != NULL && !attack_left.on)
+				{
+					resetParticle();
+				}
 
-				particle_offset = { 0, -5 };
-				particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_down.on = true;
+				if (!attack_left.on)
+				{
+
+					particle_offset = { -12, -19 };
+					particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_left.on = true;
+				}
 			}
-		}
 
-		if (angle >= 315.f && angle < 360.f)
-		{
-			if (particle != NULL && !attack_right_down.on)
+			if (angle >= 225.f && angle < 270.f)
 			{
-				resetParticle();
+				if (particle != NULL && !attack_left_down.on)
+				{
+					resetParticle();
+				}
+
+				if (!attack_left_down.on)
+				{
+
+					particle_offset = { -14, -7 };
+					particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_left_down.on = true;
+				}
 			}
 
-			if (!attack_right_down.on)
+			if (angle >= 270.f && angle < 315.f)
 			{
+				if (particle != NULL && !attack_down.on)
+				{
+					resetParticle();
+				}
 
-				particle_offset = { 18, -6 };
-				particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
-				attack_right_down.on = true;
+				if (!attack_down.on)
+				{
+
+					particle_offset = { 0, -5 };
+					particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_down.on = true;
+				}
+			}
+
+			if (angle >= 315.f && angle < 360.f)
+			{
+				if (particle != NULL && !attack_right_down.on)
+				{
+					resetParticle();
+				}
+
+				if (!attack_right_down.on)
+				{
+
+					particle_offset = { 18, -6 };
+					particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					attack_right_down.on = true;
+				}
 			}
 		}
 		break;

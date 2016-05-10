@@ -87,7 +87,9 @@ public:
 	float			damage_multiplier = 1.0f;
 	float			speed_multiplier = 1.0f;
 	Timer			timer_attack;					// To check time between attacks
+	Timer			timer_particle;					// To check time between particles emitted
 	float			attack_frequency;				// How many miliseconds will wait to attack again?
+	float			particle_frequency;				// How many miliseconds will wait to emit a particle again?
 	float			attack_frequency_multiplier = 1.0f;
 	int				range_of_vision;				// How far can this entity detect another entity?
 	int				range_to_attack;				// How far can this entity attack another entity?

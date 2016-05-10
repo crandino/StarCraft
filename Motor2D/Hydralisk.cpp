@@ -200,28 +200,29 @@ Hydralisk::Hydralisk(iPoint &p)
 
 	// Attack Particle
 	attack_up_part.anim.setAnimations(0, 0, 88, 124, 1, 7, 7);
-	attack_up_part.anim.speed = 0.02f;
+	attack_up_part.anim.speed = 0.008f;
+
 
 	attack_right_up_part.anim.setAnimations(88, 0, 88, 124, 1, 7, 7);
-	attack_right_up_part.anim.speed = 0.02f;
+	attack_right_up_part.anim.speed = 0.008f;
 
 	attack_right_part.anim.setAnimations(176, 0, 88, 124, 1, 7, 7);
-	attack_right_part.anim.speed = 0.02f;
+	attack_right_part.anim.speed = 0.008f;
 
 	attack_right_down_part.anim.setAnimations(264, 0, 88, 124, 1, 7, 7);
-	attack_right_down_part.anim.speed = 0.02f;
+	attack_right_down_part.anim.speed = 0.008f;
 
 	attack_down_part.anim.setAnimations(352, 0, 88, 124, 1, 7, 7);
-	attack_down_part.anim.speed = 0.02f;
+	attack_down_part.anim.speed = 0.008f;
 
 	attack_left_down_part.anim.setAnimations(440, 0, 88, 124, 1, 7, 7);
-	attack_left_down_part.anim.speed = 0.02f;
+	attack_left_down_part.anim.speed = 0.008f;
 
 	attack_left_part.anim.setAnimations(528, 0, 88, 124, 1, 7, 7);
-	attack_left_part.anim.speed = 0.02f;
+	attack_left_part.anim.speed = 0.008f;
 
 	attack_left_up_part.anim.setAnimations(616, 0, 88, 124, 1, 7, 7);
-	attack_left_up_part.anim.speed = 0.02f;
+	attack_left_up_part.anim.speed = 0.008f;
 
 	current_animation = &walk_down;
 
@@ -256,6 +257,7 @@ Hydralisk::Hydralisk(iPoint &p)
 	range_to_attack = 130;
 	damage = 10.0f;
 	attack_frequency = 1000.0f;
+	particle_frequency = 1000.0f;
 	time_to_die = 500.0f;
 
 	// PathFinding and movement variables
@@ -284,25 +286,25 @@ void Hydralisk::setAnimationFromDirection()
 		break;
 	case(MOVE_ALERT) :
 	{
-				   int num_animation = angle / (360 / move_animation_pack.size());
-				   if (num_animation == move_animation_pack.size())
-					   num_animation = 0;
-				   current_animation = &(*move_animation_pack.at(num_animation));
-				   break;
+		int num_animation = angle / (360 / move_animation_pack.size());
+		if (num_animation == move_animation_pack.size())
+			num_animation = 0;
+		current_animation = &(*move_animation_pack.at(num_animation));
+		break;
 	}
 	case(MOVE_ALERT_TO_ATTACK) :
 	{
-								   int num_animation = angle / (360 / move_animation_pack.size());
-								   if (num_animation == move_animation_pack.size())
-								   num_animation = 0;
-								   current_animation = &(*move_animation_pack.at(num_animation));
-				   break;
+		int num_animation = angle / (360 / move_animation_pack.size());
+		if (num_animation == move_animation_pack.size())
+		num_animation = 0;
+		current_animation = &(*move_animation_pack.at(num_animation));
+		break;
 	}
 	case(ATTACK) :
 	{
-					 int num_animation = angle / (360 / attack_animation_pack.size());
-					 if (num_animation == attack_animation_pack.size())
-			num_animation = 0;
+		int num_animation = angle / (360 / attack_animation_pack.size());
+		if (num_animation == attack_animation_pack.size())
+		num_animation = 0;
 		current_animation = &(*attack_animation_pack.at(num_animation));
 		break;
 	}
@@ -439,6 +441,8 @@ bool Hydralisk::update(float dt)
 
 void Hydralisk::setParticleBehaviour()
 {
+	
+
 	switch (state)
 	{
 	case IDLE:
@@ -454,18 +458,25 @@ void Hydralisk::setParticleBehaviour()
 		resetParticle();
 		break;
 	case ATTACK:
+		
 		if (current_animation == &attack_up)
 		{
-			if (particle != NULL && !attack_up_part.on)
-			{
-				resetParticle();
-			}
-			if (!attack_up_part.on)
-			{
-				particle_offset = { 15, -30 };
-				particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
-				attack_up_part.on = true;
-			}
+				if (particle != NULL && !attack_up_part.on)
+				{
+					resetParticle();
+				}
+				if (!attack_up_part.on)
+				{			
+					if (timer_particle.read() >= particle_frequency)
+					{
+						particle_offset = { 15, -30 };
+						particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+						attack_up_part.on = true;
+						timer_particle.start();
+						
+					}	
+					attack_up_part.on = false;
+				}
 		}
 
 		if (current_animation == &attack_right_up)
@@ -473,14 +484,18 @@ void Hydralisk::setParticleBehaviour()
 			if (particle != NULL && !attack_right_up_part.on)
 			{
 				resetParticle();
-
 			}
 
 			if (!attack_right_up_part.on)
 			{
-				attack_right_up_part.on = true;
-				particle_offset = { 30, -20 };
-				particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_right_up_part.on = true;
+					particle_offset = { 30, -20 };
+					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+					timer_particle.start();
+				}
+				attack_right_up_part.on = false;			
 			}
 
 		}
@@ -495,9 +510,14 @@ void Hydralisk::setParticleBehaviour()
 
 			if (!attack_right_part.on)
 			{
+				if (timer_particle.read() >= particle_frequency)
+				{
 				attack_right_part.on = true;
 				particle_offset = { 30, -10 };
-				particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				timer_particle.start();
+				}
+				attack_right_part.on = false;
 			}
 
 		}
@@ -511,9 +531,14 @@ void Hydralisk::setParticleBehaviour()
 
 			if (!attack_right_down_part.on)
 			{
+				if (timer_particle.read() >= particle_frequency)
+				{
 				attack_right_down_part.on = true;
 				particle_offset = { 30, -10 };
-				particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				timer_particle.start();
+				}
+				attack_right_down_part.on = false;
 			}
 
 		}
@@ -527,9 +552,14 @@ void Hydralisk::setParticleBehaviour()
 
 			if (!attack_down_part.on)
 			{
+				if (timer_particle.read() >= particle_frequency)
+				{
 				attack_down_part.on = true;
 				particle_offset = { 25, 10 };
-				particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				timer_particle.start();
+				}
+				attack_down_part.on = false;
 			}
 
 		}
@@ -543,9 +573,14 @@ void Hydralisk::setParticleBehaviour()
 
 			if (!attack_left_down_part.on)
 			{
+				if (timer_particle.read() >= particle_frequency)
+				{
 				attack_left_down_part.on = true;
 				particle_offset = { -17, 5 };
-				particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				timer_particle.start();
+				}
+				attack_left_down_part.on = false;
 			}
 		}
 
@@ -558,9 +593,14 @@ void Hydralisk::setParticleBehaviour()
 
 			if (!attack_left_part.on)
 			{
+				if (timer_particle.read() >= particle_frequency)
+				{
 				attack_left_part.on = true;
 				particle_offset = { -30, -10 };
-				particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				timer_particle.start();
+				}
+				attack_left_part.on = false;
 			}
 
 		}
@@ -574,9 +614,14 @@ void Hydralisk::setParticleBehaviour()
 
 			if (!attack_left_up_part.on)
 			{
+				if (timer_particle.read() >= particle_frequency)
+				{
 				attack_left_up_part.on = true;
 				particle_offset = { -20, -12 };
-				particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up_part.image);
+				particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, attack_up_part.image);
+				timer_particle.start();
+				}
+				attack_left_up_part.on = false;
 			}
 		}
 		break;

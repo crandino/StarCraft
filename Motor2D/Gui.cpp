@@ -14,6 +14,7 @@
 #include "GuiCursor.h"
 #include "GuiLabel.h"
 #include "GuiMinimap.h"
+#include "GuiTimer.h"
 
 #include "Bunker.h"
 
@@ -307,6 +308,22 @@ bool Gui::start()
 	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
 
 	return true;
+}
+
+GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associated)
+{
+	GuiTimer* ret = nullptr;
+	ret = new GuiTimer();
+
+	ret->setLocalPos(pos.x, pos.y);
+	ret->changeTimer(timer_associated);
+
+	if (path_tex != NULL)
+		SDL_Texture* texture = app->tex->loadTexture(path_tex);// cargar textura
+
+	elements.push_back(ret);
+
+	return ret;
 }
 
 GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex)
@@ -1093,7 +1110,7 @@ bool Gui::update(float dt)
 	{
 		GuiElements* gui_test = *node;
 		gui_test->update(mouse_hover, focus);
-		if (gui_test->getType() == CURSOR || gui_test->getType() == MINIMAP)
+		if (gui_test->getType() == CURSOR || gui_test->getType() == MINIMAP || gui_test->getType() == TIMER)
 		{
 			gui_test->update();
 		}

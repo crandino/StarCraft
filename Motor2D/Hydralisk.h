@@ -7,6 +7,7 @@ class Hydralisk : public Unit
 {
 public:
 
+
 	// MOVING animations
 	Animation	walk_up;
 	Animation   walk_right_up1;
@@ -50,6 +51,7 @@ public:
 	Particle attack_left_down_part;
 	Particle attack_left_part;
 	Particle attack_left_up_part;
+
 	
 	Hydralisk() {}
 	Hydralisk(iPoint &p);

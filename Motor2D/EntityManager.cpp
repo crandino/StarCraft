@@ -434,6 +434,7 @@ bool EntityManager::preUpdate()
 				if (!((JimRaynor*)it->second)->inside_bunker)
 				{
 					app->game_manager->jim_raynor_dead = true;
+					app->game_manager->jim_position = NULL;
 					RELEASE(it->second);
 				}
 			}
