@@ -43,11 +43,6 @@ void GuiMinimap::update()
 			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x, mouse_pos.y }));
 	}
 	
-	if (app->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
-	{
-		activePing({ 500, 500 });
-	}
-
 	// Ping update
 	for (array<PingInfo, 4>::iterator it = ping_set.begin(); it != ping_set.end(); ++it)
 	{
