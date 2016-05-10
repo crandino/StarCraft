@@ -1116,6 +1116,11 @@ bool Gui::update(float dt)
 		}
 	}
 
+
+
+
+
+
 	//Icons Control 
 	controlIconsSprite();
 

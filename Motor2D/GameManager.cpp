@@ -308,6 +308,7 @@ bool GameManager::update(float dt)
 			bomb = (Bomb*)app->entity_manager->addEntity(bomb_pos, BOMB);
 			app->gui->mini_map->activePing(bomb_pos);
 			game_state = SECOND_PHASE;
+			timer_between_game_states.start();
 		}
 		break;
 	}
@@ -613,16 +614,13 @@ bool GameManager::postUpdate()
 		}	
 	}
 
-	if (game_state == SECOND_PHASE && game_state == WAITING_FOR_WAVE_TO_START)//It draws the messages simulating a kind of console in preparation game state
+	if (game_state == SECOND_PHASE && wave_state == WAITING_FOR_WAVE_TO_START)//It draws the messages simulating a kind of console in preparation game state
 	{
-		if (timer_between_waves.readSec() < 7.0f)
-			labels.at(1)->draw();
-
-		else if (timer_between_waves.readSec() > 7.0f)
+		if (3.0f < timer_between_waves.readSec() < 15.0f)
 		{
-			labels.at(1)->setLocalPos(10, 228);
-			labels.at(1)->draw();
+			labels.at(2)->setLocalPos(10, 228);
 			labels.at(2)->draw();
+			labels.at(3)->draw();
 		}
 	}
 
