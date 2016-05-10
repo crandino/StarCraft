@@ -183,10 +183,8 @@ public:
 	GuiLabel* number_of_wave = nullptr;
 
 	//MESSAGES FOR THE PLAYER
-	GuiLabel* preparation_message = nullptr;
-	GuiLabel* preparation_message2 = nullptr;
-	GuiLabel* second_phase_message1 = nullptr;
-	GuiLabel* second_phase_message2 = nullptr;
+	GuiLabel* text_message = nullptr;
+
 
 	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;

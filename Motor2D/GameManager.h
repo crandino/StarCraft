@@ -208,9 +208,6 @@ public:
 
 	GameInformation gameInfo;
 
-	//Info label
-	vector<GuiLabel*>	labels;
-
 
 	//States
 

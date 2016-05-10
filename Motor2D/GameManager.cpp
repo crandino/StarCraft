@@ -603,29 +603,34 @@ bool GameManager::postUpdate()
 {
 	if (game_state == PREPARATION)//It draws the messages simulating a kind of console in preparation game state
 	{
-		if (timer_between_waves.readSec() < 7.0f)
-			labels.at(0)->draw();
-
-		else if ( timer_between_waves.readSec() > 7.0f)
+		if (timer_between_waves.readSec() >= 15.0f && timer_between_waves.readSec() >= 10.0f)
 		{
-			labels.at(0)->setLocalPos(10,228);
-			labels.at(0)->draw();
-			labels.at(1)->draw();
+			app->gui->text_message->setText("Jim Raynor must survive", 2);
+			app->gui->text_message->setLocalPos(10, 228);
+			app->gui->text_message->draw();
+		}
+
+		if (timer_between_waves.readSec() < 10.0f && timer_between_waves.readSec() > 5.0f)
+		{
+			app->gui->text_message->setText("Resist the upcoming waves", 2);
+			app->gui->text_message->setLocalPos(10, 228);
+			app->gui->text_message->draw();
 		}	
+
+		if (timer_between_waves.readSec() < 5.0f)
+			app->gui->text_message->draw();
+	
 	}
 
 	if (game_state == SECOND_PHASE && wave_state == WAITING_FOR_WAVE_TO_START)//It draws the messages simulating a kind of console in preparation game state
 	{
 		if (3.0f < timer_between_waves.readSec() < 15.0f)
 		{
-			labels.at(2)->setLocalPos(10, 228);
-			labels.at(2)->draw();
-			labels.at(3)->draw();
+			app->gui->text_message->setLocalPos(10, 228);
+			app->gui->text_message->setText("Find the bomb", 2);
+			app->gui->text_message->draw();
 		}
 	}
-
-
-
 
 
 
@@ -649,6 +654,7 @@ bool GameManager::cleanUp()
 
 	for (vector<SizeWave*>::iterator it = waves2_info.begin(); it != waves2_info.end(); it++)
 		RELEASE(*it);
+	
 
 	waves_info.clear();
 	waves2_info.clear();
@@ -719,6 +725,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 
 			game_state = PREPARATION;
 			app->audio->playFx(fx_click, 0);
+			timer_between_waves.start();
 			break;
 		}
 	}
