@@ -316,7 +316,7 @@ bool Gui::start()
 	bunkerWireframe->can_focus = false;
 	bunkerWireframe->disable_element();
 	//Info 
-	bunkerInfo = app->gui->createLabel("", 2);
+	bunkerInfo = app->gui->createLabel("a", 2);
 	bunkerInfo->setLocalPos(291, 417);
 	bunkerInfo->disable_element();
 	bunkerInfo->can_focus = false;

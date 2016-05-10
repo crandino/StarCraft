@@ -154,6 +154,7 @@ public:
 	SDL_Texture *firebat_tex;
 	SDL_Texture *jim_raynor_tex;
 	SDL_Texture *tank_tex;
+	SDL_Texture *zergling_tex;
 
 	//Sounds (FX)
 	//Terran-------------------------------------------
