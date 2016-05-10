@@ -51,6 +51,8 @@ bool Audio::awake(pugi::xml_node &node)
 		active = false;
 		ret = true;
 	}
+	//Allocating new channels, on test ROF
+	Mix_AllocateChannels(20);
 
 	return ret;
 }
@@ -167,7 +169,7 @@ unsigned int Audio::loadFx(const char* path)
 		fx.push_back(chunk);	
 		ret = fx.size();
 	}
-
+	LOG("Allocated channels: %d", Mix_AllocateChannels(-1));
 	return ret;
 }
 
@@ -185,7 +187,7 @@ bool Audio::playFx(unsigned int id, int repeat)
 		advance(i, id - 1);
 		Mix_VolumeChunk((*i), MIX_MAX_VOLUME / 2);
 		Mix_PlayChannel(-1, (*i), repeat);
-
+		
 		ret = true;
 	}
 
