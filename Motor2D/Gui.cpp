@@ -297,7 +297,7 @@ bool Gui::start()
 	info_bunker->setLocalPos(545, 323);
 	info_bunker->interactive = false;
 	info_bunker->draw_element = false;*/
-	info_bunker2 = app->gui->createResourceInfo("Bunker", "100", "75", { 505, 290 });
+	info_bunker2 = app->gui->createResourceInfo("Bunker", "25", "50", { 505, 290 });
 	info_bunker2->interactive = false;
 	info_bunker2->draw_element = false;
 
@@ -326,7 +326,7 @@ bool Gui::start()
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	// Create the GuiMinimap
-	mini_map = createMinimap({ 6, 348, 127, 127 }, "Minimap/finalminimap.png");
+	mini_map = createMinimap({ 6, 348, 128, 128 }, "Minimap/finalminimap.png");
 	mini_map->setLocalPos(6, 348);
 
 	//Sounds
@@ -456,7 +456,7 @@ GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex)
 void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 {
 	if (ui == ui_create_builds)
-	{
+	{	
 		switch (event)
 		{
 
