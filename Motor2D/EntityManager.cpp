@@ -53,12 +53,15 @@ void EntityManager::loadEntityTex()
 	firebat_tex = app->tex->loadTexture("Units/firebat.png");
 	jim_raynor_tex = app->tex->loadTexture("Units/JimRaynor.png");
 	tank_tex = app->tex->loadTexture("Units/Blue_tank.png");
+
 	zergling_tex = app->tex->loadTexture("Units/New_Zergling64.png");
 	hydralisk_tex = app->tex->loadTexture("Units/Hydralisk.png");
 	ultralisk_tex = app->tex->loadTexture("Units/ultralisk2.png");
 	mutalisk_tex = app->tex->loadTexture("Units/Mutalisk.png");
+
 	bunker_tex = app->tex->loadTexture("Building/Bunker.png");
 	bomb_tex = app->tex->loadTexture("pikachu_aka_bomb.png"); 
+	factory_tex = app->tex->loadTexture("Building/factory.png");
 }
 
 bool EntityManager::loadEntityFX()
@@ -651,10 +654,15 @@ bool EntityManager::cleanUp()
 	SDL_DestroyTexture(firebat_tex);
 	SDL_DestroyTexture(jim_raynor_tex);
 	SDL_DestroyTexture(tank_tex);
+
 	SDL_DestroyTexture(zergling_tex);
 	SDL_DestroyTexture(hydralisk_tex);
 	SDL_DestroyTexture(mutalisk_tex);
 	SDL_DestroyTexture(ultralisk_tex);
+
+	SDL_DestroyTexture(bunker_tex);
+	SDL_DestroyTexture(factory_tex);
+	SDL_DestroyTexture(bomb_tex);
 
 	return true;
 }

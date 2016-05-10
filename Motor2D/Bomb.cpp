@@ -1,6 +1,5 @@
 #include "Bomb.h"
 
-
 Bomb::Bomb(iPoint &p)
 {
 	tex_width = 43;

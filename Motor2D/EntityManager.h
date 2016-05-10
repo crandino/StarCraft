@@ -160,6 +160,7 @@ public:
 	SDL_Texture *mutalisk_tex;
 	SDL_Texture *bunker_tex;
 	SDL_Texture *bomb_tex;
+	SDL_Texture *factory_tex;
 
 	//Terran-------------------------------------------
 
@@ -353,9 +354,9 @@ private:
 	void			onCollision(Collider* c1, Collider* c2);	
 
 	// Textures
-	void loadEntityTex();
+	void			loadEntityTex();
 	// Sounds
-	bool loadEntityFX();
+	bool			loadEntityFX();
 
 	void			entityManualCreation();
 	void			handleSelection();
