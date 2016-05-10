@@ -98,14 +98,14 @@ void GuiMinimap::draw() const
 	//FOG_OF_WAR 
 	//fog of war on mini map
 	uint iterations = 0;
-	for (int x = 0; x < 4096; x += 32*2) //the map is iterated
+	for (int x = 0; x < 4096; x += (32*4)) //the map is iterated
 	{
-		for (int y = 0; y < 4096; y += 32*2)
+		for (int y = 0; y < 4096; y += (32*4))
 		{
 			if (app->fog_of_war->isVisible(x, y) == false) //if a non-visible tile is found we print it as a black pixel 
 			{
-				iPoint fog_pos = worldToMinimap({ x, y });
-				app->render->DrawQuad({ fog_pos.x, fog_pos.y, 4, 4}, 0, 0, 0, 75);
+				iPoint fog_pos = worldToMinimap({x, y});
+				app->render->DrawQuad({ fog_pos.x, fog_pos.y, 4, 4}, 0, 0, 0, 175);
 			}
 			++iterations;
 		}
