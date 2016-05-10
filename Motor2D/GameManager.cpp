@@ -82,6 +82,7 @@ bool GameManager::awake(pugi::xml_node &node)
 
 	/*Game Info load*/
 	gameInfo.total_waves = node.child("totalWaves").attribute("value").as_uint();
+	gameInfo.time_before_game_starts = node.child("timeBeforeGameStarts").attribute("value").as_uint();
 	gameInfo.time_before_start = node.child("timeBeforeStart").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase1 = node.child("timeBetweenWavesPhase1").attribute("value").as_uint();
 	gameInfo.time_before_waves_phase2 = node.child("timeBetweenWavesPhase2").attribute("value").as_uint();
@@ -239,7 +240,9 @@ bool GameManager::update(float dt)
 	case(PREPARATION) :
 	{
 		LOG("PREPARATION");
-		startGame();
+		if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)
+			startGame();
+
 		break;
 	}
 	case(FIRST_PHASE) :
@@ -583,6 +586,20 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 
 bool GameManager::postUpdate()
 {
+	
+	if (game_state == PREPARATION && timer_between_waves.readSec() < 7.0f)
+	{
+		labels.at(0)->draw();
+	}
+		
+
+	else if (game_state == PREPARATION && timer_between_waves.readSec() > 7.0f)
+	{
+		labels.at(0)->setLocalPos(10,228);
+		labels.at(0)->draw();
+		labels.at(1)->draw();
+	}	
+
 	return true;
 }
 

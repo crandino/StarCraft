@@ -227,6 +227,19 @@ bool Gui::start()
 	number_of_minerals = app->gui->createLabel("0", 2);
 	number_of_minerals->setLocalPos(508, 4);
 	number_of_minerals->interactive = false;
+	
+	//Text Messages
+	preparation_message = app->gui->createLabel("Welcome to Last Hope!", 2, TEXTMESSAGES);
+	preparation_message->setLocalPos(10,240);
+	preparation_message->interactive = false;
+	preparation_message->getType();
+
+
+	preparation_message2 = app->gui->createLabel("Destroy each wave. Keep Raynor alive (yellow marine)", 2, TEXTMESSAGES);
+	preparation_message2->setLocalPos(10, 240);
+	preparation_message2->interactive = false;
+	preparation_message2->getType();
+
 
 	//Image
 	ui_gas = app->gui->createImage(NULL, { 27, 202, 15, 13 });
@@ -1242,6 +1255,20 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font)
 
 	return ret;
 }
+
+GuiLabel* Gui::createLabel(const char* text, int kind_of_font, GUI_TYPES type)
+{
+	GuiLabel* ret = NULL;
+
+	if (text != NULL)
+	{
+		ret = new GuiLabel(text, kind_of_font, type);
+		app->game_manager->labels.push_back(ret);
+	}
+
+	return ret;
+}
+
 
 //Create cursor
 GuiCursor* Gui::createCursor(const SDL_Texture* texture){

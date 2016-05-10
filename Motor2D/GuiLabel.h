@@ -11,6 +11,8 @@ class GuiLabel : public GuiElements
 {
 public:
 	GuiLabel(const char* text, int kind_of_font);
+	GuiLabel(const char* text, int kind_of_font, GUI_TYPES type);
+
 	~GuiLabel();
 
 	void setText(const char* text, int font);

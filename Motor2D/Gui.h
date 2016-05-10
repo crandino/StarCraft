@@ -39,6 +39,7 @@ enum GUI_TYPES
 	IMAGE,
 	CURSOR,
 	LABEL,
+	TEXTMESSAGES,
 	MINIMAP
 };
 
@@ -75,6 +76,7 @@ public:
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
+	GuiLabel* createLabel(const char* text, int kind_of_font, GUI_TYPES type);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 
 	const GuiElements* findMouseHover();
@@ -149,6 +151,17 @@ public:
 
 	//HUD Label-----------------------------
 	GuiLabel* number_of_wave = nullptr;
+
+	//MESSAGES FOR THE PLAYER
+	GuiLabel* preparation_message = nullptr;
+	GuiLabel* preparation_message2 = nullptr;
+
+
+
+
+
+
+
 
 	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;

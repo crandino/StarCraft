@@ -7,9 +7,15 @@
 
 
 // class GuiLabel ---------------------------------------------------
-GuiLabel::GuiLabel(const char* text, int kind_of_font) : GuiElements()
+GuiLabel::GuiLabel(const char* text, int kind_of_font, GUI_TYPES type) : GuiElements()
 {
 	setText(text,kind_of_font);
+	this->type = type;
+}
+
+GuiLabel::GuiLabel(const char* text, int kind_of_font) : GuiElements()
+{
+	setText(text, kind_of_font);
 	type = LABEL;
 }
 
