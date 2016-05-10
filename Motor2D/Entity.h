@@ -151,9 +151,10 @@ public:
 	{
 		//FOG_OF_WAR 4 - "Draw" function of a unit. Called each frame for each unit.
 		//Rendering the unit only if it is visible
-		if (app->fog_of_war->isVisible(pos.x, pos.y))
-			app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
-	}
+			if (app->fog_of_war->isVisible(pos.x, pos.y))
+				app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+		}
+
 
 	virtual void setAnimationFromDirection()
 	{ }

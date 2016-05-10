@@ -87,6 +87,8 @@ private:
 	iPoint		worldToMinimap(const iPoint &world_pos) const;
 
 	bool		updatePing();
-};
+public:
 
+	bool debug = false;
+};
 #endif  //__GUIMINIMAP_H__

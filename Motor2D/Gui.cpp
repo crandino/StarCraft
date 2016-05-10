@@ -1490,9 +1490,19 @@ bool Gui::postUpdate()
 			{
 				if (gui->getType() == IMAGE && gui->static_image)
 					gui->draw_static();
+				else if (gui->getType() == MINIMAP)
+				{
+					if (debug)
+					{
+						mini_map->debug = debug;
+					}
+					gui->draw();
+					mini_map->debug = false;
+				}
 				else
 					gui->draw();
 			}
+
 		}
 
 		if (debug == true && gui->draw_element == true)
