@@ -157,6 +157,7 @@ public:
 	SDL_Texture *zergling_tex;
 	SDL_Texture *hydralisk_tex;
 	SDL_Texture *ultralisk_tex;
+	SDL_Texture *mutalisk_tex;
 
 	//Terran-------------------------------------------
 

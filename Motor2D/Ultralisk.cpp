@@ -375,8 +375,8 @@ void Ultralisk::setAnimationFromDirection()
 	}
 	break;
 	case(DYING) :
-	current_animation = &dead;
-	break;
+		current_animation = &dead;
+		break;
 	}
 }
 

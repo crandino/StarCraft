@@ -4,7 +4,6 @@
 Mutalisk::Mutalisk(iPoint &p)
 {
 	//Graphics
-	tex = app->tex->loadTexture("Units/Mutalisk.png");
 	tex_width = tex_height = 128;
 
 	//--------------Walking Animations--------------
@@ -353,4 +352,10 @@ bool Mutalisk::attack(Entity* target_to_attack)
 		}
 	}
 	return ret;
+}
+
+void Mutalisk::draw()
+{
+	if (app->fog_of_war->isVisible(pos.x, pos.y))
+		app->render->blit(app->entity_manager->mutalisk_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

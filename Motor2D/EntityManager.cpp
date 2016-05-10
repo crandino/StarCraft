@@ -55,6 +55,7 @@ void EntityManager::loadEntityTex()
 	zergling_tex = app->tex->loadTexture("Units/New_Zergling64.png");
 	hydralisk_tex = app->tex->loadTexture("Units/Hydralisk.png");
 	ultralisk_tex = app->tex->loadTexture("Units/ultralisk2.png");
+	mutalisk_tex = app->tex->loadTexture("Units/Mutalisk.png");
 }
 
 bool EntityManager::loadEntityFX()
@@ -641,14 +642,16 @@ bool EntityManager::cleanUp()
 	active_entities.clear();
 	selection.clear();
 
-	app->tex->unloadTexture(marine_tex);
-	app->tex->unloadTexture(scv_tex);
-	app->tex->unloadTexture(medic_tex);
-	app->tex->unloadTexture(firebat_tex);
-	app->tex->unloadTexture(jim_raynor_tex);
-	app->tex->unloadTexture(tank_tex);
-	app->tex->unloadTexture(zergling_tex);
-	app->tex->unloadTexture(hydralisk_tex);
+	SDL_DestroyTexture(marine_tex);
+	SDL_DestroyTexture(scv_tex);
+	SDL_DestroyTexture(medic_tex);
+	SDL_DestroyTexture(firebat_tex);
+	SDL_DestroyTexture(jim_raynor_tex);
+	SDL_DestroyTexture(tank_tex);
+	SDL_DestroyTexture(zergling_tex);
+	SDL_DestroyTexture(hydralisk_tex);
+	SDL_DestroyTexture(mutalisk_tex);
+	SDL_DestroyTexture(ultralisk_tex);
 
 	return true;
 }
