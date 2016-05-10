@@ -137,7 +137,9 @@
     <ClCompile Include="Motor2D\CommandCenter.cpp">
       <Filter>Entities\Terran_Buildings</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\Barrack.cpp" />
+    <ClCompile Include="Motor2D\Barrack.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">

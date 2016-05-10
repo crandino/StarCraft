@@ -109,11 +109,6 @@ public:
 	virtual ~Entity()
 	{ }
 
-	virtual bool start()
-	{
-		return true;
-	}
-
 	virtual bool update(float dt)
 	{
  		return true;

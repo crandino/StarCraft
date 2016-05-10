@@ -149,8 +149,6 @@ Firebat::Firebat(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 	particle_offset = { 0, 0 };
 
-
-
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
 	collider_offset = { -10, -14 };
