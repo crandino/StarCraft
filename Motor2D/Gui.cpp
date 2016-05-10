@@ -1039,6 +1039,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 // Update all guis
 bool Gui::preUpdate()
 {
+
+	
+
 	return true;
 }
 
