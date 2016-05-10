@@ -114,6 +114,9 @@ public:
 
 	Entity* whichEntityOnMouse();
 
+	//FOG_OF_WAR
+	void            updateFogOfWar();
+
 public:
 
 	/*---Utilities---*/ //Move to Globals when we have more time so it can be used by other modules
@@ -354,9 +357,6 @@ private:
 
 	void			entityManualCreation();
 	void			handleSelection();
-	
-	//FOG_OF_WAR
-	void            updateFogOfWar();
 };
 
 #endif // __EntityManager_H__

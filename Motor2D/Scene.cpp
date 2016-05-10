@@ -64,11 +64,6 @@ bool Scene::start()
 // Called each loop iteration
 bool Scene::preUpdate()
 {
-	if ((uint)fog_of_war_timer.read() > 500) // Every 0.5 seconds, the fog of war is reset to maxAlpha value (175);
-	{
-		fog_of_war_timer.start();
-		app->fog_of_war->clearMap(0);
-	}
 		
 	
 	return true;
@@ -164,7 +159,11 @@ bool Scene::postUpdate()
 {
 	//FOG_OF_WAR 5 - Scene PosUpdate. Called once every frame.
 	//Clear the low alpha map
-	app->fog_of_war->clearMap(1);
+	if ((uint)fog_of_war_timer.read() > 500) // Every 0.5 seconds, the fog of war is reset to maxAlpha value (175);
+	{
+		fog_of_war_timer.start();
+		app->fog_of_war->clearMap(0);
+	}
 
 	bool ret = true;
 
