@@ -10,15 +10,13 @@ struct SDL_Texture;
 class GuiLabel : public GuiElements
 {
 public:
-	GuiLabel(const char* text, int kind_of_font, iPoint pos);
 	GuiLabel(const char* text, int kind_of_font);
 	~GuiLabel();
 
 	void setText(const char* text, int font);
 	const SDL_Texture* getTexture() const;
-	void draw();
+	void draw() const;
 
-	iPoint pos;
 
 private:
 

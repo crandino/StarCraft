@@ -202,9 +202,6 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
-
-
-
 	return ret;
 }
 

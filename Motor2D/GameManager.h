@@ -214,11 +214,6 @@ public:
 	iPoint				 command_center_position;
 	Bomb*				 bomb;
 
-	vector<GuiLabel*>	labels;
-
-
-
-
 private:
 
 	uint				 current_wave;

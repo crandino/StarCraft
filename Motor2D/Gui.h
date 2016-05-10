@@ -188,14 +188,6 @@ public:
 	SDL_Rect	 red_life;
 	SDL_Rect     white_life;
 	
-	// GUI game Manager Wave Inform
-	GuiLabel*		label_game_starts = nullptr;
-	GuiLabel*		label_information_about_the_game = nullptr;
-	GuiLabel*		label_game_ends = nullptr;
-	GuiLabel*		label_wave_starts = nullptr;
-
-
-
 
 private:
 		
