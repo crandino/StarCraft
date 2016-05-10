@@ -1821,7 +1821,7 @@ void Gui::controlIconsSprite()
 	if (buildingMenuOpened)
 	{
 		//Bunker
-		if (app->game_manager->gas_resources < 25 || app->game_manager->mineral_resources < 50)
+		if (app->game_manager->gas_resources <= 25 || app->game_manager->mineral_resources <= 50)
 		{
 			ui_create_bunker->setSection({ 440, 125, 37, 34 });
 			ui_create_bunker->draw_element;
