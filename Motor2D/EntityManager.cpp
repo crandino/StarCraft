@@ -60,7 +60,7 @@ void EntityManager::loadEntityTex()
 	mutalisk_tex = app->tex->loadTexture("Units/Mutalisk.png");
 
 	bunker_tex = app->tex->loadTexture("Building/Bunker.png");
-	bomb_tex = app->tex->loadTexture("pikachu_aka_bomb.png"); 
+	bomb_tex = app->tex->loadTexture("Bomb/Bomb_STAR.png"); 
 	factory_tex = app->tex->loadTexture("Building/factory.png");
 	command_center_tex = app->tex->loadTexture("Building/CommandCenter.png");
 	barrack_tex = app->tex->loadTexture("Building/barracks.png");

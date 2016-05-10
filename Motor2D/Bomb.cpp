@@ -2,8 +2,8 @@
 
 Bomb::Bomb(iPoint &p)
 {
-	tex_width = 43;
-	tex_height = 42;
+	tex_width = 47;
+	tex_height = 90;
 	collider_offset.set(15, 15);
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
@@ -11,10 +11,16 @@ Bomb::Bomb(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 	// Animations and FX
-	tex = app->tex->loadTexture("pikachu_aka_bomb.png"); //Sprites/Animations etc..
-	idle.frames.push_back({ 0, 0, 43, 42 });
-	idle.speed = 1.0f;
-	idle.loop = false;
+	idle.frames.push_back({ 8, 10, 47, 90 });
+	idle.frames.push_back({ 68, 10, 47, 90 });
+	idle.frames.push_back({ 128, 10, 47, 90 });
+	idle.frames.push_back({ 188, 10, 47, 90 });
+	idle.frames.push_back({ 248, 10, 47, 90 });
+	idle.frames.push_back({ 308, 10, 47, 90 });
+	idle.frames.push_back({ 368, 10, 47, 90 });
+	idle.frames.push_back({ 428, 10, 47, 90 });
+	idle.speed = 0.007f;
+	idle.loop = true;
 	current_animation = &idle;
 	// Colliders
 	coll = app->collision->addCollider({ pos.x + collider_offset.x, pos.y + collider_offset.y, 43, 42 }, COLLIDER_BOMB);
