@@ -604,29 +604,47 @@ bool GameManager::postUpdate()
 	if (game_state == PREPARATION)//It draws the messages simulating a kind of console in preparation game state
 	{
 		if (timer_between_waves.readSec() < 7.0f)
-			labels.at(0)->draw();
-
+		{
+			app->gui->background_messages->unable_element();
+			labels.at(0)->unable_element();
+		}
 		else if ( timer_between_waves.readSec() > 7.0f)
 		{
+			
 			labels.at(0)->setLocalPos(10,228);
-			labels.at(0)->draw();
-			labels.at(1)->draw();
-		}	
+			labels.at(0)->unable_element();
+			labels.at(1)->unable_element();
+		}
+		
+	}
+	if (game_state == FIRST_PHASE )
+	{
+        labels.at(0)->disable_element();
+		labels.at(1)->disable_element();
+		app->gui->background_messages->disable_element();
 	}
 
 	if (game_state == SECOND_PHASE && wave_state == WAITING_FOR_WAVE_TO_START)//It draws the messages simulating a kind of console in preparation game state
 	{
+
 		if (3.0f < timer_between_waves.readSec() < 15.0f)
 		{
+			app->gui->background_messages->unable_element();
 			labels.at(2)->setLocalPos(10, 228);
-			labels.at(2)->draw();
-			labels.at(3)->draw();
-		}
+			labels.at(2)->unable_element();
+			labels.at(3)->unable_element();
+		}	
+
 	}
 
+	if (game_state == FINAL_PHASE)
+	{
+		app->gui->background_messages->disable_element();
+		labels.at(2)->disable_element();
+		labels.at(3)->disable_element();
+	}
 
-
-
+	
 
 
 	return true;
