@@ -27,6 +27,7 @@
 #include "Blue.h"
 #include "Yellow.h"
 #include "Red.h"
+#include "GuiMinimap.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -52,6 +53,15 @@ void EntityManager::loadEntityTex()
 	firebat_tex = app->tex->loadTexture("Units/firebat.png");
 	jim_raynor_tex = app->tex->loadTexture("Units/JimRaynor.png");
 	tank_tex = app->tex->loadTexture("Units/Blue_tank.png");
+
+	zergling_tex = app->tex->loadTexture("Units/New_Zergling64.png");
+	hydralisk_tex = app->tex->loadTexture("Units/Hydralisk.png");
+	ultralisk_tex = app->tex->loadTexture("Units/ultralisk2.png");
+	mutalisk_tex = app->tex->loadTexture("Units/Mutalisk.png");
+
+	bunker_tex = app->tex->loadTexture("Building/Bunker.png");
+	bomb_tex = app->tex->loadTexture("pikachu_aka_bomb.png"); 
+	factory_tex = app->tex->loadTexture("Building/factory.png");
 }
 
 bool EntityManager::loadEntityFX()
@@ -638,7 +648,21 @@ bool EntityManager::cleanUp()
 	active_entities.clear();
 	selection.clear();
 
-	app->tex->unloadTexture(marine_tex);
+	SDL_DestroyTexture(marine_tex);
+	SDL_DestroyTexture(scv_tex);
+	SDL_DestroyTexture(medic_tex);
+	SDL_DestroyTexture(firebat_tex);
+	SDL_DestroyTexture(jim_raynor_tex);
+	SDL_DestroyTexture(tank_tex);
+
+	SDL_DestroyTexture(zergling_tex);
+	SDL_DestroyTexture(hydralisk_tex);
+	SDL_DestroyTexture(mutalisk_tex);
+	SDL_DestroyTexture(ultralisk_tex);
+
+	SDL_DestroyTexture(bunker_tex);
+	SDL_DestroyTexture(factory_tex);
+	SDL_DestroyTexture(bomb_tex);
 
 	return true;
 }
@@ -773,7 +797,10 @@ void EntityManager::handleSelection()
 		// Target position is where the player has clicked to move his units.
 		iPoint target_position;
 		app->input->getMousePosition(target_position);
-		target_position = app->render->screenToWorld(target_position.x, target_position.y);
+		if (app->gui->mini_map->isMouseInside())
+			target_position = app->gui->mini_map->minimapToWorld({ target_position.x, target_position.y });
+		else 
+			target_position = app->render->screenToWorld(target_position.x, target_position.y);
 		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
 
 		//Bunker and bomb useful method
@@ -915,7 +942,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	for (; it != active_entities.end(); ++it)
 	{
 		if (it->second != e && it->second->state != DYING && 
-			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
+			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -941,7 +968,7 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 		for (; it != active_entities.end(); ++it)
 		{
 			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) 
-				&& (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
+				&& (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
 			{
 				if (!can_attack_to_flying)
 				{
@@ -989,7 +1016,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && e->specialization != BOMB)
+		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && it->second->specialization != BOMB)
 		{
 			if (!can_attack_to_flying)
 			{
@@ -1032,7 +1059,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && e->specialization != BOMB && 
+		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && it->second->specialization != BOMB &&
 			((!search_only_buildings && it->second->type == UNIT && it->second->specialization != TANK) ||
 			(search_only_buildings && (it->second->type == BUILDING || it->second->specialization == TANK))) 
 			&& it->second->current_hp < it->second->max_hp)

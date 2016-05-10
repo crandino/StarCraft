@@ -52,13 +52,12 @@ public:
 	Animation attack_left_up;
 	vector<Animation*> attack_animation_pack;
 
-	Ultralisk() {}
 	Ultralisk(iPoint &p);
-
 	~Ultralisk();
 
 	bool update(float dt);
 	void setAnimationFromDirection();
+	void draw();
 
 };
 

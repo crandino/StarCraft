@@ -133,6 +133,7 @@
     <ClCompile Include="Motor2D\Bunker.cpp" />
     <ClCompile Include="Motor2D\Collision.cpp" />
     <ClCompile Include="Motor2D\EntityManager.cpp" />
+    <ClCompile Include="Motor2D\Factory.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />
     <ClCompile Include="Motor2D\Firebat.cpp" />
     <ClCompile Include="Motor2D\FogOfWar.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Motor2D\Unit.cpp" />
     <ClCompile Include="Motor2D\Window.cpp" />
     <ClCompile Include="Motor2D\Yellow.cpp" />
+    <ClCompile Include="Motor2D\Zergling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Game\config.xml">

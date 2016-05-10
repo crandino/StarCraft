@@ -17,9 +17,6 @@ Bunker::Bunker(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 	// Animations and FX
-	tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
-	attack_up.image = app->tex->loadTexture("Particles/Shots/Bunker_On_Attack2.png");
-	explosion.image = app->tex->loadTexture("Particles/Explosion/Small_Explosion.png");
 	fx_attack = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 	fx_entering = app->audio->loadFx("Audio/FX/Buildings/BunkerOpenDoor.wav");
 	fx_leaving = app->audio->loadFx("Audio/FX/Buildings/BunkerCloseDoor.wav");
@@ -302,7 +299,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { 21, -12 };
-					particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_right.on = true;
 				}
 			}
@@ -318,7 +315,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { 21, -12 };
-					particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_right_up.on = true;
 				}
 			}
@@ -334,7 +331,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { 0, -25 };
-					particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_up.on = true;
 				}
 			}
@@ -350,7 +347,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { -12, -19 };
-					particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_left_up.on = true;
 				}
 			}
@@ -367,7 +364,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { -12, -19 };
-					particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_left.on = true;
 				}
 			}
@@ -383,7 +380,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { -14, -7 };
-					particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_left_down.on = true;
 				}
 			}
@@ -399,7 +396,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { 0, -5 };
-					particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_down.on = true;
 				}
 			}
@@ -415,7 +412,7 @@ void Bunker::setParticleBehaviour()
 				{
 
 					particle_offset = { 18, -6 };
-					particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, attack_up.image);
+					particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
 					attack_right_down.on = true;
 				}
 			}
@@ -423,7 +420,7 @@ void Bunker::setParticleBehaviour()
 		break;
 	case DYING:
 		resetParticle();
-		particle = app->particle->addParticle(explosion, center.x, center.y, 0, 0, 1, explosion.image);
+		particle = app->particle->addParticle(explosion, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
 		break;
 	}
 }
@@ -442,4 +439,9 @@ void Bunker::resetParticle()
 		particle->on = false;
 		particle->alive = false;
 	}
+}
+
+void Bunker::draw()
+{
+	app->render->blit(app->entity_manager->bunker_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

@@ -196,6 +196,7 @@ public:
 	GuiLabel* preparation_message2 = nullptr;
 	GuiLabel* second_phase_message1 = nullptr;
 	GuiLabel* second_phase_message2 = nullptr;
+	GuiImage* background_messages = nullptr;
 
 	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;

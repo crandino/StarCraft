@@ -154,9 +154,13 @@ public:
 	SDL_Texture *firebat_tex;
 	SDL_Texture *jim_raynor_tex;
 	SDL_Texture *tank_tex;
-
-	//Sounds (FX)
-	//Terran-------------------------------------------
+	SDL_Texture *zergling_tex;
+	SDL_Texture *hydralisk_tex;
+	SDL_Texture *ultralisk_tex;
+	SDL_Texture *mutalisk_tex;
+	SDL_Texture *bunker_tex;
+	SDL_Texture *bomb_tex;
+	SDL_Texture *factory_tex;
 
 	//Terran-------------------------------------------
 
@@ -334,7 +338,6 @@ public:
 private:
 	
 	uint			 next_ID;
-
 	bool			 debug = false;
 
 	// CRZ -> Variables to build buildings.
@@ -351,9 +354,9 @@ private:
 	void			onCollision(Collider* c1, Collider* c2);	
 
 	// Textures
-	void loadEntityTex();
+	void			loadEntityTex();
 	// Sounds
-	bool loadEntityFX();
+	bool			loadEntityFX();
 
 	void			entityManualCreation();
 	void			handleSelection();
