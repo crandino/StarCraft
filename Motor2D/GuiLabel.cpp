@@ -51,5 +51,12 @@ const SDL_Texture* GuiLabel::getTexture() const
 // --------------------------
 void GuiLabel::draw()
 {
+	iPoint tmpPos = getScreenPos();
+	
+	tmpPos.x += 320;
+	tmpPos.y += 240;
+
+	pos = tmpPos;
+
 	app->render->blit(texture, pos.x, pos.y, NULL, 0.0f);
 }
