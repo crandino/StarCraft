@@ -143,6 +143,9 @@ public:
 
 	//Factory HUD-----------------------
 	GuiImage* ui_create_tank = nullptr;
+	GuiImage* ui_normal_tank = nullptr;
+	GuiImage* ui_siege_tank = nullptr;
+	bool siegeMode = false;
 
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;
@@ -193,10 +196,16 @@ public:
 	GuiLabel* number_of_wave = nullptr;
 
 	//MESSAGES FOR THE PLAYER
+
+	//GuiLabel* text_message = nullptr;
+
+
 	GuiLabel* preparation_message = nullptr;
 	GuiLabel* preparation_message2 = nullptr;
 	GuiLabel* second_phase_message1 = nullptr;
 	GuiLabel* second_phase_message2 = nullptr;
+	GuiImage* background_messages = nullptr;
+
 
 	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;

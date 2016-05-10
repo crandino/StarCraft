@@ -582,8 +582,5 @@ void JimRaynor::setAnimationFromDirection()
 
 void JimRaynor::draw()
 {
-	//FOG_OF_WAR 4 - "Draw" function of a unit. Called each frame for each unit.
-	//Rendering the unit only if it is visible
-	if (app->fog_of_war->isVisible(pos.x, pos.y))
-		app->render->blit(app->entity_manager->jim_raynor_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+	app->render->blit(app->entity_manager->jim_raynor_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

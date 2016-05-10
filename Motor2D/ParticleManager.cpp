@@ -295,7 +295,6 @@ Particle::Particle(const Particle& p)
 
 Particle::~Particle()
 {
-
 }
 
 void Particle::followPoint(int x, int y)

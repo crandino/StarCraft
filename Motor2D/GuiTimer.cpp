@@ -3,6 +3,7 @@
 //Constructor
 GuiTimer::GuiTimer() : crono("00 : 00", 0)
 {
+	crono.setLocalPos(rect.x, rect.y);
 	type = TIMER;
 	active = false;
 	seconds = minutes = 0;

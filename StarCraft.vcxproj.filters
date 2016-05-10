@@ -131,6 +131,18 @@
     <ClCompile Include="Motor2D\GuiResources.cpp">
       <Filter>UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\Zergling.cpp">
+      <Filter>Entities\Zerg_Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Factory.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\CommandCenter.cpp">
+      <Filter>Entities\Terran_Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="Motor2D\Barrack.cpp" >
+	<Filter>Entities\Terran_Buildings</Filter>
+	</ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">

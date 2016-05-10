@@ -17,7 +17,6 @@ Bunker::Bunker(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 	// Animations and FX
-	tex = app->tex->loadTexture("Building/Bunker.png"); //Sprites/Animations etc..
 	fx_attack = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
 	fx_entering = app->audio->loadFx("Audio/FX/Buildings/BunkerOpenDoor.wav");
 	fx_leaving = app->audio->loadFx("Audio/FX/Buildings/BunkerCloseDoor.wav");
@@ -440,4 +439,9 @@ void Bunker::resetParticle()
 		particle->on = false;
 		particle->alive = false;
 	}
+}
+
+void Bunker::draw()
+{
+	app->render->blit(app->entity_manager->bunker_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

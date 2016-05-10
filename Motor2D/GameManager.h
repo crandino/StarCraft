@@ -208,9 +208,6 @@ public:
 
 	GameInformation gameInfo;
 
-	//Info label
-	vector<GuiLabel*>	labels;
-
 
 	//States
 
@@ -222,6 +219,7 @@ public:
 	
 	iPoint				 command_center_position;
 	Bomb*				 bomb;
+	vector<GuiLabel*>	 labels;
 
 private:
 
@@ -248,6 +246,9 @@ private:
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
 	
+	
+
+
 	//Phase 2 
 	int					incrementPhase2WavePower();
 
