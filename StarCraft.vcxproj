@@ -91,6 +91,7 @@
     <ClInclude Include="Motor2D\GuiElements.h" />
     <ClInclude Include="Motor2D\GuiImage.h" />
     <ClInclude Include="Motor2D\GuiLabel.h" />
+    <ClInclude Include="Motor2D\GuiResources.h" />
     <ClInclude Include="Motor2D\GuiTimer.h" />
     <ClInclude Include="Motor2D\Hydralisk.h" />
     <ClInclude Include="Motor2D\Input.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Motor2D\GuiElements.cpp" />
     <ClCompile Include="Motor2D\GuiImage.cpp" />
     <ClCompile Include="Motor2D\GuiLabel.cpp" />
+    <ClCompile Include="Motor2D\GuiResources.cpp" />
     <ClCompile Include="Motor2D\GuiTimer.cpp" />
     <ClCompile Include="Motor2D\Hydralisk.cpp" />
     <ClCompile Include="Motor2D\Input.cpp" />

@@ -15,6 +15,7 @@
 #include "GuiLabel.h"
 #include "GuiMinimap.h"
 #include "GuiTimer.h"
+#include "GuiResources.h"
 
 #include "Bunker.h"
 #include "Tank.h"
@@ -244,30 +245,32 @@ bool Gui::start()
 	number_of_minerals->setLocalPos(508, 4);
 	number_of_minerals->interactive = false;
 	
+	background_messages = app->gui->createImage("UI_Panel_Messages.png");
+	background_messages->setLocalPos(-85, -3);
+	background_messages->disable_element();
+
+
+
 	//Text Messages
-	preparation_message = app->gui->createLabel("Welcome to Last Hope!", 2, TEXTMESSAGES);
-	preparation_message->setLocalPos(10,240);
+	preparation_message = app->gui->createLabel("Starcraft: Last Hope", 2, TEXTMESSAGES);
+	preparation_message->setLocalPos(20,40);
 	preparation_message->disable_element();
 	
 
 
-	preparation_message2 = app->gui->createLabel("Destroy each wave. Keep Raynor alive (yellow marine)", 2, TEXTMESSAGES);
-	preparation_message2->setLocalPos(10, 240);
+	preparation_message2 = app->gui->createLabel("Keep Raynor alive", 2, TEXTMESSAGES);
+	preparation_message2->setLocalPos(10, 38);
 	preparation_message2->disable_element();
 
 
 	second_phase_message1 = app->gui->createLabel("The bomb has landed. Find it and take it to the command center", 2, TEXTMESSAGES);
-	second_phase_message1->setLocalPos(10, 240);
+	second_phase_message1->setLocalPos(10, 25);
 	second_phase_message1->disable_element();
 	
 
 	second_phase_message2 = app->gui->createLabel("A bigger zerg combat force has been detected. Be fast.", 2, TEXTMESSAGES);
-	second_phase_message2->setLocalPos(10, 240);
+	second_phase_message2->setLocalPos(10, 38);
 	second_phase_message2->disable_element();
-
-	background_messages = app->gui->createImage("UI_Panel_Messages.png");
-	background_messages->setLocalPos(-85, -3);
-	background_messages->disable_element();
 
 
 	//Image
@@ -285,6 +288,10 @@ bool Gui::start()
 	info_scv->setLocalPos(505, 320);
 	info_scv->interactive = false;
 	info_scv->draw_element = false;
+
+	info_scv2 = app->gui->createResourceInfo("asdfasdfasdf", "100", "100", {505,300});
+	info_scv2->interactive = false;
+	info_scv2->draw_element = false;
 
 	info_bunker = app->gui->createImage(NULL, { 440, 43, 126, 33 });
 	info_bunker->setLocalPos(545, 323);
@@ -409,6 +416,16 @@ GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associ
 	return ret;
 }
 
+GuiResources* Gui::createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos)
+{
+	GuiResources* ret = nullptr;
+	ret = new GuiResources(_entity_name, _mineral, _gas, pos);
+
+	elements.push_back(ret);
+
+	return ret;
+}
+
 GuiMinimap* Gui::createMinimap(SDL_Rect rect, const char *pathTex)
 {
 	GuiMinimap* ret = nullptr;
@@ -460,10 +477,12 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 		{
 		case(MOUSE_ENTERS) :
 			info_scv->draw_element = true;
+			info_scv2->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
 			info_scv->draw_element = false;
+			info_scv2->draw_element = false;
 			break;
 
 		case(MOUSE_LCLICK_DOWN) :
@@ -1696,6 +1715,7 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font, GUI_TYPES type)
 	if (text != NULL)
 	{
 		ret = new GuiLabel(text, kind_of_font, type);
+
 		elements.push_back(ret);
 		app->game_manager->labels.push_back(ret);
 	}
