@@ -147,21 +147,32 @@ public:
 
 	bool	selector_init;
 
-	// Enttity Textures
+	// ---------- Entity Textures ---------------
+	//   Terran
 	SDL_Texture *marine_tex;
 	SDL_Texture *scv_tex;
 	SDL_Texture *medic_tex;
 	SDL_Texture *firebat_tex;
 	SDL_Texture *jim_raynor_tex;
 	SDL_Texture *tank_tex;
+
+	//   Zergling
 	SDL_Texture *zergling_tex;
 	SDL_Texture *hydralisk_tex;
 	SDL_Texture *ultralisk_tex;
 	SDL_Texture *mutalisk_tex;
+
+	//   Building
 	SDL_Texture *bunker_tex;
 	SDL_Texture *bomb_tex;
+	SDL_Texture *factory_tex;
+	SDL_Texture *barrack_tex;
+	SDL_Texture *command_center_tex;
+	SDL_Texture *blue_tex;
+	SDL_Texture *red_tex;
+	SDL_Texture *yello_tex;
 
-	//Terran-------------------------------------------
+	// ---------- Entity Sounds --------------
 
 	//Marine
 	unsigned int fx_marine_attack;
@@ -353,9 +364,9 @@ private:
 	void			onCollision(Collider* c1, Collider* c2);	
 
 	// Textures
-	void loadEntityTex();
+	void			loadEntityTex();
 	// Sounds
-	bool loadEntityFX();
+	bool			loadEntityFX();
 
 	void			entityManualCreation();
 	void			handleSelection();
