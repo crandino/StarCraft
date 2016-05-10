@@ -9,6 +9,9 @@ public:
 
 	Animation idle;
 
+	//Command Center Info
+	char factory_info[20];
+
 public:
 
 	Factory() {}
@@ -57,6 +60,9 @@ public:
 
 	bool update(float dt)
 	{
+		sprintf_s(factory_info, 20, "%u / 1000", current_hp);
+		app->gui->factoryInfo->setText(factory_info, 2);
+
 		switch (state)
 		{
 		case IDLE:
@@ -65,6 +71,7 @@ public:
 			app->gui->factoryAlive = false;
 			if (timer_to_check.read() >= time_to_die)
 			{
+				current_hp = 0;
 				to_delete = true;
 				coll->to_delete = true;
 			}

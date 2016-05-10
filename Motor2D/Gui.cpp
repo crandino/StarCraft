@@ -333,15 +333,15 @@ bool Gui::start()
 	commandCenterInfo->can_focus = false;
 
 	//Factory Wireframe--------------------------
-	//factoryWireframe = app->gui->createImage(atlas_wireframes, { , , 66, 45 });
-	//factoryWireframe->setLocalPos(186, 407);
-	//factoryWireframe->can_focus = false;
-	//factoryWireframe->disable_element();
+	factoryWireframe = app->gui->createImage(atlas_wireframes, { 4, 312, 66, 65 });
+	factoryWireframe->setLocalPos(187, 390);
+	factoryWireframe->can_focus = false;
+	factoryWireframe->disable_element();
 	////Info
-	//factoryInfo = app->gui->createLabel("", 2);
-	//factoryInfo->setLocalPos();
-	//factoryInfo->disable_element();
-	//factoryInfo->can_focus = false;
+	factoryInfo = app->gui->createLabel("", 2);
+	factoryInfo->setLocalPos(190, 455);
+	factoryInfo->disable_element();
+	factoryInfo->can_focus = false;
 
 	return true;
 }
@@ -701,6 +701,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				  commandCenterWireframe->enable_element();
 				  commandCenterInfo->enable_element();
+
+				  factoryWireframe->disable_element();
+				  factoryInfo->disable_element();
 			  }
 			  
 		      break;
@@ -745,6 +748,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -794,6 +800,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
 
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
+
 			  break;
 
 		  case (FACTORY) :
@@ -840,6 +849,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
 
+			  factoryWireframe->enable_element();
+			  factoryInfo->enable_element();
+
 			  break;
 
 		  case (MARINE) :
@@ -882,6 +894,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
 
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
+
 			  break;
 			  
 		  case (MEDIC) :
@@ -923,6 +938,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
 			  
 			  break;
 
@@ -965,6 +983,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
 			  
 			  break;
 
@@ -1007,6 +1028,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
 			  
 			  break;
 
@@ -1053,6 +1077,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				commandCenterWireframe->disable_element();
 				commandCenterInfo->disable_element();
 
+				factoryWireframe->disable_element();
+				factoryInfo->disable_element();
+
 				break;
 
 		  case (NOTYPE) :
@@ -1088,6 +1115,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				  commandCenterWireframe->disable_element();
 				  commandCenterInfo->disable_element();
+
+				  factoryWireframe->disable_element();
+				  factoryInfo->disable_element();
+
 
 			  break;
 	}
