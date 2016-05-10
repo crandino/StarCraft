@@ -128,10 +128,12 @@
   <ItemGroup>
     <ClCompile Include="Motor2D\App.cpp" />
     <ClCompile Include="Motor2D\Audio.cpp" />
+    <ClCompile Include="Motor2D\Barrack.cpp" />
     <ClCompile Include="Motor2D\Blue.cpp" />
     <ClCompile Include="Motor2D\Bomb.cpp" />
     <ClCompile Include="Motor2D\Bunker.cpp" />
     <ClCompile Include="Motor2D\Collision.cpp" />
+    <ClCompile Include="Motor2D\CommandCenter.cpp" />
     <ClCompile Include="Motor2D\EntityManager.cpp" />
     <ClCompile Include="Motor2D\Factory.cpp" />
     <ClCompile Include="Motor2D\FileSystem.cpp" />

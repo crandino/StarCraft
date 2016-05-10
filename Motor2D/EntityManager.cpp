@@ -62,6 +62,8 @@ void EntityManager::loadEntityTex()
 	bunker_tex = app->tex->loadTexture("Building/Bunker.png");
 	bomb_tex = app->tex->loadTexture("pikachu_aka_bomb.png"); 
 	factory_tex = app->tex->loadTexture("Building/factory.png");
+	command_center_tex = app->tex->loadTexture("Building/CommandCenter.png");
+	barrack_tex = app->tex->loadTexture("Building/barracks.png");
 }
 
 bool EntityManager::loadEntityFX()
@@ -663,6 +665,8 @@ bool EntityManager::cleanUp()
 	SDL_DestroyTexture(bunker_tex);
 	SDL_DestroyTexture(factory_tex);
 	SDL_DestroyTexture(bomb_tex);
+	SDL_DestroyTexture(command_center_tex);
+	SDL_DestroyTexture(barrack_tex);
 
 	return true;
 }
@@ -1111,7 +1115,22 @@ void EntityManager::choosePlaceForBuilding()
 			}
 		}
 	}
-	app->render->blit(building_to_place->tex, building_to_place->pos.x, building_to_place->pos.y, &building_to_place->current_animation->getCurrentFrame());
+
+	SDL_Texture *tex = NULL;
+	switch (building_to_place->specialization)
+	{
+	case(BARRACK) :
+		tex = barrack_tex;
+		break;
+	case(BUNKER) :
+		tex = bunker_tex;
+		break;
+	case(FACTORY) :
+		tex = factory_tex;
+		break;
+	}
+
+	app->render->blit(tex, building_to_place->pos.x, building_to_place->pos.y, &building_to_place->current_animation->getCurrentFrame());
 }
 
 void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
