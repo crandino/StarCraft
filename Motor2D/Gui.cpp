@@ -17,6 +17,7 @@
 #include "GuiTimer.h"
 
 #include "Bunker.h"
+#include "Tank.h"
 
 using namespace std;
 
@@ -166,13 +167,27 @@ bool Gui::start()
 	ui_create_bot->can_focus = true;
 	ui_create_bot->draw_element = false;
 
-	//Tank Button
+	//Create tank
 	ui_create_tank = app->gui->createImage(NULL, { 255, 234, 36, 33 });//Disabled section { 297, 234, 36, 33 }
 	ui_create_tank->setLocalPos(505, 358);
 	ui_create_tank->setListener(this);
 	ui_create_tank->interactive = false;
 	ui_create_tank->can_focus = true;
 	ui_create_tank->draw_element = false;
+
+	//Tank Button Normal
+	ui_normal_tank = app->gui->createImage(NULL, { 255, 234, 36, 33 });
+	ui_normal_tank->setLocalPos(505, 358);
+	ui_normal_tank->setListener(this);
+	ui_normal_tank->disable_element();
+	ui_normal_tank->can_focus = true;
+	
+	//Tank Button Siege
+	ui_siege_tank = app->gui->createImage(NULL, { 338, 234, 36, 33 });
+	ui_siege_tank->setLocalPos(505, 358);
+	ui_siege_tank->setListener(this);
+	ui_siege_tank->can_focus = true;
+	ui_siege_tank->disable_element();
 	
 	//Bunker buttons------------------------------------------------------------
 	ui_leave_bunker = app->gui->createImage(NULL, { 255, 152, 36, 33 });//Disabled section { 254, 192, 37, 34 }
@@ -356,7 +371,7 @@ bool Gui::start()
 	factoryName->can_focus = false;
 
 	//Barrack Wireframe--------------------------
-	barrackWireframe = app->gui->createImage(atlas_wireframes, { 4, 312, 66, 65 });
+	barrackWireframe = app->gui->createImage(atlas_wireframes, { 443, 211, 66, 63 });
 	barrackWireframe->setLocalPos(187, 390);
 	barrackWireframe->can_focus = false;
 	barrackWireframe->disable_element();
@@ -642,7 +657,42 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		}
 	}
-	
+
+	if (ui == app->gui->ui_siege_tank)
+	{
+		switch (event)
+		{
+			case(MOUSE_LCLICK_DOWN) :
+			{
+				for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+				{
+					if (it->second->specialization == TANK)
+						((Tank*)it->second)->siegeMode(true);
+				}
+				siegeMode = true;
+			break;
+			}
+		}
+
+	}
+
+	if (ui == app->gui->ui_normal_tank)
+	{
+		switch (event)
+		{
+			case(MOUSE_LCLICK_DOWN) :
+			{
+				for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+				{
+					if (it->second->specialization == TANK)
+						((Tank*)it->second)->siegeMode(false);
+				}
+				siegeMode = false;
+			break;
+			}
+		}
+	}
+
 	if (ui == ui_set_bomb)
 	{
 		switch (event)
@@ -718,6 +768,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_create_firebat->disable_element();
 
 				  ui_create_tank->disable_element();
+				  ui_normal_tank->disable_element();
+				  ui_siege_tank->disable_element();
 
 				  //Activate new images
 				  ui_create_bot->enable_element();
@@ -776,6 +828,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->disable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframe 
 			  bunkerWireframe->enable_element();
@@ -793,6 +847,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackWireframe->disable_element();
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
+
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -834,6 +889,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->enable_element();
 
 			  ui_create_tank->disable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -890,6 +947,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->enable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -942,6 +1001,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->disable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -994,6 +1055,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->disable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -1046,6 +1109,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->disable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -1075,7 +1140,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  }
 
 			  //Activate default entities
-			  rectangle_command->draw_element = true;
+			  rectangle_command->draw_element = false;
 			  rectangle_command_2->draw_element = true;
 			  rectangle_command_3->draw_element = true;
 			  rectangle_command_4->draw_element = true;
@@ -1097,6 +1162,24 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->disable_element();
+
+			  for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
+			  {
+				  if (it->second->specialization == TANK)
+				  {
+					  if (!((Tank*)it->second)->siege_mode)
+					  {
+						  ui_siege_tank->enable_element();
+						  ui_normal_tank->disable_element();
+					  }
+					  else
+					  {
+						  ui_siege_tank->disable_element();
+						  ui_normal_tank->enable_element();
+					  }
+				  }
+			  }
+			  
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -1149,6 +1232,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  ui_create_firebat->disable_element();
 
 			  ui_create_tank->disable_element();
+			  ui_normal_tank->disable_element();
+			  ui_siege_tank->disable_element();
 
 			  //Wireframes
 			  bunkerWireframe->disable_element();
@@ -1204,6 +1289,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				ui_set_bomb->disable_element();
 
 				ui_create_tank->disable_element();
+				ui_normal_tank->disable_element();
+				ui_siege_tank->disable_element();
 
 				//Wireframes
 				bunkerWireframe->disable_element();
@@ -1250,6 +1337,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  ui_create_firebat->disable_element();
 
 				  ui_create_tank->disable_element();
+				  ui_normal_tank->disable_element();
+				  ui_siege_tank->disable_element();
 
 				  //Wireframes
 				  bunkerWireframe->disable_element();

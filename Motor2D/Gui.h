@@ -139,6 +139,9 @@ public:
 
 	//Factory HUD-----------------------
 	GuiImage* ui_create_tank = nullptr;
+	GuiImage* ui_normal_tank = nullptr;
+	GuiImage* ui_siege_tank = nullptr;
+	bool siegeMode = false;
 
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;

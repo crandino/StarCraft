@@ -1,6 +1,7 @@
 #include "Tank.h"
 #include "PathFinding.h"
 #include "Input.h"
+#include "GuiImage.h"
 
 Tank::Tank(iPoint &p)
 {
