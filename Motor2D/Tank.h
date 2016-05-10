@@ -65,6 +65,7 @@ public:
 
 	bool		area_attack;
 	float		area_range;
+	float		min_area_range;
 
 	bool		siege_mode = false;
 	bool		sound_active = true;

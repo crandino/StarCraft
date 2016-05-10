@@ -426,7 +426,7 @@ bool Firebat::update(float dt)
 			
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
+				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false, false);
 				while (targets.begin() != targets.end())
 				{
 					attackWithoutRange(targets.front());
