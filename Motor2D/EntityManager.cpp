@@ -934,7 +934,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 	for (; it != active_entities.end(); ++it)
 	{
 		if (it->second != e && it->second->state != DYING && 
-			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
+			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
@@ -960,7 +960,7 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 		for (; it != active_entities.end(); ++it)
 		{
 			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) 
-				&& (search_only_in_same_faction || e->faction != it->second->faction)) && e->specialization != BOMB)
+				&& (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
 			{
 				if (!can_attack_to_flying)
 				{
@@ -1008,7 +1008,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && e->specialization != BOMB)
+		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && it->second->specialization != BOMB)
 		{
 			if (!can_attack_to_flying)
 			{
@@ -1051,7 +1051,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 	uint previousMaxHP = 99999;
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && e->specialization != BOMB && 
+		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && it->second->specialization != BOMB &&
 			((!search_only_buildings && it->second->type == UNIT && it->second->specialization != TANK) ||
 			(search_only_buildings && (it->second->type == BUILDING || it->second->specialization == TANK))) 
 			&& it->second->current_hp < it->second->max_hp)

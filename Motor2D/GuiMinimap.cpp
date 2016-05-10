@@ -144,14 +144,20 @@ void GuiMinimap::draw() const
 					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 255, 0);
 					break;
 				case BUNKER:
-				{
-							   if (((Bunker*)entity)->raynor_inside)
-								   app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 255, 255, 0);
-							   else
-								   app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 0, 0, 255);
-				}
+					if (((Bunker*)entity)->raynor_inside)
+					   app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 255, 255, 0);
+					else
+					   app->render->DrawQuad({ quad_pos.x, quad_pos.y, 4, 4 }, 0, 0, 255);
+					break;
 				case BOMB:
-					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 255, 0);
+					if (!debug)
+					{
+						if (app->fog_of_war->isVisible(entity->center.x, entity->center.y))
+							app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 0, 255);
+					}
+					else
+						app->render->DrawQuad({ quad_pos.x, quad_pos.y, 3, 3 }, 255, 0, 255);
+					break;
 				default:
 					app->render->DrawQuad({ quad_pos.x, quad_pos.y, 1, 1 }, 0, 0, 255);
 					break;
