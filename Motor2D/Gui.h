@@ -84,7 +84,7 @@ public:
 	GuiLabel* createLabel(const char* text, int kind_of_font, GUI_TYPES type);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
-	GuiResources* createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos);
+	GuiResources* createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos,bool draw_element = false);
 
 
 	const GuiElements* findMouseHover();
@@ -217,8 +217,8 @@ public:
 	//HUD Info SCV and Bunker-----------------
 	GuiImage* info_scv = nullptr;
 	GuiImage* info_bunker = nullptr;
-
 	GuiResources* info_scv2 = nullptr;
+	GuiResources* info_bunker2 = nullptr;
 
 
 	// HUD Graphic Timers
