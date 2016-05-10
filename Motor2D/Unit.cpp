@@ -15,12 +15,12 @@ void Unit::calculePos()
 	pos = { (float)center.x - (tex_width / 2), (float)center.y - (tex_height / 2) };
 }
 
-Entity* Unit::searchEnemy(bool can_attack_to_flying)
+Entity* Unit::searchEnemy(bool can_attack_to_flying, float min_area_range)
 {
 	if (has_focus && app->entity_manager->checkFocus(this))
 		return target_to_attack;
 	else
-		return app->entity_manager->searchEnemyToAttack(this, can_attack_to_flying);
+		return app->entity_manager->searchEnemyToAttack(this, can_attack_to_flying, min_area_range);
 }
 
 bool Unit::attack(Entity* target_to_attack)

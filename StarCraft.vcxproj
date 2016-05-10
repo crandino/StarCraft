@@ -169,6 +169,7 @@
     <ClCompile Include="Motor2D\Unit.cpp" />
     <ClCompile Include="Motor2D\Window.cpp" />
     <ClCompile Include="Motor2D\Yellow.cpp" />
+    <ClCompile Include="Motor2D\Zergling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Game\config.xml">

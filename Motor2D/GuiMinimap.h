@@ -82,11 +82,15 @@ private:
 	map<uint, Entity*>*   active_entities = NULL;
 	SDL_Texture*		  tex = NULL;
 
+public:
 	void		calculateScale();
 	iPoint		minimapToWorld(const iPoint &mini_map_pos) const;
 	iPoint		worldToMinimap(const iPoint &world_pos) const;
 
+	bool		isMouseInside();
 	bool		updatePing();
-};
+public:
 
+	bool debug = false;
+};
 #endif  //__GUIMINIMAP_H__

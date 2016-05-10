@@ -169,7 +169,7 @@ unsigned int Audio::loadFx(const char* path)
 		fx.push_back(chunk);	
 		ret = fx.size();
 	}
-	LOG("Allocated channels: %d", Mix_AllocateChannels(-1));
+
 	return ret;
 }
 

@@ -29,14 +29,13 @@ public:
 	// Dead animation
 	Animation	dead;
 
-	Mutalisk() {}
 	Mutalisk(iPoint &p);
-
 	~Mutalisk();
 
 	bool update(float dt);
 	void setAnimationFromDirection();
 	bool attack(Entity* target_to_attack);
+	void draw();
 
 };
 

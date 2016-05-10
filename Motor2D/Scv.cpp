@@ -5,9 +5,6 @@
 Scv::Scv(iPoint &p)
 {
 	// Graphics
-	glow_up.image = app->tex->loadTexture("Particles/Random/scv_glow.png");
-	dead.image = app->tex->loadTexture("Particles/Explosion/Small_Explosion.png");
-	spark.image = app->tex->loadTexture("Particles/Random/scvspark.png");
 	tex_width = 72;
 	tex_height = 72;
 
@@ -413,7 +410,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_up.on)
 			{
 				particle_offset = { 0, -3 };
-				particle = app->particle->addParticle(glow_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_up.on = true;
 			}
 		}
@@ -427,7 +424,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_right_up.on)
 			{
 				particle_offset = { -2, -5 };
-				particle = app->particle->addParticle(glow_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_right_up.on = true;
 			}
 		}
@@ -441,7 +438,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_right.on)
 			{
 				particle_offset = { -3, -9 };
-				particle = app->particle->addParticle(glow_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_right.on = true;
 			}
 		}
@@ -455,7 +452,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_right_down.on)
 			{
 				particle_offset = { 0, -3 };
-				particle = app->particle->addParticle(glow_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_right_down.on = true;
 			}
 		}
@@ -469,7 +466,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_down.on)
 			{
 				particle_offset = { 0, -3 };
-				particle = app->particle->addParticle(glow_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_down.on = true;
 			}
 		}
@@ -484,7 +481,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_left_down.on)
 			{
 				particle_offset = { 3, -5 };
-				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_left_down.on = true;
 			}
 		}
@@ -498,7 +495,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_left_down.on)
 			{
 				particle_offset = { 3, -3 };
-				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_left_down.on = true;
 			}
 		}
@@ -512,7 +509,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_left_up.on)
 			{
 				particle_offset = { 3, -5 };
-				particle = app->particle->addParticle(glow_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_left_up.on = true;
 			}
 		}
@@ -533,7 +530,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_up.on)
 			{
 				particle_offset = { 0, -3 };
-				particle = app->particle->addParticle(glow_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_up.on = true;
 			}
 		}
@@ -547,7 +544,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_right_up.on)
 			{
 				particle_offset = { -2, -5 };
-				particle = app->particle->addParticle(glow_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_right_up.on = true;
 			}
 		}
@@ -561,7 +558,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_right.on)
 			{
 				particle_offset = { -3, -9 };
-				particle = app->particle->addParticle(glow_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_right.on = true;
 			}
 		}
@@ -575,7 +572,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_right_down.on)
 			{
 				particle_offset = { 0, -3 };
-				particle = app->particle->addParticle(glow_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_right_down.on = true;
 			}
 		}
@@ -589,7 +586,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_down.on)
 			{
 				particle_offset = { 0, -3 };
-				particle = app->particle->addParticle(glow_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_down.on = true;
 			}
 		}
@@ -604,7 +601,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_left_down.on)
 			{
 				particle_offset = { 3, -5 };
-				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_left_down.on = true;
 			}
 		}
@@ -618,7 +615,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_left_down.on)
 			{
 				particle_offset = { 3, -3 };
-				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_left_down.on = true;
 			}
 		}
@@ -632,7 +629,7 @@ void Scv::setParticleBehaviour()
 			if (!glow_left_up.on)
 			{
 				particle_offset = { 3, -5 };
-				particle = app->particle->addParticle(glow_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, glow_up.image);
+				particle = app->particle->addParticle(glow_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_glow);
 				glow_left_up.on = true;
 			}
 		}
@@ -648,7 +645,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { 10, -30 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -662,7 +659,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { 30, -20 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -676,7 +673,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { 20, -10 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -690,7 +687,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { 8, -3 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -704,7 +701,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { -10, 10 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -719,7 +716,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { -10, 10 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -733,7 +730,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { -15, -3 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -747,7 +744,7 @@ void Scv::setParticleBehaviour()
 			if (!spark.on)
 			{
 				particle_offset = { -20, -12 };
-				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, spark.image);
+				particle_aux = app->particle->addParticle(spark, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->scv_Spark);
 				spark.on = true;
 			}
 		}
@@ -755,7 +752,7 @@ void Scv::setParticleBehaviour()
 	case DYING:
 		resetParticle();
 		resetSpark();
-		particle = app->particle->addParticle(dead, center.x, center.y, 0, 0, 1, dead.image);
+		particle = app->particle->addParticle(dead, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
 	}
 }
 
@@ -1039,8 +1036,5 @@ void Scv::AnimationAngle()
 
 void Scv::draw()
 {
-	//FOG_OF_WAR 4 - "Draw" function of a unit. Called each frame for each unit.
-	//Rendering the unit only if it is visible
-	if (app->fog_of_war->isVisible(pos.x, pos.y))
-		app->render->blit(app->entity_manager->scv_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+	app->render->blit(app->entity_manager->scv_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 }

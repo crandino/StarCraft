@@ -33,6 +33,14 @@ bool ParticleManager::start()
 {
 	bool ret = true;
 	LOG("Particle Manager: Start");
+
+	firebat_particle = app->tex->loadTexture("Particles/Shots/firebat_particles.png");
+	explosion_small = app->tex->loadTexture("Particles/Explosion/Small_Explosion.png");
+	scv_glow = app->tex->loadTexture("Particles/Random/scv_glow.png");
+	scv_Spark = app->tex->loadTexture("Particles/Random/scvspark.png");
+	bunker_attack = app->tex->loadTexture("Particles/Shots/Bunker_On_Attack2.png");
+	hydralisk_particle = app->tex->loadTexture("Particles/Shots/Hydra_attack.png");
+
 	//texture = app->tex->loadTexture(textureFile.c_str());
 
 	//ret = loadParticlesFile(particle_file);
@@ -112,10 +120,17 @@ bool ParticleManager::cleanUp()
 	//app->tex->unloadTexture(texture);
 
 	//TODO 2: Iterate the particle list and clear, release the particle and clear the list.
+	SDL_DestroyTexture(firebat_particle);
+	SDL_DestroyTexture(explosion_small);
+	SDL_DestroyTexture(scv_glow);
+	SDL_DestroyTexture(scv_Spark);
+	SDL_DestroyTexture(bunker_attack);
+	SDL_DestroyTexture(hydralisk_particle);
 
 	std::list<Particle*>::iterator tmp = particleList.begin();
 
 	for (; tmp != particleList.end(); ++tmp)	
+
 	RELEASE((*tmp));
 	
 	particleList.clear();
@@ -280,7 +295,6 @@ Particle::Particle(const Particle& p)
 
 Particle::~Particle()
 {
-
 }
 
 void Particle::followPoint(int x, int y)

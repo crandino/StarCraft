@@ -31,7 +31,6 @@ public:
 	unsigned int fx_entering;
 	unsigned int fx_leaving;
 
-	Bunker() {}
 	Bunker(iPoint &p);
 	~Bunker();
 
@@ -43,6 +42,7 @@ public:
 	void checkDirection();
 	void resetParticle();
 	void setParticleBehaviour();
+	void draw();
 
 	bool raynor_inside = false;
 

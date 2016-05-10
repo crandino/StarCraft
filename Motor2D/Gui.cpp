@@ -230,11 +230,29 @@ bool Gui::start()
 	number_of_minerals->interactive = false;
 	
 	//Text Messages
-	text_message = app->gui->createLabel("Welcome to Last Hope!", 2, TEXTMESSAGES);
-	text_message->setLocalPos(10, 240);
-	text_message->interactive = false;
-	text_message->getType();
+	preparation_message = app->gui->createLabel("Welcome to Last Hope!", 2, TEXTMESSAGES);
+	preparation_message->setLocalPos(10,240);
+	preparation_message->disable_element();
+	
 
+
+	preparation_message2 = app->gui->createLabel("Destroy each wave. Keep Raynor alive (yellow marine)", 2, TEXTMESSAGES);
+	preparation_message2->setLocalPos(10, 240);
+	preparation_message2->disable_element();
+
+
+	second_phase_message1 = app->gui->createLabel("The bomb has landed. Find it and take it to the command center", 2, TEXTMESSAGES);
+	second_phase_message1->setLocalPos(10, 240);
+	second_phase_message1->disable_element();
+	
+
+	second_phase_message2 = app->gui->createLabel("A bigger zerg combat force has been detected. Be fast.", 2, TEXTMESSAGES);
+	second_phase_message2->setLocalPos(10, 240);
+	second_phase_message2->disable_element();
+
+	background_messages = app->gui->createImage("UI_Panel_Messages.png");
+	background_messages->setLocalPos(-85, -3);
+	background_messages->disable_element();
 
 
 	//Image
@@ -299,10 +317,15 @@ bool Gui::start()
 	bunkerWireframe->can_focus = false;
 	bunkerWireframe->disable_element();
 	//Info 
-	bunkerInfo = app->gui->createLabel("", 2);
-	bunkerInfo->setLocalPos(291, 417);
+	bunkerInfo = app->gui->createLabel("a", 2);
+	bunkerInfo->setLocalPos(280, 417);
 	bunkerInfo->disable_element();
 	bunkerInfo->can_focus = false;
+	//Name
+	bunkerName = app->gui->createLabel("Bunker", 2);
+	bunkerName->setLocalPos(280, 391);
+	bunkerName->disable_element();
+	bunkerName->can_focus = false;
 
 	//CommandCenter Wireframe-----------------------
 	commandCenterWireframe = app->gui->createImage(atlas_wireframes, {4, 213, 65, 60 });
@@ -310,21 +333,47 @@ bool Gui::start()
 	commandCenterWireframe->can_focus = false;
 	commandCenterWireframe->disable_element();
 	//Info
-	commandCenterInfo = app->gui->createLabel("", 2);
+	commandCenterInfo = app->gui->createLabel("a", 2);
 	commandCenterInfo->setLocalPos(190, 455);
 	commandCenterInfo->disable_element();
 	commandCenterInfo->can_focus = false;
+	//Name
+	commandCenterName = app->gui->createLabel("Command Center", 2);
+	commandCenterName->setLocalPos(265, 391);
+	commandCenterName->disable_element();
+	commandCenterName->can_focus = false;
 
 	//Factory Wireframe--------------------------
 	factoryWireframe = app->gui->createImage(atlas_wireframes, { 4, 312, 66, 65 });
 	factoryWireframe->setLocalPos(187, 390);
 	factoryWireframe->can_focus = false;
 	factoryWireframe->disable_element();
-	////Info
-	factoryInfo = app->gui->createLabel("", 2);
+	//Info
+	factoryInfo = app->gui->createLabel("a", 2);
 	factoryInfo->setLocalPos(190, 455);
 	factoryInfo->disable_element();
 	factoryInfo->can_focus = false;
+	//Name
+	factoryName = app->gui->createLabel("Factory", 2);
+	factoryName->setLocalPos(280, 391);
+	factoryName->disable_element();
+	factoryName->can_focus = false;
+
+	//Barrack Wireframe--------------------------
+	barrackWireframe = app->gui->createImage(atlas_wireframes, { 4, 312, 66, 65 });
+	barrackWireframe->setLocalPos(187, 390);
+	barrackWireframe->can_focus = false;
+	barrackWireframe->disable_element();
+	//Info
+	barrackInfo = app->gui->createLabel("a", 2);
+	barrackInfo->setLocalPos(190, 455);
+	barrackInfo->disable_element();
+	barrackInfo->can_focus = false;
+	//Name
+	barrackName = app->gui->createLabel("Barrack", 2);
+	barrackName->setLocalPos(280, 391);
+	barrackName->disable_element();
+	barrackName->can_focus = false;
 
 	return true;
 }
@@ -681,12 +730,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Wireframes
 				  bunkerWireframe->disable_element();
 				  bunkerInfo->disable_element();
+				  bunkerName->disable_element();
 
 				  commandCenterWireframe->enable_element();
 				  commandCenterInfo->enable_element();
+				  commandCenterName->enable_element();
 
 				  factoryWireframe->disable_element();
 				  factoryInfo->disable_element();
+				  factoryName->disable_element();
+
+				  barrackWireframe->disable_element();
+				  barrackInfo->disable_element();
+				  barrackName->disable_element();
 			  }
 			  
 		      break;
@@ -728,12 +784,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframe 
 			  bunkerWireframe->enable_element();
 			  bunkerInfo->enable_element();
+			  bunkerName->enable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
 
 			  factoryWireframe->disable_element();
 			  factoryInfo->disable_element();
+			  factoryName->disable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -779,12 +842,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
 
 			  factoryWireframe->disable_element();
 			  factoryInfo->disable_element();
+			  factoryName->disable_element();
+
+			  barrackWireframe->enable_element();
+			  barrackInfo->enable_element();
+			  barrackName->enable_element();
 
 			  break;
 
@@ -828,12 +898,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
 
 			  factoryWireframe->enable_element();
 			  factoryInfo->enable_element();
+			  factoryName->enable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
 
 			  break;
 
@@ -873,12 +950,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
 
 			  factoryWireframe->disable_element();
 			  factoryInfo->disable_element();
+			  factoryName->disable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
 
 			  break;
 			  
@@ -918,13 +1002,20 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
 
 			  factoryWireframe->disable_element();
 			  factoryInfo->disable_element();
-			  
+			  factoryName->disable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
+
 			  break;
 
 		  case (FIREBAT) :
@@ -963,13 +1054,71 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
 
 			  factoryWireframe->disable_element();
 			  factoryInfo->disable_element();
-			  
+			  factoryName->disable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
+
+			  break;
+
+		  case (TANK) :
+			  if (buildingMenuOpened)
+			  {
+				  buildingMenuOpened = false;
+				  ui_create_builds->setSection({ 298, 28, 37, 34 });
+				  ui_create_builds->setLocalPos(551, 358);
+			  }
+
+			  //Activate default entities
+			  rectangle_command->draw_element = true;
+			  rectangle_command_2->draw_element = true;
+			  rectangle_command_3->draw_element = true;
+			  rectangle_command_4->draw_element = true;
+			  rectangle_command_5->draw_element = true;
+			  rectangle_command_6->draw_element = true;
+			  rectangle_command_7->draw_element = true;
+			  rectangle_command_8->draw_element = true;
+			  rectangle_command_9->draw_element = true;
+
+			  ui_create_bot->disable_element();
+			  ui_create_builds->disable_element();
+			  ui_leave_bunker->disable_element();
+			  ui_create_bunker->disable_element();
+			  ui_create_barraks->disable_element();
+			  ui_create_factory->disable_element();
+
+			  ui_create_marine->disable_element();
+			  ui_create_medic->disable_element();
+			  ui_create_firebat->disable_element();
+
+			  ui_create_tank->disable_element();
+
+			  //Wireframes
+			  bunkerWireframe->disable_element();
+			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
+
+			  commandCenterWireframe->disable_element();
+			  commandCenterInfo->disable_element();
+			  commandCenterName->disable_element();
+
+			  factoryWireframe->disable_element();
+			  factoryInfo->disable_element();
+			  factoryName->disable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
+
 			  break;
 
 		  case (JIM_RAYNOR) :
@@ -1008,13 +1157,20 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
 			  commandCenterInfo->disable_element();
-
+			  commandCenterName->disable_element();
+			  
 			  factoryWireframe->disable_element();
 			  factoryInfo->disable_element();
-			  
+			  factoryName->disable_element();
+
+			  barrackWireframe->disable_element();
+			  barrackInfo->disable_element();
+			  barrackName->disable_element();
+
 			  break;
 
 		  case (SCV) :
@@ -1056,12 +1212,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				//Wireframes
 				bunkerWireframe->disable_element();
 				bunkerInfo->disable_element();
+				bunkerName->disable_element();
 
 				commandCenterWireframe->disable_element();
 				commandCenterInfo->disable_element();
+				commandCenterName->disable_element();
 
 				factoryWireframe->disable_element();
 				factoryInfo->disable_element();
+				factoryName->disable_element();
+
+				barrackWireframe->disable_element();
+				barrackInfo->disable_element();
+				barrackName->disable_element();
 
 				break;
 
@@ -1095,13 +1258,19 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Wireframes
 				  bunkerWireframe->disable_element();
 				  bunkerInfo->disable_element();
+				  bunkerName->disable_element();
 
 				  commandCenterWireframe->disable_element();
 				  commandCenterInfo->disable_element();
+				  commandCenterName->disable_element();
 
 				  factoryWireframe->disable_element();
 				  factoryInfo->disable_element();
+				  factoryName->disable_element();
 
+				  barrackWireframe->disable_element();
+				  barrackInfo->disable_element();
+				  barrackName->disable_element();
 
 			  break;
 	}
@@ -1301,6 +1470,8 @@ bool Gui::postUpdate()
 			drawHudSelection(FIREBAT);
 		if (itm->second->specialization == SPECIALIZATION::SCV)
 			drawHudSelection(SCV);
+		if (itm->second->specialization == SPECIALIZATION::TANK)
+			drawHudSelection(TANK);
 		if (itm->second->specialization == SPECIALIZATION::JIM_RAYNOR)
 			drawHudSelection(JIM_RAYNOR);
 	}
@@ -1323,9 +1494,19 @@ bool Gui::postUpdate()
 			{
 				if (gui->getType() == IMAGE && gui->static_image)
 					gui->draw_static();
+				else if (gui->getType() == MINIMAP)
+				{
+					if (debug)
+					{
+						mini_map->debug = debug;
+					}
+					gui->draw();
+					mini_map->debug = false;
+				}
 				else
 					gui->draw();
 			}
+
 		}
 
 		if (debug == true && gui->draw_element == true)
@@ -1426,7 +1607,10 @@ GuiLabel* Gui::createLabel(const char* text, int kind_of_font, GUI_TYPES type)
 	if (text != NULL)
 	{
 		ret = new GuiLabel(text, kind_of_font, type);
-		//app->game_manager->labels.push_back(ret);
+
+		elements.push_back(ret);
+		app->game_manager->labels.push_back(ret);
+
 	}
 
 	return ret;

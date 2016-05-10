@@ -27,6 +27,7 @@
 #include "Blue.h"
 #include "Yellow.h"
 #include "Red.h"
+#include "GuiMinimap.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -52,6 +53,12 @@ void EntityManager::loadEntityTex()
 	firebat_tex = app->tex->loadTexture("Units/firebat.png");
 	jim_raynor_tex = app->tex->loadTexture("Units/JimRaynor.png");
 	tank_tex = app->tex->loadTexture("Units/Blue_tank.png");
+	zergling_tex = app->tex->loadTexture("Units/New_Zergling64.png");
+	hydralisk_tex = app->tex->loadTexture("Units/Hydralisk.png");
+	ultralisk_tex = app->tex->loadTexture("Units/ultralisk2.png");
+	mutalisk_tex = app->tex->loadTexture("Units/Mutalisk.png");
+	bunker_tex = app->tex->loadTexture("Building/Bunker.png");
+	bomb_tex = app->tex->loadTexture("pikachu_aka_bomb.png"); 
 }
 
 bool EntityManager::loadEntityFX()
@@ -638,7 +645,16 @@ bool EntityManager::cleanUp()
 	active_entities.clear();
 	selection.clear();
 
-	app->tex->unloadTexture(marine_tex);
+	SDL_DestroyTexture(marine_tex);
+	SDL_DestroyTexture(scv_tex);
+	SDL_DestroyTexture(medic_tex);
+	SDL_DestroyTexture(firebat_tex);
+	SDL_DestroyTexture(jim_raynor_tex);
+	SDL_DestroyTexture(tank_tex);
+	SDL_DestroyTexture(zergling_tex);
+	SDL_DestroyTexture(hydralisk_tex);
+	SDL_DestroyTexture(mutalisk_tex);
+	SDL_DestroyTexture(ultralisk_tex);
 
 	return true;
 }
@@ -773,7 +789,10 @@ void EntityManager::handleSelection()
 		// Target position is where the player has clicked to move his units.
 		iPoint target_position;
 		app->input->getMousePosition(target_position);
-		target_position = app->render->screenToWorld(target_position.x, target_position.y);
+		if (app->gui->mini_map->isMouseInside())
+			target_position = app->gui->mini_map->minimapToWorld({ target_position.x, target_position.y });
+		else 
+			target_position = app->render->screenToWorld(target_position.x, target_position.y);
 		target_position = app->map->worldToMap(app->map->data.back(), target_position.x, target_position.y);
 
 		//Bunker and bomb useful method
@@ -981,7 +1000,7 @@ bool EntityManager::checkFocus(Unit* e)
 	return ret;
 }
 
-Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying)
+Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying, float min_area_range)
 {
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
@@ -1002,7 +1021,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying)
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 			uint maxHP = it->second->current_hp;
 
-			if (ret == NULL && d <= value && maxHP <= previousMaxHP)
+			if (ret == NULL && d >= min_area_range && d <= value && maxHP <= previousMaxHP)
 			{
 				value = d;
 				previousMaxHP = maxHP;
@@ -1011,8 +1030,8 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying)
 			else if (ret != NULL)
 			{
 				//Only search entities with same type or if type is building, it search units
-				if ((ret->type == it->second->type && d <= value && maxHP <= previousMaxHP) ||
-					(ret->type == BUILDING && it->second->type == UNIT && d <= e->range_of_vision && maxHP <= previousMaxHP))
+				if ((ret->type == it->second->type && d >= min_area_range &&  d <= value && maxHP <= previousMaxHP) ||
+					(ret->type == BUILDING && it->second->type == UNIT && d >= min_area_range &&  d <= e->range_of_vision && maxHP <= previousMaxHP))
 				{
 					value = d;
 					previousMaxHP = maxHP;

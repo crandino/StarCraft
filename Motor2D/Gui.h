@@ -153,16 +153,22 @@ public:
 	//Wireframes
 	SDL_Texture* atlas_wireframes = nullptr;
 	//Bunkers
+	GuiLabel* bunkerName = nullptr;
 	GuiImage* bunkerWireframe = nullptr;
 	GuiLabel* bunkerInfo = nullptr;
+	GuiLabel* bunkerInfo2 = nullptr;
 	//Command Center
+	GuiLabel* commandCenterName = nullptr;
 	GuiImage* commandCenterWireframe = nullptr;
 	GuiLabel* commandCenterInfo = nullptr;
 	//Factory
+	GuiLabel* factoryName = nullptr;
 	GuiImage* factoryWireframe = nullptr;
 	GuiLabel* factoryInfo = nullptr;
 	//Barracks
+	GuiLabel* barrackName = nullptr;
 	GuiImage* barrackWireframe = nullptr;
+	GuiLabel* barrackInfo = nullptr;
 	//Marine
 	GuiImage* marineWireframe = nullptr;
 	//Medic
@@ -183,7 +189,15 @@ public:
 	GuiLabel* number_of_wave = nullptr;
 
 	//MESSAGES FOR THE PLAYER
-	GuiLabel* text_message = nullptr;
+
+	//GuiLabel* text_message = nullptr;
+
+
+	GuiLabel* preparation_message = nullptr;
+	GuiLabel* preparation_message2 = nullptr;
+	GuiLabel* second_phase_message1 = nullptr;
+	GuiLabel* second_phase_message2 = nullptr;
+	GuiImage* background_messages = nullptr;
 
 
 	//HUD  Mineral and Gass-----------------

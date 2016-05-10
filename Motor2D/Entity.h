@@ -38,9 +38,6 @@ enum STATE
 
 class Entity
 {
-private:
-
-	bool debug = true;
 
 public:
 
@@ -137,9 +134,9 @@ public:
 		return app->entity_manager->searchAllyToHeal(this, search_only_buildings);
 	}
 
-	virtual list<Entity*> searchEntitiesInRange(Entity* origin, float area_range, bool can_attack_to_flying = true)
+	virtual list<Entity*> searchEntitiesInRange(Entity* origin, float area_range, bool can_attack_to_flying = true, bool search_only_in_same_faction = true)
 	{
-		return app->entity_manager->searchEntitiesInRange(origin, true, area_range, can_attack_to_flying);
+		return app->entity_manager->searchEntitiesInRange(origin, search_only_in_same_faction, area_range, can_attack_to_flying);
 	}
 
 	virtual Entity* searchEnemy()
@@ -149,11 +146,10 @@ public:
 
 	virtual void draw()
 	{
-		//FOG_OF_WAR 4 - "Draw" function of a unit. Called each frame for each unit.
-		//Rendering the unit only if it is visible
 		if (app->fog_of_war->isVisible(pos.x, pos.y))
 			app->render->blit(tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
 	}
+
 
 	virtual void setAnimationFromDirection()
 	{ }
