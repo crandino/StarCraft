@@ -553,6 +553,13 @@ bool GameManager::update(float dt)
 			app->render->camera.y = -jim_position->y + (app->render->camera.h / 2);
 		}
 	}
+
+	//Find COMMANDCENTER
+	if (app->input->getKey(SDL_SCANCODE_Y) == KEY_DOWN)
+	{
+		app->render->camera.x = -command_center_position.x + (app->render->camera.w / 2);
+		app->render->camera.y = -command_center_position.y + (app->render->camera.h / 2);
+	}
 	
 	return ret;
 }
