@@ -477,6 +477,14 @@ bool EntityManager::preUpdate()
 					RELEASE(it->second);
 				}
 			}
+			else if (it->second->specialization == TANK)
+			{
+				if (((Tank*)it->second)->siege_mode)
+				{
+					app->map->changeLogic(((Tank*)it->second)->coll->rect, LOW_GROUND);
+					app->entity_manager->recalculatePaths(((Tank*)it->second)->coll->rect, true);
+				}
+			}
 			else
 				RELEASE(it->second);
 				
