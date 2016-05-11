@@ -255,7 +255,11 @@ bool GameManager::update(float dt)
 		{
 			LOG("WAITING WAVE TO START - PHASE 1");
 			if (!info_message->isLoaded())
+			{
+				graphic_wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
+				graphic_wave_timer->initiate();
 				createWaveInfo(waves_info[current_wave]);
+			}				
 
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
 			{
@@ -321,6 +325,7 @@ bool GameManager::update(float dt)
 			app->entity_manager->addEntity(bomb_pos, BOMB);
 			game_state = SECOND_PHASE;
 			timer_between_game_states.start();
+			info_message->unload();
 		}
 		break;
 	}
@@ -684,8 +689,6 @@ void GameManager::startGame()
 	gas_resources = 0;
 
 	timer_between_waves.start();
-	graphic_wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
-	graphic_wave_timer->initiate();
 }
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)

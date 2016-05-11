@@ -31,7 +31,7 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "1"/>
+    <totalWaves value = "5"/>
 
 
     <timeBeforeGameStarts value ="2.0f"/>
