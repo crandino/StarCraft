@@ -39,10 +39,10 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 1400, 1700 };
-	iPoint north_east = { 2350, 1700 };
+	iPoint north_west = { 1500, 1400 };
+	iPoint north_east = { 2450, 1700 };
 	iPoint south_west = { 1400, 2700 };
-	iPoint south_east = { 2300, 2700 };
+	iPoint south_east = { 2700, 2800 };
 };
 
 enum wave_positions_enum
@@ -559,6 +559,8 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
+	//if(current_wave >)
+
 	waves2_info[0]->zergling_quantity += 1;
 	waves2_info[0]->hydralisk_quantity += 0;
 	waves2_info[0]->mutalisk_quantity += 0;
