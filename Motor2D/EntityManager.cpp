@@ -775,18 +775,22 @@ void EntityManager::handleSelection()
 	{
 		//selection.clear();
 		app->input->getMousePosition(initial_selector_pos);
-		initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
 
-		//Click and select unit	
-		selector_init = true;
-		Entity *e = whichEntityOnMouse();
+		if (initial_selector_pos.y <= 348)  // It's the distance from the top of the screen to the top of the Minimap 
+		{
+			initial_selector_pos = app->render->screenToWorld(initial_selector_pos.x, initial_selector_pos.y);
+			
+			//Click and select unit	
+			selector_init = true;
+			Entity *e = whichEntityOnMouse();
 
-		if (e != NULL)
-		{  	   
-           selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };  
+			if (e != NULL)
+			{
+				selector = { e->coll->rect.x, e->coll->rect.y, 1, 1 };
+			}
+			else
+				selector = { 0, 0, 0, 0 };
 		}		
-		else
-			selector = { 0, 0, 0, 0 };
 	}
 
 	// Holding left button, updates selector dimensions with calculateSelector

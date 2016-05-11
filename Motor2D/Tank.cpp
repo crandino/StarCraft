@@ -172,11 +172,11 @@ Tank::Tank(iPoint &p)
 
 	idle_siege_mode_right_turret.frames.push_back({ 512, 640, 128, 128 });
 	idle_siege_mode_right_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_right_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_right_turret);
 
 	idle_siege_mode_right_up_turret.frames.push_back({ 256, 640, 128, 128 });
 	idle_siege_mode_right_up_turret.loop = false;
-	idle_animation_turret_pack.push_back(&idle_siege_mode_right_up_turret);
+	idle_siege_mode_animation_turret_pack.push_back(&idle_siege_mode_right_up_turret);
 
 	idle_siege_mode_up_turret.frames.push_back({ 0, 640, 128, 128 });
 	idle_siege_mode_up_turret.loop = false;
@@ -492,6 +492,7 @@ void Tank::setAnimationFromDirection()
 		if (num_animation == move_animation_pack.size())
 			num_animation = 0;
 		current_animation = &(*move_animation_pack.at(num_animation));
+		current_animation_turret = &(*idle_animation_turret_pack.at(num_animation));
 		break;
 	}
 	case ATTACK:
@@ -503,6 +504,7 @@ void Tank::setAnimationFromDirection()
 		if (num_animation == idle_animation_pack.size())
 			num_animation = 0;
 		current_animation = &(*idle_animation_pack.at(num_animation));
+		current_animation_turret = &(*idle_animation_turret_pack.at(num_animation));
 		break;
 	}
 	}

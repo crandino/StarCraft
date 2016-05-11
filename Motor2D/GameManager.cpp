@@ -127,6 +127,8 @@ bool GameManager::awake(pugi::xml_node &node)
 
 	if (node.child("hold").attribute("value").as_bool())
 		game_state = HOLD;
+	else
+		game_state = INITIAL_SCREEN;
 
 	return ret;
 }
@@ -206,8 +208,6 @@ bool GameManager::start()
 	exit_button->interactive = false;
 	exit_button->can_focus = false;
 	exit_button->setListener(this);
-
-	game_state = INITIAL_SCREEN;
 
 	// GUI
 	// Create Graphic Timers
@@ -498,6 +498,9 @@ bool GameManager::update(float dt)
 	}
 	case(HOLD) :
 	{
+		start_screen->draw_element = false;
+		start_button->disable_element();
+		close_button->disable_element();
 		start_game = true;
 		break;
 	}	
