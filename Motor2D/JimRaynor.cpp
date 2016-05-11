@@ -31,11 +31,11 @@ JimRaynor::JimRaynor(iPoint &p)
 	idle_up.speed = 0.005f;
 	idle_animation_pack.push_back(&idle_up);
 
-	idle_left_up.frames.push_back({ 960, 0, 64, 64 });
-	idle_left_up.frames.push_back({ 960, 64, 64, 64 });
-	idle_left_up.frames.push_back({ 960, 128, 64, 64 });
-	idle_left_up.frames.push_back({ 960, 64, 64, 64 });
-	idle_left_up.frames.push_back({ 960, 0, 64, 64 });
+	idle_left_up.frames.push_back({ 896, 0, 64, 64 });
+	idle_left_up.frames.push_back({ 896, 64, 64, 64 });
+	idle_left_up.frames.push_back({ 896, 128, 64, 64 });
+	idle_left_up.frames.push_back({ 896, 64, 64, 64 });
+	idle_left_up.frames.push_back({ 896, 0, 64, 64 });
 	idle_left_up.speed = 0.005f;
 	idle_animation_pack.push_back(&idle_left_up);
 
