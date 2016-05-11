@@ -72,7 +72,7 @@
     <timeBomb value = "60.0f" />
     
     <!--Debug-->
-    <hold value ="false"/>
+    <hold value ="true"/>
     
     <!-- Wave Information -->    
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>

@@ -1207,7 +1207,7 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second->type == UNIT)
+		if (it->second->type == UNIT && it->second->state != SIEGE_MODE_OFF && it->second->state != IDLE_SIEGE_MODE && it->second->state != ATTACK_SIEGE_MODE)
 		{
 			Unit *unit = (Unit*)it->second;
 			if (!unit->flying)
@@ -1225,36 +1225,29 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 				}
 				else if (walkable == false)
 				{
-					// Right now, there is only one logic map and only one logic layer, so we must not iterate them.
-					list<MapLayer*>::iterator layer = app->map->data.back().layers.begin();
-					while (layer != app->map->data.back().layers.end())
+					if (it->second->specialization == TANK && it->second->state == SIEGE_MODE_ON && !app->map->isAreaWalkable(it->second->coll->rect))
 					{
-						iPoint first_tile = app->map->worldToMap(app->map->data.back(), rect.x, rect.y);
-						iPoint last_tile = app->map->worldToMap(app->map->data.back(), rect.x + rect.w, rect.y + rect.h);
-
-						for (int y = first_tile.y; y < last_tile.y; ++y)
+						((Tank*)unit)->siege_mode = false;
+						if (unit->path.size() > 0 && app->path->isWalkable(unit->path.back()))
+								unit->state = MOVE;
+						else
+							unit->state = IDLE;
+					}
+					if (unit->path.size() > 0)
+					{
+						if (!app->path->isWalkable(unit->path.back()))//if the origin and the destination isn't walkable
 						{
-							for (int x = first_tile.x; x < last_tile.x; ++x)
-							{
-								if (unit->path.size() > 0)
-								{
-									if (!app->path->isWalkable(unit->path.back()))//if the origin and the destination isn't walkable
-									{
-										unit->path.clear();
-										unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 25));
-										unit->has_target = true;
-										unit->state = MOVE;
-									}
-								}
-								else if (unit->tile_pos == (iPoint(x, y)))//if without path and they are no walkable tiles
-								{
-									unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 25));
-									unit->has_target = true;
-									unit->state = MOVE;
-								}
-							}
+							unit->path.clear();
+							unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 50));
+							unit->has_target = true;
+							unit->state = MOVE;
 						}
-						++layer;
+					}
+					else if (!app->path->isWalkable(unit->tile_pos))//if without path and they are no walkable tiles
+					{
+						unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 50));
+						unit->has_target = true;
+						unit->state = MOVE;
 					}
 				}
 			}

@@ -425,13 +425,23 @@ bool Tank::update(float dt)
 			current_animation_turret->resume();
 			if (current_animation_turret->finished())
 			{
-				state = IDLE_SIEGE_MODE;
-				area_attack = true;
-				damage *= 1.5f;// = 45 without buff
-				path.clear();
-				has_target = false;
-				app->path->erase(id);
-				range_to_attack *= 2;
+				if (app->map->isAreaWalkable(coll->rect))
+				{
+					state = IDLE_SIEGE_MODE;
+					area_attack = true;
+					damage *= 1.5f;// = 45 without buff
+					path.clear();
+					has_target = false;
+					app->path->erase(id);
+					range_to_attack *= 2;
+					app->map->changeLogic(coll->rect, NO_WALKABLE);
+					app->entity_manager->recalculatePaths(coll->rect, false);
+				}
+				else
+				{
+					state = IDLE;
+					siege_mode = false;
+				}
 			}
 		}
 		break;
@@ -453,6 +463,8 @@ bool Tank::update(float dt)
 				area_attack = false;
 				damage /= 1.5f;// = 45 without buff
 				range_to_attack /= 2;
+				app->map->changeLogic(coll->rect, LOW_GROUND);
+				app->entity_manager->recalculatePaths(coll->rect, true);
 			}
 		}
 		break;
@@ -523,6 +535,8 @@ void Tank::siegeMode(bool siege_mode_flag)
 	{
 		if (siege_mode_flag)
 		{
+			if (!app->map->isAreaWalkable(coll->rect))
+				return;
 			siege_mode_on.reset();
 			siege_mode_on_turret.reset();
 			siege_mode_on_turret.pause();
