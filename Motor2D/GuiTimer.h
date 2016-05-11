@@ -8,7 +8,7 @@ class GuiTimer : public GuiElements
 {
 public:
 	//Constructor
-	GuiTimer();
+	GuiTimer(iPoint pos, const char *path_tex);
 
 	void initiate();
 
@@ -25,14 +25,13 @@ public:
 	
 private:
 
-	GuiLabel    crono;
-	bool		active;
-	uint		total_time;
-	Timer*    	timer_associated;
+	GuiLabel      crono;
+	bool		  active;
+	uint		  total_time;
+	Timer*    	  timer_associated;
 
-	uint		seconds, minutes;
-
-	SDL_Texture*  tex = NULL;
+	uint		  seconds, minutes;
+	SDL_Texture*  monitor;
 };
 
 #endif  //__GUIMINIMAP_H__

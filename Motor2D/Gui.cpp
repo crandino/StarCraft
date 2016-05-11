@@ -137,14 +137,6 @@ bool Gui::start()
 	ui_create_barraks->setListener(this);
 	ui_create_barraks->draw_element = false;
 
-	//Create Turrets
-	//ui_create_turrets = app->gui->createImage(NULL, { 338, 64, 37, 34 });//Disabled section { 522, 125, 37, 34 }
-	//ui_create_turrets->setLocalPos(597, 358);
-	//ui_create_turrets->interactive = false;
-	//ui_create_turrets->can_focus = true;
-	//ui_create_turrets->setListener(this);
-	//ui_create_turrets->draw_element = false;
-
 	//Create factory
 	ui_create_factory = app->gui->createImage(NULL, { 377, 64, 37, 34 });//Disabled section { 561, 125, 37, 34 }
 	ui_create_factory->setLocalPos(597, 358);
@@ -152,14 +144,6 @@ bool Gui::start()
 	ui_create_factory->can_focus = true;
 	ui_create_factory->setListener(this);
 	ui_create_factory->draw_element = false;
-	
-	//Create starport
-	//ui_create_starport = app->gui->createImage(NULL, { 256, 101, 37, 34 });//Disabled section { 440, 162, 37, 34 }
-	//ui_create_starport->setLocalPos(551, 398);
-	//ui_create_starport->interactive = false;
-	//ui_create_starport->can_focus = true;
-	//ui_create_starport->setListener(this);
-	//ui_create_starport->draw_element = false;
 
 	//SCV Button
 	ui_create_bot = app->gui->createImage(NULL, { 256, 28, 37, 34 });//Disabled section { 440, 89, 37, 34 }
@@ -407,13 +391,9 @@ GuiInfo* Gui::createInfo(iPoint pos, const char *tex_path)
 GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associated)
 {
 	GuiTimer* ret = nullptr;
-	ret = new GuiTimer();
+	ret = new GuiTimer(pos, path_tex);
 
-	ret->setLocalPos(pos.x, pos.y);
 	ret->changeTimer(timer_associated);
-
-	if (path_tex != NULL)
-		SDL_Texture* texture = app->tex->loadTexture(path_tex);// cargar textura
 
 	elements.push_back(ret);
 

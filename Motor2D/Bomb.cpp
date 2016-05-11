@@ -3,8 +3,8 @@
 Bomb::Bomb(iPoint &p)
 {
 	tex_width = 47;
-	tex_height = 90;
-	collider_offset.set(15, 15);
+	tex_height = 200;
+	collider_offset.set(0, 10);
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };

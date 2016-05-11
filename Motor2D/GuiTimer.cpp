@@ -1,12 +1,15 @@
 #include "GuiTimer.h"
+#include "Textures.h"
 
 //Constructor
-GuiTimer::GuiTimer() : crono("00 : 00", 0)
+GuiTimer::GuiTimer(iPoint pos, const char *tex_path) : crono("00 : 00", 0)
 {
-	crono.setLocalPos(rect.x, rect.y);
+	setLocalPos(pos.x, pos.y);
+	crono.setLocalPos(pos.x + 50, pos.y + 25);
 	type = TIMER;
 	active = false;
 	seconds = minutes = 0;
+	monitor = app->tex->loadTexture(tex_path);
 }
 
 //Called every frame
@@ -40,7 +43,11 @@ bool GuiTimer::cleanUp()
 //Blitz GuiMinimap
 void GuiTimer::draw() const
 {
-	if(active) crono.draw();
+	if (active)
+	{
+		app->render->blit(monitor, rect.x, rect.y, NULL, 0.0f);
+		crono.draw();
+	}
 }
 
 void GuiTimer::initiate()

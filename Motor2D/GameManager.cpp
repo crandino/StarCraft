@@ -206,7 +206,7 @@ bool GameManager::start()
 	game_state = INITIAL_SCREEN;
 
 	// Create Graphic Timers
-	wave_timer = app->gui->createTimer({ 200, 6 }, NULL, timer_between_game_states);
+	wave_timer = app->gui->createTimer({ 211, 320 }, "UI_Countdown_Message.png", timer_between_game_states);
 
 	return ret;
 }
