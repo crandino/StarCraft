@@ -51,6 +51,10 @@ enum WAVE_STATE
 
 struct bombPosition
 {
+	iPoint north_west = { 300, 630 };
+	iPoint north_east = { 3048, 352 };
+	iPoint south_west = { 1950, 3370 };
+	iPoint south_east = { 3735, 2560 };
 };
 
 using namespace std;

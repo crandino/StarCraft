@@ -306,6 +306,8 @@ bool GameManager::update(float dt)
 		//BOMB CREATION GOES HERE
 		if(!info_message->isLoaded())
 		{
+			info_message->newInfo("The BOMB is here! Here you have the approximate landing zones", (gameInfo.time_while_bomb_landing * 1000) / 2);
+			info_message->newInfo("Find it and use against these fucking bastards!", (gameInfo.time_while_bomb_landing * 1000) / 2);
 			app->gui->mini_map->activePing(bomb_position.north_east, BOMB);
 			app->gui->mini_map->activePing(bomb_position.north_west, BOMB);
 			app->gui->mini_map->activePing(bomb_position.south_east, BOMB);
@@ -529,9 +531,9 @@ int GameManager::incrementPhase2WavePower()
 
 void GameManager::checkingGameConditions()
 {
+	// Finishing Phase 1, bomb lands to somewhere.
 	if (game_state == FIRST_PHASE && current_wave == gameInfo.total_waves)
 	{
-	// Finishing Phase 1, bomb lands to somewhere.
 		timer_between_game_states.start();
 		game_state = BOMB_LANDING;
 	}
