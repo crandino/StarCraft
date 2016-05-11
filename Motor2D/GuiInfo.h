@@ -9,13 +9,12 @@
 
 struct Message
 {
-
 	char c[MAX_LENGTH_MESSAGE];
 	uint display_time;
 
 	Message(const char *tex, uint total_time)
 	{
-		strcpy_s(c, MAX_LENGTH_MESSAGE,tex);
+		strcpy_s(c, MAX_LENGTH_MESSAGE, tex);
 		display_time = total_time;
 	}
 };

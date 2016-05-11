@@ -49,6 +49,10 @@ enum WAVE_STATE
 	END_WAVE
 };
 
+struct bombPosition
+{
+};
+
 using namespace std;
 
 //  -------- XML information ------------
@@ -102,7 +106,6 @@ public:
 	//-------------Resources------------------
 	int       mineral_resources = 0;
 	int       gas_resources = 0;
-	int       resources = 0;
 
 	GameManager();
 
@@ -202,6 +205,9 @@ private:
 	
 	//Phase 2 
 	int					incrementPhase2WavePower();
+
+	// Positions
+	bombPosition   bomb_position;
 
 	// ----------- GUI -------------------
 	//Start/Exit Button

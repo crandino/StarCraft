@@ -45,15 +45,6 @@ struct wave_position
 	iPoint south_east = { 2300, 2700 };
 };
 
-struct bomb_position
-{
-	iPoint north_west = { 100, 50 };
-	iPoint north_east = { 3650, 600 };
-	iPoint south_west = { 100, 3650 };
-	iPoint south_east = { 3600, 3800 };
-};
-
-
 enum wave_positions_enum
 {
 	NORTHWEST = 1,
@@ -267,10 +258,13 @@ bool GameManager::update(float dt)
 				createWaveInfo(waves_info[current_wave]);
 
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
+			{
 				wave_state = BEGINNING_WAVE;
+				info_message->unload();
+			}
+				
 			break;
 		}
-
 		case(BEGINNING_WAVE) :
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
@@ -310,13 +304,19 @@ bool GameManager::update(float dt)
 	case(BOMB_LANDING) :
 	{
 		//BOMB CREATION GOES HERE
+		if(!info_message->isLoaded())
+		{
+			app->gui->mini_map->activePing(bomb_position.north_east, BOMB);
+			app->gui->mini_map->activePing(bomb_position.north_west, BOMB);
+			app->gui->mini_map->activePing(bomb_position.south_east, BOMB);
+			app->gui->mini_map->activePing(bomb_position.south_west, BOMB);
+		}
+
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
 		{
-			LOG("The bomb has landed look for it."); //Audio voice
 			int random = rand() % 4 + 1;
 			iPoint bomb_pos = positionRandomizerBomb(random, bomb_pos);
 			app->entity_manager->addEntity(bomb_pos, BOMB);
-			app->gui->mini_map->activePing(bomb_pos);
 			game_state = SECOND_PHASE;
 			timer_between_game_states.start();
 		}
@@ -531,7 +531,7 @@ void GameManager::checkingGameConditions()
 {
 	if (game_state == FIRST_PHASE && current_wave == gameInfo.total_waves)
 	{
-		LOG("END OF PHASE 1");
+	// Finishing Phase 1, bomb lands to somewhere.
 		timer_between_game_states.start();
 		game_state = BOMB_LANDING;
 	}
@@ -548,7 +548,6 @@ void GameManager::checkingGameConditions()
 		game_state = WIN;
 		start_game = false;
 	}
-
 }
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
@@ -646,7 +645,6 @@ bool GameManager::cleanUp()
 
 void GameManager::startGame()
 {
-	current_wave = 0;
 	wave_state = WAITING_FOR_WAVE_TO_START;
 	game_state = FIRST_PHASE;
 
@@ -679,7 +677,7 @@ void GameManager::startGame()
 	
 	app->render->setCameraOnPosition(p);
 	
-	resources = 0;
+	current_wave = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
 
@@ -755,7 +753,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_UP) :
 			retry_button->setSection({ 384, 0, 104, 28 });
 			app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
-			game_state = PREPARATION;			
+			startGame();
 			break;
 		}
 	}
@@ -771,12 +769,6 @@ void GameManager::restartGame()
 		it->second->to_delete = true;
 	}
 	//---------------------------------------------------------
-
-	current_wave = 0;
-	
-	resources = 0;
-	mineral_resources = 0;
-	gas_resources = 0;
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.
@@ -855,7 +847,6 @@ void GameManager::AddPointsEnemy(Entity* e)
 		mineral_resources += 25;
 		gas_resources += 25;
 	}
-
 	
 	else if (e->specialization == HYDRALISK)
 	{
@@ -873,9 +864,6 @@ void GameManager::AddPointsEnemy(Entity* e)
 		gas_resources += 100;
 	}
 
-
-	
-
 }
 
 iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
@@ -883,19 +871,19 @@ iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
 	switch (random)
 	{
 	case(BOMBPOS1) :
-		bomb_pos = bomb_position().north_west;
+		bomb_pos = bomb_position.north_west;
 		break;
 
 	case(BOMBPOS2) :
-		bomb_pos = bomb_position().north_east;
+		bomb_pos = bomb_position.north_east;
 		break;
 
 	case(BOMBPOS3) :
-		bomb_pos = bomb_position().south_west;
+		bomb_pos = bomb_position.south_west;
 		break;
 
 	case(SOUTHEAST) :
-		bomb_pos = bomb_position().south_east;
+		bomb_pos = bomb_position.south_east;
 		break;
 	}
 
