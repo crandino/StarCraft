@@ -39,10 +39,10 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 1400, 1700 };
-	iPoint north_east = { 2350, 1700 };
+	iPoint north_west = { 1500, 1400 };
+	iPoint north_east = { 2450, 1700 };
 	iPoint south_west = { 1400, 2700 };
-	iPoint south_east = { 2300, 2700 };
+	iPoint south_east = { 2700, 2800 };
 };
 
 enum wave_positions_enum
@@ -570,6 +570,8 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
+	//if(current_wave >)
+
 	waves2_info[0]->zergling_quantity += 1;
 	waves2_info[0]->hydralisk_quantity += 0;
 	waves2_info[0]->mutalisk_quantity += 0;
@@ -895,28 +897,28 @@ void GameManager::eraseEnemiesIfKilled()
 
 void GameManager::AddPointsEnemy(Entity* e)
 {
-	if (e->specialization == ZERGLING)
-	{
-		mineral_resources += 25;
-		gas_resources += 25;
-	}
-	
-	else if (e->specialization == HYDRALISK)
-	{
-		mineral_resources += 30;
-		gas_resources += 40;
-	}
-	else if (e->specialization == MUTALISK)
-	{
-		mineral_resources += 30;
-		gas_resources += 60;
-	}
-	else if (e->specialization == ULTRALISK)
-	{
-		mineral_resources += 100;
-		gas_resources += 100;
-	}
 
+	switch (e->specialization)
+	{
+	case(ZERGLING) :
+		updateResources(app->entity_manager->zergling_mineral_cost, app->entity_manager->zergling_gas_cost);
+		break;
+	case(HYDRALISK) :
+		updateResources(app->entity_manager->hydralisk_mineral_cost, app->entity_manager->hydralisk_gas_cost);
+		break;
+	case(MUTALISK) :
+		updateResources(app->entity_manager->mutalisk_mineral_cost, app->entity_manager->mutalisk_gas_cost);
+		break;
+	case(ULTRALISK) :
+		updateResources(app->entity_manager->ultralisk_mineral_cost, app->entity_manager->ultralisk_gas_cost);
+		break;
+	}
+}
+
+void GameManager::updateResources(int mineral, int gas)
+{
+	mineral_resources += mineral;
+	gas_resources += gas;
 }
 
 iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)

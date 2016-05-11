@@ -147,6 +147,34 @@ public:
 
 	bool	selector_init;
 
+	// Units and buildings cost
+	int bunker_mineral_cost;
+	int bunker_gas_cost;
+	int barrack_mineral_cost;
+	int barrack_gas_cost;
+	int factory_mineral_cost;
+	int factory_gas_cost;
+
+	int marine_mineral_cost;
+	int marine_gas_cost;
+	int firebat_mineral_cost;
+	int firebat_gas_cost;
+	int medic_mineral_cost;
+	int medic_gas_cost;
+	int tank_mineral_cost;
+	int tank_gas_cost;
+	int scv_mineral_cost;
+	int scv_gas_cost;
+
+	int zergling_mineral_cost;
+	int zergling_gas_cost;
+	int hydralisk_mineral_cost;
+	int hydralisk_gas_cost;
+	int mutalisk_mineral_cost;
+	int mutalisk_gas_cost;
+	int ultralisk_mineral_cost;
+	int ultralisk_gas_cost;
+
 	// ---------- Entity Textures ---------------
 	//   Terran
 	SDL_Texture *marine_tex;

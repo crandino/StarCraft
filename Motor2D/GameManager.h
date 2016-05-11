@@ -106,14 +106,11 @@ struct initialSizePlayer
 //Class that manages the game. The win lose cycle, the points earned, the resources, waves etc...
 class GameManager : public Module
 {
-public:
-
-	//-------------Resources------------------
-	int       mineral_resources = 0;
-	int       gas_resources = 0;
-
+private:
 	//Debug-----
 	bool	  debug = false;
+
+public:
 
 	GameManager();
 
@@ -149,6 +146,12 @@ public:
 
 public:
 	
+	//-------------Resources------------------
+	int  mineral_resources;
+	int  gas_resources;
+
+	void updateResources(int mineral, int gas);
+
 	//Lose Conditions
 	bool command_center_destroyed = false;
 	bool jim_raynor_dead = false;

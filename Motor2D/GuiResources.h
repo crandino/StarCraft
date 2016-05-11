@@ -13,8 +13,7 @@ public:
 
 	~GuiResources()
 	{}
-
-
+	
 	bool start();
 
 	bool cleanUp();

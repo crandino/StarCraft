@@ -41,6 +41,33 @@ EntityManager::~EntityManager()
 // Called before render is available
 bool EntityManager::awake(pugi::xml_node &node)
 {
+	bunker_mineral_cost = node.child("costs").attribute("bunker_mineral_cost").as_int();
+	bunker_gas_cost = node.child("costs").attribute("bunker_gas_cost").as_int();
+	barrack_mineral_cost = node.child("costs").attribute("barrack_mineral_cost").as_int();
+	barrack_gas_cost = node.child("costs").attribute("barrack_gas_cost").as_int();
+	factory_mineral_cost = node.child("costs").attribute("factory_mineral_cost").as_int();
+	factory_gas_cost = node.child("costs").attribute("factory_gas_cost").as_int();
+
+	marine_mineral_cost = node.child("costs").attribute("marine_mineral_cost").as_int();
+	marine_gas_cost = node.child("costs").attribute("marine_gas_cost").as_int();
+	firebat_mineral_cost = node.child("costs").attribute("firebat_mineral_cost").as_int();
+	firebat_gas_cost = node.child("costs").attribute("firebat_gas_cost").as_int();
+	medic_mineral_cost = node.child("costs").attribute("medic_mineral_cost").as_int();
+	medic_gas_cost = node.child("costs").attribute("medic_gas_cost").as_int();
+	tank_mineral_cost = node.child("costs").attribute("tank_mineral_cost").as_int();
+	tank_gas_cost = node.child("costs").attribute("tank_gas_cost").as_int();
+	scv_mineral_cost = node.child("costs").attribute("scv_mineral_cost").as_int();
+	scv_gas_cost = node.child("costs").attribute("scv_gas_cost").as_int();
+
+	zergling_mineral_cost = node.child("costs").attribute("zergling_mineral_cost").as_int();
+	zergling_gas_cost = node.child("costs").attribute("zergling_gas_cost").as_int();
+	hydralisk_mineral_cost = node.child("costs").attribute("hydralisk_mineral_cost").as_int();
+	hydralisk_gas_cost = node.child("costs").attribute("hydralisk_gas_cost").as_int();
+	mutalisk_mineral_cost = node.child("costs").attribute("mutalisk_mineral_cost").as_int();
+	mutalisk_gas_cost = node.child("costs").attribute("mutalisk_gas_cost").as_int();
+	ultralisk_mineral_cost = node.child("costs").attribute("ultralisk_mineral_cost").as_int();
+	ultralisk_gas_cost = node.child("costs").attribute("ultralisk_gas_cost").as_int();
+
 	return true;
 }
 
@@ -474,51 +501,17 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == COMMANDCENTER)
 			{
-				if (app->game_manager->mineral_resources >=50)
-				{
-					iPoint position;
-					pos_commander = it->second->pos;
-					app->game_manager->mineral_resources -= 50;
-					position.x = pos_commander.x + 20;
-					position.y = pos_commander.y + 100;
+				iPoint position;
+				pos_commander = it->second->pos;
+				position.x = pos_commander.x + 20;
+				position.y = pos_commander.y + 100;
 
-					addEntity(position, SCV);
-					create_SCV = false;
-					break;
-				}
+				app->game_manager->updateResources(-scv_mineral_cost, 0);
+				addEntity(position, SCV);
+				break;
 			}
 		}
-	}
-
-	if (create_tank)
-	{
-		map<uint, Entity*>::iterator it = active_entities.begin();
-		fPoint pos_factory;
-		// First, we need to know if any unit has been selected. 
-		for (; it != active_entities.end(); ++it)
-		{
-			if (it->second->specialization == FACTORY)
-			{
-				if (app->game_manager->mineral_resources >= 200 && app->game_manager->gas_resources >= 300)
-				{
-					iPoint position;
-					pos_factory = it->second->pos;
-					app->game_manager->gas_resources -= 300;
-					app->game_manager->mineral_resources -= 200;
-					position.x = pos_factory.x + 30;
-					position.y = pos_factory.y + 120;
-
-					addEntity(position, TANK);
-					create_tank = false;
-					break;
-				}
-				else
-				{
-					create_tank = false;
-					break;
-				}
-			}
-		}
+		create_SCV = false;
 	}
 
 	if (create_marine)
@@ -530,27 +523,17 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == BARRACK)
 			{
-				if (app->game_manager->mineral_resources >= 75 && app->game_manager->gas_resources >= 50)
-				{
-					iPoint position;
-					pos_barrack = it->second->pos;
-					app->game_manager->gas_resources -= 50;
-					app->game_manager->mineral_resources -= 75;
-					position.x = pos_barrack.x + 30;
-					position.y = pos_barrack.y + 120;
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->updateResources(-marine_mineral_cost, -marine_gas_cost);
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
 
-					addEntity(position, MARINE);
-					create_marine = false;
-					break;
-				}
-				else
-				{
-					create_marine = false;
-					break;
-				}
-		
+				addEntity(position, MARINE);
+				break;		
 			}
 		}
+		create_marine = false;
 	}
 
 	if (create_medic)
@@ -562,27 +545,17 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == BARRACK)
 			{
-				if (app->game_manager->mineral_resources >= 75 && app->game_manager->gas_resources >= 100)
-				{
-					iPoint position;
-					pos_barrack = it->second->pos;
-					app->game_manager->gas_resources -= 100;
-					app->game_manager->mineral_resources -= 75;
-					position.x = pos_barrack.x + 30;
-					position.y = pos_barrack.y + 120;
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->updateResources(-medic_mineral_cost, -medic_gas_cost);
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
 
-					addEntity(position, MEDIC);
-					create_medic = false;
-					break;
-				}
-				else
-				{
-					create_medic = false;
-					break;
-				}
-
+				addEntity(position, MEDIC);
+				break;
 			}
 		}
+		create_medic = false;
 	}
 
 	if (create_firebat)
@@ -594,80 +567,74 @@ bool EntityManager::preUpdate()
 		{
 			if (it->second->specialization == BARRACK)
 			{
-				if (app->game_manager->mineral_resources >= 50 && app->game_manager->gas_resources >= 200)
-				{
-					iPoint position;
-					pos_barrack = it->second->pos;
-					app->game_manager->gas_resources -= 200;
-					app->game_manager->mineral_resources -= 50;
-					position.x = pos_barrack.x + 30;
-					position.y = pos_barrack.y + 120;
+				iPoint position;
+				pos_barrack = it->second->pos;
+				app->game_manager->updateResources(-firebat_mineral_cost, -firebat_gas_cost);
+				position.x = pos_barrack.x + 30;
+				position.y = pos_barrack.y + 120;
 
-					addEntity(position, FIREBAT);
-					create_firebat = false;
-					break;
-				}
-				else
-				{
-					create_firebat = false;
-					break;
-				}
+				addEntity(position, FIREBAT);
+				break;
 			}
 		}
+		create_firebat = false;
+	}
+
+	if (create_tank)
+	{
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		fPoint pos_factory;
+		// First, we need to know if any unit has been selected. 
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second->specialization == FACTORY)
+			{
+				iPoint position;
+				pos_factory = it->second->pos;
+				app->game_manager->updateResources(-tank_mineral_cost, -tank_gas_cost);
+				position.x = pos_factory.x + 30;
+				position.y = pos_factory.y + 120;
+				addEntity(position, TANK);
+				break;
+			}
+		}
+		create_tank = false;
 	}
 
 	if (create_bunker)
 	{
-		if (app->game_manager->mineral_resources >=25 && app->game_manager->gas_resources >=50)
+		if (app->game_manager->mineral_resources >= bunker_mineral_cost && app->game_manager->gas_resources >= bunker_gas_cost)
 		{
 			iPoint position;
 			app->input->getMousePosition(position);
 			position = app->render->screenToWorld(position.x, position.y);
-			app->game_manager->mineral_resources -= 25;
-			app->game_manager->gas_resources -= 50;
 			addEntity(position, BUNKER, false);
 		}
-		else
-		{
-			create_bunker = false;
-		}
-
+		create_bunker = false;
 	}
 
 	if (create_barrack)
 	{
-		if (app->game_manager->mineral_resources >= 250 && app->game_manager->gas_resources >= 250)
+		if (app->game_manager->mineral_resources >= barrack_mineral_cost && app->game_manager->gas_resources >= barrack_gas_cost)
 		{
 			iPoint position;
 			app->input->getMousePosition(position);
 			position = app->render->screenToWorld(position.x, position.y);
-			app->game_manager->mineral_resources -= 250;
-			app->game_manager->gas_resources -= 250;
 			addEntity(position, BARRACK, false);
 		}
-		else
-		{
-			create_barrack = false;
-		}
-
+		create_barrack = false;
 	}
 
 	if (create_factory)
 	{
-		if (app->game_manager->mineral_resources >= 300 && app->game_manager->gas_resources >= 300)
+		if (app->game_manager->mineral_resources >= factory_mineral_cost && app->game_manager->gas_resources >= factory_gas_cost)
 		{
 			iPoint position;
 			app->input->getMousePosition(position);
 			position = app->render->screenToWorld(position.x, position.y);
-			app->game_manager->mineral_resources -= 300;
-			app->game_manager->gas_resources -= 300;
 			addEntity(position, FACTORY, false);
 		}
-		else
-		{
-			create_factory = false;
-		}
-
+		create_factory = false;
 	}
 
 	return true;
@@ -838,8 +805,6 @@ void EntityManager::handleSelection()
 					continue;
 				else
 				{
-					
-
 					if (delete_selection == 1)
 					{
 						selection.clear();
@@ -994,6 +959,25 @@ void EntityManager::handleSelection()
 			building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
 			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
 			building_mode = false;
+
+			switch (building_to_place->specialization)
+			{
+			case(BUNKER) :
+			{
+				app->game_manager->updateResources(-bunker_mineral_cost, -bunker_gas_cost);
+				break;
+			}
+			case(BARRACK) :
+			{
+				app->game_manager->updateResources(-barrack_mineral_cost, -barrack_gas_cost);
+				break;
+			}
+			case(FACTORY) :
+			{
+				app->game_manager->updateResources(-factory_mineral_cost, -factory_gas_cost);
+				break;
+			}
+			}
 
 			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
 			recalculatePaths(building_to_place->coll->rect, false);
