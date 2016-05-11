@@ -28,6 +28,37 @@
 	    
   </file_system>
 
+  <EntityManager>
+    <costs
+      bunker_mineral_cost = "200"
+      bunker_gas_cost = "150"
+      barrack_mineral_cost = "1000"
+      barrack_gas_cost = "500" 
+      factory_mineral_cost = "1000"
+      factory_gas_cost = "500" 
+      
+      marine_mineral_cost = "50"
+      marine_gas_cost = "50"
+      firebat_mineral_cost = "50"
+      firebat_gas_cost = "150"
+      scv_mineral_cost = "50"
+      scv_gas_cost = "0"
+      medic_mineral_cost = "150"
+      medic_gas_cost = "75"     
+      tank_mineral_cost = "250"
+      tank_gas_cost = "25" 
+      
+      zergling_mineral_cost = "50"
+      zergling_gas_cost = "50" 
+      hydralisk_mineral_cost = "50"
+      hydralisk_gas_cost = "50" 
+      ultralisk_mineral_cost = "50"
+      ultralisk_gas_cost = "50" 
+      mutalisk_mineral_cost = "50"
+      mutalisk_gas_cost = "50"       
+  />    
+  </EntityManager>
+  
   <game_manager>
 
     <!-- Game Information -->
@@ -41,7 +72,7 @@
     <timeBomb value = "60.0f" />
     
     <!--Debug-->
-    <hold value ="true"/>
+    <hold value ="false"/>
     
     <!-- Wave Information -->    
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>

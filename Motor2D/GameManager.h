@@ -108,10 +108,6 @@ class GameManager : public Module
 {
 public:
 
-	//-------------Resources------------------
-	int       mineral_resources = 0;
-	int       gas_resources = 0;
-
 	GameManager();
 
 	bool awake(pugi::xml_node &node);
@@ -146,6 +142,12 @@ public:
 
 public:
 	
+	//-------------Resources------------------
+	int  mineral_resources;
+	int  gas_resources;
+
+	void updateResources(int mineral, int gas);
+
 	//Lose Conditions
 	bool command_center_destroyed = false;
 	bool jim_raynor_dead = false;

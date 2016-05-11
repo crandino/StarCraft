@@ -84,7 +84,7 @@ public:
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
 	GuiInfo* createInfo(iPoint pos, const char *tex_path);
-	GuiResources* createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas,iPoint pos,bool draw_element = false);
+	GuiResources* createResourceInfo(const char* _entity_name, int _mineral, int _gas,iPoint pos,bool draw_element = false);
 
 
 	const GuiElements* findMouseHover();

@@ -1,12 +1,11 @@
 #include "GuiResources.h"
 
-GuiResources::GuiResources(const char* _entity_name,const char* _mineral, const char* _gas, iPoint pos, bool draw_element)
+GuiResources::GuiResources(const char* _entity_name, const char* _mineral, const char* _gas, iPoint pos, bool draw_element)
 {
 	type = RESOURCES;
 	entity_name = app->gui->createLabel("0", 2);
 	mineral = app->gui->createLabel("0", 2);
 	gas = app->gui->createLabel("0", 2);
-
 
 	window = app->gui->createImage(NULL, { 440, 43, 126, 33 });
 	window->setLocalPos(pos.x, pos.y);
@@ -22,22 +21,16 @@ GuiResources::GuiResources(const char* _entity_name,const char* _mineral, const 
 	gas_image->setLocalPos(70, 20);
 	gas_image->draw_element = draw_element;
 
-	char n[20];
-	sprintf_s(n, 20, _entity_name);
 	entity_name->setText(_entity_name, 2);
 	entity_name->parent = window;
 	entity_name->setLocalPos(5, 2);
 	entity_name->draw_element = draw_element;
 
-	char n1[20];
-	sprintf_s(n1, 20, _mineral);
 	mineral->setText(_mineral, 2);
 	mineral->parent = window;
 	mineral->setLocalPos(23, 18);
 	mineral->draw_element = draw_element;
 
-	char n2[20];
-	sprintf_s(n2, 20, _gas);
 	gas->setText(_gas, 2);
 	gas->parent = window;
 	gas->setLocalPos(90, 18);

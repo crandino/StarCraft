@@ -241,40 +241,37 @@ bool Gui::start()
 
 	//HUD Info SCV and Bunker------------------------------------------------
 
-	info_bunker2 = app->gui->createResourceInfo("Bunker", "25", "50", { 505, 290 });
+	info_bunker2 = app->gui->createResourceInfo("Bunker", app->entity_manager->bunker_mineral_cost, app->entity_manager->bunker_gas_cost, { 505, 290 });
 	info_bunker2->interactive = false;
 	info_bunker2->draw_element = false;
 
-	info_barraks = app->gui->createResourceInfo("Barrak", "250", "250", { 505, 290 });
+	info_barraks = app->gui->createResourceInfo("Barrak", app->entity_manager->barrack_mineral_cost, app->entity_manager->barrack_gas_cost, { 505, 290 });
 	info_barraks->interactive = false;
 	info_barraks->draw_element = false;
 
-	info_factory = app->gui->createResourceInfo("Factory", "300", "300", { 505, 290 });
+	info_factory = app->gui->createResourceInfo("Factory", app->entity_manager->factory_mineral_cost, app->entity_manager->factory_gas_cost, { 505, 290 });
 	info_factory->interactive = false;
 	info_factory->draw_element = false;
 
-	info_scv2 = app->gui->createResourceInfo("SCV", "50", "-", { 505, 290 });
+	info_scv2 = app->gui->createResourceInfo("SCV", app->entity_manager->scv_mineral_cost, app->entity_manager->scv_gas_cost, { 505, 290 });
 	info_scv2->interactive = false;
 	info_scv2->draw_element = false;
 
-	info_marine = app->gui->createResourceInfo("Marine", "75", "50", { 505, 290 });
+	info_marine = app->gui->createResourceInfo("Marine", app->entity_manager->marine_mineral_cost, app->entity_manager->marine_gas_cost, { 505, 290 });
 	info_marine->interactive = false;
 	info_marine->draw_element = false;
 
-	info_medic = app->gui->createResourceInfo("Medic", "75", "100", { 505, 290 });
+	info_medic = app->gui->createResourceInfo("Medic", app->entity_manager->medic_mineral_cost, app->entity_manager->medic_gas_cost, { 505, 290 });
 	info_medic->interactive = false;
 	info_medic->draw_element = false;
 
-	info_firebat = app->gui->createResourceInfo("Firebat", "50", "200", { 505, 290 });
+	info_firebat = app->gui->createResourceInfo("Firebat", app->entity_manager->firebat_mineral_cost, app->entity_manager->firebat_gas_cost, { 505, 290 });
 	info_firebat->interactive = false;
 	info_firebat->draw_element = false;
 
-	info_tank = app->gui->createResourceInfo("Tank", "200", "300", { 505, 290 });
+	info_tank = app->gui->createResourceInfo("Tank", app->entity_manager->tank_mineral_cost, app->entity_manager->tank_gas_cost, { 505, 290 });
 	info_tank->interactive = false;
 	info_tank->draw_element = false;
-
-
-
 	
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
@@ -400,10 +397,17 @@ GuiTimer* Gui::createTimer(iPoint pos, const char *path_tex, Timer &timer_associ
 	return ret;
 }
 
-GuiResources* Gui::createResourceInfo(const char* _entity_name, const char* _mineral, const char* _gas, iPoint pos, bool draw_element)
+GuiResources* Gui::createResourceInfo(const char* _entity_name, int _mineral, int _gas, iPoint pos, bool draw_element)
 {
 	GuiResources* ret = nullptr;
-	ret = new GuiResources(_entity_name, _mineral, _gas, pos, draw_element);
+
+	char mineral[5];
+	char gas[5];
+
+	sprintf_s(mineral, 5, "%d", _mineral);
+	sprintf_s(gas, 5, "%d", _gas);
+
+	ret = new GuiResources(_entity_name, mineral, gas, pos, draw_element);
 
 	elements.push_back(ret);
 
@@ -471,7 +475,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->mineral_resources >= 50)
+			if (app->game_manager->mineral_resources >= app->entity_manager->scv_mineral_cost)
 			{
 				app->entity_manager->create_SCV = true;
 				app->audio->playFx(app->entity_manager->fx_scv_ready, 0);
@@ -576,7 +580,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->gas_resources >= 50 && app->game_manager->mineral_resources >= 75)
+			if (app->game_manager->gas_resources >= app->entity_manager->marine_gas_cost && app->game_manager->mineral_resources >= app->entity_manager->marine_mineral_cost)
 			{
 				app->entity_manager->create_marine = true;
 				app->audio->playFx(app->entity_manager->fx_marine_ready, 0);
@@ -589,7 +593,6 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 				info_marine->draw_element = false;
 			}
 			break;
-
 		}
 	}
 
@@ -608,7 +611,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->gas_resources >= 100 && app->game_manager->mineral_resources >= 75)
+			if (app->game_manager->gas_resources >= app->entity_manager->medic_gas_cost && app->game_manager->mineral_resources >= app->entity_manager->medic_mineral_cost)
 			{
 				app->entity_manager->create_medic = true;
 				app->audio->playFx(app->entity_manager->fx_medic_ready, 0);
@@ -640,7 +643,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->gas_resources >= 200 && app->game_manager->mineral_resources >= 50)
+			if (app->game_manager->gas_resources >= app->entity_manager->firebat_gas_cost && app->game_manager->mineral_resources >= app->entity_manager->firebat_mineral_cost)
 			{
 				app->entity_manager->create_firebat = true;
 				app->audio->playFx(app->entity_manager->fx_firebat_ready, 0);
@@ -653,7 +656,6 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 				info_firebat->draw_element = false;
 			}
 			break;
-
 		}
 	}
 
@@ -672,7 +674,7 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
-			if (app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 200)
+			if (app->game_manager->gas_resources >= app->entity_manager->tank_gas_cost && app->game_manager->mineral_resources >= app->entity_manager->tank_mineral_cost)
 			{
 				app->entity_manager->create_tank = true;
 				app->audio->playFx(app->entity_manager->fx_tank_ready, 0);
@@ -1801,7 +1803,7 @@ void Gui::controlIconsSprite()
 	if (buildingMenuOpened)
 	{
 		//Bunker
-		if (app->game_manager->gas_resources <= 25 || app->game_manager->mineral_resources <= 50)
+		if (app->game_manager->mineral_resources <= app->entity_manager->bunker_mineral_cost || app->game_manager->gas_resources <= app->entity_manager->bunker_gas_cost)
 		{
 			ui_create_bunker->setSection({ 440, 125, 37, 34 });
 			ui_create_bunker->draw_element;
@@ -1812,7 +1814,7 @@ void Gui::controlIconsSprite()
 			ui_create_bunker->enable_element();
 		}
 		//Barracks 
-		if (!barrackAlive && app->game_manager->gas_resources >= 250 && app->game_manager->mineral_resources >= 250)
+		if (!barrackAlive && app->game_manager->mineral_resources >= app->entity_manager->barrack_mineral_cost && app->game_manager->gas_resources >= app->entity_manager->barrack_gas_cost)
 		{
 			ui_create_barraks->setSection({ 298, 64, 37, 34 });
 			ui_create_barraks->enable_element();
@@ -1823,7 +1825,7 @@ void Gui::controlIconsSprite()
 			ui_create_barraks->draw_element;
 		}
 		//Factory
-		if (!factoryAlive && app->game_manager->gas_resources >= 300 && app->game_manager->mineral_resources >= 300)
+		if (!factoryAlive && app->game_manager->mineral_resources >= app->entity_manager->factory_mineral_cost && app->game_manager->gas_resources >= app->entity_manager->factory_gas_cost)
 		{
 			ui_create_factory->setSection({ 377, 64, 37, 34 });
 			ui_create_factory->enable_element();
@@ -1839,7 +1841,7 @@ void Gui::controlIconsSprite()
 	{
 		if (!buildingMenuOpened && !factoryMenuOpened)
 		{
-			if (app->game_manager->mineral_resources < 50)
+			if (app->game_manager->mineral_resources < app->entity_manager->scv_mineral_cost)
 			{
 				ui_create_bot->setSection({ 440, 89, 37, 34 });
 				ui_create_bot->unable_element();
@@ -1855,7 +1857,7 @@ void Gui::controlIconsSprite()
 	if (barrackMenuOpened)
 	{
 		//Create Marine
-		if (app->game_manager->gas_resources < 50 || app->game_manager->mineral_resources < 75)
+		if (app->game_manager->gas_resources < app->entity_manager->marine_gas_cost || app->game_manager->mineral_resources < app->entity_manager->marine_mineral_cost)
 		{
 			ui_create_marine->setSection({ 338, 192, 37, 34 });
 			ui_create_marine->draw_element;
@@ -1867,7 +1869,7 @@ void Gui::controlIconsSprite()
 		}
 
 		//Create Medic
-		if (app->game_manager->gas_resources < 100 || app->game_manager->mineral_resources < 75)
+		if (app->game_manager->gas_resources < app->entity_manager->medic_gas_cost || app->game_manager->mineral_resources < app->entity_manager->medic_mineral_cost)
 		{
 			ui_create_medic->setSection({ 381, 192, 37, 34 });
 			ui_create_medic->draw_element;
@@ -1879,7 +1881,7 @@ void Gui::controlIconsSprite()
 		}
 
 		//Create Firebat
-		if (app->game_manager->gas_resources < 200 || app->game_manager->mineral_resources < 50)
+		if (app->game_manager->gas_resources < app->entity_manager->firebat_gas_cost || app->game_manager->mineral_resources < app->entity_manager->firebat_mineral_cost)
 		{
 			ui_create_firebat->setSection({ 293, 192, 37, 34 });
 			ui_create_firebat->draw_element;
@@ -1893,7 +1895,7 @@ void Gui::controlIconsSprite()
 
 	if (factoryMenuOpened) 
 	{
-		if (app->game_manager->gas_resources < 300 || app->game_manager->mineral_resources < 200)
+		if (app->game_manager->gas_resources < app->entity_manager->tank_gas_cost || app->game_manager->mineral_resources < app->entity_manager->tank_mineral_cost)
 		{
 			ui_create_tank->setSection({ 297, 234, 36, 33 });
 			ui_create_tank->draw_element;

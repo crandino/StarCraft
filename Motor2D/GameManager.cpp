@@ -884,28 +884,28 @@ void GameManager::eraseEnemiesIfKilled()
 
 void GameManager::AddPointsEnemy(Entity* e)
 {
-	if (e->specialization == ZERGLING)
-	{
-		mineral_resources += 25;
-		gas_resources += 25;
-	}
-	
-	else if (e->specialization == HYDRALISK)
-	{
-		mineral_resources += 30;
-		gas_resources += 40;
-	}
-	else if (e->specialization == MUTALISK)
-	{
-		mineral_resources += 30;
-		gas_resources += 60;
-	}
-	else if (e->specialization == ULTRALISK)
-	{
-		mineral_resources += 100;
-		gas_resources += 100;
-	}
 
+	switch (e->specialization)
+	{
+	case(ZERGLING) :
+		updateResources(app->entity_manager->zergling_mineral_cost, app->entity_manager->zergling_gas_cost);
+		break;
+	case(HYDRALISK) :
+		updateResources(app->entity_manager->hydralisk_mineral_cost, app->entity_manager->hydralisk_gas_cost);
+		break;
+	case(MUTALISK) :
+		updateResources(app->entity_manager->mutalisk_mineral_cost, app->entity_manager->mutalisk_gas_cost);
+		break;
+	case(ULTRALISK) :
+		updateResources(app->entity_manager->ultralisk_mineral_cost, app->entity_manager->ultralisk_gas_cost);
+		break;
+	}
+}
+
+void GameManager::updateResources(int mineral, int gas)
+{
+	mineral_resources += mineral;
+	gas_resources += gas;
 }
 
 iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
