@@ -235,13 +235,15 @@ bool GameManager::update(float dt)
 		LOG("PREPARATION");
 		if (!info_message->isLoaded())
 		{
-			info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed! Jim Raynor must survive!", 4000);
-			info_message->newInfo("My mother tells me that I have to be the strongest men!", 3000);
-			info_message->newInfo("The last text is a nonsense to test the GuiInfo. Have you read it?", 3000);
+			info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed!", (gameInfo.time_before_game_starts * 1000) / 2);
+			info_message->newInfo("Jim Raynor must survive (the yellow one)!", (gameInfo.time_before_game_starts * 1000) / 2);
 		}
 	
 		if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)
+		{
+			info_message->unload();
 			startGame();
+		}
 		break;
 	}
 	case(FIRST_PHASE) :
@@ -251,6 +253,9 @@ bool GameManager::update(float dt)
 		case(WAITING_FOR_WAVE_TO_START) :
 		{
 			LOG("WAITING WAVE TO START - PHASE 1");
+			if (!info_message->isLoaded())
+				createWaveInfo(waves_info[current_wave]);
+
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
 				wave_state = BEGINNING_WAVE;
 			break;
@@ -593,12 +598,15 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		int dx = i - (wave->mutalisk_quantity / 2);
 		int dy = i - (wave->mutalisk_quantity / 2);
 		((Unit*)entity_to_add)->distance_to_center_selector = { dx, dy };
-	}
+	}	
+}
 
+void GameManager::createWaveInfo(SizeWave* wave)
+{
 	char c[200];
 	sprintf_s(c, "Next wave!\n  Zerglings = %d\n  Hydralisks = %d\n  Mutalisks = %d\n  Ultralisks = %d\n",
 		wave->zergling_quantity, wave->hydralisk_quantity, wave->mutalisk_quantity, wave->ultralisk_quantity);
-	info_message->newInfo(c, 15000);
+	info_message->newInfo(c, gameInfo.time_before_waves_phase1 * 1000);
 }
 
 bool GameManager::postUpdate()
@@ -608,7 +616,7 @@ bool GameManager::postUpdate()
 
 bool GameManager::isWaveClear() 
 {
-	return current_wave_entities.empty() ? true : false;
+	return current_wave_entities.empty();
 }
 
 bool GameManager::cleanUp()

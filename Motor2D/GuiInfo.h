@@ -5,14 +5,17 @@
 #include "GuiLabel.h"
 #include <queue>
 
+#define MAX_LENGTH_MESSAGE 250
+
 struct Message
 {
-	const char *c;
+
+	char c[MAX_LENGTH_MESSAGE];
 	uint display_time;
 
 	Message(const char *tex, uint total_time)
 	{
-		c = tex;
+		strcpy_s(c, MAX_LENGTH_MESSAGE,tex);
 		display_time = total_time;
 	}
 };
@@ -73,12 +76,18 @@ public:
 		queue_of_messages.push(Message(text, _display_time));
 		new_text = true;
 		queue_loaded = true;
-		timer.start();
 	}
 
 	bool isLoaded()
 	{
 		return queue_loaded;
+	}
+
+	void unload()
+	{
+		for (uint i = 0; i < queue_of_messages.size(); ++i)
+			queue_of_messages.pop();
+		queue_loaded = false;
 	}
 
 private:

@@ -198,6 +198,7 @@ private:
 	iPoint				positionRandomizerBomb(int random, iPoint bomb_pos);
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
+	void				createWaveInfo(SizeWave* size);
 	
 	//Phase 2 
 	int					incrementPhase2WavePower();
