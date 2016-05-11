@@ -1364,6 +1364,13 @@ void EntityManager::entityManualCreation()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, BARRACK, false);
 	}
+
+	if (app->input->getKey(SDL_SCANCODE_N) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, BOMB, false);
+	}
 }
 
 void EntityManager::updateFogOfWar()

@@ -89,6 +89,10 @@ bool GameManager::awake(pugi::xml_node &node)
 	//initialSize.marines_quantity = node.child("InitialSizePlayer").attribute("medic").as_uint();
 	command_center_position.x = node.child("CommandCenterPosition").attribute("coordx").as_int();
 	command_center_position.y = node.child("CommandCenterPosition").attribute("coordy").as_int();
+	factory_position.x = command_center_position.x + 175;
+	factory_position.y = command_center_position.y + 20;
+	barrack_position.x = command_center_position.x - 175;
+	barrack_position.y = command_center_position.y + 20;
 
 	/*Score data Load*/
 	zergling_score = node.child("ZerglingScore").attribute("value").as_uint();
@@ -222,8 +226,7 @@ bool GameManager::preUpdate()
 bool GameManager::update(float dt)
 {
 	bool ret = true;
-	iPoint wave_pos;
-	
+	iPoint wave_pos;	
 
 	switch (game_state)
 	{
@@ -258,7 +261,7 @@ bool GameManager::update(float dt)
 			{
 				graphic_wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
 				graphic_wave_timer->initiate();
-				createWaveInfo(waves_info[current_wave]);
+				createWaveInfo(waves_info[current_wave], gameInfo.time_before_waves_phase1);
 			}				
 
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
@@ -320,12 +323,13 @@ bool GameManager::update(float dt)
 
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
 		{
+			info_message->unload();
+
 			int random = rand() % 4 + 1;
 			iPoint bomb_pos = positionRandomizerBomb(random, bomb_pos);
 			app->entity_manager->addEntity(bomb_pos, BOMB);
+			timer_between_waves.start();
 			game_state = SECOND_PHASE;
-			timer_between_game_states.start();
-			info_message->unload();
 		}
 		break;
 	}
@@ -339,8 +343,18 @@ bool GameManager::update(float dt)
 		case(WAITING_FOR_WAVE_TO_START) :
 		{
 			LOG("WAITING WAVE TO START - PHASE 2");
+			if (!info_message->isLoaded())
+			{
+				graphic_wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase2 * 1000);
+				graphic_wave_timer->initiate();
+				createWaveInfo(waves2_info[0], gameInfo.time_before_waves_phase2);
+			}
+
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase2)
+			{
+				info_message->unload();
 				wave_state = BEGINNING_WAVE;
+			}				
 			break;
 		}
 
@@ -476,16 +490,6 @@ bool GameManager::update(float dt)
 	}
 	}
 
-	//Find Jim
-	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
-	{
-		if (jim_position != NULL)
-		{
-			app->render->camera.x = -jim_position->x + (app->render->camera.w / 2);
-			app->render->camera.y = -jim_position->y + (app->render->camera.h / 2);
-		}
-	}
-
 	//ADRI
 	//-------------------------UI-----------------------------
 	//Change the number of WAVE HUD ingame-----------------------
@@ -511,11 +515,22 @@ bool GameManager::update(float dt)
 		mineral_resources += 100;
 		gas_resources += 100;
 	}
+
 	//Delete resources
 	if (app->input->getKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		mineral_resources = 0;
 		gas_resources = 0;
+	}
+
+	//Find Jim
+	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+	{
+		if (jim_position != NULL)
+		{
+			app->render->camera.x = -jim_position->x + (app->render->camera.w / 2);
+			app->render->camera.y = -jim_position->y + (app->render->camera.h / 2);
+		}
 	}
 	
 	return ret;
@@ -523,10 +538,10 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
-	waves2_info[0]->zergling_quantity += 2;
-	waves2_info[0]->hydralisk_quantity += 1;
-	waves2_info[0]->mutalisk_quantity += 1;
-	waves2_info[0]->ultralisk_quantity += 1;
+	waves2_info[0]->zergling_quantity += 1;
+	waves2_info[0]->hydralisk_quantity += 0;
+	waves2_info[0]->mutalisk_quantity += 0;
+	waves2_info[0]->ultralisk_quantity += 0;
 	
 	return 1;
 	/*REST OF UNITS*/
@@ -617,12 +632,12 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 	}	
 }
 
-void GameManager::createWaveInfo(SizeWave* wave)
+void GameManager::createWaveInfo(SizeWave* wave, uint display_time)
 {
 	char c[200];
 	sprintf_s(c, "Next wave!\n  Zerglings = %d\n  Hydralisks = %d\n  Mutalisks = %d\n  Ultralisks = %d\n",
 		wave->zergling_quantity, wave->hydralisk_quantity, wave->mutalisk_quantity, wave->ultralisk_quantity);
-	info_message->newInfo(c, gameInfo.time_before_waves_phase1 * 1000);
+	info_message->newInfo(c, display_time * 1000);
 }
 
 bool GameManager::postUpdate()
@@ -655,8 +670,9 @@ void GameManager::startGame()
 	wave_state = WAITING_FOR_WAVE_TO_START;
 	game_state = FIRST_PHASE;
 
-	iPoint p = command_center_position;
-	app->entity_manager->addEntity(p, COMMANDCENTER);  //BASE CREATION
+	app->entity_manager->addEntity(command_center_position, COMMANDCENTER);
+	app->entity_manager->addEntity(factory_position, FACTORY);
+	app->entity_manager->addEntity(barrack_position, BARRACK);
 	command_center_destroyed = false;
 	jim_raynor_dead = false;
 
@@ -677,12 +693,13 @@ void GameManager::startGame()
 	unsigned int size_marines_y = initial_size.marines_quantityY ;
 
 	//---- Initial units ----
-	createMarines({ 1400, 2150 }, size_marines_x, size_marines_y);
-	jim_position = &app->entity_manager->addEntity(iPoint(1500, 2150), JIM_RAYNOR)->center;
-	app->entity_manager->addEntity(iPoint(1520, 2150), MEDIC);
+	createMarines({ command_center_position.x - 100, command_center_position.y - 120 }, size_marines_x, size_marines_y);
+	iPoint pos = { command_center_position.x - 70, command_center_position.y - 140 };
+	jim_position = &app->entity_manager->addEntity(pos, JIM_RAYNOR)->center;
+	app->entity_manager->addEntity(pos, MEDIC);
 	//--------
 	
-	app->render->setCameraOnPosition(p);
+	app->render->setCameraOnPosition(command_center_position);
 	
 	current_wave = 0;
 	mineral_resources = 0;

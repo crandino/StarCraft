@@ -180,8 +180,9 @@ public:
 	vector<SizeWave*>    waves2_info;
 	
 	iPoint				 command_center_position;
+	iPoint				 factory_position;
+	iPoint				 barrack_position;
 	Bomb*				 bomb;
-	vector<GuiLabel*>	 labels;
 
 private:
 
@@ -205,7 +206,7 @@ private:
 	iPoint				positionRandomizerBomb(int random, iPoint bomb_pos);
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
-	void				createWaveInfo(SizeWave* size);
+	void				createWaveInfo(SizeWave* size, uint display_time);
 	
 	//Phase 2 
 	int					incrementPhase2WavePower();

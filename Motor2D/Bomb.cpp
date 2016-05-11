@@ -3,8 +3,8 @@
 Bomb::Bomb(iPoint &p)
 {
 	tex_width = 47;
-	tex_height = 200;
-	collider_offset.set(0, 10);
+	tex_height = 90;
+	collider_offset.set(0, 0);
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
@@ -23,7 +23,7 @@ Bomb::Bomb(iPoint &p)
 	idle.loop = true;
 	current_animation = &idle;
 	// Colliders
-	coll = app->collision->addCollider({ pos.x + collider_offset.x, pos.y + collider_offset.y, 43, 42 }, COLLIDER_BOMB);
+	coll = app->collision->addCollider({ pos.x + collider_offset.x, pos.y + collider_offset.y, 47, 90 }, COLLIDER_BOMB);
 
 	// Another stuff
 	specialization = BOMB;
