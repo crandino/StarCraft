@@ -217,6 +217,8 @@ private:
 
 	//Defeat Screen
 	GuiImage* defeat_screen = nullptr;
+	GuiImage* jim_dead = nullptr;
+	GuiImage* base_destroyed = nullptr;
 	SDL_Texture* defeat_atlas = nullptr;
 	bool is_defeat_screen_on = false;
 

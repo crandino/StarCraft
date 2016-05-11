@@ -178,6 +178,16 @@ bool GameManager::start()
 	defeat_screen->draw_element = false;
 	is_defeat_screen_on = false;
 
+	jim_dead = app->gui->createImage(defeat_atlas, { 384, 140, 224, 28});
+	jim_dead->parent = defeat_screen;
+	jim_dead->setLocalPos(6, 222);
+	jim_dead->draw_element = false;
+
+	base_destroyed = app->gui->createImage(defeat_atlas, { 384, 111, 224, 28 });
+	base_destroyed->parent = defeat_screen;
+	base_destroyed->setLocalPos(6, 222);
+	base_destroyed->draw_element = false;
+
 	victory_atlas = app->tex->loadTexture("Screens/Victory_Screen_Atlas.png");
 	victory_screen = app->gui->createImage(victory_atlas, { 0, 0, 384, 256 });
 	victory_screen->center();
@@ -648,6 +658,8 @@ void GameManager::startGame()
 	start_game = true;
 
 	defeat_screen->draw_element = false;
+	jim_dead->draw_element = false;
+	base_destroyed->draw_element = false;
 	is_defeat_screen_on = false;
 
 	victory_screen->draw_element = false;
@@ -796,7 +808,14 @@ void GameManager::displayDefeatScreen()
 {
 	defeat_screen->draw_element = true;
 	is_defeat_screen_on = true;
-	
+	if (jim_raynor_dead == true)
+	{
+		jim_dead->draw_element = true;
+	}
+	if (command_center_destroyed == true)
+	{
+		base_destroyed->draw_element = true;
+	}
 	retry_button->enable_element();
 	exit_button->enable_element();
 }
