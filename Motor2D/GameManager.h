@@ -112,6 +112,9 @@ public:
 	int       mineral_resources = 0;
 	int       gas_resources = 0;
 
+	//Debug-----
+	bool	  debug = false;
+
 	GameManager();
 
 	bool awake(pugi::xml_node &node);

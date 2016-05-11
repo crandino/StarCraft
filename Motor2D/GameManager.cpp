@@ -530,15 +530,19 @@ bool GameManager::update(float dt)
 	sprintf_s(n3, 20, "%i", gas_resources);
 	app->gui->number_of_gass->setText(n3, 3);
 
+	// Debug ---
+	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		debug = !debug;
+
 	//ROGER: Add resources
-	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (debug && app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
 		mineral_resources += 100;
 		gas_resources += 100;
 	}
 
 	//Delete resources
-	if (app->input->getKey(SDL_SCANCODE_E) == KEY_DOWN)
+	if (debug && app->input->getKey(SDL_SCANCODE_E) == KEY_DOWN)
 	{
 		mineral_resources = 0;
 		gas_resources = 0;
