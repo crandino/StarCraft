@@ -186,7 +186,6 @@ private:
 	//Time Management attributes
 	Timer				 timer_between_waves;
 	Timer				 timer_between_game_states;
-	GuiTimer			 *wave_timer;
 
 	bool				 start_game = false;
 
@@ -226,6 +225,7 @@ private:
 
 	// Info Message
 	GuiInfo		*info_message;
+	GuiTimer	*graphic_wave_timer;
 };
 
 #endif

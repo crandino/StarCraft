@@ -3,6 +3,19 @@
 
 #include "GuiElements.h"
 #include "GuiLabel.h"
+#include <queue>
+
+struct Message
+{
+	const char *c;
+	uint display_time;
+
+	Message(const char *tex, uint total_time)
+	{
+		c = tex;
+		display_time = total_time;
+	}
+};
 
 class GuiInfo : public GuiElements
 {
@@ -10,7 +23,7 @@ public:
 	//Constructor
 	GuiInfo(iPoint pos, const char *tex_path) : GuiElements(), info_tex("O", 0)
 	{
-		active = false;
+		queue_loaded = false;
 		setLocalPos(pos.x, pos.y);
 		info_tex.setLocalPos(28,38);
 		text_wrapping = 100;
@@ -21,8 +34,23 @@ public:
 	//Called every frame
 	void update()
 	{
-		if (active && (uint)timer.read() > display_time)
-			active = false;
+		if (queue_of_messages.size() > 0)
+		{
+			Message *m = &queue_of_messages.front();
+
+			if (new_text)
+			{
+				timer.start();
+				info_tex.setText(m->c, 0, text_wrapping);
+				new_text = false;
+			}				
+			
+			if (timer.read() > m->display_time)
+			{
+				queue_of_messages.pop();
+				new_text = true;
+			}
+		}
 	}
 
 	bool cleanUp()
@@ -33,7 +61,7 @@ public:
 	//Blitz GuiMinimap
 	void draw() const
 	{
-		if (active)
+		if (queue_of_messages.size() > 0)
 		{
 			app->render->blit(monitor, rect.x, rect.y, NULL, 0.0f);
 			info_tex.draw();
@@ -42,10 +70,15 @@ public:
 
 	void newInfo(const char *text, uint _display_time)
 	{
-		info_tex.setText(text, 0, text_wrapping);
-		active = true;
+		queue_of_messages.push(Message(text, _display_time));
+		new_text = true;
+		queue_loaded = true;
 		timer.start();
-		display_time = _display_time;
+	}
+
+	bool isLoaded()
+	{
+		return queue_loaded;
 	}
 
 private:
@@ -55,7 +88,9 @@ private:
 	Timer			      timer;
 	uint				  display_time;
 	uint				  text_wrapping;
-	bool				  active;
+	bool				  new_text;
+	bool			      queue_loaded;
+	queue<Message>		  queue_of_messages;
 
 };
 #endif  //__GUIINFO_H__

@@ -142,8 +142,6 @@ bool GameManager::start()
 
 	LOG("LAST HOPE GAME STARTS!");
 
-	info_message = app->gui->createInfo({ -82, 0}, "UI_Panel_Messages_edit.png");
-
 	fx_win = app->audio->loadFx("Audio/FX/UI/YouWin.wav");
 	fx_lose = app->audio->loadFx("Audio/FX/UI/YouLose.wav");
 	fx_click = app->audio->loadFx("Audio/FX/UI/Click_2.wav");
@@ -205,16 +203,18 @@ bool GameManager::start()
 
 	game_state = INITIAL_SCREEN;
 
+	// GUI
 	// Create Graphic Timers
-	wave_timer = app->gui->createTimer({ 211, 320 }, "UI_Countdown_Message.png", timer_between_game_states);
+	graphic_wave_timer = app->gui->createTimer({ 211, 320 }, "UI_Countdown_Message.png", timer_between_game_states);
+	// Info messages
+	info_message = app->gui->createInfo({ -82, 0 }, "UI_Panel_Messages_edit.png");
 
 	return ret;
 }
 
 bool GameManager::preUpdate()
 {
-	eraseEnemiesIfKilled();
-	
+	eraseEnemiesIfKilled();	
 	return true;
 }
 
@@ -222,12 +222,7 @@ bool GameManager::update(float dt)
 {
 	bool ret = true;
 	iPoint wave_pos;
-	iPoint bomb_pos;
-
-	int random = rand() % 4 +1;
-	int randombomb = rand() % 4 + 1;
-
-	wave_pos = positionRandomizerWave(random, wave_pos);
+	
 
 	switch (game_state)
 	{
@@ -238,9 +233,15 @@ bool GameManager::update(float dt)
 	case(PREPARATION) :
 	{
 		LOG("PREPARATION");
-		/*if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)*/
+		if (!info_message->isLoaded())
+		{
+			info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed! Jim Raynor must survive!", 4000);
+			info_message->newInfo("My mother tells me that I have to be the strongest men!", 3000);
+			info_message->newInfo("The last text is a nonsense to test the GuiInfo. Have you read it?", 3000);
+		}
+	
+		if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)
 			startGame();
-
 		break;
 	}
 	case(FIRST_PHASE) :
@@ -249,7 +250,6 @@ bool GameManager::update(float dt)
 		{
 		case(WAITING_FOR_WAVE_TO_START) :
 		{
-			// CRZ -> Se mostraría informe de la siguiente oleada.
 			LOG("WAITING WAVE TO START - PHASE 1");
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase1)
 				wave_state = BEGINNING_WAVE;
@@ -259,11 +259,12 @@ bool GameManager::update(float dt)
 		case(BEGINNING_WAVE) :
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
-
+			int random = rand() % 4 + 1;
+			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
-			wave_state = MIDDLE_WAVE;
 			createWave(waves_info[current_wave], wave_pos);
 			app->gui->mini_map->activePing(wave_pos);
+			wave_state = MIDDLE_WAVE;
 			break;
 		}
 		case(MIDDLE_WAVE) :
@@ -297,8 +298,8 @@ bool GameManager::update(float dt)
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
 		{
 			LOG("The bomb has landed look for it."); //Audio voice
-
-			bomb_pos = positionRandomizerBomb(random, bomb_pos);
+			int random = rand() % 4 + 1;
+			iPoint bomb_pos = positionRandomizerBomb(random, bomb_pos);
 			app->entity_manager->addEntity(bomb_pos, BOMB);
 			app->gui->mini_map->activePing(bomb_pos);
 			game_state = SECOND_PHASE;
@@ -325,11 +326,11 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
+			int random = rand() % 4 + 1;
+			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
-
 			app->gui->mini_map->activePing(wave_pos);
-
 			wave2_power_counter += incrementPhase2WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
@@ -385,7 +386,8 @@ bool GameManager::update(float dt)
 		case(BEGINNING_WAVE) :
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
-
+			int random = rand() % 4 + 1;
+			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
 			app->gui->mini_map->activePing(wave_pos);
@@ -662,8 +664,8 @@ void GameManager::startGame()
 	gas_resources = 0;
 
 	timer_between_waves.start();
-	wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
-	wave_timer->initiate();
+	graphic_wave_timer->changeTimer(timer_between_waves, gameInfo.time_before_waves_phase1 * 1000);
+	graphic_wave_timer->initiate();
 }
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
