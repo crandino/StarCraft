@@ -9,6 +9,13 @@ Factory::Factory(iPoint &p)
 	idle.frames.push_back({ 0, 18, 128, 108 });
 	idle.speed = 1.0f;
 	idle.loop = false;
+
+	//Explosion
+
+	explosion.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	explosion.anim.speed = 0.009f;
+	explosion.anim.loop = false;
+
 	current_animation = &idle;
 
 	// Positions and dimensions
@@ -42,8 +49,10 @@ Factory::~Factory()
 
 bool Factory::update(float dt)
 {
+
 	sprintf_s(factory_info, 20, "%u / 1000", current_hp);
 	app->gui->factoryInfo->setText(factory_info, 3);
+	setParticleBehaviour();
 
 	switch (state)
 	{
@@ -60,6 +69,18 @@ bool Factory::update(float dt)
 		break;
 	}
 	return true;
+}
+
+void Factory::setParticleBehaviour()
+{
+	switch (state)
+	{
+
+	case DYING:
+		particle = app->particle->addParticle(explosion, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
+		break;
+
+	}
 }
 
 void Factory::draw()

@@ -7,7 +7,9 @@ class Barrack : public Building
 {
 public:
 
-	Animation idle;
+	Animation	idle;
+
+	Particle	explosion;
 
 	//Barrack Info
 	char barrack_info[20];
@@ -19,6 +21,7 @@ public:
 
 	bool update(float dt);
 	void draw();
+	void setParticleBehaviour();
 };
 
 #endif !__BARRACK_H__

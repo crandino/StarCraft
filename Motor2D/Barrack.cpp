@@ -9,6 +9,13 @@ Barrack::Barrack(iPoint &p)
 	idle.frames.push_back({ 34, 20, 125, 110 });
 	idle.speed = 1.0f;
 	idle.loop = false;
+
+	//Explosion
+
+	explosion.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	explosion.anim.speed = 0.009f;
+	explosion.anim.loop = false;
+
 	current_animation = &idle;
 
 	// Positions and dimensions
@@ -44,6 +51,7 @@ bool Barrack::update(float dt)
 {
 	sprintf_s(barrack_info, 20, "%u / 1000", current_hp);
 	app->gui->barrackInfo->setText(barrack_info, 3);
+	setParticleBehaviour();
 
 	switch (state)
 	{
@@ -60,6 +68,16 @@ bool Barrack::update(float dt)
 		break;
 	}
 	return true;
+}
+
+void Barrack::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case DYING:
+		particle = app->particle->addParticle(explosion, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
+		break;
+	}
 }
 
 void Barrack::draw()

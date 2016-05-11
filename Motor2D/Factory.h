@@ -7,7 +7,9 @@ class Factory : public Building
 {
 public:
 
-	Animation idle;
+	Animation	idle;
+
+	Particle	explosion;
 
 	//Factory Info
 	char factory_info[20];
@@ -19,6 +21,7 @@ public:
 
 	bool update(float dt);
 	void draw();
+	void setParticleBehaviour();
 };
 
 #endif !__FACTORY_H__

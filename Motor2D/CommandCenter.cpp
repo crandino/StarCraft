@@ -8,6 +8,13 @@ CommandCenter::CommandCenter(iPoint &p)
 	idle.frames.push_back({ 0, 27, 128, 100 });
 	idle.speed = 1.0f;
 	idle.loop = false;
+
+	//Explosion
+
+	explosion.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	explosion.anim.speed = 0.009f;
+	explosion.anim.loop = false;
+
 	current_animation = &idle;
 
 	// Positions and dimensions
@@ -43,6 +50,7 @@ bool CommandCenter::update(float dt)
 {
 	sprintf_s(commandCenter_info, 20, "%u / 1500", current_hp);
 	app->gui->commandCenterInfo->setText(commandCenter_info, 3);
+	setParticleBehaviour();
 
 	switch (state)
 	{
@@ -63,4 +71,14 @@ bool CommandCenter::update(float dt)
 void CommandCenter::draw()
 {
 	app->render->blit(app->entity_manager->command_center_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+}
+
+void CommandCenter::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case DYING:
+		particle = app->particle->addParticle(explosion, center.x, center.y, 0, 0, 1, app->particle->explosion_small);
+		break;
+	}
 }

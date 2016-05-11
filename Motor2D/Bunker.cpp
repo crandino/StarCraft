@@ -98,6 +98,7 @@ Bunker::~Bunker()
 
 bool Bunker::update(float dt)
 {
+
 	//Bunker info for gui----------------------------------------------
 	if (this != NULL)
 	{
@@ -117,6 +118,7 @@ bool Bunker::update(float dt)
 	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
 	{
 		resetParticle();
+		app->gui->raynor_indicator->draw_element = false;
 	}
 
 	switch (state)
