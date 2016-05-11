@@ -492,6 +492,7 @@ void JimRaynor::move(float dt)
 					{
 						// Last phase of the game
 						app->game_manager->game_state = BOMB_ACTIVATION;
+						bomb_taken = false;
 					}
 					else if (bunker_to_fill != NULL)
 						bunker_to_fill->getEntityInside(this);
