@@ -101,6 +101,12 @@ bool GameManager::awake(pugi::xml_node &node)
 	mutalisk_score = node.child("MutaliskScore").attribute("value").as_uint();
 	ultralisk_score = node.child("UltraliskScore").attribute("value").as_uint();
 
+
+
+
+
+
+
 	/*Wave Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave"); tempNode; tempNode = tempNode.next_sibling("SizeWave"))
 	{
@@ -116,12 +122,12 @@ bool GameManager::awake(pugi::xml_node &node)
 	/*Wave2 Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave2"); tempNode; tempNode = tempNode.next_sibling("SizeWave2"))
 	{
-		uint num_zergling = tempNode.attribute("zerglings").as_uint();
-		uint num_hydralisk = tempNode.attribute("hydralisks").as_uint();
-		uint num_mutalisk = tempNode.attribute("mutalisks").as_uint();
-		uint num_ultralisk = tempNode.attribute("ultralisks").as_uint();
+		original_zergling_num = tempNode.attribute("zerglings").as_uint();
+		original_hydra_num = tempNode.attribute("hydralisks").as_uint();
+		original_muta_num = tempNode.attribute("mutalisks").as_uint();
+		original_ultra_num = tempNode.attribute("ultralisks").as_uint();
 
-		SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk, num_ultralisk);
+		SizeWave* wave = new SizeWave(original_zergling_num, original_hydra_num, original_muta_num, original_ultra_num);
 		waves2_info.push_back(wave);
 	}
 
@@ -129,6 +135,15 @@ bool GameManager::awake(pugi::xml_node &node)
 		game_state = HOLD;
 	else
 		game_state = INITIAL_SCREEN;
+
+	multiplier_hydra = node.child("multiplierHydra").attribute("value").as_int();
+	multiplier_muta = node.child("multiplierMuta").attribute("value").as_int();
+	multiplier_ultra = node.child("multiplierUltra").attribute("value").as_int();
+
+	power_hydra = node.child("powerHydra").attribute("value").as_int();
+	power_muta = node.child("powerrMuta").attribute("value").as_int();
+	power_ultra = node.child("powerUltra").attribute("value").as_int();
+
 
 	return ret;
 }
@@ -572,14 +587,14 @@ int GameManager::incrementPhase2WavePower()
 {
 	waves2_info[0]->zergling_quantity += 2;
 	
-	if(current_wave % 3 == 0)
+	if(current_wave % multiplier_hydra == 0)
 		waves2_info[0]->hydralisk_quantity += 1;
 
-	if (current_wave % 6 == 0)
+	if (current_wave % multiplier_muta == 0)
 		waves2_info[0]->mutalisk_quantity += 1;
 	
-	if (current_wave % 8 == 0)
-	waves2_info[0]->ultralisk_quantity += 1;
+	if (current_wave % multiplier_ultra == 0)
+		waves2_info[0]->ultralisk_quantity += 1;
 	
 	return 1;
 	/*REST OF UNITS*/
@@ -826,6 +841,12 @@ void GameManager::restartGame()
 		it->second->coll->to_delete = true;
 		it->second->to_delete = true;
 	}
+
+	waves2_info[0]->zergling_quantity = original_zergling_num;
+	waves2_info[0]->hydralisk_quantity = original_hydra_num;
+	waves2_info[0]->mutalisk_quantity = original_muta_num;
+	waves2_info[0]->ultralisk_quantity = original_ultra_num;
+
 
 	info_message->unload();
 	graphic_wave_timer->deactivate();	

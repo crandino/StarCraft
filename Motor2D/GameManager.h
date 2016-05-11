@@ -178,14 +178,28 @@ public:
 
 	GameInformation gameInfo;
 
-	//States
+	uint original_zergling_num;
+	uint original_hydra_num;
+	uint original_muta_num;
+	uint original_ultra_num;
 
+	//Multipliers
+	uint multiplier_hydra;
+	uint multiplier_muta;
+	uint multiplier_ultra;
+
+	//Power
+	uint power_hydra;
+	uint power_muta;
+	uint power_ultra;
+
+	//States
 	GAME_STATE			 game_state;
 	WAVE_STATE			 wave_state;
 
 	vector<SizeWave*>	 waves_info;
 	vector<SizeWave*>    waves2_info;
-	
+
 	iPoint				 command_center_position;
 	iPoint				 factory_position;
 	iPoint				 barrack_position;
