@@ -46,6 +46,10 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the marine
 	bool			     inside_bunker = false;		// It's inside?
 
+	Timer	sound_timer;
+	bool	sound_active = true;
+	bool	sound_dying = true;
+
 	// ---- Methods ----
 	Marine(iPoint &p);
 	~Marine();

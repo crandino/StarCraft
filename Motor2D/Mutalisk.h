@@ -29,6 +29,8 @@ public:
 	// Dead animation
 	Animation	dead;
 
+	bool sound_active = true;
+
 	Mutalisk(iPoint &p);
 	~Mutalisk();
 

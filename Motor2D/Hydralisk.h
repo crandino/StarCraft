@@ -54,6 +54,8 @@ public:
 	Hydralisk(iPoint &p);
 	~Hydralisk();
 
+	bool sound_active = true;
+
 	bool update(float dt);
 
 	void setAnimationFromDirection();

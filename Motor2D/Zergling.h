@@ -43,8 +43,12 @@ public:
 	// Dead animation
 	Animation dead;
 
+	bool sound_active = true;
+
 	Zergling(iPoint &p);
 	~Zergling();
+
+	bool update(float dt);
 
 	// Method that assign an animation according to its orientation
 	void setAnimationFromDirection();

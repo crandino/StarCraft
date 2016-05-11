@@ -283,7 +283,11 @@ bool Ultralisk::update(float dt)
 		}
 		break;
 	case DYING:
-		app->audio->playFx(app->entity_manager->fx_ultralisk_death, 0);
+		if (sound_active == true)
+		{
+			app->audio->playFx(app->entity_manager->fx_ultralisk_death, 0);
+			sound_active = false;
+		}
 		if (current_animation->finished())
 		{
 			to_delete = true;

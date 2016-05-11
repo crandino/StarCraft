@@ -52,6 +52,8 @@ public:
 	Animation attack_left_up;
 	vector<Animation*> attack_animation_pack;
 
+	bool sound_active = true;
+
 	Ultralisk(iPoint &p);
 	~Ultralisk();
 
