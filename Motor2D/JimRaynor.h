@@ -50,7 +50,9 @@ public:
 	bool				 bomb_taken;
 	bool				 bomb_activated;
 
-	unsigned int		 fx_attack;
+	Timer	sound_timer;
+	bool	sound_active = true;
+	bool	sound_dying = true;
 	
 	JimRaynor(iPoint &p);
 	~JimRaynor();

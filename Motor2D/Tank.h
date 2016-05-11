@@ -69,7 +69,7 @@ public:
 
 	bool		siege_mode = false;
 	bool		sound_active = true;
-	Timer		sound_time;
+	bool		sound_dying = true;
 
 	Tank(iPoint &p);
 	~Tank();

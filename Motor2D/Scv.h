@@ -67,6 +67,8 @@ public:
 
 	int			repair_power;
 
+	bool sound_active = true;
+
 	Scv(iPoint &p);
 	~Scv();
 			

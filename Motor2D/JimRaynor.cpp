@@ -329,7 +329,16 @@ bool JimRaynor::update(float dt)
 	case ATTACK:
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
-			app->audio->playFx(app->entity_manager->fx_marine_attack, 0);
+			if (sound_active == true)
+			{
+				app->audio->playFx(app->entity_manager->fx_marine_attack, 0);
+				sound_timer.start();
+				sound_active = false;
+			}
+			if (sound_active == false && sound_timer.readSec() >= 1.2f)
+			{
+				sound_active = true;
+			}
 			if (area_attack)
 			{
 				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range);
@@ -360,17 +369,20 @@ bool JimRaynor::update(float dt)
 		break;
 	case DYING:
 	{
-		static uint fx;
-		fx = rand() % 2 + 1;
-		if (fx == 1)
+		if (sound_dying == true)
 		{
-			app->audio->playFx(app->entity_manager->fx_marine_death_1, 0);
+			uint fx;
+			fx = rand() % 2 + 1;
+			if (fx == 1)
+			{
+				app->audio->playFx(app->entity_manager->fx_marine_death_1, 0);
+			}
+			if (fx == 2)
+			{
+				app->audio->playFx(app->entity_manager->fx_marine_death_2, 0);
+			}
+			sound_dying = false;
 		}
-		if (fx == 2)
-		{
-			app->audio->playFx(app->entity_manager->fx_marine_death_2, 0);
-		}
-
 		if (current_animation->finished())
 		{
 			to_delete = true;

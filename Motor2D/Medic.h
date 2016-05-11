@@ -63,6 +63,8 @@ public:
 
 	int			healing_power;
 
+	bool	sound_active = true;
+
 	Medic(iPoint &p);
 	~Medic();
 

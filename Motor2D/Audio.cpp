@@ -52,7 +52,7 @@ bool Audio::awake(pugi::xml_node &node)
 		ret = true;
 	}
 	//Allocating new channels, on test ROF
-	Mix_AllocateChannels(20);
+	Mix_AllocateChannels(40);
 
 	return ret;
 }

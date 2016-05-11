@@ -378,7 +378,11 @@ bool Tank::update(float dt)
 		}
 		break;
 	case DYING:
-		app->audio->playFx(app->entity_manager->fx_tank_death, 0);
+		if (sound_dying == true)
+		{
+			app->audio->playFx(app->entity_manager->fx_tank_death, 0);
+			sound_dying = false;
+		}
 		if (current_animation->finished())
 		{
 			to_delete = true;
@@ -411,18 +415,11 @@ bool Tank::update(float dt)
 		break;
 	case SIEGE_MODE_ON:
 	{
-		sound_active = true;
-		sound_time.start();
-		if (sound_active == false && sound_time.readSec() >= 3)
-		{
-			sound_time.start();
-		}
-		else
+		if (sound_active == true)
 		{
 			app->audio->playFx(app->entity_manager->fx_tank_sige_mode_on, 0);
 			sound_active = false;
 		}
-
 		if (current_animation->finished())
 		{
 			current_animation_turret->resume();
@@ -442,18 +439,11 @@ bool Tank::update(float dt)
 
 	case SIEGE_MODE_OFF:
 	{
-		sound_active = true;
-		sound_time.start();
-		if (sound_active == false && sound_time.readSec() >= 3)
-		{
-			sound_time.start();
-		}
-		else
+		if (sound_active == false)
 		{
 			app->audio->playFx(app->entity_manager->fx_tank_sige_mode_off, 0);
-			sound_active = false;
+			sound_active = true;
 		}
-
 		if (current_animation_turret->finished())
 		{
 			current_animation->resume();

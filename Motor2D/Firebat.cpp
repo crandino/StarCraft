@@ -451,21 +451,24 @@ bool Firebat::update(float dt)
 		break;
 	case DYING:
 	{
-		static uint fx;
-		fx = rand() % 3 + 1;
-		if (fx == 1)
+		if (sound_active == true)
 		{
-			app->audio->playFx(app->entity_manager->fx_firebat_death_1, 0);
+			uint fx;
+			fx = rand() % 3 + 1;
+			if (fx == 1)
+			{
+				app->audio->playFx(app->entity_manager->fx_firebat_death_1, 0);
+			}
+			if (fx == 2)
+			{
+				app->audio->playFx(app->entity_manager->fx_firebat_death_2, 0);
+			}
+			if (fx == 3)
+			{
+				app->audio->playFx(app->entity_manager->fx_firebat_death_3, 0);
+			}
+			sound_active = false;
 		}
-		if (fx == 2)
-		{
-			app->audio->playFx(app->entity_manager->fx_firebat_death_2, 0);
-		}
-		if (fx == 3)
-		{
-			app->audio->playFx(app->entity_manager->fx_firebat_death_3, 0);
-		}
-
 		if (current_animation->finished())
 		{
 			to_delete = true;

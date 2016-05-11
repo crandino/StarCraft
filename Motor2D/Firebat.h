@@ -58,6 +58,8 @@ public:
 	Bunker*			     bunker_to_fill = NULL;		// Bunker that can be access by the Firebat
 	bool			     inside_bunker = false;		// It's inside?
 
+	bool sound_active = true;
+
 	Firebat(iPoint &p);
 	~Firebat();
 
