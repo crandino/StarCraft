@@ -226,9 +226,9 @@ bool GameManager::start()
 
 	// GUI
 	// Create Graphic Timers
-	graphic_wave_timer = app->gui->createTimer({ 211, 320 }, "UI_Countdown_Message.png", timer_between_game_states);
+	graphic_wave_timer = app->gui->createTimer({ 211, 320 }, "Panels/UI_Countdown_Message.png", timer_between_game_states);
 	// Info messages
-	info_message = app->gui->createInfo({ -82, 0 }, "UI_Panel_Messages_edit.png");
+	info_message = app->gui->createInfo({ -82, 0 }, "Panels/UI_Panel_Messages_edit.png");
 
 	return ret;
 }

@@ -360,15 +360,4 @@
       <Filter>Resources</Filter>
     </Xml>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Game\maps\map_starcraft_32x32.tmx">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Game\maps\LOGIC_MAP.tmx">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Game\maps\TEST_MAP.tmx">
-      <Filter>Resources</Filter>
-    </None>
-  </ItemGroup>
 </Project>

@@ -52,7 +52,7 @@ bool Gui::start()
 	last_attack_position.y = app->game_manager->command_center_position.y;
 
 	//Raynor indicator Image
-	raynor_indicator = app->gui->createImage("raynor_indicator.png");
+	raynor_indicator = app->gui->createImage("Cursor/raynor_indicator.png");
 	raynor_indicator->disable_element();
 	raynor_indicator->static_image = true;
 
@@ -306,7 +306,7 @@ bool Gui::start()
 	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
 
 	//Wireframes and Info-------------------------------------------------------------------
-	atlas_wireframes = app->tex->loadTexture("wireframes.png");
+	atlas_wireframes = app->tex->loadTexture("TerranConsole/wireframes.png");
 
 	//Bunker Wireframe-----------------------
 	bunkerWireframe = app->gui->createImage(atlas_wireframes, { 796, 222, 66, 45 });

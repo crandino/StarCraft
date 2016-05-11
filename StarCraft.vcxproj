@@ -182,11 +182,6 @@
       <SubType>Designer</SubType>
     </Xml>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Game\maps\LOGIC_MAP.tmx" />
-    <None Include="Game\maps\map_starcraft_32x32.tmx" />
-    <None Include="Game\maps\TEST_MAP.tmx" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
