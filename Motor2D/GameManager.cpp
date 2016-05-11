@@ -47,7 +47,7 @@ struct wave_position
 
 enum wave_positions_enum
 {
-	NORTHWEST = 1,
+	NORTHWEST,
 	NORTHEAST,
 	SOUTHWEST,
 	SOUTHEAST
@@ -276,7 +276,7 @@ bool GameManager::update(float dt)
 		case(BEGINNING_WAVE) :
 		{
 			LOG("BEGINNING WAVE - PHASE 1!!!");
-			int random = rand() % 4 + 1;
+			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves_info[current_wave], wave_pos);
@@ -328,7 +328,7 @@ bool GameManager::update(float dt)
 		{
 			info_message->unload();
 
-			int random = rand() % 4 + 1;
+			int random = rand() % 4;
 			iPoint bomb_pos = positionRandomizerBomb(random, bomb_pos);
 			app->entity_manager->addEntity(bomb_pos, BOMB);
 			timer_between_waves.start();
@@ -365,7 +365,7 @@ bool GameManager::update(float dt)
 		{
 			LOG("BEGINNING WAVE - PHASE 2 !!!");
 
-			int random = rand() % 4 + 1;
+			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
@@ -440,7 +440,7 @@ bool GameManager::update(float dt)
 		case(BEGINNING_WAVE):
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
-			int random = rand() % 4 + 1;
+			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves2_info[0], wave_pos);
@@ -941,7 +941,7 @@ iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
 		bomb_pos = bomb_position.south_west;
 		break;
 
-	case(SOUTHEAST) :
+	case(BOMBPOS4) :
 		bomb_pos = bomb_position.south_east;
 		break;
 	}

@@ -56,13 +56,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(map);
 	addModule(path);
 	addModule(fonts);
-	addModule(particle);
 	addModule(gui);
 	addModule(game_manager);
 	addModule(entity_manager);
 	addModule(collision);
 	addModule(fog_of_war);
 	addModule(scene);
+	addModule(particle);
 	// render last to swap buffer
 	addModule(render);
 }

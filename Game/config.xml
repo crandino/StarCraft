@@ -62,7 +62,7 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "2"/>
+    <totalWaves value = "1"/>
     <timeBeforeGameStarts value ="1.0f"/>
     <timeBetweenWavesPhase1 value = "2.0f"/>
     <timeBetweenWavesPhase2 value = "2.0f"/>

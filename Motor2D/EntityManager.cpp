@@ -615,26 +615,41 @@ bool EntityManager::preUpdate()
 
 	if (create_barrack)
 	{
-		if (app->game_manager->mineral_resources >= barrack_mineral_cost && app->game_manager->gas_resources >= barrack_gas_cost)
+		if (app->gui->barrackAlive == true)
 		{
-			iPoint position;
-			app->input->getMousePosition(position);
-			position = app->render->screenToWorld(position.x, position.y);
-			addEntity(position, BARRACK, false);
+			create_barrack = false;
 		}
-		create_barrack = false;
+		else
+		{
+			if (app->game_manager->mineral_resources >= barrack_mineral_cost && app->game_manager->gas_resources >= barrack_gas_cost)
+			{
+				iPoint position;
+				app->input->getMousePosition(position);
+				position = app->render->screenToWorld(position.x, position.y);
+				addEntity(position, BARRACK, false);
+			}
+			create_barrack = false;
+		}
+
 	}
 
 	if (create_factory)
 	{
-		if (app->game_manager->mineral_resources >= factory_mineral_cost && app->game_manager->gas_resources >= factory_gas_cost)
+		if (app->gui->factoryAlive == true)
 		{
-			iPoint position;
-			app->input->getMousePosition(position);
-			position = app->render->screenToWorld(position.x, position.y);
-			addEntity(position, FACTORY, false);
+			create_factory = false;
 		}
-		create_factory = false;
+		else
+		{
+			if (app->game_manager->mineral_resources >= factory_mineral_cost && app->game_manager->gas_resources >= factory_gas_cost)
+			{
+				iPoint position;
+				app->input->getMousePosition(position);
+				position = app->render->screenToWorld(position.x, position.y);
+				addEntity(position, FACTORY, false);
+			}
+			create_factory = false;
+		}
 	}
 
 	return true;
