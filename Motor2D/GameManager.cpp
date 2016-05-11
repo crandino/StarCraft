@@ -81,6 +81,7 @@ bool GameManager::awake(pugi::xml_node &node)
 	gameInfo.time_before_waves_phase3 = node.child("timeBetweenWavesPhase3").attribute("value").as_uint();
 	gameInfo.time_before_end = node.child("timeBeforeEnd").attribute("value").as_uint();
 	gameInfo.time_while_bomb_landing = node.child("timeBeforeWhileBombLanding").attribute("value").as_uint();
+	gameInfo.time_bomb_detonation = node.child("timeBomb").attribute("value").as_uint();
 
 	/*Player Info Load*/
 	initial_size.marines_quantityX = node.child("InitialSizePlayer").attribute("marinesX").as_int();
@@ -313,12 +314,14 @@ bool GameManager::update(float dt)
 		//BOMB CREATION GOES HERE
 		if(!info_message->isLoaded())
 		{
-			info_message->newInfo("The BOMB is here! Here you have the approximate landing zones", (gameInfo.time_while_bomb_landing * 1000) / 2);
-			info_message->newInfo("Find it and use against these fucking bastards!", (gameInfo.time_while_bomb_landing * 1000) / 2);
-			app->gui->mini_map->activePing(bomb_position.north_east, BOMB);
-			app->gui->mini_map->activePing(bomb_position.north_west, BOMB);
-			app->gui->mini_map->activePing(bomb_position.south_east, BOMB);
-			app->gui->mini_map->activePing(bomb_position.south_west, BOMB);
+			info_message->newInfo("The BOMB is here! Find it and use against these fucking bastards!", (gameInfo.time_while_bomb_landing * 1000) / 3);
+			info_message->newInfo("Pick it up with Jim...", (gameInfo.time_while_bomb_landing * 1000) / 3);
+			info_message->newInfo("...and return to the base to activate it!", (gameInfo.time_while_bomb_landing * 1000) / 3);
+
+			app->gui->mini_map->activePing(bomb_position.north_east, gameInfo.time_while_bomb_landing * 1000, BOMB);
+			app->gui->mini_map->activePing(bomb_position.north_west, gameInfo.time_while_bomb_landing * 1000, BOMB);
+			app->gui->mini_map->activePing(bomb_position.south_east, gameInfo.time_while_bomb_landing * 1000, BOMB);
+			app->gui->mini_map->activePing(bomb_position.south_west, gameInfo.time_while_bomb_landing * 1000, BOMB);
 		}
 
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing)
@@ -399,9 +402,24 @@ bool GameManager::update(float dt)
 	case(BOMB_ACTIVATION) :
 	{
 		//BOMB CREATION GOES HERE
-		LOG("The bomb has been activated! Countdown activated!"); //Audio voice	
-		game_state = FINAL_PHASE;
+		info_message->unload();
+		info_message->newInfo("The bomb is activated!", (gameInfo.time_while_bomb_landing * 1000) / 2);
+		info_message->newInfo("Resist Commander, we almost got it!", (gameInfo.time_while_bomb_landing * 1000) / 2);
+		info_message->newInfo("Next wave\n", 2500);
+		info_message->newInfo("Next wave ---\n", 1000);
+		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)", 3000);
+		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n---", 500);
+		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------", 500);
+		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------Ultralisks=", 3000);
+		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------Ultralisks=\n9999999999....", 10000);
+
+		graphic_wave_timer->changeTimer(timer_between_game_states, gameInfo.time_bomb_detonation * 1000);
+		graphic_wave_timer->initiate();
 		timer_between_game_states.start();
+
+		app->gui->mini_map->activePing(command_center_position, 8000, BOMB);
+		game_state = FINAL_PHASE;
+		timer_between_waves.start();
 		break;
 	}
 
@@ -419,7 +437,7 @@ bool GameManager::update(float dt)
 			break;
 		}
 
-		case(BEGINNING_WAVE) :
+		case(BEGINNING_WAVE):
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
 			int random = rand() % 4 + 1;
@@ -564,9 +582,8 @@ void GameManager::checkingGameConditions()
 		start_game = false;	
 	}
 
-	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > 5.0f)
+	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > gameInfo.time_bomb_detonation)
 	{
-		timer_between_waves.start();
 		game_state = WIN;
 		start_game = false;
 	}
@@ -783,14 +800,15 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 
 void GameManager::restartGame()
 {
-	//CRZ: 
 	map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin();
 	for (; it != app->entity_manager->active_entities.end(); ++it)
 	{
 		it->second->coll->to_delete = true;
 		it->second->to_delete = true;
 	}
-	//---------------------------------------------------------
+
+	info_message->unload();
+	graphic_wave_timer->deactivate();	
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.
@@ -815,7 +833,6 @@ void GameManager::displayVictoryScreen()
 
 	retry_button->enable_element();
 	exit_button->enable_element();
-
 }
 
 void GameManager::displayDefeatScreen()

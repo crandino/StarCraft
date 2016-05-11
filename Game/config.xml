@@ -31,13 +31,15 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "1"/>
-    <timeBeforeGameStarts value ="2.0f"/>
-    <timeBetweenWavesPhase1 value = "3.0f"/>
-    <timeBetweenWavesPhase2 value = "5.0f"/>
-    <timeBetweenWavesPhase3 value = "10.0f"/>
+    <totalWaves value = "2"/>
+    <timeBeforeGameStarts value ="10.0f"/>
+    <timeBetweenWavesPhase1 value = "10.0f"/>
+    <timeBetweenWavesPhase2 value = "10.0f"/>
+    <timeBetweenWavesPhase3 value = "5.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
-    <timeBeforeEnd value = "20.0f"/>  
+    <timeBeforeEnd value = "20.0f"/>
+    <timeBomb value = "60.0f" />
+    
     <!--Debug-->
     <hold value ="false"/>
     

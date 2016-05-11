@@ -72,6 +72,7 @@ struct GameInformation
 	float time_while_bomb_landing;
 	float time_before_start;
 	float time_before_end;
+	float time_bomb_detonation;
 };
 
 

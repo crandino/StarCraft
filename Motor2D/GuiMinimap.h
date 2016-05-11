@@ -20,10 +20,10 @@ struct PingInfo
 	Uint32		ping_duration;
 
 	PingInfo() {}
-	PingInfo(float initial_width, float initial_height, float final_width, float final_height, SPECIALIZATION type)
+	PingInfo(float initial_width, float initial_height, float final_width, float final_height, uint duration, SPECIALIZATION type)
 	{
 		type_of_ping = type;
-		ping_duration = 4000;
+		ping_duration = duration;
 		ping_speed = 0.03f;
 		ping_active = false;
 		initial_ping_width = current_ping_width =  initial_width;
@@ -71,7 +71,7 @@ public:
 
 	//Blitz GuiMinimap
 	void draw() const;
-	void activePing(iPoint ping_position, SPECIALIZATION type = NOTYPE);
+	void activePing(iPoint ping_position, uint duration = 4500, SPECIALIZATION type = NOTYPE);
 
 private:
 

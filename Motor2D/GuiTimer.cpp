@@ -55,6 +55,11 @@ void GuiTimer::initiate()
 	active = true;
 }
 
+void GuiTimer::deactivate()
+{
+	active = false;
+}
+
 void GuiTimer::changeTimer(Timer &timer, uint initial_time)
 {
 	timer_associated = &timer;

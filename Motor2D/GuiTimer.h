@@ -11,6 +11,7 @@ public:
 	GuiTimer(iPoint pos, const char *path_tex);
 
 	void initiate();
+	void deactivate();
 
 	// Sets the timer to control time and the initial_time to countdown
 	void changeTimer(Timer &timer, uint initial_time = 0);

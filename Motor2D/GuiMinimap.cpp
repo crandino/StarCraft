@@ -25,7 +25,7 @@ bool GuiMinimap::SetAttributes(map<uint, Entity*>* entities, SDL_Texture* textur
 	calculateScale();
 
 	// set pings
-	ping_set.fill(PingInfo(area.w * 2, area.w * 2, area.w, area.h, NOTYPE));
+	ping_set.fill(PingInfo(area.w * 2, area.w * 2, area.w, area.h, 4000, NOTYPE));
 
 	return ret;
 }
@@ -200,7 +200,7 @@ void GuiMinimap::calculateScale()
 	area.h = app->render->camera.h * scale.y;
 }
 
-void GuiMinimap::activePing(iPoint attack_position, SPECIALIZATION type)
+void GuiMinimap::activePing(iPoint attack_position, uint duration, SPECIALIZATION type)
 {
 	for (array<PingInfo, 4>::iterator it = ping_set.begin(); it != ping_set.end(); ++it)
 	{
@@ -209,6 +209,7 @@ void GuiMinimap::activePing(iPoint attack_position, SPECIALIZATION type)
 
 		it->ping_position = attack_position;
 		it->type_of_ping = type;
+		it->ping_duration = duration;
 		it->initiate();
 		break;
 	}
