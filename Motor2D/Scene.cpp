@@ -149,10 +149,13 @@ bool Scene::update(float dt)
 		debug = !debug;
 
 	//FOG_OF_WAR
-	app->entity_manager->updateFogOfWar();
-
 	if (!debug)
-	app->fog_of_war->draw();
+	{
+		app->entity_manager->updateFogOfWar();
+		app->fog_of_war->draw();
+	}
+	else
+		app->fog_of_war->maps.back()->setAll(true);
 
 	return true;
 }
@@ -162,7 +165,7 @@ bool Scene::postUpdate()
 {
 	//FOG_OF_WAR 5 - Scene PosUpdate. Called once every frame.
 	//Clear the low alpha map
-	if ((uint)fog_of_war_timer.read() > 500) // Every 0.5 seconds, the fog of war is reset to maxAlpha value (175);
+	if (!debug && (uint)fog_of_war_timer.read() > 500) // Every 0.5 seconds, the fog of war is reset to maxAlpha value (175);
 	{
 		fog_of_war_timer.start();
 		app->fog_of_war->clearMap(0);

@@ -459,8 +459,11 @@ bool EntityManager::preUpdate()
 			++it;
 	}
 
-	if (app->game_manager->isGameStarted()) handleSelection();
-	entityManualCreation();
+	if (app->game_manager->isGameStarted())
+		handleSelection();
+
+	if (debug)
+		entityManualCreation();
 
 	if (create_SCV)
 	{
