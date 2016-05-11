@@ -944,9 +944,15 @@ void EntityManager::handleSelection()
 					{
 						JimRaynor *jim = (JimRaynor*)it->second;
 						if (e->specialization == BOMB)
+						{
 							jim->bomb = (Bomb*)e;
+							jim->bomb_taken = true;
+						}	
 						else if (jim->bomb_taken && e->specialization == COMMANDCENTER)
+						{
+							jim->bomb_taken = false;
 							jim->bomb_activated = true;
+						}
 						else if (e->specialization == BUNKER)
 						{
 							jim->bunker_to_fill = (Bunker*)e;

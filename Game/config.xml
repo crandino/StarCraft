@@ -9,7 +9,7 @@
   <window>
     <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
-                fullscreen='true' 
+                fullscreen='false' 
                 resizable='false'
                 windowed='false' />
     <name>StarCraft</name>
@@ -62,12 +62,12 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "3"/>
+    <totalWaves value = "2"/>
     <timeBeforeGameStarts value ="10.0f"/>
-    <timeBetweenWavesPhase1 value = "20.0f"/>
+    <timeBetweenWavesPhase1 value = "10.0f"/>
     <timeBetweenWavesPhase2 value = "10.0f"/>
     <timeBetweenWavesPhase3 value = "10.0f"/>
-    <timeBeforeWhileBombLanding value ="15.0f"/>
+    <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "10.0f"/>
     <timeBomb value = "60.0f" />
     
