@@ -419,6 +419,12 @@ bool GameManager::update(float dt)
 			current_wave++;
 			wave_state = WAITING_FOR_WAVE_TO_START;
 			timer_between_waves.start();
+
+			//Remember bomb positions
+			app->gui->mini_map->activePing(bomb_position.north_east, gameInfo.time_while_bomb_landing * 1000, BOMB);
+			app->gui->mini_map->activePing(bomb_position.north_west, gameInfo.time_while_bomb_landing * 1000, BOMB);
+			app->gui->mini_map->activePing(bomb_position.south_east, gameInfo.time_while_bomb_landing * 1000, BOMB);
+			app->gui->mini_map->activePing(bomb_position.south_west, gameInfo.time_while_bomb_landing * 1000, BOMB);
 			break;
 		}
 		}
