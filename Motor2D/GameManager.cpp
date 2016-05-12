@@ -431,6 +431,7 @@ bool GameManager::update(float dt)
 	{
 		//BOMB CREATION GOES HERE
 		info_message->unload();
+		app->audio->stopMusic();
 		info_message->newInfo("The bomb is activated!", (gameInfo.time_while_bomb_landing * 1000) / 2);
 		info_message->newInfo("Resist Commander, we almost got it!", (gameInfo.time_while_bomb_landing * 1000) / 2);
 		info_message->newInfo("Next wave\n", 2500);
@@ -448,6 +449,7 @@ bool GameManager::update(float dt)
 		app->gui->mini_map->activePing(command_center_position, 8000, BOMB);
 		game_state = FINAL_PHASE;
 		timer_between_waves.start();
+		
 		break;
 	}
 
@@ -468,6 +470,11 @@ bool GameManager::update(float dt)
 		case(BEGINNING_WAVE):
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
+			if (final_music == false)
+			{
+				app->audio->playMusic("Audio/Music/Our_Last_Hope.mp3");
+				final_music = true;
+			}
 			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
@@ -825,6 +832,7 @@ void GameManager::startGame()
 	current_wave = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
+	final_music = false;
 
 	timer_between_waves.start();
 }
