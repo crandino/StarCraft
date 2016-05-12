@@ -103,11 +103,6 @@ bool GameManager::awake(pugi::xml_node &node)
 	ultralisk_score = node.child("UltraliskScore").attribute("value").as_uint();
 
 
-
-
-
-
-
 	/*Wave Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave"); tempNode; tempNode = tempNode.next_sibling("SizeWave"))
 	{

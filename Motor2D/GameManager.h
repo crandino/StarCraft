@@ -226,6 +226,7 @@ private:
 	bool				 start_game = false;
 	bool				 final_music = false;
 
+
 	unsigned int		 size_marines_x = SIZEMARINESX;
 	unsigned int		 size_marines_y = SIZEMARINESY;
 

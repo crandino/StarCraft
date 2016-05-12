@@ -214,8 +214,8 @@ Medic::Medic(iPoint &p)
 	range_of_vision = 300;
 	range_to_attack = 50;
 	damage = 5.0f;
-	attack_frequency = 200.0f;
-	healing_power = 5;
+	attack_frequency = 100.0f;
+	healing_power = 2;
 
 	// PathFinding and movement variables
 	speed = 8.0f;

@@ -178,7 +178,7 @@ Firebat::Firebat(iPoint &p)
 	time_to_die = 500.0f;
 
 	// PathFinding and movement variables
-	speed = 10.0f;
+	speed = 9.0f;
 }
 
 Firebat::~Firebat()
