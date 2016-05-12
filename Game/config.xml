@@ -71,11 +71,11 @@
     <timeBeforeEnd value = "10.0f"/>
     <timeBomb value = "240.0f" />
     
-    <!--Debug-->
+    <!--Debug
     <hold value ="false"/>
     <phase1 value ="false"/>
     <phase2 value ="false"/>
-    <phase3 value ="true"/>
+    <phase3 value ="true"/>-->
     
     
     
@@ -88,9 +88,7 @@
     <SizeWave zerglings ="18" hydralisks ="10" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="25" hydralisks ="15" mutalisks ="" ultralisks ="0"/>
     <SizeWave zerglings ="35" hydralisks ="16" mutalisks ="8" ultralisks ="0"/>
-    <SizeWave zerglings ="42" hydralisks ="24" mutalisks ="0" ultralisks ="0"/>
     
-  
     <SizeWave2 zerglings ="10" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     
     <SizeWave3 zerglings ="15" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
