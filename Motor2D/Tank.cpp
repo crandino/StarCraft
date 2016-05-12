@@ -229,15 +229,15 @@ Tank::Tank(iPoint &p)
 	offset_life = { -22, 30 };
 
 	// Lifes attributes
-	max_hp = 250;
-	current_hp = 250.0f;
-	max_hp_bars = 10;
+	max_hp = 150;
+	current_hp = 150.0f;
+	max_hp_bars = 17;
 
 	// Attack values and properties
-	range_of_vision = 300;
-	range_to_attack = 100;
-	damage = 30.0f;
-	attack_frequency = 3000.0f;
+	range_of_vision = 800;
+	range_to_attack = 500;
+	damage = 80.0f;
+	attack_frequency = 2000.0f;
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;

@@ -254,14 +254,14 @@ JimRaynor::JimRaynor(iPoint &p)
 	offset_life = { -16, 16 };
 
 	// Lifes attributes
-	max_hp = 300;
-	current_hp = 300.0f;
+	max_hp = 200;
+	current_hp = 200.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 120;
-	damage = 10.0f;
+	damage = 20.0f;
 	attack_frequency = 200.0f;
 
 	// PathFinding and movement variables

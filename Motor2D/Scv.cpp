@@ -148,7 +148,7 @@ Scv::Scv(iPoint &p)
 	offset_life = { -14, 22 };
 
 	// Lifes attributes
-	max_hp = 40;
+	max_hp = 60;
 	current_hp = 40.0f;
 	max_hp_bars = 6;
 
@@ -156,8 +156,8 @@ Scv::Scv(iPoint &p)
 	range_of_vision = 300;
 	range_to_attack = 50;
 	damage = 5.0f;
-	attack_frequency = 200.0f;
-	repair_power = 10;
+	attack_frequency = 500.0f;
+	repair_power = 5;
 
 	// PathFinding and movement variables
 	speed = 10.0f;

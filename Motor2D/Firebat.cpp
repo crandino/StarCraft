@@ -164,15 +164,17 @@ Firebat::Firebat(iPoint &p)
 	offset_life = { -16, 16 };
 
 	// Lifes attributes
-	max_hp = 40;
-	current_hp = 40.0f;
+	max_hp = 50;
+	current_hp = 50.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
-	damage = 50.0f;
+	damage = 15.0f;
 	attack_frequency = 800.0f;
+	area_attack = true;
+	area_range = 40.0f;
 	time_to_die = 500.0f;
 
 	// PathFinding and movement variables

@@ -165,20 +165,20 @@ Ultralisk::Ultralisk(iPoint &p)
 	offset_life = { -16, 18 };
 
 	// Lifes attributes
-	max_hp = current_hp = 500.0f;
-	max_hp_bars = 10;
+	max_hp = current_hp = 400.0f;
+	max_hp_bars = 17;
 
 	// Attack values and properties
 	range_of_vision = 200;
 	range_to_attack = 75;
-	damage = 10.0f;
-	attack_frequency = 200.0f;
+	damage = 80.0f;
+	attack_frequency = 4000.0f;
 	time_to_die = 500.0f;
 	area_attack = true;
 	area_range = 40.0f;
 
 	// PathFinding and movement variables
-	speed = 5.0f;
+	speed = 7.0f;
 }
 
 Ultralisk::~Ultralisk()

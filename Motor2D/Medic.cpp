@@ -206,8 +206,8 @@ Medic::Medic(iPoint &p)
 	offset_life = { -14, 22 };
 
 	// Lifes attributes
-	max_hp = 40;
-	current_hp = 40.0f;
+	max_hp = 60;
+	current_hp = 60.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties

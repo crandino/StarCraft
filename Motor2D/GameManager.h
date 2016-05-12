@@ -178,6 +178,11 @@ public:
 
 	GameInformation gameInfo;
 
+	uint num_zergling;
+	uint num_hydralisk;
+	uint num_mutalisk;
+	uint num_ultralisk;
+
 	uint original_zergling_num;
 	uint original_hydra_num;
 	uint original_muta_num;
@@ -199,6 +204,7 @@ public:
 
 	vector<SizeWave*>	 waves_info;
 	vector<SizeWave*>    waves2_info;
+	vector<SizeWave*>	 waves3_info;
 
 	iPoint				 command_center_position;
 	iPoint				 factory_position;
@@ -211,6 +217,7 @@ private:
 	uint				 current_wave2 = 0;
 	map<uint, Entity*>	 current_wave_entities;
 	uint				 wave2_power_counter = 0;
+	uint				 wave3_power_counter = 0;
 
 	//Time Management attributes
 	Timer				 timer_between_waves;
@@ -231,6 +238,9 @@ private:
 	
 	//Phase 2 
 	int					incrementPhase2WavePower();
+
+	//Phase 3
+	int					incrementPhase3WavePower();
 
 	// Positions
 	bombPosition   bomb_position;

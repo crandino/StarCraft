@@ -246,13 +246,13 @@ Hydralisk::Hydralisk(iPoint &p)
 	offset_life = { -16, 18 };
 
 	// Lifes attributes
-	max_hp = current_hp = 75.0f;
+	max_hp = current_hp = 80.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties
 	range_of_vision = 300;
-	range_to_attack = 130;
-	damage = 10.0f;
+	range_to_attack = 100;
+	damage = 15.0f;
 	attack_frequency = 1000.0f;
 	particle_frequency = 1000.0f;
 	time_to_die = 500.0f;

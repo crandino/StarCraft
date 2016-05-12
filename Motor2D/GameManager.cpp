@@ -111,10 +111,10 @@ bool GameManager::awake(pugi::xml_node &node)
 	/*Wave Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave"); tempNode; tempNode = tempNode.next_sibling("SizeWave"))
 	{
-			uint num_zergling = tempNode.attribute("zerglings").as_uint();
-			uint num_hydralisk = tempNode.attribute("hydralisks").as_uint();
-			uint num_mutalisk = tempNode.attribute("mutalisks").as_uint();
-			uint num_ultralisk = tempNode.attribute("ultralisks").as_uint();
+			 num_zergling = tempNode.attribute("zerglings").as_uint();
+			 num_hydralisk = tempNode.attribute("hydralisks").as_uint();
+			 num_mutalisk = tempNode.attribute("mutalisks").as_uint();
+			 num_ultralisk = tempNode.attribute("ultralisks").as_uint();
 
 			SizeWave* wave = new SizeWave(num_zergling, num_hydralisk, num_mutalisk, num_ultralisk);
 			waves_info.push_back(wave);
@@ -130,6 +130,18 @@ bool GameManager::awake(pugi::xml_node &node)
 
 		SizeWave* wave = new SizeWave(original_zergling_num, original_hydra_num, original_muta_num, original_ultra_num);
 		waves2_info.push_back(wave);
+	}
+
+	/*Wave3 Info Load*/
+	for (pugi::xml_node tempNode = node.child("SizeWave3"); tempNode; tempNode = tempNode.next_sibling("SizeWave3"))
+	{
+		original_zergling_num = tempNode.attribute("zerglings").as_uint();
+		original_hydra_num = tempNode.attribute("hydralisks").as_uint();
+		original_muta_num = tempNode.attribute("mutalisks").as_uint();
+		original_ultra_num = tempNode.attribute("ultralisks").as_uint();
+
+		SizeWave* wave = new SizeWave(original_zergling_num, original_hydra_num, original_muta_num, original_ultra_num);
+		waves3_info.push_back(wave);
 	}
 
 	if (node.child("hold").attribute("value").as_bool())
@@ -459,9 +471,9 @@ bool GameManager::update(float dt)
 			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
-			createWave(waves2_info[0], wave_pos);
+			createWave(waves3_info[0], wave_pos);
 			app->gui->mini_map->activePing(wave_pos);
-			wave2_power_counter += incrementPhase2WavePower();
+			wave3_power_counter += incrementPhase3WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;
 		}
@@ -586,17 +598,45 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
-	waves2_info[0]->zergling_quantity += 2;
-	
-	if(current_wave % multiplier_hydra == 0)
-		waves2_info[0]->hydralisk_quantity += 1;
+	waves2_info[0]->zergling_quantity += 1;
 
-	if (current_wave % multiplier_muta == 0)
-		waves2_info[0]->mutalisk_quantity += 1;
+	waves2_info[0]->mutalisk_quantity += 1;
+
+	/*waves2_info[0]->hydralisk_quantity += 1;*/
 	
-	if (current_wave % multiplier_ultra == 0)
-		waves2_info[0]->ultralisk_quantity += 1;
+	//if(current_wave % multiplier_hydra == 0)
+	//	waves2_info[0]->hydralisk_quantity += 1;
+
+	//if (current_wave % multiplier_muta == 0)
+	//	waves2_info[0]->mutalisk_quantity += 1;
 	
+	//if (current_wave % multiplier_ultra == 0)
+	//	waves2_info[0]->ultralisk_quantity += 1;
+	
+	return 1;
+	/*REST OF UNITS*/
+	//The wave 0 holds all the information of all entities
+}
+
+int GameManager::incrementPhase3WavePower()
+{
+	waves3_info[0]->zergling_quantity += 3;
+
+	waves3_info[0]->mutalisk_quantity += 1;
+
+	waves3_info[0]->hydralisk_quantity += 1;
+
+	waves3_info[0]->ultralisk_quantity += 1;
+
+	//if (current_wave % multiplier_hydra == 0)
+	//	waves2_info[0]->hydralisk_quantity += 1;
+
+	//if (current_wave % multiplier_muta == 0)
+	//	waves2_info[0]->mutalisk_quantity += 1;
+
+	//if (current_wave % multiplier_ultra == 0)
+	//	waves2_info[0]->ultralisk_quantity += 1;
+
 	return 1;
 	/*REST OF UNITS*/
 	//The wave 0 holds all the information of all entities
@@ -871,10 +911,10 @@ void GameManager::restartGame()
 		it->second->to_delete = true;
 	}
 
-	waves2_info[0]->zergling_quantity = original_zergling_num;
-	waves2_info[0]->hydralisk_quantity = original_hydra_num;
-	waves2_info[0]->mutalisk_quantity = original_muta_num;
-	waves2_info[0]->ultralisk_quantity = original_ultra_num;
+	waves3_info[0]->zergling_quantity = num_zergling;
+	waves3_info[0]->hydralisk_quantity = num_hydralisk;
+	waves3_info[0]->mutalisk_quantity = num_mutalisk;
+	waves3_info[0]->ultralisk_quantity = num_ultralisk;
 
 
 	info_message->unload();

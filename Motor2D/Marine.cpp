@@ -261,7 +261,7 @@ Marine::Marine(iPoint &p)
 	// Attack values and properties
 	range_of_vision = 300;
 	range_to_attack = 100;
-	damage = 5.0f;
+	damage = 6.0f;
 	attack_frequency = 200.0f;
 
 	// PathFinding and movement variables

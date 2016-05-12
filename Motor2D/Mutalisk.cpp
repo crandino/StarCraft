@@ -162,14 +162,14 @@ Mutalisk::Mutalisk(iPoint &p)
 	offset_life = { -16, 18 };
 
 	// Lifes attributes
-	max_hp = current_hp = 60.0f;
-	max_hp_bars = 6;
+	max_hp = current_hp = 120.0f;
+	max_hp_bars = 13;
 
 	// Attack values and properties
 	range_of_vision = 300;
-	range_to_attack = 100;
-	damage = 5.0f;
-	attack_frequency = 200.0f;
+	range_to_attack = 120;
+	damage = 6.0f;
+	attack_frequency = 700.0f;
 
 	// PathFinding and movement variables
 	speed = 12.0f;

@@ -201,14 +201,14 @@ Zergling::Zergling(iPoint &p)
 	offset_life = { -19, 16 };
 
 	// Lifes attributes		
-	max_hp = 40;
-	current_hp = 40.0f;
+	max_hp = 35;
+	current_hp = 35.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties
 	range_of_vision = 200;
 	range_to_attack = 32;
-	damage = 3.0f;
+	damage = 5.0f;
 	attack_frequency = 500.0f;
 
 	// PathFinding and movement variables
