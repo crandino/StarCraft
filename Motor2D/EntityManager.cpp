@@ -1299,12 +1299,12 @@ void EntityManager::onCollision(Collider* c1, Collider* c2)
 void EntityManager::entityManualCreation()
 {
 	iPoint position;
-	if (app->input->getKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
-	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, BLUE);
-	}
+	//if (app->input->getKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
+	//{
+	//	app->input->getMousePosition(position);
+	//	position = app->render->screenToWorld(position.x, position.y);
+	//	addEntity(position, BLUE);
+	//}
 
 	if (app->input->getKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 	{
@@ -1369,19 +1369,19 @@ void EntityManager::entityManualCreation()
 		addEntity(position, ULTRALISK);
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_J) == KEY_DOWN)
-	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, JIM_RAYNOR);
-	}
+	//if (app->input->getKey(SDL_SCANCODE_J) == KEY_DOWN)
+	//{
+	//	app->input->getMousePosition(position);
+	//	position = app->render->screenToWorld(position.x, position.y);
+	//	addEntity(position, JIM_RAYNOR);
+	//}
 
-	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
-	{
-		app->input->getMousePosition(position);
-		position = app->render->screenToWorld(position.x, position.y);
-		addEntity(position, BARRACK, false);
-	}
+	//if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
+	//{
+	//	app->input->getMousePosition(position);
+	//	position = app->render->screenToWorld(position.x, position.y);
+	//	addEntity(position, BARRACK, false);
+	//}
 
 	if (app->input->getKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
