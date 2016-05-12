@@ -332,7 +332,7 @@ bool Marine::update(float dt)
 				sound_timer.start();
 				sound_active = false;
 			}
-			if (sound_active == false && sound_timer.readSec() >= 1.2f)
+			if (sound_active == false && sound_timer.readSec() >= 1.1f)
 			{
 				sound_active = true;
 			}
