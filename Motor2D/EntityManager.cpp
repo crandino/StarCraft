@@ -693,6 +693,7 @@ bool EntityManager::postUpdate()
 		{
 			building_mode = false;
 			building_to_place->coll->to_delete = true;
+			RELEASE(building_to_place);
 		}
 		else
 			choosePlaceForBuilding();
