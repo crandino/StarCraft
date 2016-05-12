@@ -688,7 +688,15 @@ bool EntityManager::postUpdate()
 	if (selector_init && selector.w > 1 && selector.h > 1) app->render->DrawQuad(selector, 35, 114, 48, 255, false, true);
 
 	if (building_mode)
-		choosePlaceForBuilding();
+	{
+		if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+		{
+			building_mode = false;
+			building_to_place->coll->to_delete = true;
+		}
+		else
+			choosePlaceForBuilding();
+	}
 
 	return true;
 }
