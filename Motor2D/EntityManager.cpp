@@ -689,7 +689,7 @@ bool EntityManager::postUpdate()
 
 	if (building_mode)
 	{
-		if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+		if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE || app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			building_mode = false;
 			building_to_place->coll->to_delete = true;
