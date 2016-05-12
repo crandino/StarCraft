@@ -62,11 +62,11 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "2"/>
+    <totalWaves value = "10"/>
     <timeBeforeGameStarts value ="10.0f"/>
-    <timeBetweenWavesPhase1 value = "30.0f"/>
-    <timeBetweenWavesPhase2 value = "20.0f"/>
-    <timeBetweenWavesPhase3 value = "10.0f"/>
+    <timeBetweenWavesPhase1 value = "15.0f"/>
+    <timeBetweenWavesPhase2 value = "10.0f"/>
+    <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "10.0f"/>
     <timeBomb value = "120.0f" />
@@ -78,9 +78,18 @@
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="7" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="8" hydralisks ="3" mutalisks ="0" ultralisks ="0"/>
-    <SizeWave zerglings ="12" hydralisks ="5" mutalisks ="0" ultralisks ="0"/>
-    <SizeWave zerglings ="10" hydralisks ="3" mutalisks ="0" ultralisks ="0"/>
-   
+    <SizeWave zerglings ="12" hydralisks ="5" mutalisks ="1" ultralisks ="0"/>
+    <SizeWave zerglings ="18" hydralisks ="10" mutalisks ="0" ultralisks ="0"/>
+    <SizeWave zerglings ="25" hydralisks ="15" mutalisks ="" ultralisks ="0"/>
+    <SizeWave zerglings ="35" hydralisks ="16" mutalisks ="8" ultralisks ="0"/>
+    <SizeWave zerglings ="42" hydralisks ="24" mutalisks ="0" ultralisks ="0"/>
+    <SizeWave zerglings ="40" hydralisks ="15" mutalisks ="2" ultralisks ="4"/>
+    <SizeWave zerglings ="50" hydralisks ="3" mutalisks ="10" ultralisks ="2"/>
+    
+    
+    
+    
+    
     <SizeWave2 zerglings ="10" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     
     <SizeWave3 zerglings ="15" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
@@ -90,10 +99,10 @@
     <CommandCenterPosition coordx="2000" coordy= "2150"/>    
     
     <!-- Score--> 
-    <ZerglingScore value = "20" />
-    <HydraliskScore value = "40" />
-    <MutaliskScore value = "50" />
-    <UltraliskScore value = "100" />    
+    <ZerglingScore value = "5" />
+    <HydraliskScore value = "15" />
+    <MutaliskScore value = "15" />
+    <UltraliskScore value = "50" />    
     
     <multiplierHydra value ="3" />
     <multiplierMuta value ="6" />

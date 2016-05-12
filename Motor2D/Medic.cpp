@@ -218,7 +218,7 @@ Medic::Medic(iPoint &p)
 	healing_power = 5;
 
 	// PathFinding and movement variables
-	speed = 10.0f;
+	speed = 8.0f;
 	angle = 180.0f;
 }
 

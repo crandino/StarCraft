@@ -817,7 +817,7 @@ void GameManager::startGame()
 	retry_button->disable_element();
 	exit_button->disable_element();
 
-	unsigned int size_marines_x = initial_size.marines_quantityX * 3;
+	unsigned int size_marines_x = initial_size.marines_quantityX * 2;
 	unsigned int size_marines_y = initial_size.marines_quantityY ;
 
 	//---- Initial units ----

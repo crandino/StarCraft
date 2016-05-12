@@ -265,7 +265,7 @@ JimRaynor::JimRaynor(iPoint &p)
 	attack_frequency = 200.0f;
 
 	// PathFinding and movement variables
-	speed = 10.0f;
+	speed = 13.0f;
 
 	// Bomb related
 	bomb = NULL;

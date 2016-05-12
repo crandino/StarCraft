@@ -212,7 +212,7 @@ Zergling::Zergling(iPoint &p)
 	attack_frequency = 500.0f;
 
 	// PathFinding and movement variables
-	speed = 12.0f;
+	speed = 15.0f;
 }
 
 Zergling::~Zergling()
