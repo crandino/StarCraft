@@ -184,6 +184,12 @@ int pathNode::calculateF(const iPoint& destination)
 	return g + h;
 }
 
+int pathNode::calculateG()
+{
+	g = parent->g + 1;
+	return g;
+}
+
 list<pathNode>::iterator pathList::find(const iPoint& point)
 {
 	list<pathNode>::iterator it = list_of_nodes.begin();
@@ -305,9 +311,10 @@ bool PathFinding::postUpdate()
 						else if (it->open_list.find(item->pos) != it->open_list.list_of_nodes.end())
 						{
 							list<pathNode>::iterator to_compare = it->open_list.find(item->pos);
-							if (item->calculateF(it->destination) < to_compare->score())
+							if (item->parent->g < to_compare->parent->g)
 							{
-								to_compare = item;
+								to_compare->parent = item->parent;
+								to_compare->g = item->calculateG();
 							}
 						}
 						else
@@ -398,9 +405,10 @@ int PathFinding::createPathNow(const iPoint& origin, const iPoint& destination)
 				else if (open_list.find(item->pos) != open_list.list_of_nodes.end())
 				{
 					list<pathNode>::iterator to_compare = open_list.find(item->pos);
-					if (item->calculateF(destination) < to_compare->score())
+					if (item->parent->g < to_compare->parent->g)
 					{
-						to_compare = item;
+						to_compare->parent = item->parent;
+						to_compare->g = item->calculateG();
 					}
 				}
 				else
@@ -526,9 +534,10 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &
 				else if (open_list.find(item->pos) != open_list.list_of_nodes.end())
 				{
 					list<pathNode>::iterator to_compare = open_list.find(item->pos);
-					if (item->calculateF(destination) < to_compare->score())
+					if (item->parent->g < to_compare->parent->g)
 					{
-						to_compare = item;
+						to_compare->parent = item->parent;
+						to_compare->g = item->calculateG();
 					}
 				}
 				else

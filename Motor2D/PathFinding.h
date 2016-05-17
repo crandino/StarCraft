@@ -30,6 +30,7 @@ struct pathNode
 	// CalculateF : Recalculates F based on distance to destination
 	// Estimation("Manhattan distance")
 	int calculateF(const iPoint& destination);
+	int calculateG();
 };
 
 struct pathList
