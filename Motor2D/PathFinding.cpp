@@ -305,10 +305,9 @@ bool PathFinding::postUpdate()
 						else if (it->open_list.find(item->pos) != it->open_list.list_of_nodes.end())
 						{
 							list<pathNode>::iterator to_compare = it->open_list.find(item->pos);
-							if (item->score() < to_compare->score())
+							if (item->calculateF(it->destination) < to_compare->score())
 							{
-								to_compare->parent = item->parent;
-								//to_compare->calculateF(it->destination);
+								to_compare = item;
 							}
 						}
 						else
@@ -399,10 +398,9 @@ int PathFinding::createPathNow(const iPoint& origin, const iPoint& destination)
 				else if (open_list.find(item->pos) != open_list.list_of_nodes.end())
 				{
 					list<pathNode>::iterator to_compare = open_list.find(item->pos);
-					if (item->score() < to_compare->score())
+					if (item->calculateF(destination) < to_compare->score())
 					{
-						to_compare->parent = item->parent;
-						//to_compare->calculateF(destination);
+						to_compare = item;
 					}
 				}
 				else
@@ -528,10 +526,9 @@ iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &
 				else if (open_list.find(item->pos) != open_list.list_of_nodes.end())
 				{
 					list<pathNode>::iterator to_compare = open_list.find(item->pos);
-					if (item->score() < to_compare->score())
+					if (item->calculateF(destination) < to_compare->score())
 					{
-						to_compare->parent = item->parent;
-						//to_compare->calculateF(destination);
+						to_compare = item;
 					}
 				}
 				else
