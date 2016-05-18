@@ -276,7 +276,7 @@ bool EntityManager::start()
 	return true;
 }
 
-Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation)
+Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation, uint manual_id)
 {
 	Entity *e = NULL;
 
@@ -384,7 +384,11 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 
 	if (e != NULL && direct_creation)
 	{
-		e->id = ++next_ID;
+		if (manual_id > 0)
+			e->id = manual_id;
+		else
+			e->id = ++next_ID;
+
 		active_entities.insert(pair<uint, Entity*>(e->id, e));
 
 		// Building creation, special treatment
@@ -1437,15 +1441,26 @@ bool EntityManager::load(pugi::xml_node &node)
 	// Now, loading the entities stored on the XML file.
 	for (pugi::xml_node tmp = node.child("active_entities").child("entity"); tmp; tmp = tmp.next_sibling("entity"))
 	{
+		uint id = tmp.attribute("id").as_uint();
 		iPoint pos = { tmp.attribute("pos_x").as_int(), tmp.attribute("pos_y").as_int() };
 		SPECIALIZATION spec = (SPECIALIZATION)tmp.attribute("type").as_int();
 		bool to_delete = tmp.attribute("to_delete").as_bool();
 		float current_hp = tmp.attribute("current_hp").as_float();
 
-		Entity *reload_entity = addEntity(pos, spec);
+		Entity *reload_entity = addEntity(pos, spec, true, id);
 		reload_entity->current_hp = current_hp;
 		reload_entity->to_delete = to_delete;
 	}
+
+	app->game_manager->current_wave_entities.clear();
+	for (uint i = 0; i < app->game_manager->list_ids_enemies.size(); ++i)
+	{
+		uint id = app->game_manager->list_ids_enemies[i];
+		Entity *e = active_entities.at(app->game_manager->list_ids_enemies[i]);
+		app->game_manager->current_wave_entities.insert(pair<uint, Entity*>(id, e));
+	}		
+
+	next_ID = node.child("active_entities").attribute("last_id").as_uint();
 
 	return true;
 }
@@ -1453,6 +1468,7 @@ bool EntityManager::load(pugi::xml_node &node)
 bool EntityManager::save(pugi::xml_node &node) const
 {
 	pugi::xml_node entities = node.append_child("active_entities");
+	entities.append_attribute("last_id") = next_ID;
 
 	map<uint, Entity*>::const_iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)

@@ -22,6 +22,7 @@
 #include "GuiInfo.h"
 #include "GuiTimer.h"
 
+#include <sstream>
 using namespace std;
 
 //Author: RIE code.
@@ -925,7 +926,6 @@ void GameManager::restartGame()
 	waves3_info[0]->mutalisk_quantity = num_mutalisk;
 	waves3_info[0]->ultralisk_quantity = num_ultralisk;
 
-
 	info_message->unload();
 	graphic_wave_timer->deactivate();	
 }
@@ -1072,4 +1072,48 @@ iPoint GameManager::positionRandomizerWave(int random, iPoint wave_pos)
 	}
 
 	return wave_pos;
+}
+
+// Load / Save
+bool GameManager::load(pugi::xml_node &node)
+{
+	info_message->unload();
+	graphic_wave_timer->deactivate();
+
+	mineral_resources = node.child("resources").attribute("mineral").as_int();
+	gas_resources = node.child("resources").attribute("gas").as_int();
+	
+    game_state = (GAME_STATE)node.child("phases").attribute("game_phase").as_int();
+	wave_state = (WAVE_STATE)node.child("phases").attribute("wave_phase").as_int();
+	current_wave = node.child("phases").attribute("current_wave").as_int();
+
+	istringstream in(string(node.child("list_ids_enemies").attribute("ids").as_string()));
+	uint id;
+	while (in >> id)
+		list_ids_enemies.push_back(id);
+
+	return true;
+}
+
+bool GameManager::save(pugi::xml_node &node) const
+{
+	pugi::xml_node resources = node.append_child("resources");
+	resources.append_attribute("mineral") = mineral_resources;
+	resources.append_attribute("gas") = gas_resources;
+
+	pugi::xml_node phases = node.append_child("phases");
+	phases.append_attribute("game_phase") = game_state;
+	phases.append_attribute("wave_phase") = wave_state;
+	phases.append_attribute("current_wave") = current_wave;
+
+	pugi::xml_node list_ids_enemies = node.append_child("list_ids_enemies");
+	
+	stringstream ss;
+	for (map<uint, Entity*>::const_iterator it = current_wave_entities.begin(); it != current_wave_entities.end(); ++it)
+		ss << it->second->id << ' ';
+	string ids;
+	getline(ss, ids);	
+	list_ids_enemies.append_attribute("ids") = ids.data();
+
+	return true;
 }

@@ -102,15 +102,14 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-		// Saving and loading game
-		// Load / Save
+	// Saving and loading game
 	bool load(pugi::xml_node &node);
 	bool save(pugi::xml_node &node) const;
 	bool loading_game = false; // Avoid considering Jim or Command a defeat when loading...
 
-	Entity* const addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation = true);
-	Entity* getEntity(uint id);
-	void    deletionManager();
+	Entity* const	addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation = true, uint id = 0);
+	Entity*			getEntity(uint id);
+	void			deletionManager();
 	
 	void				SetEnemyToAttackCommandCenter(Entity* e);
 	Entity*				searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);

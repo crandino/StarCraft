@@ -130,6 +130,11 @@ public:
 
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
+	// Saving and loading game
+	bool load(pugi::xml_node &node);
+	bool save(pugi::xml_node &node) const;
+	vector<uint> list_ids_enemies;
+
 	// Setting, resetting or getting game conditions
 	void startGame();
 	void restartGame();
@@ -206,6 +211,8 @@ public:
 	vector<SizeWave*>    waves2_info;
 	vector<SizeWave*>	 waves3_info;
 
+	map<uint, Entity*>	 current_wave_entities;
+
 	iPoint				 command_center_position;
 	iPoint				 factory_position;
 	iPoint				 barrack_position;
@@ -214,8 +221,6 @@ public:
 private:
 
 	uint				 current_wave;
-	uint				 current_wave2 = 0;
-	map<uint, Entity*>	 current_wave_entities;
 	uint				 wave2_power_counter = 0;
 	uint				 wave3_power_counter = 0;
 
