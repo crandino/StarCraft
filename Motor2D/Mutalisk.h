@@ -53,6 +53,7 @@ public:
 	Particle	mutalisk_hit;
 
 	bool sound_active = true;
+	Entity* second_target_to_attack;
 
 	Mutalisk(iPoint &p);
 	~Mutalisk();

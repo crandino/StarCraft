@@ -434,6 +434,9 @@ bool EntityManager::preUpdate()
 			{
 				if (it->second == it2->second->target_to_attack)
 					it2->second->target_to_attack = NULL;
+				if (it2->second->specialization == MUTALISK)
+					if (it->second == ((Mutalisk*)it2->second)->second_target_to_attack)
+						((Mutalisk*)it2->second)->second_target_to_attack == NULL;
 			}
 
 			app->path->erase(it->first);
@@ -1022,21 +1025,24 @@ void EntityManager::handleSelection()
 Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
 {
 	Entity* ret = NULL;
-	float value = range;
-	if (value == -1.0f)
-		value = e->range_of_vision;
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
+	if (e != NULL)
 	{
-		if (it->second != e && it->second->state != DYING && 
-			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
+		float value = range;
+		if (value == -1.0f)
+			value = e->range_of_vision;
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
 		{
-			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			if (d <= value)
+			if (it->second != e && it->second->state != DYING &&
+				((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
 			{
-				ret = &(*it->second);
-				value = d;
+				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+				if (d <= value)
+				{
+					ret = &(*it->second);
+					value = d;
+				}
 			}
 		}
 	}

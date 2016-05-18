@@ -265,7 +265,10 @@ bool Mutalisk::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
+			{
 				newEntityFound();
+				second_target_to_attack = target_to_attack->searchNearestAlly();
+			}
 			else if (faction == COMPUTER)
 				app->entity_manager->SetEnemyToAttackCommandCenter(this);
 			timer_to_check.start();
@@ -280,7 +283,10 @@ bool Mutalisk::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
+			{
 				newEntityFound();
+				second_target_to_attack = target_to_attack->searchNearestAlly();
+			}
 			timer_to_check.start();
 		}
 		if (has_target)
@@ -291,7 +297,10 @@ bool Mutalisk::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
+			{
 				newEntityFound();
+				second_target_to_attack = target_to_attack->searchNearestAlly();
+			}
 			else
 			{
 				has_target = false;
@@ -317,6 +326,7 @@ bool Mutalisk::update(float dt)
 				{
 					state = IDLE;
 					target_to_attack = NULL;
+					second_target_to_attack = NULL;
 				}
 			}
 			else
@@ -324,13 +334,18 @@ bool Mutalisk::update(float dt)
 			{
 				state = IDLE;
 				target_to_attack = NULL;
+				second_target_to_attack = NULL;
 			}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
 			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				second_target_to_attack = target_to_attack->searchNearestAlly();
 			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+			{
 				newEntityFound();
+			}
 		}
 		break;
 	case DYING:
@@ -432,8 +447,7 @@ bool Mutalisk::attack(Entity* target_to_attack)
 			}
 			if (target_to_attack->faction == PLAYER)
 				app->gui->lasts_attack_position.push_back(target_to_attack->center);
-			Entity* second_target_to_attack = target_to_attack->searchNearestAlly();
-			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
+			if (second_target_to_attack != NULL && second_target_to_attack->state != DYING && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				second_target_to_attack->state = DYING;
 			}
@@ -479,6 +493,8 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.y = -150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					attack_up_part.on = true;
 					timer_particle.start();
 
@@ -504,6 +520,8 @@ void Mutalisk::setParticleBehaviour()
 					particle->speed.x = 150.0f;
 					particle->speed.y = -150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					timer_particle.start();
 				}
 				attack_right_up_part.on = false;
@@ -528,6 +546,8 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = 150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					timer_particle.start();
 				}
 				attack_right_part.on = false;
@@ -552,6 +572,8 @@ void Mutalisk::setParticleBehaviour()
 					particle->speed.x = 150.0f;
 					particle->speed.y = 150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					timer_particle.start();
 				}
 				attack_right_down_part.on = false;
@@ -575,6 +597,8 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.y = 150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					timer_particle.start();
 				}
 				attack_down_part.on = false;
@@ -599,6 +623,8 @@ void Mutalisk::setParticleBehaviour()
 					particle->speed.x = -150.0f;
 					particle->speed.y = 150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					timer_particle.start();
 				}
 				attack_left_down_part.on = false;
@@ -621,6 +647,8 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = -150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 								
 					timer_particle.start();
 				}
@@ -646,6 +674,8 @@ void Mutalisk::setParticleBehaviour()
 					particle->speed.x = -150.0f;
 					particle->speed.y = -150.0f;
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					timer_particle.start();
 				}
 				attack_left_up_part.on = false;
