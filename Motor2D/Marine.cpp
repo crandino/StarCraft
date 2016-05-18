@@ -476,8 +476,12 @@ void Marine::move(float dt)
 					has_target = false;
 					state = IDLE;
 				
-					if (bunker_to_fill != NULL) 
+					if (bunker_to_fill != NULL)
+					{
+						if (!app->gui->findBunkerToLeave(bunker_to_fill))
+							app->gui->bunker_to_leave.push_back(bunker_to_fill);
 						bunker_to_fill->getEntityInside(this);
+					}
 					break;
 
 				}

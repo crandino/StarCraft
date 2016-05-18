@@ -191,6 +191,7 @@ public:
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
 	list<Bunker*> bunker_to_leave;
+	bool findBunkerToLeave(Bunker* bunker);
 
 	//HUD Label-----------------------------
 	GuiLabel* number_of_wave = nullptr;
