@@ -371,6 +371,7 @@ bool App::loadGameNow()
 			list<Module*>::iterator item = modules.begin(); 
 			while (item != modules.end() && ret != false)
 			{
+				LOG("Loading module %s  ", (*item)->name.c_str());
 				ret = (*item)->load(root.child((*item)->name.data()));
 				++item;
 			}
@@ -404,9 +405,11 @@ bool App::saveGameNow() const
 	root = data.append_child("game_state");
 
 	list<Module*>::const_iterator item = modules.begin(); 
-	while (item != modules.begin() && ret != false)
+	while (item != modules.end() && ret != false)
 	{
+		LOG("Saving module %s  ", (*item)->name.c_str());
 		ret = (*item)->save(root.append_child((*item)->name.data()));
+		++item;
 	}
 
 	if (ret != false)

@@ -36,7 +36,7 @@ bool FileSystem::awake(pugi::xml_node &node)
 	for (pugi::xml_node path = node.child("path"); path ; path = path.next_sibling("path"))
 		addSearchPath(path.child_value());
 
-	char *write_dir = SDL_GetPrefPath("Carlos", "Game_development");
+	char *write_dir = SDL_GetPrefPath("BrainWashing_Studio", "StarCraft_LastHope");
 
 	if (PHYSFS_setWriteDir(write_dir) == 0)
 	{

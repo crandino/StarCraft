@@ -86,11 +86,11 @@ bool Scene::update(float dt)
 	//		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
 	//}
 
-	/*if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (app->input->getKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->loadGame("save_game.xml");
 
-	if (app->input->getKey(SDL_SCANCODE_K) == KEY_DOWN)
-		app->saveGame("save_game.xml");*/
+	if (app->input->getKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		app->saveGame("save_game.xml");
 
 	if (app->input->getKey(SDL_SCANCODE_KP_PLUS) == KEY_UP)
 		app->audio->volumeUp();

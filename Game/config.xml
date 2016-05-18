@@ -9,7 +9,7 @@
   <window>
     <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
-                fullscreen='true' 
+                fullscreen='false' 
                 resizable='false'
                 windowed='false' />
     <name>StarCraft</name>
@@ -28,7 +28,7 @@
 	    
   </file_system>
 
-  <EntityManager>
+  <entity_manager>
     <costs
       bunker_mineral_cost = "200"
       bunker_gas_cost = "150"
@@ -57,7 +57,7 @@
       mutalisk_mineral_cost = "100"
       mutalisk_gas_cost = "100"       
   />    
-  </EntityManager>
+  </entity_manager>
   
   <game_manager>
 

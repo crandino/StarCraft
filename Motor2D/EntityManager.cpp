@@ -31,7 +31,7 @@
 
 EntityManager::EntityManager() : Module()
 {
-	name.assign("EntityManager");
+	name.assign("entity_manager");
 }
 
 // Destructor

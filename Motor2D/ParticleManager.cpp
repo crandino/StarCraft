@@ -13,7 +13,7 @@
 
 ParticleManager::ParticleManager() : Module()
 {
-
+	name.assign("particle_manager");
 }
 
 ParticleManager::~ParticleManager()

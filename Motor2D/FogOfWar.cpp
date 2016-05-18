@@ -200,7 +200,7 @@ void FogMap::softenSection(int x1, int y1, int x2, int y2, float fadeRatio)
 
 FogOfWar::FogOfWar()
 {
-	name.assign("Fog of war");
+	name.assign("fog_of_war");
 }
 
 // Destructor
