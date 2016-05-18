@@ -55,7 +55,7 @@ private:
 	//SDL_Texture* texture;
 	//std::string textureFile;
 
-	std::list<Particle*> particleList;
+	
 	std::list<Emisor*> emisorList;
 
 	bool loadParticlesFile(pugi::xml_document& file);
@@ -71,6 +71,8 @@ public:
 	SDL_Texture* explosion_small;
 	SDL_Texture* mutalisk_spore;
 	SDL_Texture* mutalisk_hit;
+
+	std::list<Particle*> particleList;
 
 };
 
@@ -99,6 +101,7 @@ struct Particle
 	void destroyParticle();
 	void enable();
 	void disable();
+	void draw();
 
 	void setSpeed(float velocity,float minAngle = 0.0f, float maxAngle = 360.0f);
 };

@@ -4,6 +4,7 @@
 #include "PathFinding.h"
 #include "Input.h"
 #include "EntityManager.h"
+#include "ParticleManager.h"
 #include "Entity.h"
 #include "Gui.h"
 #include "Map.h"
@@ -1602,6 +1603,11 @@ bool Gui::postUpdate()
 
 	for (multimap<float, Entity*>::iterator itm = to_draw.begin(); itm != to_draw.end(); ++itm)
 		itm->second->draw();
+
+	for (list<Particle*>::reverse_iterator it2 = app->particle->particleList.rbegin(); it2 != app->particle->particleList.rend();++it2)
+	{
+		(*it2)->draw();
+	}
 
 	for (list<GuiElements*>::iterator item = elements.begin(); item != elements.end(); item++)
 	{

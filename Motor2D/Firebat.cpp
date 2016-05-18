@@ -686,7 +686,10 @@ void Firebat::setParticleBehaviour()
 void Firebat::draw()
 {
 	app->render->blit(app->entity_manager->firebat_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+
 }
+
+
 
 
 

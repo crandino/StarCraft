@@ -97,12 +97,12 @@ bool ParticleManager::postUpdate()
 
 	//TODO 2: Iterate the particle list and call postUpdate
 
-	std::list<Particle*>::reverse_iterator tmp = particleList.rbegin();
+	//std::list<Particle*>::reverse_iterator tmp = particleList.rbegin();
 
-	for (; tmp != particleList.rend(); ++tmp)
-	{
-		(*tmp)->postUpdate();
-	}
+	//for (; tmp != particleList.rend(); ++tmp)
+	//{
+	//	(*tmp)->postUpdate();
+	//}
 
 	//TODO 2: Iterate the emisor list and call postUpdate 
 
@@ -128,6 +128,8 @@ bool ParticleManager::cleanUp()
 	SDL_DestroyTexture(scv_Spark);
 	SDL_DestroyTexture(bunker_attack);
 	SDL_DestroyTexture(hydralisk_particle);
+	SDL_DestroyTexture(mutalisk_hit);
+	SDL_DestroyTexture(mutalisk_spore);
 
 	std::list<Particle*>::iterator tmp = particleList.begin();
 
@@ -338,11 +340,17 @@ bool Particle::update(float dt)
 }
 bool Particle::postUpdate()
 {
+
+	return true;
+}
+
+void Particle::draw()
+{
 	if (alive && active)
 	{
 		if (image != NULL)
 		{
-			//TODO 5: Get animation frame and then blit. 
+		//TODO 5: Get animation frame and then blit. 
 			SDL_Rect sect = anim.getCurrentFrame();
 			app->render->blit(image, position.x, position.y, &sect);
 		}
@@ -353,9 +361,6 @@ bool Particle::postUpdate()
 			app->audio->playFx(fx);
 		}
 	}
-
-
-	return true;
 }
 
 void Particle::enable()
