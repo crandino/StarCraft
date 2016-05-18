@@ -1,6 +1,5 @@
 #include "Mutalisk.h"
 #include "PathFinding.h"
-#include <math.h>
 
 Mutalisk::Mutalisk(iPoint &p)
 {
