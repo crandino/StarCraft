@@ -426,83 +426,8 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 // Called each loop iteration
 bool EntityManager::preUpdate(){
 
-<<<<<<< HEAD
+
 	deletionManager();  // Delete each entity marked to being deleted.
-=======
-	// We delete the entities marked with to_delete
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end();)
-	{
-		if (it->second->to_delete)
-		{
-			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
-			for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
-			{
-				if (it->second == it2->second->target_to_attack)
-					it2->second->target_to_attack = NULL;
-				if (it2->second->specialization == MUTALISK)
-					if (it->second == ((Mutalisk*)it2->second)->second_target_to_attack)
-						((Mutalisk*)it2->second)->second_target_to_attack == NULL;
-			}
-
-			app->path->erase(it->first);
-
-			if (it->second->type == BUILDING)
-			{
-				if (it->second->specialization == COMMANDCENTER)
-					app->game_manager->command_center_destroyed = true;			
-				else if (it->second->specialization == BUNKER)
-				{
-					for (list<Bunker*>::iterator itb = app->gui->bunker_to_leave.begin(); itb != app->gui->bunker_to_leave.end();)
-					{
-						if (it->first == itb._Ptr->_Myval->id)
-							itb = app->gui->bunker_to_leave.erase(itb);
-						else
-							itb++;
-					}
-				}
-				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
-				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
-			}
-			
-			// Very disgusting code to mantain Marines inside a bunker // CRZ
-			selection.erase(it->first);
-			if (it->second->specialization == MARINE)
-			{
-				if (!((Marine*)it->second)->inside_bunker)
-					RELEASE(it->second);
-			}
-			else if (it->second->specialization == FIREBAT)
-			{
-				if (!((Firebat*)it->second)->inside_bunker)
-					RELEASE(it->second);
-			}
-			else if (it->second->specialization == JIM_RAYNOR)
-			{
-				if (!((JimRaynor*)it->second)->inside_bunker)
-				{
-					app->game_manager->jim_raynor_dead = true;
-					app->game_manager->jim_position = NULL;
-					RELEASE(it->second);
-				}
-			}
-			else if (it->second->specialization == TANK)
-			{
-				if (((Tank*)it->second)->siege_mode)
-				{
-					app->map->changeLogic(((Tank*)it->second)->coll->rect, LOW_GROUND);
-					app->entity_manager->recalculatePaths(((Tank*)it->second)->coll->rect, true);
-				}
-			}
-			else
-				RELEASE(it->second);
-				
-			it = active_entities.erase(it);
-		}
-		else
-			++it;
-	}
->>>>>>> origin/master
 
 	if (app->game_manager->isGameStarted())
 		handleSelection();
@@ -1039,6 +964,11 @@ void EntityManager::deletionManager()
 			{
 				if (it->second == it2->second->target_to_attack)
 					it2->second->target_to_attack = NULL;
+				if (it2->second->specialization == MUTALISK)
+				{
+					if (it->second == ((Mutalisk*)it2->second)->second_target_to_attack)
+						((Mutalisk*)it2->second)->second_target_to_attack == NULL;
+				}
 			}
 
 			app->path->erase(it->first);
