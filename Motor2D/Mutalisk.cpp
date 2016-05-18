@@ -492,6 +492,7 @@ void Mutalisk::setParticleBehaviour()
 					particle_offset = { 0, -30 };
 					particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.y = -150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -519,6 +520,7 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = 150.0f;
 					particle->speed.y = -150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -545,6 +547,7 @@ void Mutalisk::setParticleBehaviour()
 					particle_offset = { 30, -10 };
 					particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = 150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -571,6 +574,7 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = 150.0f;
 					particle->speed.y = 150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -596,6 +600,7 @@ void Mutalisk::setParticleBehaviour()
 					particle_offset = { 2, 10 };
 					particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.y = 150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -622,6 +627,7 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = -150.0f;
 					particle->speed.y = 150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -646,6 +652,7 @@ void Mutalisk::setParticleBehaviour()
 					particle_offset = { -30, -10 };
 					particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = -150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
@@ -673,6 +680,7 @@ void Mutalisk::setParticleBehaviour()
 					particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
 					particle->speed.x = -150.0f;
 					particle->speed.y = -150.0f;
+					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
 					if (second_target_to_attack != NULL)
 						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
