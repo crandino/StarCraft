@@ -341,9 +341,7 @@ void App::saveGame(const char *file) const
 	want_to_save = true;
 	//save_game.create("%s%s", fs->getSaveDirectory(), file);
 	if (save_game.length() > 0)
-	save_game.erase();
-
-
+		save_game.erase();
 	save_game.assign(file);
 }
 

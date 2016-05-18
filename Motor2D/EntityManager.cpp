@@ -390,7 +390,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		// Building creation, special treatment
 		if (e->type == BUILDING)
 		{
-			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
+ 			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
 			recalculatePaths(e->coll->rect, false);
 		}
 	}
@@ -420,79 +420,9 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 }
 
 // Called each loop iteration
-bool EntityManager::preUpdate()
-{
+bool EntityManager::preUpdate(){
 
-	// We delete the entities marked with to_delete
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end();)
-	{
-		if (it->second->to_delete)
-		{
-			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
-			for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
-			{
-				if (it->second == it2->second->target_to_attack)
-					it2->second->target_to_attack = NULL;
-			}
-
-			app->path->erase(it->first);
-
-			if (it->second->type == BUILDING)
-			{
-				if (it->second->specialization == COMMANDCENTER)
-					app->game_manager->command_center_destroyed = true;			
-				else if (it->second->specialization == BUNKER)
-				{
-					for (list<Bunker*>::iterator itb = app->gui->bunker_to_leave.begin(); itb != app->gui->bunker_to_leave.end();)
-					{
-						if (it->first == itb._Ptr->_Myval->id)
-							itb = app->gui->bunker_to_leave.erase(itb);
-						else
-							itb++;
-					}
-				}
-				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
-				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
-			}
-			
-			// Very disgusting code to mantain Marines inside a bunker // CRZ
-			selection.erase(it->first);
-			if (it->second->specialization == MARINE)
-			{
-				if (!((Marine*)it->second)->inside_bunker)
-					RELEASE(it->second);
-			}
-			else if (it->second->specialization == FIREBAT)
-			{
-				if (!((Firebat*)it->second)->inside_bunker)
-					RELEASE(it->second);
-			}
-			else if (it->second->specialization == JIM_RAYNOR)
-			{
-				if (!((JimRaynor*)it->second)->inside_bunker)
-				{
-					app->game_manager->jim_raynor_dead = true;
-					app->game_manager->jim_position = NULL;
-					RELEASE(it->second);
-				}
-			}
-			else if (it->second->specialization == TANK)
-			{
-				if (((Tank*)it->second)->siege_mode)
-				{
-					app->map->changeLogic(((Tank*)it->second)->coll->rect, LOW_GROUND);
-					app->entity_manager->recalculatePaths(((Tank*)it->second)->coll->rect, true);
-				}
-			}
-			else
-				RELEASE(it->second);
-				
-			it = active_entities.erase(it);
-		}
-		else
-			++it;
-	}
+	deletionManager();  // Delete each entity marked to being deleted.
 
 	if (app->game_manager->isGameStarted())
 		handleSelection();
@@ -1019,6 +949,81 @@ void EntityManager::handleSelection()
 	}
 }
 
+// We delete the entities marked with to_delete
+void EntityManager::deletionManager()
+{
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end();)
+	{
+		if (it->second->to_delete)
+		{
+			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
+			for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
+			{
+				if (it->second == it2->second->target_to_attack)
+					it2->second->target_to_attack = NULL;
+			}
+
+			app->path->erase(it->first);
+
+			if (it->second->type == BUILDING)
+			{
+				if (it->second->specialization == COMMANDCENTER)
+				{
+					if (!loading_game) 
+						app->game_manager->command_center_destroyed = true;
+				}
+				else if (it->second->specialization == BUNKER)
+				{
+					//app->gui->bunker_to_leave.remove((Bunker*)(it->second));
+					for (list<Bunker*>::iterator itb = app->gui->bunker_to_leave.begin(); itb != app->gui->bunker_to_leave.end();)
+					{
+						if (it->first == itb._Ptr->_Myval->id)
+							itb = app->gui->bunker_to_leave.erase(itb);
+						else
+							itb++;
+					}
+				}
+				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
+				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
+			}
+
+			// Very disgusting code to mantain Marines inside a bunker // CRZ
+			selection.erase(it->first);
+			switch (it->second->specialization)
+			{
+			case(MARINE):
+				if (!((Marine*)it->second)->inside_bunker)
+					RELEASE(it->second);
+				break;
+			case(FIREBAT):
+				if (!((Firebat*)it->second)->inside_bunker)
+					RELEASE(it->second);
+				break;
+			case(JIM_RAYNOR):
+				if (!((JimRaynor*)it->second)->inside_bunker)
+				{
+					if (!loading_game) 
+						app->game_manager->jim_raynor_dead = true;
+					app->game_manager->jim_position = NULL;
+					RELEASE(it->second);
+				}
+				break;
+			default:
+				RELEASE(it->second);
+			}
+		
+			it = active_entities.erase(it);
+		}
+		else
+			++it;
+	}
+
+	if (loading_game)
+		loading_game = false;
+}
+
+
 /*------------------WAVE RELATED METHODS--------------------------*/
 
 
@@ -1389,6 +1394,13 @@ void EntityManager::entityManualCreation()
 		position = app->render->screenToWorld(position.x, position.y);
 		addEntity(position, BOMB, false);
 	}
+
+	if (app->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		app->input->getMousePosition(position);
+		position = app->render->screenToWorld(position.x, position.y);
+		addEntity(position, BUNKER, true);
+	}
 }
 
 void EntityManager::updateFogOfWar()
@@ -1406,4 +1418,54 @@ void EntityManager::updateFogOfWar()
 			++it;
 		}
 	}
+}
+
+// Load / Save
+bool EntityManager::load(pugi::xml_node &node)
+{
+	// First, we must clean all the units of the current game:
+	map<uint, Entity*>::const_iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		it->second->to_delete = true;
+		it->second->coll->to_delete = true;
+	}
+
+	loading_game = true;
+	deletionManager();
+
+	// Now, loading the entities stored on the XML file.
+	for (pugi::xml_node tmp = node.child("active_entities").child("entity"); tmp; tmp = tmp.next_sibling("entity"))
+	{
+		iPoint pos = { tmp.attribute("pos_x").as_int(), tmp.attribute("pos_y").as_int() };
+		SPECIALIZATION spec = (SPECIALIZATION)tmp.attribute("type").as_int();
+		bool to_delete = tmp.attribute("to_delete").as_bool();
+		float current_hp = tmp.attribute("current_hp").as_float();
+
+		Entity *reload_entity = addEntity(pos, spec);
+		reload_entity->current_hp = current_hp;
+		reload_entity->to_delete = to_delete;
+	}
+
+	return true;
+}
+
+bool EntityManager::save(pugi::xml_node &node) const
+{
+	pugi::xml_node entities = node.append_child("active_entities");
+
+	map<uint, Entity*>::const_iterator it = active_entities.begin();
+	for (; it != active_entities.end(); ++it)
+	{
+		pugi::xml_node e = entities.append_child("entity");
+
+		e.append_attribute("id") = it->second->id;
+		e.append_attribute("pos_x") = it->second->center.x;
+		e.append_attribute("pos_y") = it->second->center.y;
+		e.append_attribute("type") = it->second->specialization;
+		e.append_attribute("current_hp") = it->second->current_hp;
+		e.append_attribute("to_delete") = it->second->to_delete;
+	}
+
+	return true;
 }
