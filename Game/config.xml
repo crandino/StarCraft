@@ -71,9 +71,9 @@
     <timeBeforeEnd value = "10.0f"/>
     <timeBomb value = "240.0f" />
     
-    <!--Debug
-    <hold value ="false"/>
-    <phase1 value ="false"/>
+    <!--Debug-->
+    <hold value ="true"/>
+    <!--<phase1 value ="false"/>
     <phase2 value ="false"/>
     <phase3 value ="true"/>-->
     

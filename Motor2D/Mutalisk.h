@@ -26,8 +26,31 @@ public:
 	Animation   walk_left_up3;
 	vector<Animation*>   move_animation_pack;
 
+	//ATTACK animations
+	Animation	attack_up;
+	Animation   attack_right_up;
+	Animation   attack_right;
+	Animation   attack_right_down;
+	Animation   attack_down;
+	Animation   attack_left_down;
+	Animation   attack_left;
+	Animation   attack_left_up;
+	vector<Animation*>   attack_animation_pack;
+
 	// Dead animation
 	Animation	dead;
+
+	//Particles
+	Particle	attack_up_part;
+	Particle	attack_right_up_part;
+	Particle	attack_right_part;
+	Particle	attack_right_down_part;
+	Particle	attack_down_part;
+	Particle	attack_left_down_part;
+	Particle	attack_left_part;
+	Particle	attack_left_up_part;
+
+	Particle	mutalisk_hit;
 
 	bool sound_active = true;
 
@@ -38,6 +61,9 @@ public:
 	void setAnimationFromDirection();
 	bool attack(Entity* target_to_attack);
 	void draw();
+	void setParticleBehaviour();
+	void resetParticle();
+	void particleDirection();
 
 };
 
