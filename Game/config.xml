@@ -63,7 +63,7 @@
 
     <!-- Game Information -->
     <totalWaves value = "7"/>
-    <timeBeforeGameStarts value ="1.0f"/>
+    <timeBeforeGameStarts value ="5.0f"/>
     <timeBetweenWavesPhase1 value = "18.0f"/>
     <timeBetweenWavesPhase2 value = "10.0f"/>
     <timeBetweenWavesPhase3 value = "15.0f"/>
@@ -75,6 +75,7 @@
     <hold value ="false"/>
     <phase1 value ="false"/>
     <phase2 value ="false"/>
+    <phase3 value ="false"/>    
     
     <!-- Wave Information -->    
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>

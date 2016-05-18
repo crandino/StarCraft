@@ -236,7 +236,7 @@ bool GameManager::start()
 	// Create Graphic Timers
 	graphic_wave_timer = app->gui->createTimer({ 211, 320 }, "Panels/UI_Countdown_Message.png", timer_between_game_states);
 	// Info messages
-	info_message = app->gui->createInfo({ -82, 0 }, "Panels/UI_Panel_Messages_edit.png");
+	info_message = app->gui->createInfo({ -54, 0 }, "Panels/UI_Panel_Messages_edit.png");
 
 	return ret;
 }
@@ -263,7 +263,7 @@ bool GameManager::update(float dt)
 		LOG("PREPARATION");
 		if (!info_message->isLoaded())
 		{
-			info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed!", (gameInfo.time_before_game_starts * 1000) / 2);
+			info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed!", (gameInfo.time_before_game_starts * 1000) / 2, true);
 			info_message->newInfo("Jim Raynor must survive (the yellow one)!", (gameInfo.time_before_game_starts * 1000) / 2);
 		}
 	
@@ -766,7 +766,7 @@ void GameManager::createWaveInfo(SizeWave* wave, uint display_time)
 	char c[200];
 	sprintf_s(c, "Next wave!\n  Zerglings = %d\n  Hydralisks = %d\n  Mutalisks = %d\n  Ultralisks = %d\n",
 		wave->zergling_quantity, wave->hydralisk_quantity, wave->mutalisk_quantity, wave->ultralisk_quantity);
-	info_message->newInfo(c, display_time * 1000);
+	info_message->newInfo(c, display_time * 1000, true);
 }
 
 bool GameManager::postUpdate()
