@@ -1907,3 +1907,14 @@ void Gui::controlIconsSprite()
 		}
 	}
 }
+
+bool Gui::findBunkerToLeave(Bunker* bunker)
+{
+	bool ret = false;
+	for (list<Bunker*>::iterator it = bunker_to_leave.begin(); it != bunker_to_leave.end(); it++)
+	{
+		if (bunker == it._Ptr->_Myval)
+			ret = true;
+	}
+	return ret;
+}

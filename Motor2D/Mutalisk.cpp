@@ -1,5 +1,6 @@
 #include "Mutalisk.h"
 #include "PathFinding.h"
+#include <math.h>
 
 Mutalisk::Mutalisk(iPoint &p)
 {
@@ -127,6 +128,39 @@ Mutalisk::Mutalisk(iPoint &p)
 	walk_right_down1.speed = 0.01f;
 	move_animation_pack.push_back(&walk_right_down1);
 
+	//------------Mutalisk ATTACK---------------------
+	attack_right.setAnimations(512, 0, 128, 128, 1, 5, 5);
+	attack_right.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_right);
+
+	attack_right_up.setAnimations(256, 0, 128, 128, 1, 5, 5);
+	attack_right_up.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_right_up);
+
+	attack_up.setAnimations(0, 0, 128, 128, 1, 5, 5);
+	attack_up.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_up);
+
+	attack_left_up.setAnimations(1792, 0, 128, 128, 1, 5, 5);
+	attack_left_up.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_left_up);
+
+	attack_left.setAnimations(1536, 0, 128, 128, 1, 5, 5);
+	attack_left.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_left);
+
+	attack_left_down.setAnimations(1280, 0, 128, 128, 1, 5, 5);
+	attack_left_down.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_left_down);
+
+	attack_down.setAnimations(1024, 0, 128, 128, 1, 5, 5);
+	attack_down.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_down);
+
+	attack_right_down.setAnimations(768, 0, 128, 128, 1, 5, 5);
+	attack_right_down.speed = 0.01f;
+	attack_animation_pack.push_back(&attack_right_down);
+
 	//------------Mutalisk DEAD-----------------------
 	dead.frames.push_back({ 0, 640, 128, 128 });
 	dead.frames.push_back({ 128, 640, 128, 128 });
@@ -140,12 +174,46 @@ Mutalisk::Mutalisk(iPoint &p)
 	dead.speed = 0.02f;
 	dead.loop = false;
 	//----------------------------------------------
+
+	//------------Mutalisk spore--------------------
+	attack_up_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_up_part.anim.speed = 0.009f;
+
+
+	attack_right_up_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_right_up_part.anim.speed = 0.009f;
+
+	attack_right_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_right_part.anim.speed = 0.009f;
+
+	attack_right_down_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_right_down_part.anim.speed = 0.009f;
+
+	attack_down_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_down_part.anim.speed = 0.009f;
+
+	attack_left_down_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_left_down_part.anim.speed = 0.009f;
+
+	attack_left_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_left_part.anim.speed = 0.009f;
+
+	attack_left_up_part.anim.setAnimations(0, 0, 36, 36, 1, 10, 10);
+	attack_left_up_part.anim.speed = 0.009f;
+
+	//------------Mutalisk HIT----------------------
+	mutalisk_hit.anim.setAnimations(0, 0, 64, 64, 10, 1, 10);
+	mutalisk_hit.anim.speed = 0.009f;
+
+	
+
 	current_animation = &walk_down;
 
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+	particle_offset = { 0, 0 };
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 22, 30 }, COLLIDER_UNIT, app->entity_manager);
@@ -170,6 +238,7 @@ Mutalisk::Mutalisk(iPoint &p)
 	range_to_attack = 120;
 	damage = 6.0f;
 	attack_frequency = 700.0f;
+	particle_frequency = 700.0f;
 
 	// PathFinding and movement variables
 	speed = 12.0f;
@@ -184,7 +253,10 @@ bool Mutalisk::update(float dt)
 {
 	checkUnitDirection();
 	setAnimationFromDirection();   // This sets animation according to their angle direction
+	setParticleBehaviour();
+	//particleDirection();
 	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
+
 
 	switch (state)
 	{
@@ -193,7 +265,10 @@ bool Mutalisk::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
+			{
 				newEntityFound();
+				second_target_to_attack = target_to_attack->searchNearestAlly();
+			}
 			else if (faction == COMPUTER)
 				app->entity_manager->SetEnemyToAttackCommandCenter(this);
 			timer_to_check.start();
@@ -208,7 +283,10 @@ bool Mutalisk::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
+			{
 				newEntityFound();
+				second_target_to_attack = target_to_attack->searchNearestAlly();
+			}
 			timer_to_check.start();
 		}
 		if (has_target)
@@ -219,7 +297,10 @@ bool Mutalisk::update(float dt)
 		{
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
+			{
 				newEntityFound();
+				second_target_to_attack = target_to_attack->searchNearestAlly();
+			}
 			else
 			{
 				has_target = false;
@@ -245,6 +326,7 @@ bool Mutalisk::update(float dt)
 				{
 					state = IDLE;
 					target_to_attack = NULL;
+					second_target_to_attack = NULL;
 				}
 			}
 			else
@@ -252,13 +334,18 @@ bool Mutalisk::update(float dt)
 			{
 				state = IDLE;
 				target_to_attack = NULL;
+				second_target_to_attack = NULL;
 			}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
 			target_to_attack = searchEnemy();
+			if (target_to_attack != NULL)
+				second_target_to_attack = target_to_attack->searchNearestAlly();
 			if (target_to_attack != NULL && (target == NULL || target->center != target_to_attack->center))
+			{
 				newEntityFound();
+			}
 		}
 		break;
 	case DYING:
@@ -308,17 +395,31 @@ void Mutalisk::setAnimationFromDirection()
 	{
 	case(IDLE) :
 	case(MOVE) :
+	{
+				   int num_animation = angle / (360 / move_animation_pack.size());
+				   if (num_animation == move_animation_pack.size())
+					   num_animation = 0;
+				   current_animation = &(*move_animation_pack.at(num_animation));
+				   break;
+	}
 	case(MOVE_ALERT) :
+	{
+				   int num_animation = angle / (360 / move_animation_pack.size());
+				   if (num_animation == move_animation_pack.size())
+					   num_animation = 0;
+				   current_animation = &(*move_animation_pack.at(num_animation));
+				   break;
+	}
 	case(MOVE_ALERT_TO_ATTACK) :
 	case(WAITING_PATH_MOVE) :
 	case(WAITING_PATH_MOVE_ALERT) :
 	case(WAITING_PATH_MOVE_ALERT_TO_ATTACK) :
 	case(ATTACK) :
 	{
-		int num_animation = angle / (360 / move_animation_pack.size());
-		if (num_animation == move_animation_pack.size())
+		int num_animation = angle / (360 / attack_animation_pack.size());
+		if (num_animation == attack_animation_pack.size())
 			num_animation = 0;
-		current_animation = &(*move_animation_pack.at(num_animation));
+		current_animation = &(*attack_animation_pack.at(num_animation));
 		break;
 	}
 	case(DYING) :
@@ -346,8 +447,7 @@ bool Mutalisk::attack(Entity* target_to_attack)
 			}
 			if (target_to_attack->faction == PLAYER)
 				app->gui->lasts_attack_position.push_back(target_to_attack->center);
-			Entity* second_target_to_attack = target_to_attack->searchNearestAlly();
-			if (second_target_to_attack != NULL && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
+			if (second_target_to_attack != NULL && second_target_to_attack->state != DYING && (second_target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{
 				second_target_to_attack->state = DYING;
 			}
@@ -360,4 +460,273 @@ void Mutalisk::draw()
 {
 	if (app->fog_of_war->isVisible(pos.x, pos.y))
 		app->render->blit(app->entity_manager->mutalisk_tex, pos.x, pos.y, &(current_animation->getCurrentFrame()));
+}
+
+void Mutalisk::setParticleBehaviour()
+{
+	switch (state)
+	{
+	case IDLE:
+		resetParticle();
+		break;
+	case MOVE:
+		resetParticle();
+		break;
+	case MOVE_ALERT:
+		resetParticle();
+		break;
+	case MOVE_ALERT_TO_ATTACK:
+		resetParticle();
+		break;
+	case ATTACK:
+		if (current_animation == &attack_up)
+		{
+			if (particle != NULL && !attack_up_part.on)
+			{
+				resetParticle();
+			}
+			if (!attack_up_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					particle_offset = { 0, -30 };
+					particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.y = -150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					attack_up_part.on = true;
+					timer_particle.start();
+
+				}
+				attack_up_part.on = false;
+			}
+		}
+
+		if (current_animation == &attack_right_up)
+		{
+			if (particle != NULL && !attack_right_up_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_right_up_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_right_up_part.on = true;
+					particle_offset = { 30, -20 };
+					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.x = 150.0f;
+					particle->speed.y = -150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					timer_particle.start();
+				}
+				attack_right_up_part.on = false;
+			}
+
+		}
+
+		if (current_animation == &attack_right)
+		{
+			if (particle != NULL && !attack_right_part.on)
+			{
+				resetParticle();
+
+			}
+
+			if (!attack_right_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_right_part.on = true;
+					particle_offset = { 30, -10 };
+					particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.x = 150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					timer_particle.start();
+				}
+				attack_right_part.on = false;
+			}
+
+		}
+
+		if (current_animation == &attack_right_down)
+		{
+			if (particle != NULL && !attack_right_down_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_right_down_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_right_down_part.on = true;
+					particle_offset = { 23, 10 };
+					particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.x = 150.0f;
+					particle->speed.y = 150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					timer_particle.start();
+				}
+				attack_right_down_part.on = false;
+			}
+
+		}
+
+		if (current_animation == &attack_down)
+		{
+			if (particle != NULL && !attack_down_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_down_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_down_part.on = true;
+					particle_offset = { 2, 10 };
+					particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.y = 150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					timer_particle.start();
+				}
+				attack_down_part.on = false;
+			}
+
+		}
+
+		if (current_animation == &attack_left_down)
+		{
+			if (particle != NULL && !attack_left_down_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_down_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_left_down_part.on = true;
+					particle_offset = { -17, 15 };
+					particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.x = -150.0f;
+					particle->speed.y = 150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					timer_particle.start();
+				}
+				attack_left_down_part.on = false;
+			}
+		}
+
+		if (current_animation == &attack_left)
+		{
+			if (particle != NULL && !attack_left_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_left_part.on = true;
+					particle_offset = { -30, -10 };
+					particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.x = -150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+								
+					timer_particle.start();
+				}
+				attack_left_part.on = false;
+			}
+
+		}
+
+		if (current_animation == &attack_left_up)
+		{
+			if (particle != NULL && !attack_left_up_part.on)
+			{
+				resetParticle();
+			}
+
+			if (!attack_left_up_part.on)
+			{
+				if (timer_particle.read() >= particle_frequency)
+				{
+					attack_left_up_part.on = true;
+					particle_offset = { -20, -12 };
+					particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->mutalisk_spore);
+					particle->speed.x = -150.0f;
+					particle->speed.y = -150.0f;
+					particle_aux = app->particle->addParticle(mutalisk_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					if (second_target_to_attack != NULL)
+						particle_aux2 = app->particle->addParticle(mutalisk_hit, second_target_to_attack->center.x, second_target_to_attack->center.y, 0, 0, 1.0f, app->particle->mutalisk_hit);
+					timer_particle.start();
+				}
+				attack_left_up_part.on = false;
+			}
+		}
+		break;
+	case DYING:
+		resetParticle();
+		break;
+	case WAITING_PATH_MOVE:
+		resetParticle();
+		break;
+	case WAITING_PATH_MOVE_ALERT:
+		resetParticle();
+		break;
+	case WAITING_PATH_MOVE_ALERT_TO_ATTACK:
+		resetParticle();
+		break;
+	case SIEGE_MODE_ON:
+		resetParticle();
+		break;
+	case SIEGE_MODE_OFF:
+		resetParticle();
+		break;
+	case IDLE_SIEGE_MODE:
+		resetParticle();
+		break;
+	case ATTACK_SIEGE_MODE:
+		resetParticle();
+		break;
+	}
+}
+
+void Mutalisk::resetParticle()
+{
+	if (attack_up_part.on || attack_right_up_part.on || attack_right_part.on || attack_right_down_part.on || attack_down_part.on || attack_left_down_part.on || attack_left_part.on || attack_left_up_part.on)
+	{
+		attack_up_part.on = false;
+		attack_right_up_part.on = false;
+		attack_right_part.on = false;
+		attack_right_down_part.on = false;
+		attack_down_part.on = false;
+		attack_left_down_part.on = false;
+		attack_left_part.on = false;
+		attack_left_up_part.on = false;
+		particle->on = false;
+		particle->alive = false;
+	}
+}
+
+void Mutalisk::particleDirection()
+{
+
 }

@@ -69,6 +69,8 @@ public:
 	SDL_Texture* bunker_attack;
 	SDL_Texture* hydralisk_particle;
 	SDL_Texture* explosion_small;
+	SDL_Texture* mutalisk_spore;
+	SDL_Texture* mutalisk_hit;
 
 };
 

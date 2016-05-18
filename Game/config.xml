@@ -72,8 +72,13 @@
     <timeBomb value = "240.0f" />
     
     <!--Debug-->
+<<<<<<< HEAD
     <hold value ="false"/>
     <phase1 value ="false"/>
+=======
+    <hold value ="true"/>
+    <!--<phase1 value ="false"/>
+>>>>>>> origin/master
     <phase2 value ="false"/>
     <phase3 value ="false"/>    
     

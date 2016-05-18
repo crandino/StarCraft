@@ -40,6 +40,8 @@ bool ParticleManager::start()
 	scv_Spark = app->tex->loadTexture("Particles/Random/scvspark.png");
 	bunker_attack = app->tex->loadTexture("Particles/Shots/Bunker_On_Attack2.png");
 	hydralisk_particle = app->tex->loadTexture("Particles/Shots/Hydra_attack.png");
+	mutalisk_spore = app->tex->loadTexture("Particles/Shots/spores.png");
+	mutalisk_hit = app->tex->loadTexture("Particles/Explosion/Mutalisk_hit.png");
 
 	//texture = app->tex->loadTexture(textureFile.c_str());
 

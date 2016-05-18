@@ -426,7 +426,83 @@ void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
 // Called each loop iteration
 bool EntityManager::preUpdate(){
 
+<<<<<<< HEAD
 	deletionManager();  // Delete each entity marked to being deleted.
+=======
+	// We delete the entities marked with to_delete
+	map<uint, Entity*>::iterator it = active_entities.begin();
+	for (; it != active_entities.end();)
+	{
+		if (it->second->to_delete)
+		{
+			// Maybe, the entity removed is someone's entity_to_attack. Now, it's not.  CRZ
+			for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
+			{
+				if (it->second == it2->second->target_to_attack)
+					it2->second->target_to_attack = NULL;
+				if (it2->second->specialization == MUTALISK)
+					if (it->second == ((Mutalisk*)it2->second)->second_target_to_attack)
+						((Mutalisk*)it2->second)->second_target_to_attack == NULL;
+			}
+
+			app->path->erase(it->first);
+
+			if (it->second->type == BUILDING)
+			{
+				if (it->second->specialization == COMMANDCENTER)
+					app->game_manager->command_center_destroyed = true;			
+				else if (it->second->specialization == BUNKER)
+				{
+					for (list<Bunker*>::iterator itb = app->gui->bunker_to_leave.begin(); itb != app->gui->bunker_to_leave.end();)
+					{
+						if (it->first == itb._Ptr->_Myval->id)
+							itb = app->gui->bunker_to_leave.erase(itb);
+						else
+							itb++;
+					}
+				}
+				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
+				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
+			}
+			
+			// Very disgusting code to mantain Marines inside a bunker // CRZ
+			selection.erase(it->first);
+			if (it->second->specialization == MARINE)
+			{
+				if (!((Marine*)it->second)->inside_bunker)
+					RELEASE(it->second);
+			}
+			else if (it->second->specialization == FIREBAT)
+			{
+				if (!((Firebat*)it->second)->inside_bunker)
+					RELEASE(it->second);
+			}
+			else if (it->second->specialization == JIM_RAYNOR)
+			{
+				if (!((JimRaynor*)it->second)->inside_bunker)
+				{
+					app->game_manager->jim_raynor_dead = true;
+					app->game_manager->jim_position = NULL;
+					RELEASE(it->second);
+				}
+			}
+			else if (it->second->specialization == TANK)
+			{
+				if (((Tank*)it->second)->siege_mode)
+				{
+					app->map->changeLogic(((Tank*)it->second)->coll->rect, LOW_GROUND);
+					app->entity_manager->recalculatePaths(((Tank*)it->second)->coll->rect, true);
+				}
+			}
+			else
+				RELEASE(it->second);
+				
+			it = active_entities.erase(it);
+		}
+		else
+			++it;
+	}
+>>>>>>> origin/master
 
 	if (app->game_manager->isGameStarted())
 		handleSelection();
@@ -884,12 +960,10 @@ void EntityManager::handleSelection()
 					if ((it->second->specialization == MARINE && e->specialization == BUNKER))
 					{
 						((Marine*)unit)->bunker_to_fill = (Bunker*)e;
-						app->gui->bunker_to_leave.push_back((Bunker*)e);
 					}
 					else if ((it->second->specialization == FIREBAT && e->specialization == BUNKER))
 					{
 						((Firebat*)unit)->bunker_to_fill = (Bunker*)e;
-						app->gui->bunker_to_leave.push_back((Bunker*)e);
 					}
 					else if (it->second->specialization == JIM_RAYNOR)
 					{
@@ -903,7 +977,6 @@ void EntityManager::handleSelection()
 						else if (e->specialization == BUNKER)
 						{
 							jim->bunker_to_fill = (Bunker*)e;
-							app->gui->bunker_to_leave.push_back((Bunker*)e);
 						}
 					}
 					else if (it->second->faction == PLAYER && it->second->type == UNIT && e->faction != PLAYER && e->specialization != BOMB)
@@ -1034,21 +1107,24 @@ void EntityManager::deletionManager()
 Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
 {
 	Entity* ret = NULL;
-	float value = range;
-	if (value == -1.0f)
-		value = e->range_of_vision;
-	map<uint, Entity*>::iterator it = active_entities.begin();
-	for (; it != active_entities.end(); ++it)
+	if (e != NULL)
 	{
-		if (it->second != e && it->second->state != DYING && 
-			((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
+		float value = range;
+		if (value == -1.0f)
+			value = e->range_of_vision;
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
 		{
-			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
-			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			if (d <= value)
+			if (it->second != e && it->second->state != DYING &&
+				((!search_only_in_same_faction || e->faction == it->second->faction) && (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
 			{
-				ret = &(*it->second);
-				value = d;
+				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+				if (d <= value)
+				{
+					ret = &(*it->second);
+					value = d;
+				}
 			}
 		}
 	}

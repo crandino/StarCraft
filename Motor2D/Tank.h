@@ -60,6 +60,50 @@ public:
 	Animation	idle_siege_mode_left_up_turret;
 	vector<Animation*>   idle_siege_mode_animation_turret_pack;
 
+	//ATTACK animations for turret
+	Animation	attack_up_turret;
+	Animation	attack_right_up_turret;
+	Animation   attack_right_turret;
+	Animation	attack_right_down_turret;
+	Animation	attack_down_turret;
+	Animation	attack_left_down_turret;
+	Animation	attack_left_turret;
+	Animation	attack_left_up_turret;
+	vector<Animation*>   attack_animation_turret_pack;
+
+	//ATTACK animations for turret on SIEGE MODE
+	Animation	attack_siege_mode_up_turret;
+	Animation	attack_siege_mode_right_up_turret;
+	Animation   attack_siege_mode_right_turret;
+	Animation	attack_siege_mode_right_down_turret;
+	Animation	attack_siege_mode_down_turret;
+	Animation	attack_siege_mode_left_down_turret;
+	Animation	attack_siege_mode_left_turret;
+	Animation	attack_siege_mode_left_up_turret;
+	vector<Animation*>   attack_siege_mode_animation_turret_pack;
+
+
+	// Attack Particle
+	Particle	attack_up_part;
+	Particle	attack_right_up_part;
+	Particle	attack_right_part;
+	Particle	attack_right_down_part;
+	Particle	attack_down_part;
+	Particle	attack_left_down_part;
+	Particle	attack_left_part;
+	Particle	attack_left_up_part;
+
+	Particle	attack_siege_mode_up_part;
+	Particle	attack_siege_mode_right_up_part;
+	Particle	attack_siege_mode_right_part;
+	Particle	attack_siege_mode_right_down_part;
+	Particle	attack_siege_mode_down_part;
+	Particle	attack_siege_mode_left_down_part;
+	Particle	attack_siege_mode_left_part;
+	Particle	attack_siege_mode_left_up_part;
+
+	Particle	tank_hit;
+
 	// Dead animation
 	Particle	dead;
 
@@ -82,6 +126,7 @@ public:
 	void checkUnitDirection();
 	void newEntityFound();
 	void setParticleBehaviour();
+	void resetParticle();
 
 };
 
