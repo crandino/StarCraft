@@ -9,7 +9,7 @@
   <window>
     <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
-                fullscreen='false' 
+                fullscreen='true' 
                 resizable='false'
                 windowed='false' />
     <name>StarCraft</name>
@@ -37,25 +37,25 @@
       factory_mineral_cost = "600"
       factory_gas_cost = "550" 
       
-      marine_mineral_cost = "50"
-      marine_gas_cost = "0"
-      firebat_mineral_cost = "50"
-      firebat_gas_cost = "25"
+      marine_mineral_cost = "150"
+      marine_gas_cost = "25"
+      firebat_mineral_cost = "225"
+      firebat_gas_cost = "75"
       scv_mineral_cost = "50"
       scv_gas_cost = "0"
-      medic_mineral_cost = "50"
-      medic_gas_cost = "25"     
-      tank_mineral_cost = "150"
-      tank_gas_cost = "100" 
+      medic_mineral_cost = "300"
+      medic_gas_cost = "150"     
+      tank_mineral_cost = "450"
+      tank_gas_cost = "250" 
       
       zergling_mineral_cost = "50"
-      zergling_gas_cost = "50" 
+      zergling_gas_cost = "10" 
       hydralisk_mineral_cost = "75"
       hydralisk_gas_cost = "25" 
       ultralisk_mineral_cost = "200"
       ultralisk_gas_cost = "200" 
       mutalisk_mineral_cost = "100"
-      mutalisk_gas_cost = "100"       
+      mutalisk_gas_cost = "50"       
   />    
   </entity_manager>
   
@@ -72,7 +72,7 @@
     <timeBomb value = "240.0f" />
     
     <!--Debug-->
-    <hold value ="true"/>
+    <hold value ="false"/>
     <!--<phase1 value ="false"/>
     <phase2 value ="false"/>
     <phase3 value ="false"/> -->   

@@ -375,7 +375,7 @@ Tank::Tank(iPoint &p)
 
 	// Attack values and properties
 	range_of_vision = 800;
-	range_to_attack = 500;
+	range_to_attack = 220;
 	damage = 80.0f;
 	attack_frequency = 2000.0f;
 	particle_frequency = 2000.0f;

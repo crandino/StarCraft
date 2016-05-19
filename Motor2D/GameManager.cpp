@@ -608,11 +608,11 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
-	waves2_info[0]->zergling_quantity += 1;
+	waves2_info[0]->zergling_quantity += 4;
 
 	waves2_info[0]->mutalisk_quantity += 1;
 
-	/*waves2_info[0]->hydralisk_quantity += 1;*/
+	waves2_info[0]->hydralisk_quantity += 2;
 	
 	//if(current_wave % multiplier_hydra == 0)
 	//	waves2_info[0]->hydralisk_quantity += 1;
