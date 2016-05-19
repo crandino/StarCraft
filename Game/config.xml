@@ -20,11 +20,11 @@
 
   <file_system>
     <path>data.zip</path>
-    <path>Zerg.zip</path>
+    <!--<path>Zerg.zip</path>
     <path>Terran.zip</path>
     <path>UI.zip</path>
     <path>Audio.zip</path>
-    <path>Particles.zip</path>
+    <path>Particles.zip</path>-->
 	    
   </file_system>
 
@@ -114,9 +114,9 @@
   </game_manager>
 
   <fonts>
-    <default_font size="24" file="Font/Starcraft_Normal.ttf"/>
-    <resources_font size="12" file="Font/OpenSans-Regular.ttf"/>
-    <default_font size="12" file="Font/OpenSans-Regular.ttf"/>
+    <default_font size="24" file="UI/Font/Starcraft_Normal.ttf"/>
+    <resources_font size="12" file="UI/Font/OpenSans-Regular.ttf"/>
+    <default_font size="12" file="UI/Font/OpenSans-Regular.ttf"/>
   </fonts>
   
   <map>
@@ -124,7 +124,7 @@
   </map>
 
  <gui>
-    <atlas file="TerranConsole/UI_Panel_Terran2.png"/>
+    <atlas file="UI/TerranConsole/UI_Panel_Terran2.png"/>
  </gui>
   
   

@@ -172,7 +172,7 @@ bool GameManager::start()
 	//Backgorund audio (DEBUG include)
 	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
 
-	start_image = app->tex->loadTexture("Screens/Start_Image.png");
+	start_image = app->tex->loadTexture("UI/Screens/Start_Image.png");
 
 	start_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
 	start_screen->center();
@@ -193,7 +193,7 @@ bool GameManager::start()
 	close_button->can_focus = true;
 	close_button->setListener(this);
 
-	defeat_atlas = app->tex->loadTexture("Screens/Defeat_Screen_Atlas.png");
+	defeat_atlas = app->tex->loadTexture("UI/Screens/Defeat_Screen_Atlas.png");
 	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
 	defeat_screen->center();
 	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y - 70);
@@ -210,7 +210,7 @@ bool GameManager::start()
 	base_destroyed->setLocalPos(6, 222);
 	base_destroyed->draw_element = false;
 
-	victory_atlas = app->tex->loadTexture("Screens/Victory_Screen_Atlas.png");
+	victory_atlas = app->tex->loadTexture("UI/Screens/Victory_Screen_Atlas.png");
 	victory_screen = app->gui->createImage(victory_atlas, { 0, 0, 384, 256 });
 	victory_screen->center();
 	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y - 70);
@@ -235,9 +235,9 @@ bool GameManager::start()
 
 	// GUI
 	// Create Graphic Timers
-	graphic_wave_timer = app->gui->createTimer({ 211, 320 }, "Panels/UI_Countdown_Message.png", timer_between_game_states);
+	graphic_wave_timer = app->gui->createTimer({ 211, 320 }, "UI/Panels/UI_Countdown_Message.png", timer_between_game_states);
 	// Info messages
-	info_message = app->gui->createInfo({ -54, 0 }, "Panels/UI_Panel_Messages_edit.png");
+	info_message = app->gui->createInfo({ -54, 0 }, "UI/Panels/UI_Panel_Messages_edit.png");
 
 	return ret;
 }

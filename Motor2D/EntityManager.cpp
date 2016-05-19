@@ -74,23 +74,23 @@ bool EntityManager::awake(pugi::xml_node &node)
 void EntityManager::loadEntityTex()
 {
 	// Entities textures
-	marine_tex = app->tex->loadTexture("Units/Blue_Marine.png");
-	scv_tex = app->tex->loadTexture("Units/scv.png");
-	medic_tex = app->tex->loadTexture("Units/Medic.png");
-	firebat_tex = app->tex->loadTexture("Units/firebat.png");
-	jim_raynor_tex = app->tex->loadTexture("Units/JimRaynor.png");
-	tank_tex = app->tex->loadTexture("Units/Blue_tank.png");
+	marine_tex = app->tex->loadTexture("Terran/Units/Blue_Marine.png");
+	scv_tex = app->tex->loadTexture("Terran/Units/scv.png");
+	medic_tex = app->tex->loadTexture("Terran/Units/Medic.png");
+	firebat_tex = app->tex->loadTexture("Terran/Units/firebat.png");
+	jim_raynor_tex = app->tex->loadTexture("Terran/Units/JimRaynor.png");
+	tank_tex = app->tex->loadTexture("Terran/Units/Blue_tank.png");
 
-	zergling_tex = app->tex->loadTexture("Units/New_Zergling64.png");
-	hydralisk_tex = app->tex->loadTexture("Units/Hydralisk.png");
-	ultralisk_tex = app->tex->loadTexture("Units/ultralisk2.png");
-	mutalisk_tex = app->tex->loadTexture("Units/Mutalisk.png");
+	zergling_tex = app->tex->loadTexture("Zergs/Units/New_Zergling64.png");
+	hydralisk_tex = app->tex->loadTexture("Zergs/Units/Hydralisk.png");
+	ultralisk_tex = app->tex->loadTexture("Zergs/Units/ultralisk2.png");
+	mutalisk_tex = app->tex->loadTexture("Zergs/Units/Mutalisk.png");
 
-	bunker_tex = app->tex->loadTexture("Building/Bunker.png");
-	bomb_tex = app->tex->loadTexture("Bomb/Bomb_STAR.png"); 
-	factory_tex = app->tex->loadTexture("Building/factory.png");
-	command_center_tex = app->tex->loadTexture("Building/CommandCenter.png");
-	barrack_tex = app->tex->loadTexture("Building/barracks.png");
+	bunker_tex = app->tex->loadTexture("Terran/Building/Bunker.png");
+	bomb_tex = app->tex->loadTexture("Terran/Bomb/Bomb_STAR.png"); 
+	factory_tex = app->tex->loadTexture("Terran/Building/factory.png");
+	command_center_tex = app->tex->loadTexture("Terran/Building/CommandCenter.png");
+	barrack_tex = app->tex->loadTexture("Terran/Building/barracks.png");
 }
 
 bool EntityManager::loadEntityFX()

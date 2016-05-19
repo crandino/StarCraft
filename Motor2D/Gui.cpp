@@ -53,7 +53,7 @@ bool Gui::start()
 	last_attack_position.y = app->game_manager->command_center_position.y;
 
 	//Raynor indicator Image
-	raynor_indicator = app->gui->createImage("Cursor/raynor_indicator.png");
+	raynor_indicator = app->gui->createImage("UI/Cursor/raynor_indicator.png");
 	raynor_indicator->disable_element();
 	raynor_indicator->static_image = true;
 
@@ -276,7 +276,7 @@ bool Gui::start()
 	
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
-	cursor = app->gui->createCursor(app->tex->loadTexture("Cursor/StarCraftCursors.png"));
+	cursor = app->gui->createCursor(app->tex->loadTexture("UI/Cursor/StarCraftCursors.png"));
 	uint w, h; app->win->getWindowSize(w, h);
 	cursor_offset.x = (w * 0.01f); // 10% of map width
 	cursor_offset.y = (h * 0.01f); // 10% of map height
@@ -286,8 +286,8 @@ bool Gui::start()
 		app->map->data.front().height * app->map->data.front().tile_height };
 
 	// CIRCLES OF SELECTIOM----------------------------------------------------
-	circles_of_selection = app->tex->loadTexture("Selection/Selection_circles.png");
-	lifes_tex = app->tex->loadTexture("Cursor/StarCraftCursors.png");
+	circles_of_selection = app->tex->loadTexture("UI/Selection/Selection_circles.png");
+	lifes_tex = app->tex->loadTexture("UI/Cursor/StarCraftCursors.png");
 
 	green_life = { 486, 3, 4, 5 };
 	yellow_life = { 496, 3, 4, 5 };
@@ -298,7 +298,7 @@ bool Gui::start()
 	path_walkability = app->tex->loadTexture("maps/Path_tiles.png");
 
 	// Create the GuiMinimap
-	mini_map = createMinimap({ 6, 348, 128, 128 }, "Minimap/finalminimap.png");
+	mini_map = createMinimap({ 6, 348, 128, 128 }, "UI/Minimap/finalminimap.png");
 	mini_map->setLocalPos(6, 348);
 
 	//Sounds
@@ -307,7 +307,7 @@ bool Gui::start()
 	fx_not_enough_minerales = app->audio->loadFx("Audio/FX/InoffVoice/NotEnoughMinerals.wav");
 
 	//Wireframes and Info-------------------------------------------------------------------
-	atlas_wireframes = app->tex->loadTexture("TerranConsole/wireframes.png");
+	atlas_wireframes = app->tex->loadTexture("UI/TerranConsole/wireframes.png");
 
 	//Bunker Wireframe-----------------------
 	bunkerWireframe = app->gui->createImage(atlas_wireframes, { 796, 222, 66, 45 });
