@@ -1072,8 +1072,7 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 		map<uint, Entity*>::iterator it = active_entities.begin();
 		for (; it != active_entities.end(); ++it)
 		{
-			if (it->second != e && it->second->state != DYING && ((!search_only_in_same_faction || e->faction == it->second->faction) 
-				&& (search_only_in_same_faction || e->faction != it->second->faction)) && it->second->specialization != BOMB)
+			if (it->second != e && it->second->state != DYING && (!search_only_in_same_faction || e->faction == it->second->faction) && it->second->specialization != BOMB)
 			{
 				if (!can_attack_to_flying)
 				{
