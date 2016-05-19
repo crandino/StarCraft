@@ -42,6 +42,9 @@ bool ParticleManager::start()
 	hydralisk_particle = app->tex->loadTexture("Particles/Shots/Hydra_attack.png");
 	mutalisk_spore = app->tex->loadTexture("Particles/Shots/spores.png");
 	mutalisk_hit = app->tex->loadTexture("Particles/Explosion/Mutalisk_hit.png");
+	tank_shot = app->tex->loadTexture("Particles/Shots/tank_shot.png");
+	tank_hit = app->tex->loadTexture("Particles/Explosion/tank_hit_explosion.png");
+	tank_siege_shot = app->tex->loadTexture("Particles/Shots/tank_siege_shot.png");
 
 	//texture = app->tex->loadTexture(textureFile.c_str());
 
@@ -130,6 +133,9 @@ bool ParticleManager::cleanUp()
 	SDL_DestroyTexture(hydralisk_particle);
 	SDL_DestroyTexture(mutalisk_hit);
 	SDL_DestroyTexture(mutalisk_spore);
+	SDL_DestroyTexture(tank_shot);
+	SDL_DestroyTexture(tank_hit);
+	SDL_DestroyTexture(tank_siege_shot);
 
 	std::list<Particle*>::iterator tmp = particleList.begin();
 

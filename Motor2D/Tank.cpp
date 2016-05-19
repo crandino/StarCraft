@@ -269,9 +269,74 @@ Tank::Tank(iPoint &p)
 	attack_siege_mode_animation_turret_pack.push_back(&attack_siege_mode_right_down_turret);
 
 	//Attack Particle
+	attack_up_part.anim.setAnimations(0, 0, 64, 64, 2, 1, 2);
+	attack_up_part.anim.speed = 0.009f;
+	attack_up_part.anim.loop = false;
+	
+
+	attack_right_up_part.anim.setAnimations(128, 0, 64, 64, 2, 1, 2);
+	attack_right_up_part.anim.speed = 0.009f;
+	attack_right_up_part.anim.loop = false;
+
+	attack_right_part.anim.setAnimations(256, 0, 64, 64, 2, 1, 2);
+	attack_right_part.anim.speed = 0.009f;
+	attack_right_part.anim.loop = false;
+
+	attack_right_down_part.anim.setAnimations(384, 0, 64, 64, 2, 1, 2);
+	attack_right_down_part.anim.speed = 0.009f;
+	attack_right_down_part.anim.loop = false;
+
+	attack_down_part.anim.setAnimations(512, 0, 64, 64, 2, 1, 2);
+	attack_down_part.anim.speed = 0.009f;
+	attack_down_part.anim.loop = false;
+
+	attack_left_down_part.anim.setAnimations(640, 0, 64, 64, 2, 1, 2);
+	attack_left_down_part.anim.speed = 0.009f;
+	attack_left_down_part.anim.loop = false;
+
+	attack_left_part.anim.setAnimations(768, 0, 64, 64, 2, 1, 2);
+	attack_left_part.anim.speed = 0.009f;
+	attack_left_part.anim.loop = false;
+
+	attack_left_up_part.anim.setAnimations(896, 0, 64, 64, 2, 1, 2);
+	attack_left_up_part.anim.speed = 0.009f;
+	attack_left_up_part.anim.loop = false;
+
+	//Particles siege mode shot
+	attack_siege_mode_up_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_up_part.anim.speed = 0.009f;
+	attack_siege_mode_up_part.anim.loop = false;
+
+	attack_siege_mode_right_up_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_right_up_part.anim.speed = 0.009f;
+	attack_siege_mode_right_up_part.anim.loop = false;
+
+	attack_siege_mode_right_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_right_part.anim.speed = 0.009f;
+	attack_siege_mode_right_part.anim.loop = false;
+
+	attack_siege_mode_right_down_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_right_down_part.anim.speed = 0.009f;
+	attack_siege_mode_right_down_part.anim.loop = false;
+
+	attack_siege_mode_down_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_down_part.anim.speed = 0.009f;
+	attack_siege_mode_down_part.anim.loop = false;
+
+	attack_siege_mode_left_down_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_left_down_part.anim.speed = 0.009f;
+	attack_siege_mode_left_down_part.anim.loop = false;
+
+	attack_siege_mode_left_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_left_part.anim.speed = 0.009f;
+	attack_siege_mode_left_part.anim.loop = false;
+
+	attack_siege_mode_left_up_part.anim.setAnimations(0, 0, 84, 84, 1, 8, 8);
+	attack_siege_mode_left_up_part.anim.speed = 0.009f;
+	attack_siege_mode_left_up_part.anim.loop = false;
 
 	//Attack hit Particle
-	tank_hit.anim.setAnimations(0, 0, 128, 128, 1, 9, 9);
+	tank_hit.anim.setAnimations(0, 0, 80, 80, 1, 10, 10);
 	tank_hit.anim.speed = 0.02f;
 	tank_hit.anim.loop = false;
 
@@ -287,6 +352,7 @@ Tank::Tank(iPoint &p)
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
 	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
+	particle_offset = { 0, 0 };
 
 	// Colliders
 	coll = app->collision->addCollider({ center.x + collider_offset.x, center.y + collider_offset.y, 64, 48 }, COLLIDER_UNIT, app->entity_manager);
@@ -703,7 +769,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 	case MOVE_ALERT_TO_ATTACK:
 		break;
 	case ATTACK:
-		if (current_animation == &attack_up_turret)
+		if (current_animation_turret == &attack_up_turret)
 		{
 			if (particle != NULL && !attack_up_part.on)
 			{
@@ -711,20 +777,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 			}
 			if (!attack_up_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
-				/*	particle_offset = { 15, -30 };
-					particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
+					particle_offset = { 0, -37 };
+					particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
 					attack_up_part.on = true;
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					if (target_to_attack!=NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 
 				}
 				attack_up_part.on = false;
 			}
 		}
 
-		if (current_animation == &attack_right_up_turret)
+		if (current_animation_turret == &attack_right_up_turret)
 		{
 			if (particle != NULL && !attack_right_up_part.on)
 			{
@@ -733,20 +800,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_right_up_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_right_up_part.on = true;
-					/*particle_offset = { 30, -20 };
-					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 20, -26 };
+					particle = app->particle->addParticle(attack_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_right_up_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_right_turret)
+		if (current_animation_turret == &attack_right_turret)
 		{
 			if (particle != NULL && !attack_right_part.on)
 			{
@@ -756,20 +824,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_right_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_right_part.on = true;
-					/*particle_offset = { 30, -10 };
-					particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 31, -9 };
+					particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
-				attack_right_part.on = false;
+				attack_right_part.on = false;	
 			}
 
 		}
 
-		if (current_animation == &attack_right_down_turret)
+		if (current_animation_turret == &attack_right_down_turret)
 		{
 			if (particle != NULL && !attack_right_down_part.on)
 			{
@@ -778,20 +847,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_right_down_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_right_down_part.on = true;
-					/*particle_offset = { 30, -10 };
-					particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 17, 4 };
+					particle = app->particle->addParticle(attack_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_right_down_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_down_turret)
+		if (current_animation_turret == &attack_down_turret)
 		{
 			if (particle != NULL && !attack_down_part.on)
 			{
@@ -800,20 +870,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_down_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_down_part.on = true;
-				/*	particle_offset = { 25, 10 };
-					particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 0, 15 };
+					particle = app->particle->addParticle(attack_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_down_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_left_down_turret)
+		if (current_animation_turret == &attack_left_down_turret)
 		{
 			if (particle != NULL && !attack_left_down_part.on)
 			{
@@ -822,19 +893,20 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_left_down_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_left_down_part.on = true;
-				/*	particle_offset = { -17, 5 };
-					particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { -17, 3 };
+					particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_left_down_part.on = false;
 			}
 		}
 
-		if (current_animation == &attack_left_turret)
+		if (current_animation_turret == &attack_left_turret)
 		{
 			if (particle != NULL && !attack_left_part.on)
 			{
@@ -843,20 +915,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_left_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_left_part.on = true;
-					//particle_offset = { -30, -10 };
-					//particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { -28, -11 };
+					particle = app->particle->addParticle(attack_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_left_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_left_up_turret)
+		if (current_animation_turret == &attack_left_up_turret)
 		{
 			if (particle != NULL && !attack_left_up_part.on)
 			{
@@ -865,13 +938,14 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_left_up_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_left_up_part.on = true;
-					//particle_offset = { -20, -12 };
-					//particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { -17, -25 };
+					particle = app->particle->addParticle(attack_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_left_up_part.on = false;
 			}
@@ -894,7 +968,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 	case IDLE_SIEGE_MODE:
 		break;
 	case ATTACK_SIEGE_MODE:
-		if (current_animation == &attack_siege_mode_up_turret)
+		if (current_animation_turret == &attack_siege_mode_up_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_up_part.on)
 			{
@@ -902,20 +976,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 			}
 			if (!attack_siege_mode_up_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
-					/*	particle_offset = { 15, -30 };
-					particle = app->particle->addParticle(attack_siege_mode_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
+					particle_offset = { 3, -20 };
+					particle = app->particle->addParticle(attack_siege_mode_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
 					attack_siege_mode_up_part.on = true;
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 
 				}
 				attack_siege_mode_up_part.on = false;
 			}
 		}
 
-		if (current_animation == &attack_siege_mode_right_up_turret)
+		if (current_animation_turret == &attack_siege_mode_right_up_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_right_up_part.on)
 			{
@@ -924,20 +999,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_right_up_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_right_up_part.on = true;
-					/*particle_offset = { 30, -20 };
-					particle = app->particle->addParticle(attack_siege_mode_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 25, -36 };
+					particle = app->particle->addParticle(attack_siege_mode_right_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_right_up_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_siege_mode_right_turret)
+		if (current_animation_turret == &attack_siege_mode_right_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_right_part.on)
 			{
@@ -947,20 +1023,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_right_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_right_part.on = true;
-					/*particle_offset = { 30, -10 };
-					particle = app->particle->addParticle(attack_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 34, -17 };
+					particle = app->particle->addParticle(attack_siege_mode_right_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_right_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_siege_mode_right_down_turret)
+		if (current_animation_turret == &attack_siege_mode_right_down_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_right_down_part.on)
 			{
@@ -969,20 +1046,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_right_down_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_right_down_part.on = true;
-					/*particle_offset = { 30, -10 };
-					particle = app->particle->addParticle(attack_siege_mode_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 23, -4 };
+					particle = app->particle->addParticle(attack_siege_mode_right_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_right_down_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_siege_mode_down_turret)
+		if (current_animation_turret == &attack_siege_mode_down_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_down_part.on)
 			{
@@ -991,20 +1069,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_down_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_down_part.on = true;
-					/*	particle_offset = { 25, 10 };
-					particle = app->particle->addParticle(attack_siege_mode_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { 3, 8 };
+					particle = app->particle->addParticle(attack_siege_mode_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_down_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_siege_mode_left_down_turret)
+		if (current_animation_turret == &attack_siege_mode_left_down_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_left_down_part.on)
 			{
@@ -1013,19 +1092,20 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_left_down_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_left_down_part.on = true;
-					/*	particle_offset = { -17, 5 };
-					particle = app->particle->addParticle(attack_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);*/
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { -21, -3 };
+					particle = app->particle->addParticle(attack_siege_mode_left_down_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_left_down_part.on = false;
 			}
 		}
 
-		if (current_animation == &attack_siege_mode_left_turret)
+		if (current_animation_turret == &attack_siege_mode_left_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_left_part.on)
 			{
@@ -1034,20 +1114,21 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_left_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_left_part.on = true;
-					//particle_offset = { -30, -10 };
-					//particle = app->particle->addParticle(attack_siege_mode_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { -35, -17 };
+					particle = app->particle->addParticle(attack_siege_mode_left_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_left_part.on = false;
 			}
 
 		}
 
-		if (current_animation == &attack_siege_mode_left_up_turret)
+		if (current_animation_turret == &attack_siege_mode_left_up_turret)
 		{
 			if (particle != NULL && !attack_siege_mode_left_up_part.on)
 			{
@@ -1056,19 +1137,18 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_left_up_part.on)
 			{
-				if (timer_particle.read() >= particle_frequency)
+				if (timer_attack.read() >= particle_frequency)
 				{
 					attack_siege_mode_left_up_part.on = true;
-					//particle_offset = { -20, -12 };
-					//particle = app->particle->addParticle(attack_siege_mode_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->hydralisk_particle);
-					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->explosion_small);
-					timer_particle.start();
+					particle_offset = { -23, -35 };
+					particle = app->particle->addParticle(attack_siege_mode_left_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
+					if (target_to_attack != NULL)
+					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
+					
 				}
 				attack_siege_mode_left_up_part.on = false;
 			}
 		}
-		break;
-	default:
 		break;
 	}
 }
@@ -1104,5 +1184,17 @@ bool Tank::attack(Entity* target_to_attack, float min_range)
 
 void Tank::resetParticle()
 {
-
+	if (attack_up_part.on || attack_right_up_part.on || attack_right_part.on || attack_right_down_part.on || attack_down_part.on || attack_left_down_part.on || attack_left_part.on || attack_left_up_part.on)
+	{
+		attack_up_part.on = false;
+		attack_right_up_part.on = false;
+		attack_right_part.on = false;
+		attack_right_down_part.on = false;
+		attack_down_part.on = false;
+		attack_left_down_part.on = false;
+		attack_left_part.on = false;
+		attack_left_up_part.on = false;
+		particle->on = false;
+		particle->alive = false;
+	}
 }

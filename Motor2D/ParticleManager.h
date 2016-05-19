@@ -71,6 +71,9 @@ public:
 	SDL_Texture* explosion_small;
 	SDL_Texture* mutalisk_spore;
 	SDL_Texture* mutalisk_hit;
+	SDL_Texture* tank_shot;
+	SDL_Texture* tank_hit;
+	SDL_Texture* tank_siege_shot;
 
 	std::list<Particle*> particleList;
 
