@@ -111,7 +111,7 @@ public:
 	Entity*			getEntity(uint id);
 	void			deletionManager();
 	
-	void				SetEnemyToAttackCommandCenter(Entity* e);
+	void				SetEnemyToPos(Entity* e, iPoint pos);
 	Entity*				searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	list<Entity*>		searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f, bool can_attack_to_flying = true);
 	bool				checkFocus(Unit* e);

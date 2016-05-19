@@ -316,7 +316,7 @@ Tank::Tank(iPoint &p)
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;
-	min_area_range = 32.0f;
+	min_area_range = 96.0f;
 
 	// PathFinding and movement variables
 	speed = 12.0f;
@@ -363,14 +363,7 @@ bool Tank::update(float dt)
 			app->audio->playFx(app->entity_manager->fx_tank_missile_siege, 0);
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false, false);
-				while (targets.begin() != targets.end())
-				{
-					if(targets.front() != this)
-						attackWithoutRange(targets.front());
-					targets.pop_front();
-				}
-				if (!attack(target_to_attack))
+				if (!attack(target_to_attack, min_area_range))
 				{
 					state = IDLE_SIEGE_MODE;
 					target_to_attack = NULL;
@@ -1078,6 +1071,35 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 	default:
 		break;
 	}
+}
+
+bool Tank::attack(Entity* target_to_attack, float min_range)
+{
+	bool ret = false;
+	if (target_to_attack != NULL && target_to_attack->state != DYING)
+	{
+		int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
+		d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
+		if (d > min_range && d <= range_to_attack)
+		{
+			ret = true;
+			list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false, false);
+			while (targets.begin() != targets.end())
+			{
+				if (targets.front() != this)
+					attackWithoutRange(targets.front());
+				targets.pop_front();
+			}
+			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
+			{
+				ret = false;
+				target_to_attack->state = DYING;
+			}
+			if (target_to_attack->faction == PLAYER)
+				app->gui->lasts_attack_position.push_back(target_to_attack->center);
+		}
+	}
+	return ret;
 }
 
 void Tank::resetParticle()

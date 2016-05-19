@@ -23,14 +23,14 @@ Entity* Unit::searchEnemy(bool can_attack_to_flying, float min_area_range)
 		return app->entity_manager->searchEnemyToAttack(this, can_attack_to_flying, min_area_range);
 }
 
-bool Unit::attack(Entity* target_to_attack)
+bool Unit::attack(Entity* target_to_attack, float min_range)
 {
 	bool ret = false;
 	if (target_to_attack != NULL && target_to_attack->state != DYING)
 	{
 		int d = abs(center.x - target_to_attack->center.x) + abs(center.y - target_to_attack->center.y);
 		d -= ((coll->rect.w / 2 + coll->rect.h / 2) / 2 + (target_to_attack->coll->rect.w / 2 + target_to_attack->coll->rect.h / 2) / 2);
-		if (d <= range_to_attack)
+		if (d > min_range && d <= range_to_attack)
 		{
 			ret = true;
 			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
@@ -147,8 +147,9 @@ bool Unit::update(float dt)
 			target_to_attack = searchEnemy();
 			if (target_to_attack != NULL)
 				newEntityFound();
-			else if (faction == COMPUTER)
-				app->entity_manager->SetEnemyToAttackCommandCenter(this);
+			else if (faction == COMPUTER && target_pos.x != -1 && target_pos.y != -1 &&
+				(range_of_vision / 2) < (abs(center.x - target_pos.x) + abs(center.y - target_pos.y) - (coll->rect.w / 2 + coll->rect.h / 2) / 2))
+				app->entity_manager->SetEnemyToPos(this, target_pos);
 			timer_to_check.start();
 		}
 		break;

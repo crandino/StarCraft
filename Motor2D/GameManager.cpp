@@ -41,10 +41,10 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 1500, 1400 };
-	iPoint north_east = { 2500, 1500 };
-	iPoint south_west = { 1400, 2700 };
-	iPoint south_east = { 2500, 2890 };
+	iPoint north_west = { 300, 220 };
+	iPoint north_east = { 3048, 352 };
+	iPoint south_west = { 1750, 3370 };
+	iPoint south_east = { 3650, 2560 };
 };
 
 enum wave_positions_enum
@@ -355,6 +355,7 @@ bool GameManager::update(float dt)
 			int random = rand() % 4;
 			iPoint bomb_pos = positionRandomizerBomb(random, bomb_pos);
 			app->entity_manager->addEntity(bomb_pos, BOMB);
+			createEnemiesBombPhase();
 			timer_between_waves.start();
 			game_state = SECOND_PHASE;
 		}
@@ -689,6 +690,7 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		int dx = i - (wave->zergling_quantity / 2);
 		int dy = i - (wave->zergling_quantity / 2);
 		Unit* unit = (Unit*)entity_to_add;
+		unit->target_pos = command_center_position;
 		unit->distance_to_center_selector = { dx, dy };
 		if (!app->path->isWalkable(unit->tile_pos))
 		{
@@ -710,6 +712,7 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		int dx = i - (wave->hydralisk_quantity / 2);
 		int dy = i - (wave->hydralisk_quantity / 2);
 		Unit* unit = (Unit*)entity_to_add;
+		unit->target_pos = command_center_position;
 		unit->distance_to_center_selector = { dx, dy };
 		if (!app->path->isWalkable(unit->tile_pos))
 		{
@@ -731,6 +734,7 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		int dx = i - (wave->ultralisk_quantity / 2);
 		int dy = i - (wave->ultralisk_quantity / 2);
 		Unit* unit = (Unit*)entity_to_add;
+		unit->target_pos = command_center_position;
 		unit->distance_to_center_selector = { dx, dy };
 		if (!app->path->isWalkable(unit->tile_pos))
 		{
@@ -752,6 +756,7 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 		int dx = i - (wave->mutalisk_quantity / 2);
 		int dy = i - (wave->mutalisk_quantity / 2);
 		Unit* unit = (Unit*)entity_to_add;
+		unit->target_pos = command_center_position;
 		unit->distance_to_center_selector = { dx, dy };
 		if (!app->path->isWalkable(unit->tile_pos))
 		{
@@ -1048,7 +1053,37 @@ iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
 	return bomb_pos;
 }
 
+void GameManager::createEnemiesBombPhase()
+{
+	Unit* entity_added;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, ULTRALISK);
+	entity_added->target_pos = bomb_position.north_east;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, ULTRALISK);
+	entity_added->target_pos = bomb_position.north_east;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, ULTRALISK);
+	entity_added->target_pos = bomb_position.north_east;
 
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, ULTRALISK);
+	entity_added->target_pos = bomb_position.north_west;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, ULTRALISK);
+	entity_added->target_pos = bomb_position.north_west;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, ULTRALISK);
+	entity_added->target_pos = bomb_position.north_west;
+
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, ULTRALISK);
+	entity_added->target_pos = bomb_position.south_east;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, ULTRALISK);
+	entity_added->target_pos = bomb_position.south_east;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, ULTRALISK);
+	entity_added->target_pos = bomb_position.south_east;
+
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, ULTRALISK);
+	entity_added->target_pos = bomb_position.south_west;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, ULTRALISK);
+	entity_added->target_pos = bomb_position.south_west;
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, ULTRALISK);
+	entity_added->target_pos = bomb_position.south_west;
+}
 
 iPoint GameManager::positionRandomizerWave(int random, iPoint wave_pos)
 {

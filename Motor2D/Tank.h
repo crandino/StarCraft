@@ -126,6 +126,7 @@ public:
 	void checkUnitDirection();
 	void newEntityFound();
 	void setParticleBehaviour();
+	bool attack(Entity* target_to_attack, float min_range = -999.0f);
 	void resetParticle();
 
 };

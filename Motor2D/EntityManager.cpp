@@ -402,23 +402,22 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 	return e;
 }
 
-/*Method that makes the enemyWave attack the commandCenter*/
-void EntityManager::SetEnemyToAttackCommandCenter(Entity* e)
+/*Method that makes the enemy move to this position*/
+void EntityManager::SetEnemyToPos(Entity* e, iPoint pos)
 {
 	if (e->type == UNIT)
 	{
-		iPoint p = app->game_manager->command_center_position;
-		p = app->map->worldToMap(app->map->data.back(), p.x, p.y);
+		pos = app->map->worldToMap(app->map->data.back(), pos.x, pos.y);
 
 		Unit* unit = (Unit*)e;
 		if (unit->flying)
 		{
 			unit->path.clear();
-			unit->path.push_back(p);
+			unit->path.push_back(pos);
 			unit->has_target = true;
 			unit->state = MOVE_ALERT;
 		}
-		else if (app->path->createPath(e->tile_pos, p + unit->distance_to_center_selector, e->id) != -1)
+		else if (app->path->createPath(e->tile_pos, pos + unit->distance_to_center_selector, e->id) != -1)
 			unit->state = WAITING_PATH_MOVE_ALERT;
 	}
 }
@@ -1133,7 +1132,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
 			uint maxHP = it->second->current_hp;
 
-			if (ret == NULL && d >= min_area_range && d <= value && maxHP <= previousMaxHP)
+			if (ret == NULL && d > min_area_range && d <= value && maxHP <= previousMaxHP)
 			{
 				value = d;
 				previousMaxHP = maxHP;
@@ -1142,8 +1141,8 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 			else if (ret != NULL)
 			{
 				//Only search entities with same type or if type is building, it search units
-				if ((ret->type == it->second->type && d >= min_area_range &&  d <= value && maxHP <= previousMaxHP) ||
-					(ret->type == BUILDING && it->second->type == UNIT && d >= min_area_range &&  d <= e->range_of_vision && maxHP <= previousMaxHP))
+				if ((ret->type == it->second->type && d > min_area_range &&  d <= value && maxHP <= previousMaxHP) ||
+					(ret->type == BUILDING && it->second->type == UNIT && d > min_area_range &&  d <= e->range_of_vision && maxHP <= previousMaxHP))
 				{
 					value = d;
 					previousMaxHP = maxHP;

@@ -52,9 +52,9 @@ enum WAVE_STATE
 struct bombPosition
 {
 	iPoint north_west = { 300, 630 };
-	iPoint north_east = { 3048, 352 };
-	iPoint south_west = { 1950, 3370 };
-	iPoint south_east = { 3735, 2560 };
+	iPoint north_east = { 2450, 120 };
+	iPoint south_west = { 2000, 3850 };
+	iPoint south_east = { 3560, 3825 };
 };
 
 using namespace std;
@@ -239,6 +239,7 @@ private:
 	void				checkingGameConditions();
 	iPoint				positionRandomizerWave(int random, iPoint wave_pos);
 	iPoint				positionRandomizerBomb(int random, iPoint bomb_pos);
+	void				createEnemiesBombPhase();
 	// Creating waves
 	void			    createWave(SizeWave* size, iPoint position);
 	void				createWaveInfo(SizeWave* size, uint display_time);

@@ -268,8 +268,9 @@ bool Mutalisk::update(float dt)
 				newEntityFound();
 				second_target_to_attack = target_to_attack->searchNearestAlly();
 			}
-			else if (faction == COMPUTER)
-				app->entity_manager->SetEnemyToAttackCommandCenter(this);
+			else if (faction == COMPUTER && target_pos.x != -1 && target_pos.y != -1 &&
+				(range_of_vision / 2) < (abs(center.x - target_pos.x) + abs(center.y - target_pos.y) - (coll->rect.w / 2 + coll->rect.h / 2) / 2))
+				app->entity_manager->SetEnemyToPos(this, target_pos);
 			timer_to_check.start();
 		}
 		break;

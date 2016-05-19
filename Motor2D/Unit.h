@@ -25,6 +25,7 @@ public:
 	vector<iPoint>		path;							// The path returned by the PathFinding that the unit follows...
 	float				speed;							// ...at some speed.
 	iPoint				distance_to_center_selector = { 0, 0 };    // Useful for PathFinding for groups of units
+	iPoint				target_pos = { -1, -1 };
 
 	bool				flying;							// Does it flies?
 	bool				area_attack = false;			// Can attack in area?
@@ -36,7 +37,7 @@ public:
 	virtual void calculePos();
 	virtual Entity* searchEnemy(bool can_attack_to_flying = true, float min_area_range = -999.0f);
 
-	virtual bool attack(Entity* target_to_attack);
+	virtual bool attack(Entity* target_to_attack, float min_range = -999.0f);
 	virtual void attackWithoutRange(Entity* target_to_attack);
 
 	virtual void move(float dt);
