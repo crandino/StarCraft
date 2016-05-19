@@ -354,8 +354,8 @@ bool GameManager::update(float dt)
 
 			int random = rand() % 4;
 			iPoint bomb_pos = positionRandomizerBomb(random, bomb_pos);
-			app->entity_manager->addEntity(bomb_pos, BOMB);
 			createEnemiesBombPhase();
+			app->entity_manager->addEntity(bomb_pos, BOMB);
 			timer_between_waves.start();
 			game_state = SECOND_PHASE;
 		}
