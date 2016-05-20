@@ -438,6 +438,10 @@ bool Hydralisk::update(float dt)
 		}
 		break;
 	}
+
+	if (grouped && (state != MOVE && state != MOVE_ALERT && state != IDLE))
+		grouped = false;
+
 	return true;
 }
 

@@ -372,6 +372,10 @@ bool Medic::update(float dt)
 		}
 		break;
 	}
+
+	if (grouped && (state != MOVE && state != MOVE_ALERT && state != IDLE))
+		grouped = false;
+
 	return true;
 }
 
@@ -402,7 +406,11 @@ void Medic::move(float dt)
 	{
 		float pixels_to_move = 0;
 		float total_pixels_moved = 0;
-		float total_pixels_to_move = (speed * speed_multiplier) / 100 * dt;
+		float total_pixels_to_move;
+		if (grouped)
+			total_pixels_to_move = (group_speed * speed_multiplier) / 100 * dt;
+		else
+			total_pixels_to_move = (speed * speed_multiplier) / 100 * dt;
 
 		if (total_pixels_to_move >= 4)
 			pixels_to_move = 4;
