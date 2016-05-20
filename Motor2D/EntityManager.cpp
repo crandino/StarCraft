@@ -1116,7 +1116,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
-	uint previousMaxHP = 99999;
+	float previousMaxHP = 100.0f;
 	for (; it != active_entities.end(); ++it)
 	{
 		if (it->second != e && it->second->state != DYING && e->faction != it->second->faction && it->second->specialization != BOMB)
@@ -1130,7 +1130,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 			}
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			uint maxHP = it->second->current_hp;
+			float maxHP = (it->second->current_hp * 100.0f) / it->second->max_hp;
 
 			if (ret == NULL && d > min_area_range && d <= value && maxHP <= previousMaxHP)
 			{
@@ -1159,7 +1159,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
-	uint previousMaxHP = 99999;
+	float previousMaxHP = 100.0f;
 	for (; it != active_entities.end(); ++it)
 	{
 		if (it->second != e && it->second->state != DYING && e->faction == it->second->faction && it->second->specialization != BOMB &&
@@ -1169,7 +1169,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 		{
 			float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
 			d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
-			uint maxHP = it->second->current_hp;
+			float maxHP = (it->second->current_hp * 100.0f) / it->second->max_hp;
 
 			if (d <= value && maxHP <= previousMaxHP)
 			{
