@@ -146,6 +146,9 @@
     <ClCompile Include="Motor2D\Barrack.cpp">
       <Filter>Entities\Terran_Buildings</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\MenuScene.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -321,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\GuiInfo.h">
       <Filter>UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\MenuScene.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
