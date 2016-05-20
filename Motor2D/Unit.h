@@ -25,7 +25,7 @@ public:
 	vector<iPoint>		path;							// The path returned by the PathFinding that the unit follows...
 	float				speed;							// ...at some speed.
 	float				group_speed;
-	bool				grouped;
+	bool				grouped = false;
 	iPoint				distance_to_center_selector = { 0, 0 };    // Useful for PathFinding for groups of units
 	iPoint				target_pos = { -1, -1 };
 

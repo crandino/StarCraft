@@ -677,6 +677,7 @@ void GameManager::checkingGameConditions()
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
 {
+	float speed = 20.0f;
 	Entity *entity_to_add;
 	for (uint i = 0; i < wave->zergling_quantity; i++)
 	{
@@ -698,6 +699,8 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 			unit->has_target = true;
 			unit->state = MOVE;
 		}
+		if (unit->speed < speed)
+			speed = unit->speed;
 	}
 
 	for (uint i = 0; i < wave->hydralisk_quantity; i++)
@@ -720,28 +723,8 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 			unit->has_target = true;
 			unit->state = MOVE;
 		}
-	}
-
-	for (uint i = 0; i < wave->ultralisk_quantity; i++)
-	{
-		int posx = position.x + (i * 8) - (wave->ultralisk_quantity * 4);
-		int posy = position.y + (i * 8) - (wave->ultralisk_quantity * 4);
-
-		iPoint position = { posx, posy };
-
-		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
-		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
-		int dx = i - (wave->ultralisk_quantity / 2);
-		int dy = i - (wave->ultralisk_quantity / 2);
-		Unit* unit = (Unit*)entity_to_add;
-		unit->target_pos = command_center_position;
-		unit->distance_to_center_selector = { dx, dy };
-		if (!app->path->isWalkable(unit->tile_pos))
-		{
-			unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 50));
-			unit->has_target = true;
-			unit->state = MOVE;
-		}
+		if (unit->speed < speed)
+			speed = unit->speed;
 	}
 
 	for (uint i = 0; i < wave->mutalisk_quantity; i++)
@@ -764,7 +747,43 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 			unit->has_target = true;
 			unit->state = MOVE;
 		}
-	}	
+		if (unit->speed < speed)
+			speed = unit->speed;
+	}
+
+	for (uint i = 0; i < wave->ultralisk_quantity; i++)
+	{
+		int posx = position.x + (i * 8) - (wave->ultralisk_quantity * 4);
+		int posy = position.y + (i * 8) - (wave->ultralisk_quantity * 4);
+
+		iPoint position = { posx, posy };
+
+		entity_to_add = app->entity_manager->addEntity(position, ULTRALISK);
+		current_wave_entities.insert(pair<uint, Entity*>(entity_to_add->id, entity_to_add));
+		int dx = i - (wave->ultralisk_quantity / 2);
+		int dy = i - (wave->ultralisk_quantity / 2);
+		Unit* unit = (Unit*)entity_to_add;
+		unit->target_pos = command_center_position;
+		unit->distance_to_center_selector = { dx, dy };
+		if (!app->path->isWalkable(unit->tile_pos))
+		{
+			unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 50));
+			unit->has_target = true;
+			unit->state = MOVE;
+		}
+		if (unit->speed < speed)
+			speed = unit->speed;
+	}
+
+	for (map<uint, Entity*>::iterator it = current_wave_entities.begin(); it != current_wave_entities.end(); it++)
+	{
+		if (it->second->type == UNIT)
+		{
+			((Unit*)it->second)->grouped = true;
+			((Unit*)it->second)->group_speed = speed;
+		}
+	}
+
 }
 
 void GameManager::createWaveInfo(SizeWave* wave, uint display_time)
