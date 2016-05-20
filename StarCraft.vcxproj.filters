@@ -149,6 +149,9 @@
     <ClCompile Include="Motor2D\MenuScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\ModuleFadeToBlack.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -326,6 +329,9 @@
       <Filter>UI_elements</Filter>
     </ClInclude>
     <ClInclude Include="Motor2D\MenuScene.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\ModuleFadeToBlack.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

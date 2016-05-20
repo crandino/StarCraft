@@ -9,6 +9,7 @@
 #include "GuiLabel.h"
 #include "Textures.h"
 #include "GameManager.h"
+#include "ModuleFadeToBlack.h"
 
 MenuScene::MenuScene()
 {
@@ -96,6 +97,8 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 			background->disable_element();
 			start_button->disable_element();
 			close_button->disable_element();
+
+			app->fade->fadeToBlack(this, (Module*)app->scene, 0.1f);
 
 			app->game_manager->startGame();
 			//app->audio->playFx(fx_click, 0);

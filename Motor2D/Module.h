@@ -83,11 +83,29 @@ public:
 	virtual void onCollision(Collider* c1, Collider* c2)
 	{}
 
+	void enable()
+	{
+		if (active == false)
+		{
+			active = true;
+			start();
+		}
+	}
+
+	void disable()
+	{
+		if (active == true)
+		{
+			active = false;
+			cleanUp();
+		}
+	}
+
+
 public:
 
 	std::string	    name;
-	bool		active;
-
+	bool		active = true;
 };
 
 #endif // __MODULE_H__

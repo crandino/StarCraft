@@ -104,6 +104,7 @@
     <ClInclude Include="Motor2D\GuiMinimap.h" />
     <ClInclude Include="Motor2D\MenuScene.h" />
     <ClInclude Include="Motor2D\Module.h" />
+    <ClInclude Include="Motor2D\ModuleFadeToBlack.h" />
     <ClInclude Include="Motor2D\Mutalisk.h" />
     <ClInclude Include="Motor2D\p2Defs.h" />
     <ClInclude Include="Motor2D\p2Log.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Motor2D\Marine.cpp" />
     <ClCompile Include="Motor2D\Medic.cpp" />
     <ClCompile Include="Motor2D\MenuScene.cpp" />
+    <ClCompile Include="Motor2D\ModuleFadeToBlack.cpp" />
     <ClCompile Include="Motor2D\Mutalisk.cpp" />
     <ClCompile Include="Motor2D\GuiMinimap.cpp" />
     <ClCompile Include="Motor2D\p2Log.cpp" />
