@@ -580,7 +580,7 @@ bool Tank::update(float dt)
 			}
 		}
 
-		if (grouped && (state != MOVE && state != MOVE_ALERT && state != IDLE))
+		if (grouped && (state != MOVE && state != MOVE_ALERT && state != WAITING_PATH_MOVE && state != WAITING_PATH_MOVE_ALERT && state != IDLE))
 			grouped = false;
 
 		break;
