@@ -172,28 +172,8 @@ bool GameManager::start()
 	//Backgorund audio (DEBUG include)
 	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
 
-	start_image = app->tex->loadTexture("UI/Screens/Start_Image.png");
-
-	start_screen = app->gui->createImage(start_image, { 16, 16, 296, 336 });
-	start_screen->center();
-	start_screen->setLocalPos(start_screen->getLocalPos().x - 5, start_screen->getLocalPos().y - 50);
-
-	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
-	start_button->parent = start_screen;
-	start_button->center();
-	start_button->interactive = true;
-	start_button->can_focus = true;
-	start_button->setListener(this);
-
-	close_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
-	close_button->parent = start_screen;
-	close_button->center();
-	close_button->setLocalPos(close_button->getLocalPos().x, close_button->getLocalPos().y + 80);
-	close_button->interactive = true;
-	close_button->can_focus = true;
-	close_button->setListener(this);
-
 	defeat_atlas = app->tex->loadTexture("UI/Screens/Defeat_Screen_Atlas.png");
+
 	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
 	defeat_screen->center();
 	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y - 70);
@@ -863,32 +843,13 @@ void GameManager::startGame()
 	timer_between_waves.start();
 }
 
+void GameManager::endGame()
+{
+	game_state = QUIT;
+}
+
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 {
-	if (ui == start_button)
-	{
-		switch (event)
-		{
-
-		case(MOUSE_LCLICK_DOWN) :
-			start_button->setSection({ 339, 103, 141, 38 });
-			break;
-
-		case(MOUSE_LCLICK_UP) :
-
-			start_button->setSection({ 339, 229, 141, 39 });			
-			
-			start_screen->draw_element = false;
-			start_button->disable_element();
-			close_button->disable_element();
-
-			game_state = PREPARATION;
-			app->audio->playFx(fx_click, 0);
-			timer_between_waves.start();
-			break;
-		}
-	}
-
 	if (ui == exit_button)
 	{
 		switch (event)
@@ -899,21 +860,6 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 		case(MOUSE_LCLICK_UP) :
 			exit_button->setSection({ 384, 28, 104, 28 });
-			game_state = QUIT;
-			break;
-		}
-	}
-
-	if (ui == close_button)
-	{
-		switch (event)
-		{
-		case(MOUSE_LCLICK_DOWN) :
-			app->audio->playFx(fx_click, 0);
-			close_button->setSection({ 339, 278, 145, 40 });
-			break;
-		case(MOUSE_LCLICK_UP) :
-			close_button->setSection({ 339, 229, 145, 40 });
 			game_state = QUIT;
 			break;
 		}
