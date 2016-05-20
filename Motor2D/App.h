@@ -27,6 +27,7 @@ class Collision;
 class GameManager;
 class FogOfWar;
 class ParticleManager;
+class MenuScene;
 
 class App
 {
@@ -107,6 +108,7 @@ public:
 	GameManager*		game_manager;
 	FogOfWar*			fog_of_war;		
 	ParticleManager*	particle = NULL;
+	MenuScene*          menu;
 
 private:
 

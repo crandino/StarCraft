@@ -17,6 +17,8 @@
 #include "Fonts.h"
 #include "FogOfWar.h"
 #include "ParticleManager.h"
+#include "MenuScene.h"
+
 //Gameplay
 #include "GameManager.h"
 
@@ -46,6 +48,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	game_manager = new GameManager();
 	fog_of_war = new FogOfWar();
 	particle = new ParticleManager();
+	menu = new MenuScene();
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
 	addModule(fs);
@@ -63,6 +66,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(fog_of_war);
 	addModule(scene);
 	addModule(particle);
+	addModule(menu);
 	// render last to swap buffer
 	addModule(render);
 }
