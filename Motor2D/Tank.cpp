@@ -783,7 +783,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 			}
 			if (!attack_up_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					particle_offset = { 0, -37 };
 					particle = app->particle->addParticle(attack_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->tank_shot);
@@ -806,7 +806,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_right_up_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_right_up_part.on = true;
 					particle_offset = { 20, -26 };
@@ -830,7 +830,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_right_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_right_part.on = true;
 					particle_offset = { 31, -9 };
@@ -853,7 +853,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_right_down_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_right_down_part.on = true;
 					particle_offset = { 17, 4 };
@@ -876,7 +876,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_down_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_down_part.on = true;
 					particle_offset = { 0, 15 };
@@ -899,7 +899,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_left_down_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_left_down_part.on = true;
 					particle_offset = { -17, 3 };
@@ -921,7 +921,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_left_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_left_part.on = true;
 					particle_offset = { -28, -11 };
@@ -944,7 +944,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_left_up_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_left_up_part.on = true;
 					particle_offset = { -17, -25 };
@@ -982,15 +982,14 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 			}
 			if (!attack_siege_mode_up_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
-					particle_offset = { 3, -20 };
+					particle_offset = { 3, -45 };
 					particle = app->particle->addParticle(attack_siege_mode_up_part, center.x, center.y, particle_offset.x, particle_offset.y, 1.0f, app->particle->tank_siege_shot);
 					attack_siege_mode_up_part.on = true;
 					if (target_to_attack != NULL)
 					particle_aux = app->particle->addParticle(tank_hit, target_to_attack->center.x, target_to_attack->center.y, 0, 0, 1.0f, app->particle->tank_hit);
 					
-
 				}
 				attack_siege_mode_up_part.on = false;
 			}
@@ -1005,7 +1004,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_right_up_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_right_up_part.on = true;
 					particle_offset = { 25, -36 };
@@ -1029,7 +1028,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_right_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_right_part.on = true;
 					particle_offset = { 34, -17 };
@@ -1052,7 +1051,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_right_down_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_right_down_part.on = true;
 					particle_offset = { 23, -4 };
@@ -1075,7 +1074,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_down_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_down_part.on = true;
 					particle_offset = { 3, 8 };
@@ -1098,7 +1097,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_left_down_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_left_down_part.on = true;
 					particle_offset = { -21, -3 };
@@ -1120,7 +1119,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_left_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_left_part.on = true;
 					particle_offset = { -35, -17 };
@@ -1143,7 +1142,7 @@ void Tank::setParticleBehaviour() // Right now, we can't see any particles becau
 
 			if (!attack_siege_mode_left_up_part.on)
 			{
-				if (timer_attack.read() >= particle_frequency)
+				if (timer_attack.read() >= attack_frequency)
 				{
 					attack_siege_mode_left_up_part.on = true;
 					particle_offset = { -23, -35 };
