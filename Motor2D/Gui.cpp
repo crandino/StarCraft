@@ -1809,7 +1809,7 @@ void Gui::controlIconsSprite()
 	if (buildingMenuOpened)
 	{
 		//Bunker
-		if (app->game_manager->mineral_resources <= app->entity_manager->bunker_mineral_cost || app->game_manager->gas_resources <= app->entity_manager->bunker_gas_cost)
+		if (app->game_manager->mineral_resources < app->entity_manager->bunker_mineral_cost || app->game_manager->gas_resources < app->entity_manager->bunker_gas_cost)
 		{
 			ui_create_bunker->setSection({ 440, 125, 37, 34 });
 			ui_create_bunker->draw_element;
