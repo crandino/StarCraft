@@ -41,10 +41,10 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 300, 220 };
-	iPoint north_east = { 3048, 352 };
-	iPoint south_west = { 1750, 3370 };
-	iPoint south_east = { 3650, 2560 };
+	iPoint north_west = { 877, 716 };
+	iPoint north_east = { 3557, 905 };
+	iPoint south_west = { 911, 3021 };
+	iPoint south_east = { 2606, 3056 };
 };
 
 enum wave_positions_enum
