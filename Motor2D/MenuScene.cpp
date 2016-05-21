@@ -100,7 +100,7 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 
 			app->fade->fadeToBlack(this, (Module*)app->scene, 0.1f);
 
-			app->game_manager->startGame();
+			app->game_manager->prepareGame();
 			//app->audio->playFx(fx_click, 0);
 			break;
 		}

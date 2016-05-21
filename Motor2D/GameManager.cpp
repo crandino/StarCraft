@@ -848,6 +848,12 @@ void GameManager::endGame()
 	game_state = QUIT;
 }
 
+void GameManager::prepareGame()
+{
+	game_state = PREPARATION;
+	timer_between_waves.start();
+}
+
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 {
 	if (ui == exit_button)
