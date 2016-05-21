@@ -45,7 +45,7 @@
       scv_gas_cost = "0"
       medic_mineral_cost = "50"
       medic_gas_cost = "25"     
-      tank_mineral_cost = "150"
+      tank_mineral_cost = "250"
       tank_gas_cost = "100" 
       
       zergling_mineral_cost = "50"
@@ -62,9 +62,9 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "7"/>
+    <totalWaves value = "8"/>
     <timeBeforeGameStarts value ="6.0f"/>
-    <timeBetweenWavesPhase1 value = "6.0f"/>
+    <timeBetweenWavesPhase1 value = "20.0f"/>
     <timeBetweenWavesPhase2 value = "10.0f"/>
     <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
@@ -79,14 +79,21 @@
     
     <!-- Wave Information -->    
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
-    <SizeWave zerglings ="7" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
-    <SizeWave zerglings ="8" hydralisks ="3" mutalisks ="0" ultralisks ="0"/>
-    <SizeWave zerglings ="12" hydralisks ="5" mutalisks ="1" ultralisks ="0"/>
-    <SizeWave zerglings ="18" hydralisks ="10" mutalisks ="0" ultralisks ="0"/>
-    <SizeWave zerglings ="25" hydralisks ="15" mutalisks ="" ultralisks ="0"/>
-    <SizeWave zerglings ="35" hydralisks ="16" mutalisks ="8" ultralisks ="0"/>
+    <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
+    <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="1" ultralisks ="0"/>
+    <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="1" ultralisks ="0"/>
+    <SizeWave zerglings ="5" hydralisks ="2" mutalisks ="2" ultralisks ="0"/>
+    <SizeWave zerglings ="8" hydralisks ="2" mutalisks ="3" ultralisks ="0"/>
+    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/>
+    <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="2"/>
+    
+    
+    
     
     <SizeWave2 zerglings ="10" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
+    
+    
+    
     
     <SizeWave3 zerglings ="15" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
     

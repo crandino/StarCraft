@@ -76,14 +76,14 @@ Bunker::Bunker(iPoint &p)
 	specialization = BUNKER;
 	max_hp = 350;
 
-	current_hp = 350.0f;
+	current_hp = 200.0f;
 	max_hp_bars = 10;
 	offset_life = { -23, 35 };
 	max_capacity = 4;
 
-	range_of_vision = range_to_attack = 150;
+	range_of_vision = range_to_attack = 300;
 	damage = 0.0f; //we change it according to the amount of marines inside;
-	attack_frequency = 200.0f;
+	attack_frequency = 625.0f;
 
 	state = IDLE;
 	faction = PLAYER;
