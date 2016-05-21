@@ -69,35 +69,35 @@ Firebat::Firebat(iPoint &p)
 
 	//-----------Firebat ATTACK----------------------
 	attack_right.setAnimations(128, 0, 32, 32, 1, 2, 2);
-	attack_right.speed = 0.002f;
+	attack_right.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_right);
 
 	attack_right_up.setAnimations(64, 0, 32, 32, 1, 2, 2);
-	attack_right_up.speed = 0.002f;
+	attack_right_up.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_right_up);
 
 	attack_up.setAnimations(0, 0, 32, 32, 1, 2, 2);
-	attack_up.speed = 0.003f;
+	attack_up.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_up);
 
 	attack_left_up.setAnimations(448, 0, 32, 32, 1, 2, 2);
-	attack_left_up.speed = 0.002f;
+	attack_left_up.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_left_up);
 
 	attack_left.setAnimations(384, 0, 32, 32, 1, 2, 2);
-	attack_left.speed = 0.002f;
+	attack_left.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_left);
 
 	attack_left_down.setAnimations(320, 0, 32, 32, 1, 2, 2);
-	attack_left_down.speed = 0.002f;
+	attack_left_down.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_left_down);
 
 	attack_down.setAnimations(256, 0, 32, 32, 1, 2, 2);
-	attack_down.speed = 0.002f;
+	attack_down.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_down);
 
 	attack_right_down.setAnimations(192, 0, 32, 32, 1, 2, 2);
-	attack_right_down.speed = 0.002f;
+	attack_right_down.speed = 0.006f;
 	attack_animation_pack.push_back(&attack_right_down);
 	//----------------------------------------------
 
@@ -110,35 +110,35 @@ Firebat::Firebat(iPoint &p)
 	//-----------Firebat Particles------------------
 	fire_up.anim.setAnimations(0, 0, 80, 72, 1, 13, 13);
 	fire_up.anim.speed = 0.02f;
-	fire_up.anim.loop = true;
+	fire_up.anim.loop = false;
 
 	fire_right_up.anim.setAnimations(324, 0, 80, 72, 1, 13, 13);
 	fire_right_up.anim.speed = 0.02f;
-	fire_right_up.anim.loop = true;
+	fire_right_up.anim.loop = false;
 
 	fire_right.anim.setAnimations(163, 0, 80, 72, 1, 13, 13);
 	fire_right.anim.speed = 0.02f;
-	fire_right.anim.loop = true;
+	fire_right.anim.loop = false;
 
 	fire_right_down.anim.setAnimations(487, 0, 80, 72, 1, 13, 13);
 	fire_right_down.anim.speed = 0.02f;
-	fire_right_down.anim.loop = true;
+	fire_right_down.anim.loop = false;
 
 	fire_down.anim.setAnimations(80, 0, 80, 72, 1, 13, 13);
 	fire_down.anim.speed = 0.02f;
-	fire_down.anim.loop = true;
+	fire_down.anim.loop = false;
 
 	fire_left_down.anim.setAnimations(569, 0, 80, 72, 1, 13, 13);
 	fire_left_down.anim.speed = 0.02f;
-	fire_left_down.anim.loop = true;
+	fire_left_down.anim.loop = false;
 
 	fire_left.anim.setAnimations(245, 0, 80, 72, 1, 13, 13);
 	fire_left.anim.speed = 0.02f;
-	fire_left.anim.loop = true;
+	fire_left.anim.loop = false;
 
 	fire_left_up.anim.setAnimations(409, 0, 80, 72, 1, 13, 13);
 	fire_left_up.anim.speed = 0.02f;
-	fire_left.anim.loop = true;
+	fire_left.anim.loop = false;
 
 	//----------------------------------------------
 	current_animation = &idle_up;
@@ -173,6 +173,7 @@ Firebat::Firebat(iPoint &p)
 	range_to_attack = 50;
 	damage = 16.0f;
 	attack_frequency = 220.0f;
+	particle_frequency = 220.0f;
 	area_attack = true;
 	area_range = 40.0f;
 	time_to_die = 500.0f;
@@ -562,13 +563,14 @@ void Firebat::setParticleBehaviour()
 			}
 			if (!fire_up.on)
 			{
-
-				particle_offset = { 5, -45 };
-				particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
-				fire_up.on = true;
-
+				if (timer_attack.read() >= particle_frequency)
+				{
+					particle_offset = { 5, -45 };
+					particle = app->particle->addParticle(fire_up, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+					fire_up.on = true;
+				}
+				fire_up.on = false;
 			}
-
 		}
 
 		if (current_animation == &attack_right_up)
@@ -581,11 +583,14 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_right_up.on)
 			{
-				fire_right_up.on = true;
-				particle_offset = { 45, -40 };
-				particle = app->particle->addParticle(fire_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_right_up.on = true;
+					particle_offset = { 45, -40 };
+					particle = app->particle->addParticle(fire_right_up, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_right_up.on = false;
 			}
-
 		}
 
 		if (current_animation == &attack_right)
@@ -598,11 +603,14 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_right.on)
 			{
-				fire_right.on = true;
-				particle_offset = { 60, -5 };
-				particle = app->particle->addParticle(fire_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_right.on = true;
+					particle_offset = { 60, -5 };
+					particle = app->particle->addParticle(fire_right, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_right.on = false;
 			}
-
 		}
 
 		if (current_animation == &attack_right_down)
@@ -614,11 +622,14 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_right_down.on)
 			{
-				fire_right_down.on = true;
-				particle_offset = { 46, 30 };
-				particle = app->particle->addParticle(fire_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_right_down.on = true;
+					particle_offset = { 46, 30 };
+					particle = app->particle->addParticle(fire_right_down, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_right_down.on = false;
 			}
-
 		}
 
 		if (current_animation == &attack_down)
@@ -630,11 +641,14 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_down.on)
 			{
-				fire_down.on = true;
-				particle_offset = { 2, 40 };
-				particle = app->particle->addParticle(fire_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_down.on = true;
+					particle_offset = { 2, 40 };
+					particle = app->particle->addParticle(fire_down, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_down.on = false;
 			}
-
 		}
 
 		if (current_animation == &attack_left_down)
@@ -646,9 +660,13 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_left_down.on)
 			{
-				fire_left_down.on = true;
-				particle_offset = { -45, 30 };
-				particle = app->particle->addParticle(fire_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_left_down.on = true;
+					particle_offset = { -45, 30 };
+					particle = app->particle->addParticle(fire_left_down, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_left_down.on = false;
 			}
 		}
 
@@ -661,11 +679,14 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_left.on)
 			{
-				fire_left.on = true;
-				particle_offset = { -60, -5 };
-				particle = app->particle->addParticle(fire_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_left.on = true;
+					particle_offset = { -60, -5 };
+					particle = app->particle->addParticle(fire_left, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_left.on = false;
 			}
-
 		}
 
 		if (current_animation == &attack_left_up)
@@ -677,11 +698,14 @@ void Firebat::setParticleBehaviour()
 
 			if (!fire_left_up.on)
 			{
-				fire_left_up.on = true;
-				particle_offset = { -45, -40 };
-				particle = app->particle->addParticle(fire_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->firebat_particle);
+				if (timer_attack.read() >= particle_frequency)
+				{
+					fire_left_up.on = true;
+					particle_offset = { -45, -40 };
+					particle = app->particle->addParticle(fire_left_up, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->firebat_particle);
+				}
+				fire_left_up.on = false;
 			}
-
 		}
 		break;
 	case DYING:
