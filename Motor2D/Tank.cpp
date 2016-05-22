@@ -375,17 +375,17 @@ Tank::Tank(iPoint &p)
 
 	// Attack values and properties
 	range_of_vision = 800;
-	range_to_attack = 220;
-	damage = 80.0f;
-	attack_frequency = 2000.0f;
-	particle_frequency = 2000.0f;
+	range_to_attack = 175;
+	damage = 30.0f;
+	attack_frequency = 370.0f;
+	particle_frequency = 370.0f;
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;
 	min_area_range = 96.0f;
 
 	// PathFinding and movement variables
-	speed = 12.0f;
+	speed = 9.0f;
 }
 
 Tank::~Tank()
@@ -564,11 +564,12 @@ bool Tank::update(float dt)
 				{
 					state = IDLE_SIEGE_MODE;
 					area_attack = true;
-					damage *= 1.5f;// = 45 without buff
+					damage *= 2.3f;// = 45 without buff
 					path.clear();
 					has_target = false;
 					app->path->erase(id);
-					range_to_attack *= 2;
+					range_to_attack *= 1.71f;
+					attack_frequency *= 2.0f;
 					app->map->changeLogic(coll->rect, NO_WALKABLE);
 					app->entity_manager->recalculatePaths(coll->rect, false);
 				}
@@ -600,8 +601,9 @@ bool Tank::update(float dt)
 			{
 				state = IDLE;
 				area_attack = false;
-				damage /= 1.5f;// = 45 without buff
-				range_to_attack /= 2;
+				damage /= 2.3f;// = 45 without buff
+				range_to_attack /= 1.71f;
+				attack_frequency /= 2.0f;
 				app->map->changeLogic(coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(coll->rect, true);
 			}

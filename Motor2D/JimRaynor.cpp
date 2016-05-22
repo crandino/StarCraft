@@ -260,9 +260,9 @@ JimRaynor::JimRaynor(iPoint &p)
 
 	// Attack values and properties
 	range_of_vision = 300;
-	range_to_attack = 120;
-	damage = 20.0f;
-	attack_frequency = 200.0f;
+	range_to_attack = 70;
+	damage = 80.0f;
+	attack_frequency = 1000.0f;
 
 	// PathFinding and movement variables
 	speed = 13.0f;

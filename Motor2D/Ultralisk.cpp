@@ -170,15 +170,15 @@ Ultralisk::Ultralisk(iPoint &p)
 
 	// Attack values and properties
 	range_of_vision = 200;
-	range_to_attack = 75;
-	damage = 80.0f;
-	attack_frequency = 4000.0f;
+	range_to_attack = 25;
+	damage = 20.0f;
+	attack_frequency = 150.0f;
 	time_to_die = 500.0f;
 	area_attack = true;
 	area_range = 40.0f;
 
 	// PathFinding and movement variables
-	speed = 7.0f;
+	speed = 12.0f;
 }
 
 Ultralisk::~Ultralisk()

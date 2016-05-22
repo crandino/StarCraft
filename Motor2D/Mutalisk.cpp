@@ -234,13 +234,13 @@ Mutalisk::Mutalisk(iPoint &p)
 
 	// Attack values and properties
 	range_of_vision = 300;
-	range_to_attack = 120;
-	damage = 6.0f;
-	attack_frequency = 700.0f;
-	particle_frequency = 700.0f;
+	range_to_attack = 75;
+	damage = 9.0f;
+	attack_frequency = 300.0f;
+	particle_frequency = 300.0f;
 
 	// PathFinding and movement variables
-	speed = 12.0f;
+	speed = 15.0f;
 }
 
 Mutalisk::~Mutalisk()
