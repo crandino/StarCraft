@@ -338,6 +338,7 @@ bool GameManager::update(float dt)
 			app->entity_manager->addEntity(bomb_pos, BOMB);
 			timer_between_waves.start();
 			game_state = SECOND_PHASE;
+			current_wave = 0;
 		}
 		break;
 	}
@@ -588,20 +589,14 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
-	waves2_info[0]->zergling_quantity += 4;
+	if(current_wave % multiplier_hydra == 0)
+		waves2_info[0]->hydralisk_quantity += 1;
 
-	waves2_info[0]->mutalisk_quantity += 1;
-
-	waves2_info[0]->hydralisk_quantity += 2;
+	if (current_wave % multiplier_muta == 0)
+		waves2_info[0]->mutalisk_quantity += 1;
 	
-	//if(current_wave % multiplier_hydra == 0)
-	//	waves2_info[0]->hydralisk_quantity += 1;
-
-	//if (current_wave % multiplier_muta == 0)
-	//	waves2_info[0]->mutalisk_quantity += 1;
-	
-	//if (current_wave % multiplier_ultra == 0)
-	//	waves2_info[0]->ultralisk_quantity += 1;
+	if (current_wave % multiplier_ultra == 0)
+		waves2_info[0]->ultralisk_quantity += 1;
 	
 	return 1;
 	/*REST OF UNITS*/
@@ -1026,30 +1021,28 @@ iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
 void GameManager::createEnemiesBombPhase()
 {
 	Unit* entity_added;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, HYDRALISK);
 	entity_added->target_pos = bomb_position.north_east;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, MUTALISK);
 	entity_added->target_pos = bomb_position.north_east;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, HYDRALISK);
 	entity_added->target_pos = bomb_position.north_east;
 
 	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, ULTRALISK);
 	entity_added->target_pos = bomb_position.north_west;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, ULTRALISK);
-	entity_added->target_pos = bomb_position.north_west;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_west, MUTALISK);
 	entity_added->target_pos = bomb_position.north_west;
 
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, HYDRALISK);
 	entity_added->target_pos = bomb_position.south_east;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, HYDRALISK);
 	entity_added->target_pos = bomb_position.south_east;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_east, MUTALISK);
 	entity_added->target_pos = bomb_position.south_east;
 
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, HYDRALISK);
 	entity_added->target_pos = bomb_position.south_west;
-	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, ULTRALISK);
+	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, MUTALISK);
 	entity_added->target_pos = bomb_position.south_west;
 	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.south_west, ULTRALISK);
 	entity_added->target_pos = bomb_position.south_west;

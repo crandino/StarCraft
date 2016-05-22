@@ -65,14 +65,15 @@
     <totalWaves value = "8"/>
     <timeBeforeGameStarts value ="6.0f"/>
     <timeBetweenWavesPhase1 value = "20.0f"/>
-    <timeBetweenWavesPhase2 value = "10.0f"/>
+    <timeBetweenWavesPhase2 value = "20.0f"/>
     <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "10.0f"/>
     <timeBomb value = "240.0f" />
     
     <!--Debug-->
-    <hold value ="false"/>
+    <hold value ="false" />
+    
     <!--<phase1 value ="false"/>
     <phase2 value ="false"/>
     <phase3 value ="false"/> -->   
@@ -85,7 +86,7 @@
     <SizeWave zerglings ="5" hydralisks ="2" mutalisks ="2" ultralisks ="0"/>
     <SizeWave zerglings ="8" hydralisks ="2" mutalisks ="3" ultralisks ="0"/>
     <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/>
-    <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="2"/>
+    <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="0"/>
     
     
     

@@ -254,8 +254,8 @@ JimRaynor::JimRaynor(iPoint &p)
 	offset_life = { -16, 16 };
 
 	// Lifes attributes
-	max_hp = 200;
-	current_hp = 200.0f;
+	max_hp = 250;
+	current_hp = 250.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties
