@@ -62,7 +62,7 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "1"/>
+    <totalWaves value = "8"/>
     <timeBeforeGameStarts value ="6.0f"/>
     <timeBetweenWavesPhase1 value = "20.0f"/>
     <timeBetweenWavesPhase2 value = "20.0f"/>
@@ -78,14 +78,14 @@
     <phase2 value ="false"/>
     <phase3 value ="false"/> -->   
     
-    <!-- Wave Information     
+    <!-- Wave Information  --> 
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="1" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="1" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="2" mutalisks ="2" ultralisks ="0"/>
     <SizeWave zerglings ="8" hydralisks ="2" mutalisks ="3" ultralisks ="0"/>
-    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/> -->
+    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/> 
     <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="0"/>
     
     
@@ -108,9 +108,9 @@
     <MutaliskScore value = "15" />
     <UltraliskScore value = "50" />    
     
-    <multiplierHydra value ="3" />
-    <multiplierMuta value ="6" />
-    <multiplierUltra value ="8" />
+    <multiplierHydra value ="2" />
+    <multiplierMuta value ="3" />
+    <multiplierUltra value ="6" />
     
     <!-- Difficulty -->
     <powerHydra value = "1" />
