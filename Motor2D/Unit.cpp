@@ -285,6 +285,19 @@ void Unit::newEntityFound()
 		state = ATTACK;
 		timer_attack.start();
 	}
+	else if (has_focus && !app->fog_of_war->isVisible(target_to_attack->center.x, target_to_attack->center.y))
+	{
+		has_focus = false;
+		if (flying)
+		{
+			path.clear();
+			path.push_back(target_to_attack->tile_pos);
+			has_target = true;
+			state = MOVE_ALERT;
+		}
+		else if (app->path->createPath(tile_pos, target_to_attack->tile_pos, id) != -1) //the path to the selected entity is constructed
+			state = WAITING_PATH_MOVE_ALERT;
+	}
 	else if (flying)
 	{
 		if (path.size() > 0 && path.back() == target_to_attack->tile_pos)//if the tile destination is the same than current path
@@ -302,6 +315,7 @@ void Unit::newEntityFound()
 	else if (path.size() > 0 && path.back() == app->path->findNearestWalkableTile(target_to_attack->tile_pos, tile_pos, 5))//if the tile destination is the same than current path
 	{
 		has_target = true;
+		state = MOVE_ALERT_TO_ATTACK;
 	}
 	else if (app->path->createPath(tile_pos, target_to_attack->tile_pos, id) != -1) //the path to the selected entity is constructed
 		state = WAITING_PATH_MOVE_ALERT_TO_ATTACK;

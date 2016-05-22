@@ -1095,16 +1095,9 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 bool EntityManager::checkFocus(Unit* e)
 {
 	bool ret = false;
-	float value = e->range_of_vision;
 	if (e->target_to_attack != NULL && e->target_to_attack->state != DYING)
 	{
-		float d = abs(e->center.x - e->target_to_attack->center.x) + abs(e->center.y - e->target_to_attack->center.y);
-		d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (e->target_to_attack->coll->rect.w / 2 + e->target_to_attack->coll->rect.h / 2) / 2);
-
-		if (d <= value)
-		{
-			ret = true;
-		}
+		ret = true;
 	}
 	if (!ret)
 		e->has_focus = false;
