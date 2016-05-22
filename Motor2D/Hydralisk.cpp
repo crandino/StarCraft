@@ -253,12 +253,12 @@ Hydralisk::Hydralisk(iPoint &p)
 	range_of_vision = 300;
 	range_to_attack = 100;
 	damage = 10.0f;
-	attack_frequency = 150.0f;
-	particle_frequency = 150.0f;
+	attack_frequency = 625.0f;
+	particle_frequency = 625.0f;
 	time_to_die = 500.0f;
 
 	// PathFinding and movement variables
-	speed = 10.0f;
+	speed = 8.35f;
 }
 
 Hydralisk::~Hydralisk()

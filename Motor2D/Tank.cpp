@@ -377,8 +377,8 @@ Tank::Tank(iPoint &p)
 	range_of_vision = 800;
 	range_to_attack = 175;
 	damage = 30.0f;
-	attack_frequency = 370.0f;
-	particle_frequency = 370.0f;
+	attack_frequency = 1541.0f;
+	particle_frequency = 1541.0f;
 	time_to_die = 500.0f;
 	area_attack = false;
 	area_range = 50.0f;

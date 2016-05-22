@@ -209,7 +209,7 @@ Zergling::Zergling(iPoint &p)
 	range_of_vision = 200;
 	range_to_attack = 25;
 	damage = 5.0f;
-	attack_frequency = 80.0f;
+	attack_frequency = 333.0f;
 
 	// PathFinding and movement variables
 	speed = 12.5f;
