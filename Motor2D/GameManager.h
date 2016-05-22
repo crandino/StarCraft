@@ -138,6 +138,7 @@ public:
 	// Setting, resetting or getting game conditions
 	void startGame();
 	void endGame();
+	void prepareGame();
 	void restartGame();
 	bool isGameStarted() const;
 
