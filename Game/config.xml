@@ -62,7 +62,7 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "8"/>
+    <totalWaves value = "1"/>
     <timeBeforeGameStarts value ="6.0f"/>
     <timeBetweenWavesPhase1 value = "20.0f"/>
     <timeBetweenWavesPhase2 value = "20.0f"/>
@@ -78,14 +78,14 @@
     <phase2 value ="false"/>
     <phase3 value ="false"/> -->   
     
-    <!-- Wave Information -->    
+    <!-- Wave Information     
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="1" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="1" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="2" mutalisks ="2" ultralisks ="0"/>
     <SizeWave zerglings ="8" hydralisks ="2" mutalisks ="3" ultralisks ="0"/>
-    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/>
+    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/> -->
     <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="0"/>
     
     
@@ -96,7 +96,7 @@
     
     
     
-    <SizeWave3 zerglings ="15" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
+    <SizeWave3 zerglings ="0" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
     
     <!-- Player Units -->
     <InitialSizePlayer marinesX="1" marinesY="1" medic ="0" scv ="0"/>

@@ -463,6 +463,9 @@ bool GameManager::update(float dt)
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
 			createWave(waves3_info[0], wave_pos);
+			createWave(waves3_info[0], wave_pos);
+			createWave(waves3_info[0], wave_pos);
+			createWave(waves3_info[0], wave_pos);
 			app->gui->mini_map->activePing(wave_pos);
 			wave3_power_counter += incrementPhase3WavePower();
 			wave_state = MIDDLE_WAVE;
@@ -589,13 +592,13 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
-	if(current_wave % multiplier_hydra == 0)
+	if((current_wave + 1) % multiplier_hydra == 0)
 		waves2_info[0]->hydralisk_quantity += 1;
 
-	if (current_wave % multiplier_muta == 0)
+	if ((current_wave + 1)% multiplier_muta == 0)
 		waves2_info[0]->mutalisk_quantity += 1;
 	
-	if (current_wave % multiplier_ultra == 0)
+	if ((current_wave + 1 )% multiplier_ultra == 0)
 		waves2_info[0]->ultralisk_quantity += 1;
 	
 	return 1;
@@ -605,13 +608,13 @@ int GameManager::incrementPhase2WavePower()
 
 int GameManager::incrementPhase3WavePower()
 {
-	waves3_info[0]->zergling_quantity += 3;
+//	waves3_info[0]->zergling_quantity += 3;
 
-	waves3_info[0]->mutalisk_quantity += 1;
+	//waves3_info[0]->mutalisk_quantity += 1;
 
-	waves3_info[0]->hydralisk_quantity += 1;
+	//waves3_info[0]->hydralisk_quantity += 1;
 
-	waves3_info[0]->ultralisk_quantity += 1;
+	//waves3_info[0]->ultralisk_quantity += 1;
 
 	//if (current_wave % multiplier_hydra == 0)
 	//	waves2_info[0]->hydralisk_quantity += 1;
