@@ -149,7 +149,7 @@ Scv::Scv(iPoint &p)
 
 	// Lifes attributes
 	max_hp = 60;
-	current_hp = 40.0f;
+	current_hp = 60.0f;
 	max_hp_bars = 6;
 
 	// Attack values and properties

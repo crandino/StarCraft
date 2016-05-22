@@ -374,7 +374,7 @@ Tank::Tank(iPoint &p)
 	max_hp_bars = 17;
 
 	// Attack values and properties
-	range_of_vision = 800;
+	range_of_vision = 400;
 	range_to_attack = 350;
 	damage = 30.0f;
 	attack_frequency = 1541.0f;
