@@ -830,7 +830,6 @@ void GameManager::startGame()
 	createMarines({ command_center_position.x - 100, command_center_position.y - 120 }, size_marines_x, size_marines_y);
 	iPoint pos = { command_center_position.x - 70, command_center_position.y - 140 };
 	jim_position = &app->entity_manager->addEntity(pos, JIM_RAYNOR)->center;
-	app->entity_manager->addEntity(pos, MEDIC);
 	//--------
 	
 	app->render->setCameraOnPosition(command_center_position);

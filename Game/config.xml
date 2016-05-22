@@ -91,7 +91,7 @@
     <SizeWave3 zerglings ="15" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
     
     <!-- Player Units -->
-    <InitialSizePlayer marinesX="2" marinesY="2" medic ="1" scv ="1"/>
+    <InitialSizePlayer marinesX="1" marinesY="1" medic ="0" scv ="0"/>
     <CommandCenterPosition coordx="2000" coordy= "2150"/>    
     
     <!-- Score--> 

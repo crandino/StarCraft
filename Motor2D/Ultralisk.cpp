@@ -169,8 +169,8 @@ Ultralisk::Ultralisk(iPoint &p)
 	max_hp_bars = 17;
 
 	// Attack values and properties
-	range_of_vision = 200;
-	range_to_attack = 25;
+	range_of_vision = 300;
+	range_to_attack = 50;
 	damage = 20.0f;
 	attack_frequency = 625.0f;
 	time_to_die = 500.0f;

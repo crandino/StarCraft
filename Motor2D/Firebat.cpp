@@ -170,7 +170,7 @@ Firebat::Firebat(iPoint &p)
 
 	// Attack values and properties
 	range_of_vision = 300;
-	range_to_attack = 50;
+	range_to_attack = 100;
 	damage = 16.0f;
 
 	attack_frequency = 916.0f;
