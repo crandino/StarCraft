@@ -149,7 +149,7 @@
     <ClCompile Include="Motor2D\MenuScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Motor2D\ModuleFadeToBlack.cpp">
+    <ClCompile Include="Motor2D\FadeToBlack.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -331,7 +331,7 @@
     <ClInclude Include="Motor2D\MenuScene.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Motor2D\ModuleFadeToBlack.h">
+    <ClInclude Include="Motor2D\FadeToBlack.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
@@ -371,5 +371,13 @@
     <Xml Include="Game\config.xml">
       <Filter>Resources</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Game\maps\FINAL_MAP.tmx">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Game\maps\FINAL_MAP_LOGIC_16.tmx">
+      <Filter>Resources</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -45,7 +45,6 @@ bool Fonts::awake(pugi::xml_node& conf)
 		const char* path2 = conf.child("resources_font").attribute("file").as_string(DEFAULT_FONT);
 		int size2 = conf.child("resources_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
 		default_2 = load(path2, size2);
-
 	}
 
 	return ret;

@@ -14,21 +14,15 @@ class GuiElements;
 struct Collider;
 enum GUI_EVENTS;
 
-
 class Module
 {
 public:
 
-	Module() : active(false)
+	Module() : active(true)
 	{}
 
 	virtual ~Module()
 	{}
-
-	void init()
-	{
-		active = true;
-	}
 
 	// Called before render is available
 	virtual bool awake(pugi::xml_node &node)
@@ -100,6 +94,10 @@ public:
 			cleanUp();
 		}
 	}
+
+	bool isEnabled()
+	{ return active; }
+		
 
 
 public:

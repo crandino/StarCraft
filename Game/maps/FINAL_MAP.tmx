@@ -6,7 +6,7 @@
  <layer name="Map_layer" width="128" height="128">
   <properties>
    <property name="Navigation" value="0"/>
-   <property name="NoDraw" value="0"/>
+   <property name="NoDraw" value="1"/>
   </properties>
   <data>
    <tile gid="1"/>

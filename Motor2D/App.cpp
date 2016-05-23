@@ -18,7 +18,7 @@
 #include "FogOfWar.h"
 #include "ParticleManager.h"
 #include "MenuScene.h"
-#include "ModuleFadeToBlack.h"
+#include "FadeToBlack.h"
 
 //Gameplay
 #include "GameManager.h"
@@ -50,7 +50,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fog_of_war = new FogOfWar();
 	particle = new ParticleManager();
 	menu = new MenuScene();
-	fade = new ModuleFadeToBlack();
+	fade_to_black = new FadeToBlack();
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
 	addModule(fs);
@@ -69,7 +69,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(scene);
 	addModule(particle);
 	addModule(menu);
-	addModule(fade);
+	addModule(fade_to_black);
 	// render last to swap buffer
 	addModule(render);
 }
@@ -92,7 +92,6 @@ App::~App()
 
 void App::addModule(Module* module)
 {
-	module->init();
 	modules.push_back(module); 
 }
 
@@ -152,12 +151,15 @@ bool App::start()
 
 	total_time.start();
 
+	// -------------------------
+
+	scene->disable();
+
 	bool ret = true;
 	list<Module*>::iterator item = modules.begin(); 
-
 	while(item != modules.end() && ret == true)
 	{
-		ret = (*item)->start();
+		ret = (*item)->isEnabled() ? (*item)->start() : true;
 		++item;
 	}
 

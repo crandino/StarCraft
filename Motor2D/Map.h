@@ -10,8 +10,7 @@
 enum WALKABILITY
 {
 	LOW_GROUND = 1,
-	NO_WALKABLE = 2,
-	HIGH_GROUND = 3
+	NO_WALKABLE = 2
 };
 
 using namespace std;

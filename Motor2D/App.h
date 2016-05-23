@@ -28,7 +28,7 @@ class GameManager;
 class FogOfWar;
 class ParticleManager;
 class MenuScene;
-class ModuleFadeToBlack;
+class FadeToBlack;
 
 class App
 {
@@ -108,9 +108,9 @@ public:
 	Collision*			collision;
 	GameManager*		game_manager;
 	FogOfWar*			fog_of_war;		
-	ParticleManager*	particle = NULL;
+	ParticleManager*	particle;
 	MenuScene*          menu;
-	ModuleFadeToBlack*  fade;
+	FadeToBlack*        fade_to_black;
 
 private:
 

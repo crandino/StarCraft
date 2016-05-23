@@ -27,6 +27,7 @@ bool Map::awake(pugi::xml_node& config)
 	folder.assign(config.child("folder").child_value());
 	return ret;
 }
+
 bool Map::start()
 {
 	app->map->load("FINAL_MAP.tmx");

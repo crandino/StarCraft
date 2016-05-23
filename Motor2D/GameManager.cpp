@@ -17,6 +17,7 @@
 #include "Unit.h"
 #include "GuiMinimap.h"
 #include "PathFinding.h"
+#include "FadeToBlack.h"
 
 #include "GuiImage.h"
 #include "GuiInfo.h"
@@ -140,10 +141,9 @@ bool GameManager::awake(pugi::xml_node &node)
 		waves3_info.push_back(wave);
 	}
 
+	game_state = HOLD;
 	if (node.child("hold").attribute("value").as_bool())
-		game_state = HOLD;
-	else
-		game_state = INITIAL_SCREEN;
+		start_game = true;		
 
 	multiplier_hydra = node.child("multiplierHydra").attribute("value").as_int();
 	multiplier_muta = node.child("multiplierMuta").attribute("value").as_int();
@@ -153,10 +153,8 @@ bool GameManager::awake(pugi::xml_node &node)
 	power_muta = node.child("powerrMuta").attribute("value").as_int();
 	power_ultra = node.child("powerUltra").attribute("value").as_int();
 
-
 	return ret;
 }
-
 
 bool GameManager::start()
 {
@@ -237,21 +235,25 @@ bool GameManager::update(float dt)
 	{
 	case(INITIAL_SCREEN) :
 	{
+		startGame();
 		break;
 	}
 	case(PREPARATION) :
 	{
-		LOG("PREPARATION");
-		if (!info_message->isLoaded())
+		if (!app->fade_to_black->isFading())
 		{
-			info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed!", (gameInfo.time_before_game_starts * 1000) / 2, true);
-			info_message->newInfo("Jim Raynor must survive (the yellow one)!", (gameInfo.time_before_game_starts * 1000) / 2);
-		}
+			LOG("PREPARATION");
+			if (!info_message->isLoaded())
+			{
+				info_message->newInfo("The last Terran base must be defend! Don't let it be destroyed!", (gameInfo.time_before_game_starts * 1000) / 2, true);
+				info_message->newInfo("Jim Raynor must survive (the yellow one)!", (gameInfo.time_before_game_starts * 1000) / 2);
+			}
+		}		
 	
 		if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)
 		{
-			info_message->unload();
-			startGame();
+			game_state = FIRST_PHASE;
+			info_message->unload();			
 		}
 		break;
 	}
@@ -520,10 +522,10 @@ bool GameManager::update(float dt)
 	}
 	case(HOLD) :
 	{
-		start_screen->draw_element = false;
+		/*start_screen->draw_element = false;
 		start_button->disable_element();
-		close_button->disable_element();
-		start_game = true;
+		close_button->disable_element();*/
+		//start_game = true;
 		break;
 	}	
 	case(QUIT): //When close button is pressed
@@ -766,7 +768,6 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 				unit->flying = false;
 		}
 	}
-
 }
 
 void GameManager::createWaveInfo(SizeWave* wave, uint display_time)
@@ -805,7 +806,9 @@ bool GameManager::cleanUp()
 void GameManager::startGame()
 {
 	wave_state = WAITING_FOR_WAVE_TO_START;
-	game_state = FIRST_PHASE;
+	//game_state = FIRST_PHASE;
+
+	game_state = PREPARATION;
 
 	app->entity_manager->addEntity(command_center_position, COMMANDCENTER);
 	app->entity_manager->addEntity(factory_position, FACTORY);
@@ -850,9 +853,9 @@ void GameManager::endGame()
 	game_state = QUIT;
 }
 
-void GameManager::prepareGame()
+void GameManager::initiateGame()
 {
-	game_state = PREPARATION;
+	game_state = INITIAL_SCREEN;
 	timer_between_waves.start();
 }
 

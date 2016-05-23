@@ -5,6 +5,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Map.h"
+#include "GameManager.h"
 #include "PathFinding.h"
 #include "Scene.h"
 #include "FogOfWar.h"
@@ -32,18 +33,26 @@ bool Scene::awake(pugi::xml_node &node)
 // Called before the first frame
 bool Scene::start()
 {	
-	//app->render->start_transition({ 880, 1974 });
-   	int w, h;
+	// Scene loading...
+
+	// ---- GAME MANAGER ----
+	app->game_manager->initiateGame();
+	
+	// ---- MAPS ----
+	app->map->data.front().layers.front()->properties.setPropertyValue("NoDraw", 0);	
+
+	// ---- PATHFINDING ---
+	int w, h;
 	uchar *buffer = NULL;
-	if(app->map->createWalkabilityMap(w, h, &buffer))
+	if (app->map->createWalkabilityMap(w, h, &buffer))
 		app->path->setMap(w, h, buffer);
 
-	// CRZ -> PathFinding testing
-	/*path_tile = app->tex->loadTexture("temporaryTextures/path_tile.png");
-	start_position.setZero();
-	final_position.setZero();*/
+	// ---- FOG OF WAR ----
+	app->fog_of_war->setUp(app->map->data.front().tile_width * app->map->data.front().width,
+						   app->map->data.front().tile_height * app->map->data.front().height, 32, 32, 1);
+	fog_of_war_timer.start();
 
-	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
+  	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
 	rectangle_map_camera->parent = rectangle_map;
 	rectangle_map_camera->setLocalPos(3, 3);
 	rectangle_map_camera->interactive = true;
@@ -51,40 +60,19 @@ bool Scene::start()
 	rectangle_map_camera->can_focus = true;
 	rectangle_map_camera->draw_element = false;
 
-	//FOG_OF_WAR 1- Scene Start. Setting up scene, called only once at start.
-	//Setting up fog of war module
-
-	list<MapData>::iterator map = app->map->data.begin();
-	app->fog_of_war->setUp(map->tile_width * map->width, map->tile_height * map->height, 32, 32, 1);
-	fog_of_war_timer.start();
-		
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::preUpdate()
 {
-		
-	
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::update(float dt)
 {
-
 	float cam_speed = 1.0f;
-
-	//test->print("YOOO");
-	// Debug ---
-	//if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	//{
-	//	debug = !debug;
-	//	if (debug)
-	//		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 0);
-	//	else
-	//		app->map->setLayerProperty("LOGIC_MAP.tmx", "Logic_Layer", "NoDraw", 1);
-	//}
 
 	if (app->input->getKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->loadGame("save_game.xml");
@@ -105,42 +93,6 @@ bool Scene::update(float dt)
 	// Paint Layers -- Draw or undraw the map
 	if (app->input->getKey(SDL_SCANCODE_O) == KEY_REPEAT)
 		app->map->setLayerProperty("FINAL_MAP_LOGIC_16.tmx", "Logic_Layer", "NoDraw", 1);
-
-	// Transition experiments
-	/*if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
-		app->render->start_transition({ 2000, 2000 });*/
-    
-	// CRZ -> Code to test PathFinding! Do not delete! Some variables must be uncommented 
-	// on the Header File
-	/*if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (path_selected)
-		{
-			app->input->getMousePosition(final_position);
-			final_position = app->render->screenToWorld(final_position.x, final_position.y);
-			final_position = app->map->worldToMap(app->map->data.back(), final_position.x, final_position.y);
-			app->path->createPath(start_position, final_position);
-			path_selected = false;
-		}
-		else
-		{
-			app->input->getMousePosition(start_position);
-			start_position = app->render->screenToWorld(start_position.x, start_position.y);
-			start_position = app->map->worldToMap(app->map->data.back(), start_position.x, start_position.y);
-			path_selected = true;
-		}
-	}
-
-	iPoint start_pos = app->map->mapToWorld(app->map->data.back(), start_position.x, start_position.y);
-	iPoint final_pos = app->map->mapToWorld(app->map->data.back(), final_position.x, final_position.y);
-	app->render->blit(path_tile, start_pos.x, start_pos.y);
-	app->render->blit(path_tile, final_pos.x, final_pos.y);
-	vector<iPoint> path_found = app->path->getLastPath();
-	for (vector<iPoint>::iterator it = path_found.begin(); it != path_found.end(); ++it)
-	{
-		iPoint pos; pos = app->map->mapToWorld(app->map->data.back(), it->x, it->y);
-		app->render->blit(path_tile, pos.x, pos.y);
-	}*/
 
 	//--------------------------------------------------------------------------
 	//FOG_OF_WAR 3 - Scene update.Called once every frame.

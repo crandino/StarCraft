@@ -9,7 +9,7 @@
 #include "GuiLabel.h"
 #include "Textures.h"
 #include "GameManager.h"
-#include "ModuleFadeToBlack.h"
+#include "FadeToBlack.h"
 
 MenuScene::MenuScene()
 {
@@ -76,6 +76,9 @@ bool MenuScene::postUpdate()
 bool MenuScene::cleanUp()
 {
 	LOG("Freeing Menu Scene");
+	background->disable_element();
+	start_button->disable_element();
+	close_button->disable_element();
 	return true;
 }
 
@@ -91,17 +94,8 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 
 		case(MOUSE_LCLICK_UP) :
-
-			start_button->setSection({ 339, 229, 141, 39 });
-
-			background->disable_element();
-			start_button->disable_element();
-			close_button->disable_element();
-
-			app->fade->fadeToBlack(this, (Module*)app->scene, 0.1f);
-
-			app->game_manager->prepareGame();
-			//app->audio->playFx(fx_click, 0);
+			start_button->setSection({ 339, 164, 141, 39 });
+			app->fade_to_black->fadeToBlack(this, (Module*)app->scene, 3.0f);
 			break;
 		}
 	}
