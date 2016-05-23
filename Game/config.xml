@@ -9,7 +9,7 @@
   <window>
     <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
-                fullscreen='false' 
+                fullscreen='true' 
                 resizable='false'
                 windowed='false' />
     <name>StarCraft</name>
@@ -78,7 +78,7 @@
     <phase2 value ="false"/>
     <phase3 value ="false"/> -->   
     
-    <!-- Wave Information  --> 
+    <!-- Wave Information  -->
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="1" ultralisks ="0"/>
@@ -87,10 +87,10 @@
     <SizeWave zerglings ="8" hydralisks ="2" mutalisks ="3" ultralisks ="0"/>
     <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/> 
     <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="0"/>
-    
-    
-    
-    
+
+
+
+
     <SizeWave2 zerglings ="10" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     
     
