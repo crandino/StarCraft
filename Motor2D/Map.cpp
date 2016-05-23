@@ -171,11 +171,16 @@ iPoint Map::worldToMap(MapData &map, int x, int y) const
 	return ret;
 }
 
-bool Map::isAreaWalkable(const SDL_Rect &rect)
+bool Map::isAreaWalkable(const SDL_Rect &rect, bool check_boundaries)
 {
 	iPoint first_tile = worldToMap(data.back(), rect.x, rect.y);
 	iPoint last_tile = worldToMap(data.back(), rect.x + rect.w, rect.y + rect.h);
 	iPoint point_to_check;
+	if (check_boundaries)
+	{
+		first_tile -= (iPoint{ 1, 1 });
+		last_tile += (iPoint{ 1, 1 });
+	}
 
 	for (int y = first_tile.y; y < last_tile.y; ++y)
 	{

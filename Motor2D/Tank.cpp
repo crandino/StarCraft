@@ -560,7 +560,7 @@ bool Tank::update(float dt)
 			current_animation_turret->resume();
 			if (current_animation_turret->finished())
 			{
-				if (app->map->isAreaWalkable(coll->rect))
+				if (app->map->isAreaWalkable(coll->rect, true))
 				{
 					state = IDLE_SIEGE_MODE;
 					area_attack = true;
@@ -683,7 +683,7 @@ void Tank::siegeMode(bool siege_mode_flag)
 	{
 		if (siege_mode_flag)
 		{
-			if (!app->map->isAreaWalkable(coll->rect))
+			if (!app->map->isAreaWalkable(coll->rect, true))
 				return;
 			siege_mode_on.reset();
 			siege_mode_on_turret.reset();

@@ -147,7 +147,7 @@ public:
 
 	// CRZ 
 	// Given an area, determine whether all this area is walkable.
-	bool isAreaWalkable(const SDL_Rect &rect);
+	bool isAreaWalkable(const SDL_Rect &rect, bool check_boundaries = false);
 	bool changeLogic(const SDL_Rect &rect, WALKABILITY walk_value);
 
 private:
