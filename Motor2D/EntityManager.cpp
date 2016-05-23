@@ -992,14 +992,6 @@ void EntityManager::deletionManager()
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
-			else if (it->second->specialization == TANK)
-			{
-				if (((Tank*)it->second)->siege_mode)
-				{
-					app->map->changeLogic(((Tank*)it->second)->coll->rect, LOW_GROUND);
-					app->entity_manager->recalculatePaths(((Tank*)it->second)->coll->rect, true);
-				}
-			}
 
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
@@ -1307,6 +1299,27 @@ void EntityManager::onCollision(Collider* c1, Collider* c2)
 			unit->state = MOVE;
 		}
 	}
+	else if (e1 != NULL && e2 != NULL && e1->type == UNIT && e1->state == IDLE_SIEGE_MODE && e2->type == UNIT && e2->state == IDLE)
+	{
+		if (app->path->createPathToAdjacent(e2->tile_pos, 2) != -1)
+		{
+			Unit *unit = (Unit*)e2;
+			unit->path = app->path->getLastPath();
+			unit->has_target = true;
+			unit->state = MOVE;
+		}
+	}
+	else if (e1 != NULL && e2 != NULL && e1->type == UNIT && e1->state == IDLE && e2->type == UNIT && e2->state == IDLE_SIEGE_MODE)
+	{
+		if (app->path->createPathToAdjacent(e1->tile_pos, 2) != -1)
+		{
+			Unit *unit = (Unit*)e1;
+			unit->path = app->path->getLastPath();
+			unit->has_target = true;
+			unit->state = MOVE;
+		}
+	}
+
 }
 
 void EntityManager::entityManualCreation()
