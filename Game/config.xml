@@ -69,7 +69,7 @@
     <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "10.0f"/>
-    <timeBomb value = "240.0f" />
+    <timeBomb value = "60.0f" />
     
     <!--Debug-->
     <hold value ="false" />
@@ -96,7 +96,7 @@
     
     
     
-    <SizeWave3 zerglings ="0" hydralisks ="1" mutalisks ="1" ultralisks="1"/>
+    <SizeWave3 zerglings ="0" hydralisks ="0" mutalisks ="10" ultralisks="5"/>
     
     <!-- Player Units -->
     <InitialSizePlayer marinesX="1" marinesY="1" medic ="0" scv ="0"/>

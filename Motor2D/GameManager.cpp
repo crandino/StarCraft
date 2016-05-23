@@ -42,10 +42,11 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 300, 220 };
-	iPoint north_east = { 3048, 352 };
-	iPoint south_west = { 1750, 3370 };
-	iPoint south_east = { 3650, 2560 };
+	// /O . O\  
+	iPoint north_west = { 877, 716 };
+	iPoint north_east = { 3557, 905 };
+	iPoint south_west = { 911, 3021 };
+	iPoint south_east = { 2606, 3056 };
 };
 
 enum wave_positions_enum
@@ -464,10 +465,13 @@ bool GameManager::update(float dt)
 			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
-			createWave(waves3_info[0], wave_pos);
-			createWave(waves3_info[0], wave_pos);
-			createWave(waves3_info[0], wave_pos);
-			createWave(waves3_info[0], wave_pos);
+			
+			createWave(waves3_info[0], { 877, 716 });
+			createWave(waves3_info[0], { 3557, 905 });
+			createWave(waves3_info[0], { 911, 3021 });
+			createWave(waves3_info[0], { 2606, 3056 });
+
+
 			app->gui->mini_map->activePing(wave_pos);
 			wave3_power_counter += incrementPhase3WavePower();
 			wave_state = MIDDLE_WAVE;
