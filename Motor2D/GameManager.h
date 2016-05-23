@@ -164,7 +164,7 @@ public:
 	bool jim_raynor_dead = false;
 
 	//Find Jim
-	fPoint*				 jim_position = NULL;
+	Entity*				 jim_raynor = NULL;
 
 	//Sound
 	unsigned int fx_click;

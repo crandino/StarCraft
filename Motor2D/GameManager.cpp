@@ -41,10 +41,10 @@ using namespace std;
 /*To Put into xml*/
 struct wave_position
 {
-	iPoint north_west = { 877, 716 };
-	iPoint north_east = { 3557, 905 };
-	iPoint south_west = { 911, 3021 };
-	iPoint south_east = { 2606, 3056 };
+	iPoint north_west = { 300, 220 };
+	iPoint north_east = { 3048, 352 };
+	iPoint south_west = { 1750, 3370 };
+	iPoint south_east = { 3650, 2560 };
 };
 
 enum wave_positions_enum
@@ -573,10 +573,12 @@ bool GameManager::update(float dt)
 	//Find Jim
 	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 	{
-		if (jim_position != NULL)
+		if (jim_raynor != NULL)
 		{
-			app->render->camera.x = -jim_position->x + (app->render->camera.w / 2);
-			app->render->camera.y = -jim_position->y + (app->render->camera.h / 2);
+			app->render->camera.x = -jim_raynor->center.x + (app->render->camera.w / 2);
+			app->render->camera.y = -jim_raynor->center.y + (app->render->camera.h / 2);
+			app->entity_manager->selection.clear();
+			app->entity_manager->selection.insert(pair<uint, Entity*>(jim_raynor->id, jim_raynor));
 		}
 	}
 
@@ -757,8 +759,11 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 	{
 		if (it->second->type == UNIT)
 		{
-			((Unit*)it->second)->grouped = true;
-			((Unit*)it->second)->group_speed = speed;
+			Unit* unit = (Unit*)it->second;
+			unit->grouped = true;
+			unit->group_speed = speed;
+			if (unit->flying)
+				unit->flying = false;
 		}
 	}
 
@@ -827,7 +832,7 @@ void GameManager::startGame()
 	//---- Initial units ----
 	createMarines({ command_center_position.x - 100, command_center_position.y - 120 }, size_marines_x, size_marines_y);
 	iPoint pos = { command_center_position.x - 70, command_center_position.y - 140 };
-	jim_position = &app->entity_manager->addEntity(pos, JIM_RAYNOR)->center;
+	jim_raynor = app->entity_manager->addEntity(pos, JIM_RAYNOR);
 	//--------
 	
 	app->render->setCameraOnPosition(command_center_position);

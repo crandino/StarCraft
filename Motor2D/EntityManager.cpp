@@ -1011,7 +1011,7 @@ void EntityManager::deletionManager()
 				{
 					if (!loading_game) 
 						app->game_manager->jim_raynor_dead = true;
-					app->game_manager->jim_position = NULL;
+					app->game_manager->jim_raynor = NULL;
 					RELEASE(it->second);
 				}
 				break;
@@ -1134,8 +1134,8 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 			else if (ret != NULL)
 			{
 				//Only search entities with same type or if type is building, it search units
-				if ((ret->type == it->second->type && d > min_area_range &&  d <= value && maxHP <= previousMaxHP) ||
-					(ret->type == BUILDING && it->second->type == UNIT && d > min_area_range &&  d <= e->range_of_vision && maxHP <= previousMaxHP))
+				if ((ret->type == it->second->type && d > min_area_range && ((d <= value && maxHP <= previousMaxHP) || d <= e->range_of_vision && maxHP <= (previousMaxHP + 25.0f))) ||
+					(ret->type == BUILDING && it->second->type == UNIT && d > min_area_range &&  d <= e->range_of_vision && maxHP <= (previousMaxHP + 50.0f)))
 				{
 					value = d;
 					previousMaxHP = maxHP;
@@ -1186,8 +1186,8 @@ void EntityManager::choosePlaceForBuilding()
 	
 	building_to_place->coll->setPos(building_to_place->pos.x + building_to_place->collider_offset.x, building_to_place->pos.y + building_to_place->collider_offset.y);
 
-	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y);
-	iPoint last_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x + building_to_place->coll->rect.w, building_to_place->coll->rect.y + building_to_place->coll->rect.h);
+	iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y) - (iPoint{ 1, 1 });
+	iPoint last_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x + building_to_place->coll->rect.w, building_to_place->coll->rect.y + building_to_place->coll->rect.h) + (iPoint{ 1, 1 });
 	fPoint point_to_draw;
 
 	for (int y = first_tile.y; y < last_tile.y; ++y)
