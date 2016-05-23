@@ -993,6 +993,14 @@ void EntityManager::deletionManager()
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
+			else if (it->second->specialization == TANK)
+			{
+				if (((Tank*)it->second)->siege_mode)
+				{
+					app->map->changeLogic(((Tank*)it->second)->coll->rect, LOW_GROUND);
+					app->entity_manager->recalculatePaths(((Tank*)it->second)->coll->rect, true);
+				}
+			}
 
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
