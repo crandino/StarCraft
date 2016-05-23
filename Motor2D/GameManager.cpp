@@ -1099,6 +1099,7 @@ bool GameManager::load(pugi::xml_node &node)
     game_state = (GAME_STATE)node.child("phases").attribute("game_phase").as_int();
 	wave_state = (WAVE_STATE)node.child("phases").attribute("wave_phase").as_int();
 	current_wave = node.child("phases").attribute("current_wave").as_int();
+	start_game = node.child("phases").attribute("start_game").as_bool();
 
 	istringstream in(string(node.child("list_ids_enemies").attribute("ids").as_string()));
 	uint id;
@@ -1118,6 +1119,7 @@ bool GameManager::save(pugi::xml_node &node) const
 	phases.append_attribute("game_phase") = game_state;
 	phases.append_attribute("wave_phase") = wave_state;
 	phases.append_attribute("current_wave") = current_wave;
+	phases.append_attribute("start_game") = start_game;
 
 	pugi::xml_node list_ids_enemies = node.append_child("list_ids_enemies");
 	

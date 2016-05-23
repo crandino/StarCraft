@@ -52,14 +52,6 @@ bool Scene::start()
 						   app->map->data.front().tile_height * app->map->data.front().height, 32, 32, 1);
 	fog_of_war_timer.start();
 
-  	rectangle_map_camera = app->gui->createImage(NULL, { 6, 229, 20, 13 });
-	rectangle_map_camera->parent = rectangle_map;
-	rectangle_map_camera->setLocalPos(3, 3);
-	rectangle_map_camera->interactive = true;
-	rectangle_map_camera->setListener(this);
-	rectangle_map_camera->can_focus = true;
-	rectangle_map_camera->draw_element = false;
-
 	return true;
 }
 

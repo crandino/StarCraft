@@ -179,29 +179,35 @@ bool Bunker::getEntityInside(Unit* entity)
 		app->audio->playFx(fx_entering, 0);
 		units_inside.insert(pair<uint, Unit*>(entity->id, entity));
 		entity->to_delete = true;
-		if (entity->specialization == MARINE)
+		entity->coll->disable();
+
+		switch (entity->specialization)
+		{
+		case(MARINE) :
 		{
 			Marine *u = (Marine*)entity;
 			u->inside_bunker = true;
-			u->coll->disable();
 			u->bunker_to_fill = NULL;
+			break;
 		}
-		else if (entity->specialization == FIREBAT)
+		case(FIREBAT) :
 		{
 			Firebat *u = (Firebat*)entity;
 			u->inside_bunker = true;
-			u->coll->disable();
 			u->bunker_to_fill = NULL;
+			break;
 		}
-		else if (entity->specialization == JIM_RAYNOR)
+			
+		case(JIM_RAYNOR) :
 		{
 			JimRaynor *u = (JimRaynor*)entity;
 			u->inside_bunker = true;
-			u->coll->disable();
 			u->bunker_to_fill = NULL;
 			raynor_inside = true;
 			app->gui->raynor_indicator->setLocalPos(center.x - 16, pos.y);
 			app->gui->raynor_indicator->enable_element();
+			break;
+		}
 		}
 
 		return true;
@@ -213,33 +219,51 @@ bool Bunker::getEntityInside(Unit* entity)
 bool Bunker::getEntitiesOutside()
 {
 	bool ret = false;
-	if (this != NULL && !units_inside.empty())
+	for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end();)
 	{
-		for (map<uint, Unit*>::iterator it = units_inside.begin(); it != units_inside.end();)
+		app->audio->playFx(fx_leaving, 0);
+		if (!app->path->isWalkable(it->second->tile_pos))
 		{
-			app->audio->playFx(fx_leaving, 0);
-			if (!app->path->isWalkable(it->second->tile_pos))
-			{
-				it->second->tile_pos = app->path->findNearestWalkableTile(it->second->tile_pos, app->game_manager->command_center_position, 25);
-				it->second->center = app->map->mapToWorld(app->map->data.back(), it->second->tile_pos.x, it->second->tile_pos.y);
-				it->second->calculePos();
-			}
+			it->second->tile_pos = app->path->findNearestWalkableTile(it->second->tile_pos, app->game_manager->command_center_position, 25);
+			it->second->center = app->map->mapToWorld(app->map->data.back(), it->second->tile_pos.x, it->second->tile_pos.y);
+			it->second->calculePos();
+		}
 
-			app->entity_manager->active_entities.insert(pair<uint, Unit*>(it->second->id, it->second));
+		app->entity_manager->active_entities.insert(pair<uint, Unit*>(it->second->id, it->second));
 			
-			if (it->second->specialization == JIM_RAYNOR)
-			{
-				app->gui->raynor_indicator->disable_element();
-				raynor_inside = false;
-			}
-				
+		switch (it->second->specialization)
+		{
+		case(MARINE) :
+		{
 			Marine *m = (Marine*)it->second;
 			m->coll->enable();
 			m->to_delete = false;
 			m->inside_bunker = false;
-			it = units_inside.erase(it);
-			ret = true;
+			break;
 		}
+		case(FIREBAT) :
+		{
+			Firebat *m = (Firebat*)it->second;
+			m->coll->enable();
+			m->to_delete = false;
+			m->inside_bunker = false;
+			break;
+		}
+
+		case(JIM_RAYNOR) :
+		{
+			JimRaynor *m = (JimRaynor*)it->second;
+			m->coll->enable();
+			m->to_delete = false;
+			m->inside_bunker = false;
+			app->gui->raynor_indicator->disable_element();
+			raynor_inside = false;
+			break;
+		}
+		}
+
+		it = units_inside.erase(it);
+		ret = true;
 	}
 	return ret;
 }

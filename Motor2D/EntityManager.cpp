@@ -425,7 +425,6 @@ void EntityManager::SetEnemyToPos(Entity* e, iPoint pos)
 // Called each loop iteration
 bool EntityManager::preUpdate(){
 
-
 	deletionManager();  // Delete each entity marked to being deleted.
 
 	if (app->game_manager->isGameStarted())
@@ -1455,8 +1454,51 @@ bool EntityManager::load(pugi::xml_node &node)
 		Entity *reload_entity = addEntity(pos, spec, true, id);
 		reload_entity->current_hp = current_hp;
 		reload_entity->to_delete = to_delete;
+
+		// Loading special attributes for some units : bunker, jim_raynor, tank...
+		switch (spec)
+		{
+		case(BUNKER) :
+		{
+			Bunker* b = (Bunker*)reload_entity;
+			b->raynor_inside = tmp.attribute("raynor_inside").as_bool();
+			app->gui->bunker_to_leave.push_back(b);
+
+			for (pugi::xml_node units_bunker = tmp.child("unit_inside_bunker"); units_bunker; units_bunker = units_bunker.next_sibling("unit_inside_bunker"))
+			{
+				uint id = units_bunker.attribute("id").as_uint();
+				iPoint pos = { units_bunker.attribute("pos_x").as_int(), units_bunker.attribute("pos_y").as_int() };
+				SPECIALIZATION spec = (SPECIALIZATION)units_bunker.attribute("type").as_int();
+				bool to_delete = units_bunker.attribute("to_delete").as_bool();
+				float current_hp = units_bunker.attribute("current_hp").as_float();
+
+				Entity *reload_entity = addEntity(pos, spec, true, id);
+				reload_entity->current_hp = current_hp;
+				reload_entity->to_delete = to_delete;
+
+				((Marine*)reload_entity)->inside_bunker = true;  // This work for all three types of units inside a bunker
+
+				/*switch (reload_entity->specialization)
+				{
+				case(MARINE) :
+					((Marine*)reload_entity)->inside_bunker = true;
+					break;
+				case(FIREBAT) :
+					((Firebat*)reload_entity)->inside_bunker = true;
+					break;
+				case(JIM_RAYNOR) :
+					((JimRaynor*)reload_entity)->inside_bunker = true;
+					break;
+				}*/
+
+				b->units_inside.insert(pair<uint, Unit*>(id, (Unit*)reload_entity));
+			}
+			break;
+		}
+		}
 	}
 
+	// Now, we recover the entities that forms the waves.
 	app->game_manager->current_wave_entities.clear();
 	for (uint i = 0; i < app->game_manager->list_ids_enemies.size(); ++i)
 	{
@@ -1486,6 +1528,27 @@ bool EntityManager::save(pugi::xml_node &node) const
 		e.append_attribute("type") = it->second->specialization;
 		e.append_attribute("current_hp") = it->second->current_hp;
 		e.append_attribute("to_delete") = it->second->to_delete;
+
+		switch (it->second->specialization)
+		{
+		case(BUNKER) :
+		{
+			Bunker* b = (Bunker*)it->second;
+			e.append_attribute("raynor_inside") = b->raynor_inside;
+			for (map<uint, Unit*>::iterator inside = b->units_inside.begin(); inside != b->units_inside.end(); ++inside)
+			{
+				pugi::xml_node node_unit = e.append_child("unit_inside_bunker");
+				node_unit.append_attribute("id") = inside->second->id;
+				node_unit.append_attribute("pos_x") = inside->second->pos.x;
+				node_unit.append_attribute("pos_y") = inside->second->pos.y;
+				node_unit.append_attribute("type") = inside->second->specialization;
+				node_unit.append_attribute("current_hp") = inside->second->current_hp;
+				node_unit.append_attribute("to_delete") = inside->second->to_delete;
+			}
+			break;
+		}
+					 
+		}
 	}
 
 	return true;

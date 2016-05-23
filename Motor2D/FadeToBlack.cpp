@@ -5,7 +5,9 @@
 #include "p2Log.h"
 
 FadeToBlack::FadeToBlack()
-{ }
+{
+	name.assign("fade_to_black");
+}
 
 FadeToBlack::~FadeToBlack()
 { }
