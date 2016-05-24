@@ -17,7 +17,7 @@ Bunker::Bunker(iPoint &p)
 	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
 
 	// Animations and FX
-	fx_attack = app->audio->loadFx("Audio/FX/Marine/Marine_attack.wav");
+	fx_attack = app->audio->loadFx("Audio/FX/Buildings/BunkerAttack.wav");
 	fx_entering = app->audio->loadFx("Audio/FX/Buildings/BunkerOpenDoor.wav");
 	fx_leaving = app->audio->loadFx("Audio/FX/Buildings/BunkerCloseDoor.wav");
 
@@ -142,9 +142,10 @@ bool Bunker::update(float dt)
 	case ATTACK:
 		if (units_inside.size() > 0)
 		{
-			app->audio->playFx(fx_attack);
+			
 			if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 			{
+				app->audio->playFx(fx_attack);
 				if (!attack())
 					state = IDLE;
 				timer_attack.start();
@@ -324,10 +325,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_right.on)
 				{
-
-					particle_offset = { 21, -12 };
-					particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_right.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { 21, -12 };
+						particle = app->particle->addParticle(attack_right, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_right.on = true;
+					}
+					attack_right.on = false;
 				}
 			}
 
@@ -340,10 +344,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_right_up.on)
 				{
-
-					particle_offset = { 21, -12 };
-					particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_right_up.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { 21, -12 };
+						particle = app->particle->addParticle(attack_right_up, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_right_up.on = true;
+					}
+					attack_right_up.on = false;
 				}
 			}
 
@@ -356,10 +363,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_up.on)
 				{
-
-					particle_offset = { 0, -25 };
-					particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_up.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { 0, -25 };
+						particle = app->particle->addParticle(attack_up, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_up.on = true;
+					}
+					attack_up.on = false;
 				}
 			}
 
@@ -372,10 +382,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_left_up.on)
 				{
-
-					particle_offset = { -12, -19 };
-					particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_left_up.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { -12, -19 };
+						particle = app->particle->addParticle(attack_left_up, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_left_up.on = true;
+					}
+					attack_left_up.on = false;
 				}
 			}
 
@@ -389,10 +402,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_left.on)
 				{
-
-					particle_offset = { -12, -19 };
-					particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_left.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { -12, -19 };
+						particle = app->particle->addParticle(attack_left, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_left.on = true;
+					}
+					attack_left.on = false;
 				}
 			}
 
@@ -405,10 +421,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_left_down.on)
 				{
-
-					particle_offset = { -14, -7 };
-					particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_left_down.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { -14, -7 };
+						particle = app->particle->addParticle(attack_left_down, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_left_down.on = true;
+					}
+					attack_left_down.on = false;
 				}
 			}
 
@@ -421,10 +440,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_down.on)
 				{
-
-					particle_offset = { 0, -5 };
-					particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_down.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { 0, -5 };
+						particle = app->particle->addParticle(attack_down, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_down.on = true;
+					}
+					attack_down.on = false;
 				}
 			}
 
@@ -437,10 +459,13 @@ void Bunker::setParticleBehaviour()
 
 				if (!attack_right_down.on)
 				{
-
-					particle_offset = { 18, -6 };
-					particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, INT_MAX, app->particle->bunker_attack);
-					attack_right_down.on = true;
+					if (timer_attack.read() >= attack_frequency)
+					{
+						particle_offset = { 18, -6 };
+						particle = app->particle->addParticle(attack_right_down, center.x, center.y, particle_offset.x, particle_offset.y, 0.5f, app->particle->bunker_attack);
+						attack_right_down.on = true;
+					}
+					attack_right_down.on = false;
 				}
 			}
 		}
