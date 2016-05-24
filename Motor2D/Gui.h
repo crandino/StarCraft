@@ -150,7 +150,6 @@ public:
 	bool factoryMenuOpened = false;
 
 	void openBuildingMenu();
-
 	void controlIconsSprite();
 
 	//Wireframes and Info

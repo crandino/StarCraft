@@ -1916,12 +1916,12 @@ bool Gui::findBunkerToLeave(Bunker* bunker)
 bool Gui::load(pugi::xml_node &node)
 {
 	bunker_to_leave.clear();
-	bool barrackAlive = false;
-	bool factoryAlive = false;
-	bool buildingMenuOpened = false;
-	bool commandCenterOpened = false;
-	bool barrackMenuOpened = false;
-	bool factoryMenuOpened = false;
+	bool barrackAlive = node.child("gui_status").attribute("barrackAlive").as_bool();
+	bool factoryAlive = node.child("gui_status").attribute("factoryAlive").as_bool();
+	bool buildingMenuOpened = node.child("gui_status").attribute("buildingMenuOpened").as_bool();
+	bool commandCenterOpened = node.child("gui_status").attribute("commandCenterOpened").as_bool();
+	bool barrackMenuOpened = node.child("gui_status").attribute("barrackMenuOpeneed").as_bool();
+	bool factoryMenuOpened = node.child("gui_status").attribute("factoryMenuOpened").as_bool();
 
 	return true;
 }
