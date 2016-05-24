@@ -29,6 +29,9 @@
 #include "Red.h"
 #include "GuiMinimap.h"
 
+#include <sstream>
+using namespace std;
+
 EntityManager::EntityManager() : Module()
 {
 	name.assign("entity_manager");
@@ -1522,6 +1525,14 @@ bool EntityManager::load(pugi::xml_node &node)
 		app->game_manager->current_wave_entities.insert(pair<uint, Entity*>(id, e));
 	}		
 
+	// And the selection on the saved_game
+	// Once we have all the loaded entities, we redo the selection
+	selection.clear();
+	istringstream in(string(node.child("list_ids_selection").attribute("ids").as_string()));
+	uint id;
+	while (in >> id)
+		selection.insert(pair<uint, Entity*>(id, active_entities.at(id)));
+
 	next_ID = node.child("active_entities").attribute("last_id").as_uint();
 
 	return true;
@@ -1529,6 +1540,17 @@ bool EntityManager::load(pugi::xml_node &node)
 
 bool EntityManager::save(pugi::xml_node &node) const
 {
+	// Saving IDs of selection
+	// Here I save the ids of the zergs that conforms the current wave.
+	pugi::xml_node list_ids_selection = node.append_child("list_ids_selection");
+	stringstream ss;
+	for (map<uint, Entity*>::const_iterator it = selection.begin(); it != selection.end(); ++it)
+		ss << it->second->id << ' ';
+	string ids;
+	getline(ss, ids);
+	list_ids_selection.append_attribute("ids") = ids.data();
+
+	// Saving all the information about all entities on the game
 	pugi::xml_node entities = node.append_child("active_entities");
 	entities.append_attribute("last_id") = next_ID;
 
@@ -1574,10 +1596,9 @@ bool EntityManager::save(pugi::xml_node &node) const
 			Tank* t = (Tank*)it->second;
 			e.append_attribute("siege_mode") = t->siege_mode;
 			break;
+		}		 
 		}
-					 
-		}
-	}
+	}		
 
 	return true;
 }

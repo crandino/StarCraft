@@ -1124,6 +1124,7 @@ bool GameManager::save(pugi::xml_node &node) const
 
 	pugi::xml_node list_ids_enemies = node.append_child("list_ids_enemies");
 	
+	// Here I save the ids of the zergs that conforms the current wave.
 	stringstream ss;
 	for (map<uint, Entity*>::const_iterator it = current_wave_entities.begin(); it != current_wave_entities.end(); ++it)
 		ss << it->second->id << ' ';

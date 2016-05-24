@@ -1916,12 +1916,12 @@ bool Gui::findBunkerToLeave(Bunker* bunker)
 bool Gui::load(pugi::xml_node &node)
 {
 	bunker_to_leave.clear();
-	bool barrackAlive = node.child("gui_status").attribute("barrackAlive").as_bool();
-	bool factoryAlive = node.child("gui_status").attribute("factoryAlive").as_bool();
-	bool buildingMenuOpened = node.child("gui_status").attribute("buildingMenuOpened").as_bool();
-	bool commandCenterOpened = node.child("gui_status").attribute("commandCenterOpened").as_bool();
-	bool barrackMenuOpened = node.child("gui_status").attribute("barrackMenuOpeneed").as_bool();
-	bool factoryMenuOpened = node.child("gui_status").attribute("factoryMenuOpened").as_bool();
+	barrackAlive = node.child("gui_status").attribute("barrackAlive").as_bool();
+	factoryAlive = node.child("gui_status").attribute("factoryAlive").as_bool();
+	buildingMenuOpened = node.child("gui_status").attribute("buildingMenuOpened").as_bool();
+	commandCenterOpened = node.child("gui_status").attribute("commandCenterOpened").as_bool();
+	barrackMenuOpened = node.child("gui_status").attribute("barrackMenuOpeneed").as_bool();
+	factoryMenuOpened = node.child("gui_status").attribute("factoryMenuOpened").as_bool();
 
 	return true;
 }
@@ -1932,8 +1932,9 @@ bool Gui::save(pugi::xml_node &node) const
 	gui_status.append_attribute("buildingMenuOpened") = buildingMenuOpened;
 	gui_status.append_attribute("commandCenterOpened") = commandCenterOpened;
 	gui_status.append_attribute("barrackMenuOpened") = barrackMenuOpened;
+	gui_status.append_attribute("factoryMenuOpened") = factoryMenuOpened;
 	gui_status.append_attribute("barrackAlive") = barrackAlive;
-	gui_status.append_attribute("factoryAlive") = factoryMenuOpened;
+	gui_status.append_attribute("factoryAlive") = factoryAlive;
 
 	return true;
 }
