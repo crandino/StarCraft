@@ -1471,6 +1471,7 @@ bool EntityManager::load(pugi::xml_node &node)
 		// Loading special attributes for some units : bunker, jim_raynor, tank...
 		switch (spec)
 		{
+		// For Bunker, we check for entities inside this bunker and we fill its units_inside.
 		case(BUNKER) :
 		{
 			Bunker* b = (Bunker*)reload_entity;
@@ -1488,24 +1489,25 @@ bool EntityManager::load(pugi::xml_node &node)
 				Entity *reload_entity = addEntity(pos, spec, true, id);
 				reload_entity->current_hp = current_hp;
 				reload_entity->to_delete = to_delete;
-
 				((Marine*)reload_entity)->inside_bunker = true;  // This work for all three types of units inside a bunker
-
-				/*switch (reload_entity->specialization)
-				{
-				case(MARINE) :
-					((Marine*)reload_entity)->inside_bunker = true;
-					break;
-				case(FIREBAT) :
-					((Firebat*)reload_entity)->inside_bunker = true;
-					break;
-				case(JIM_RAYNOR) :
-					((JimRaynor*)reload_entity)->inside_bunker = true;
-					break;
-				}*/
+				reload_entity->coll->disable();
 
 				b->units_inside.insert(pair<uint, Unit*>(id, (Unit*)reload_entity));
 			}
+			break;
+		}
+		case(JIM_RAYNOR) :
+		{
+			JimRaynor* j = (JimRaynor*)reload_entity;
+			j->bomb_activated = tmp.attribute("bomb_activated").as_bool();
+			j->bomb_taken = tmp.attribute("bomb_taken").as_bool();
+			app->game_manager->jim_raynor = j;
+			break;
+		}
+		case(TANK) :
+		{
+			Tank* t = (Tank*)reload_entity;
+			t->siege_mode = tmp.attribute("siege_mode").as_bool();
 			break;
 		}
 		}
@@ -1558,6 +1560,19 @@ bool EntityManager::save(pugi::xml_node &node) const
 				node_unit.append_attribute("current_hp") = inside->second->current_hp;
 				node_unit.append_attribute("to_delete") = inside->second->to_delete;
 			}
+			break;
+		}
+		case(JIM_RAYNOR) :
+		{
+			JimRaynor* j = (JimRaynor*)it->second;
+			e.append_attribute("bomb_taken") = j->bomb_taken;
+			e.append_attribute("bomb_activated") = j->bomb_activated;			
+			break;
+		}
+		case(TANK) :
+		{
+			Tank* t = (Tank*)it->second;
+			e.append_attribute("siege_mode") = t->siege_mode;
 			break;
 		}
 					 

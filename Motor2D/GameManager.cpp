@@ -1101,6 +1101,7 @@ bool GameManager::load(pugi::xml_node &node)
 	current_wave = node.child("phases").attribute("current_wave").as_int();
 	start_game = node.child("phases").attribute("start_game").as_bool();
 
+	list_ids_enemies.clear();
 	istringstream in(string(node.child("list_ids_enemies").attribute("ids").as_string()));
 	uint id;
 	while (in >> id)
