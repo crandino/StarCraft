@@ -196,24 +196,11 @@ public:
 	//HUD Label-----------------------------
 	GuiLabel* number_of_wave = nullptr;
 
-	//MESSAGES FOR THE PLAYER
-
-	//GuiLabel* text_message = nullptr;
-
-
-	GuiLabel* preparation_message = nullptr;
-	GuiLabel* preparation_message2 = nullptr;
-	GuiLabel* second_phase_message1 = nullptr;
-	GuiLabel* second_phase_message2 = nullptr;
-	GuiImage* background_messages = nullptr;
-
-
 	//HUD  Mineral and Gass-----------------
 	GuiImage* ui_mineral = nullptr;
 	GuiLabel* number_of_minerals = nullptr;
 	GuiImage* ui_gas = nullptr;
 	GuiLabel* number_of_gass = nullptr;
-
 
 	//HUD Info SCV and Bunker-----------------
 	GuiResources* info_bunker2 = nullptr;

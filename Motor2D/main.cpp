@@ -6,19 +6,20 @@
 //#include "MemLeaks.h"
 #include "Brofiler.h"
 
-#pragma comment (lib, "Motor2D/Brofiler/ProfilerCore32.lib")
-#pragma comment (lib, "Motor2D/SDL/libx86/SDL2.lib")
-
 // Due to a problem with SDL:
 //"  Error1 error LNK2005: _main already defined in
 //   SDL2main.lib(SDL_windows_main.obj)  "
 // I also include...
-//#include "SDL\include\SDL.h"
+#include "SDL\include\SDL.h"
+
+#pragma comment (lib, "Motor2D/Brofiler/ProfilerCore32.lib")
+#pragma comment (lib, "Motor2D/SDL/libx86/SDL2.lib")
+#pragma comment (lib, "Motor2D/SDL/libx86/SDL2main.lib")
 
 // pragma is an exclusive extension of Visual Studio,
 // so it only works on here. 
 //#pragma comment( lib, "SDL/lib/x86/SDL2.lib")
-//#pragma comment( lib, "SDL/lib/x86/SDL2main.lib")
+//#pragma comment( lib, "SDL/libx86/SDL2main.lib")
 
 // --------------- Dr Memory ---------------	
 // Arguments -visual_studio -- "$(TargetPath)"
@@ -77,7 +78,7 @@ enum MainStates
 
 App *app = NULL;
 
-int main(int argc, char** argv)
+int main(int argc, char *argv[])
 {
 	//ReportMemoryLeaks();
 
