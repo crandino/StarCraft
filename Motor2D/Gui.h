@@ -53,10 +53,10 @@ class Gui : public Module
 {
 public:
 
-	Gui();
+	Gui(bool enabled);
 
 	// Destructor
-	virtual ~Gui();
+	~Gui();
 
 	// Called when before render is available
 	bool awake(pugi::xml_node&);

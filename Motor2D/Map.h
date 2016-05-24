@@ -116,10 +116,10 @@ class Map : public Module
 {
 public:
 
-	Map();
+	Map(bool enabled);
 
 	// Destructor
-	virtual ~Map();
+	~Map();
 
 	// Called before render is available
 	bool awake(pugi::xml_node& conf);

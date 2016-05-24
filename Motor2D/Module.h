@@ -18,7 +18,7 @@ class Module
 {
 public:
 
-	Module() : active(true)
+	Module(bool enabled) : active(enabled)
 	{}
 
 	virtual ~Module()

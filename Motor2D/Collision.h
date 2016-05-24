@@ -56,7 +56,7 @@ private:
 
 public:
 
-	Collision();
+	Collision(bool enabled);
 
 	//Destructor
 	~Collision();

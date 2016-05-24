@@ -15,10 +15,10 @@ class Audio : public Module
 {
 public:
 
-	Audio();
+	Audio(bool enabled);
 
 	// Destructor
-	virtual ~Audio();
+	~Audio();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);

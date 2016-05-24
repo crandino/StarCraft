@@ -11,20 +11,18 @@
 
 // PARTICLE MANAGER---------------
 
-ParticleManager::ParticleManager() : Module()
+ParticleManager::ParticleManager(bool enabled) : Module(enabled)
 {
 	name.assign("particle_manager");
 }
 
 ParticleManager::~ParticleManager()
 {
-	name.assign("particle_manager");
 }
 
 bool ParticleManager::awake(pugi::xml_node &node)
 {
 	LOG("Particle Manager: Awake");
-	//textureFile.assign(node.child("particle_manager").first_attribute().as_string());
 
 	return true;
 }

@@ -71,7 +71,7 @@ private:
 
 public:
 
-	PathFinding();
+	PathFinding(bool enabled);
 	~PathFinding();
 
 	// Received all the info about the tiles and its walkability

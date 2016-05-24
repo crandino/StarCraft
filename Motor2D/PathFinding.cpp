@@ -221,7 +221,7 @@ list<pathNode>::iterator pathList::getNodeLowestScore()
 	return lowest_score;
 }
 
-PathFinding::PathFinding()
+PathFinding::PathFinding(bool enabled) : Module(enabled)
 {
 	name.assign("path_finding");
 }

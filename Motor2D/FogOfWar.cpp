@@ -198,7 +198,7 @@ void FogMap::softenSection(int x1, int y1, int x2, int y2, float fadeRatio)
 
 // -------------- Module Fog of War -----------------------------------------------------------------------------
 
-FogOfWar::FogOfWar()
+FogOfWar::FogOfWar(bool enabled) : Module(enabled)
 {
 	name.assign("fog_of_war");
 }

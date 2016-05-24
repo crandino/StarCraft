@@ -4,9 +4,7 @@
 #include "Module.h"
 #include "Point2d.h"
 
-//#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
-//#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
 
@@ -32,10 +30,10 @@ class Input : public Module
 
 public:
 
-	Input();
+	Input(bool enabled);
 
 	// Destructor
-	virtual ~Input();
+	~Input();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);

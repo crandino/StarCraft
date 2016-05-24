@@ -15,10 +15,10 @@ class Fonts : public Module
 {
 public:
 
-	Fonts();
+	Fonts(bool enabled);
 
 	// Destructor
-	virtual ~Fonts();
+	~Fonts();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);

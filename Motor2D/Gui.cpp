@@ -24,7 +24,7 @@
 
 using namespace std;
 
-Gui::Gui() : Module()
+Gui::Gui(bool enabled) : Module(enabled)
 {
 	name.assign("gui");
 }
@@ -1396,127 +1396,125 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 // Update all guis
 bool Gui::preUpdate()
 {
-
-	
-
 	return true;
 }
 
 bool Gui::update(float dt)
 {
-
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (app->game_manager->isGameStarted())
 	{
-		if (lasts_attack_position.size() > 0)
-			last_attack_position = lasts_attack_position.back();
-		app->render->camera.x = (app->render->camera.w / 2) - last_attack_position.x;
-		app->render->camera.y = (app->render->camera.h / 2) - last_attack_position.y;
-		if (app->render->camera.x >= 0)
-			app->render->camera.x = 0;
-		else if ((app->render->camera.x - app->render->camera.w) <= -map_limits.x)
-			app->render->camera.x = -map_limits.x + app->render->camera.w;
-		if (app->render->camera.y >= 0)
-			app->render->camera.y = 0;
-		else if ((app->render->camera.y - app->render->camera.h) <= -map_limits.y)
-			app->render->camera.y = -map_limits.y + app->render->camera.h;
-	}
-
-	if (timer_to_ping_attack.readSec() >= 1.0f)
-	{
-		timer_to_ping_attack.start();
-		if (lasts_attack_position.size() > 0)
+		if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			iPoint first_ping = { -1, -1 };
-			iPoint second_ping = { -1, -1 };
-			for (list<fPoint>::iterator it = lasts_attack_position.begin(); it != lasts_attack_position.end(); it++)
+			if (lasts_attack_position.size() > 0)
+				last_attack_position = lasts_attack_position.back();
+			app->render->camera.x = (app->render->camera.w / 2) - last_attack_position.x;
+			app->render->camera.y = (app->render->camera.h / 2) - last_attack_position.y;
+			if (app->render->camera.x >= 0)
+				app->render->camera.x = 0;
+			else if ((app->render->camera.x - app->render->camera.w) <= -map_limits.x)
+				app->render->camera.x = -map_limits.x + app->render->camera.w;
+			if (app->render->camera.y >= 0)
+				app->render->camera.y = 0;
+			else if ((app->render->camera.y - app->render->camera.h) <= -map_limits.y)
+				app->render->camera.y = -map_limits.y + app->render->camera.h;
+		}
+
+		if (timer_to_ping_attack.readSec() >= 1.0f)
+		{
+			timer_to_ping_attack.start();
+			if (lasts_attack_position.size() > 0)
 			{
-				if ((it._Ptr->_Myval.x < (-app->render->camera.x) || it._Ptr->_Myval.x >((-app->render->camera.x) + app->render->camera.w)) &&
-					(it._Ptr->_Myval.y < (-app->render->camera.y) || it._Ptr->_Myval.y >((-app->render->camera.y) + app->render->camera.h)))
+				iPoint first_ping = { -1, -1 };
+				iPoint second_ping = { -1, -1 };
+				for (list<fPoint>::iterator it = lasts_attack_position.begin(); it != lasts_attack_position.end(); it++)
 				{
-					if (first_ping.x == -1 && first_ping.y == -1)
+					if ((it._Ptr->_Myval.x < (-app->render->camera.x) || it._Ptr->_Myval.x >((-app->render->camera.x) + app->render->camera.w)) &&
+						(it._Ptr->_Myval.y < (-app->render->camera.y) || it._Ptr->_Myval.y >((-app->render->camera.y) + app->render->camera.h)))
 					{
-						first_ping.x = it._Ptr->_Myval.x;
-						first_ping.y = it._Ptr->_Myval.y;
-						mini_map->activePing(first_ping);
-					}
-					else if ((first_ping.x - 250 > it._Ptr->_Myval.x || first_ping.x + 250 < it._Ptr->_Myval.x) &&
-						(first_ping.y - 250 > it._Ptr->_Myval.y || first_ping.y + 250 < it._Ptr->_Myval.y))
-					{
-						second_ping.x = it._Ptr->_Myval.x;
-						second_ping.y = it._Ptr->_Myval.y;
-						mini_map->activePing(second_ping);
+						if (first_ping.x == -1 && first_ping.y == -1)
+						{
+							first_ping.x = it._Ptr->_Myval.x;
+							first_ping.y = it._Ptr->_Myval.y;
+							mini_map->activePing(first_ping);
+						}
+						else if ((first_ping.x - 250 > it._Ptr->_Myval.x || first_ping.x + 250 < it._Ptr->_Myval.x) &&
+							(first_ping.y - 250 > it._Ptr->_Myval.y || first_ping.y + 250 < it._Ptr->_Myval.y))
+						{
+							second_ping.x = it._Ptr->_Myval.x;
+							second_ping.y = it._Ptr->_Myval.y;
+							mini_map->activePing(second_ping);
+						}
 					}
 				}
+				last_attack_position = lasts_attack_position.back();
+				lasts_attack_position.clear();
 			}
-			last_attack_position = lasts_attack_position.back();
-			lasts_attack_position.clear();
 		}
-	}
 
-	// Cursor -> check for camera displacement.
-	iPoint pos = cursor->getLocalPos();
-	cursor->current_animation = &cursor->idle;
+		// Cursor -> check for camera displacement.
+		iPoint pos = cursor->getLocalPos();
+		cursor->current_animation = &cursor->idle;
 
-	if (app->entity_manager->selector_init) // Left
-	{
-		cursor->current_animation = &cursor->selection_anim;
-	}
-
-	Entity* entity_on_mouse = app->entity_manager->whichEntityOnMouse();
-	if (entity_on_mouse != NULL && app->fog_of_war->isVisible(entity_on_mouse->center.x, entity_on_mouse->center.y))
-	{
-		if (entity_on_mouse->faction == PLAYER)
+		if (app->entity_manager->selector_init) // Left
 		{
-			if (entity_on_mouse->type == UNIT)
-				cursor->current_animation = &cursor->allie;
-			else if (entity_on_mouse->type == BUILDING)
-				cursor->current_animation = &cursor->building;
+			cursor->current_animation = &cursor->selection_anim;
 		}
-		else if (entity_on_mouse->faction == COMPUTER)
-			cursor->current_animation = &cursor->enemy;
-	}
 
-	// Checking displacement for X axis.
-	if (pos.x < cursor_offset.x) // Left
-	{
-		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
-		cursor->current_animation = &cursor->left_disp;
-	}
-	else if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT)
-		app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
-	else if (pos.x >(app->render->camera.w - cursor_offset.x)) // Right
-	{
-		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
-		cursor->current_animation = &cursor->right_disp;
-	}
-	else if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_LEFT) != KEY_REPEAT)
-		app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
+		Entity* entity_on_mouse = app->entity_manager->whichEntityOnMouse();
+		if (entity_on_mouse != NULL && app->fog_of_war->isVisible(entity_on_mouse->center.x, entity_on_mouse->center.y))
+		{
+			if (entity_on_mouse->faction == PLAYER)
+			{
+				if (entity_on_mouse->type == UNIT)
+					cursor->current_animation = &cursor->allie;
+				else if (entity_on_mouse->type == BUILDING)
+					cursor->current_animation = &cursor->building;
+			}
+			else if (entity_on_mouse->faction == COMPUTER)
+				cursor->current_animation = &cursor->enemy;
+		}
 
-	// Checking displacement for Y axis.
-	if (pos.y < cursor_offset.y) // Up
-	{
-		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
-		cursor->current_animation = &cursor->up_disp;
+		// Checking displacement for X axis.
+		if (pos.x < cursor_offset.x) // Left
+		{
+			app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
+			cursor->current_animation = &cursor->left_disp;
+		}
+		else if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_RIGHT) != KEY_REPEAT)
+			app->render->camera.x += (app->render->camera.x + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.x);
+		else if (pos.x >(app->render->camera.w - cursor_offset.x)) // Right
+		{
+			app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
+			cursor->current_animation = &cursor->right_disp;
+		}
+		else if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_LEFT) != KEY_REPEAT)
+			app->render->camera.x -= (app->render->camera.x - (scroll_speed * dt) >= app->render->camera.w - map_limits.x ? (scroll_speed * dt) : map_limits.x - app->render->camera.w + app->render->camera.x);
+
+		// Checking displacement for Y axis.
+		if (pos.y < cursor_offset.y) // Up
+		{
+			app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
+			cursor->current_animation = &cursor->up_disp;
+		}
+		else if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_DOWN) != KEY_REPEAT)
+			app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
+		else if (pos.y >(app->render->camera.h - cursor_offset.y)) // Down
+		{
+			app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
+			cursor->current_animation = &cursor->down_disp;
+		}
+		else if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_UP) != KEY_REPEAT)
+			app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
 	}
-	else if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_DOWN) != KEY_REPEAT)
-		app->render->camera.y += (app->render->camera.y + (scroll_speed * dt) <= 0 ? (scroll_speed * dt) : -app->render->camera.y);
-	else if (pos.y >(app->render->camera.h - cursor_offset.y)) // Down
-	{
-		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
-		cursor->current_animation = &cursor->down_disp;
-	}
-	else if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && app->input->getKey(SDL_SCANCODE_UP) != KEY_REPEAT)
-		app->render->camera.y -= (app->render->camera.y - (scroll_speed * dt) >= app->render->camera.h - map_limits.y ? (scroll_speed * dt) : map_limits.y - app->render->camera.h + app->render->camera.y);
-	
 
 	const GuiElements* mouse_hover = findMouseHover();
 	if (mouse_hover &&
 		mouse_hover->can_focus == true &&
 		app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
-		focus = mouse_hover;	
+		focus = mouse_hover;
 	
 	// Now the iteration for input and update
 	for (list<GuiElements*>::iterator node = elements.begin(); node != elements.end(); node++)

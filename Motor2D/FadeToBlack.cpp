@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "p2Log.h"
 
-FadeToBlack::FadeToBlack()
+FadeToBlack::FadeToBlack(bool enabled) : Module(enabled)
 {
 	name.assign("fade_to_black");
 }

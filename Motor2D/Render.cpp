@@ -6,7 +6,7 @@
 #include "Map.h"
 #include "Input.h"
 
-Render::Render() : Module()
+Render::Render(bool enabled) : Module(enabled)
 {
 	name.assign("renderer");
 	background.r = 0;
@@ -56,16 +56,6 @@ bool Render::start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
-
-	// Camera offset movement activation
-	//uint w, h; app->win->getWindowSize(w, h);
-	//cursor_offset.x = (w * 0.01f); // 10% of map width
-	//cursor_offset.y = (h * 0.01f); // 10% of map height
-	//scroll_speed = 1.0f;
-
-	//map_limits = { app->map->data.front().width * app->map->data.front().tile_width,
-	//	app->map->data.front().height * app->map->data.front().tile_height };
-
 	return true;
 }
 
@@ -78,9 +68,6 @@ bool Render::preUpdate()
 
 bool Render::update(float dt)
 {
-	if (transition_active == true)
-		transition_active = transitioning();
-
 	return true;
 }
 
@@ -89,29 +76,6 @@ bool Render::postUpdate()
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
-}
-
-// MoveCamera check where the mouse is and acts accordingly, moving the map on that direction.
-void Render::moveCamera(float dt)
-{
-	//iPoint mouse_position;
-	//app->input->getMousePosition(mouse_position);
-
-	//// Two zones are implemented. The inner one, near the center, has a specific velocity.
-	//// The outer one, near the window frame, has double velocity than the previous one.
-	//int map_displacement = scroll_speed * dt;
-
-	//// Checking displacement for X axis.
-	//if (mouse_position.x < cursor_offset.x) // Left
-	//	camera.x += (camera.x + map_displacement <= 0 ? map_displacement : 0);
-	//else if (mouse_position.x > (camera.w - cursor_offset.x)) // Right
-	//	camera.x -= (camera.x - map_displacement >= camera.w - map_limits.x ? map_displacement : 0);
-
-	//// Checking displacement for Y axis.
-	//if (mouse_position.y < cursor_offset.y) // Up
-	//	camera.y += (camera.y + map_displacement <= 0 ? map_displacement : 0);
-	//else if (mouse_position.y > (camera.h - cursor_offset.y)) // Down
-	//	camera.y -= (camera.y - map_displacement >= camera.h - map_limits.y ? map_displacement : 0);
 }
 
 void Render::setCameraOnPosition(const iPoint &pos)
@@ -292,39 +256,6 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
-	}
-
-	return ret;
-}
-
-void Render::start_transition(iPoint dest_pos)
-{
-	transition_active = true;
-	this->dest_pos.set(-(dest_pos.x + camera.w / 2), -(dest_pos.y + camera.y / 2)); // Origin on upper_left corner
-	middle_pos.set((dest_pos.x + camera.x) / 2, (dest_pos.y + camera.y) / 2);
-	lerp_value = 0;
-}
-
-bool Render::transitioning()
-{
-	bool ret = true;
-	iPoint curr_pos = { camera.x, camera.y };
-	int incr = 1;	
-	
-	/*if (lerp_value < 1.0f) lerp_value += 0.00001;
-	LOG("%f", lerp_value);*/
-
-	if (curr_pos == dest_pos)
-		ret = false;
-	else
-	{
-		if (curr_pos == middle_pos)
-			incr = -incr;
-
-		lerp_value += incr;
-
-		camera.x = (dest_pos.x * lerp_value) + ((1 - lerp_value) * curr_pos.x);
-		camera.y = (dest_pos.y * lerp_value) + ((1 - lerp_value) * curr_pos.y);
 	}
 
 	return ret;

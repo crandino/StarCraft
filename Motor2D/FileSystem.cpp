@@ -7,7 +7,7 @@
 #pragma comment(lib, "Motor2D/PhysFS/libx86/physfs.lib")
 
 
-FileSystem::FileSystem()
+FileSystem::FileSystem(bool enabled) : Module(enabled)
 {
 	name.assign("file_system");
 

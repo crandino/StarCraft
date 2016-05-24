@@ -38,7 +38,7 @@ public:
 	App(int argc, char* args[]);
 
 	// Destructor
-	virtual ~App();
+	~App();
 
 	// Called before render is available
 	bool awake();
@@ -63,6 +63,7 @@ public:
 	void *getSaveGames(list<string> &list_saved_games) const;
 	uint getFrameRate() const;
 	float getDt() const;
+	void closeApp();
 
 private:
 
@@ -86,6 +87,8 @@ private:
 
 	bool saveGameNow() const;
 	bool loadGameNow();
+
+	
 
 public:
 
@@ -123,6 +126,8 @@ private:
 	mutable bool		want_to_save;
 	string				load_game;
 	mutable string		save_game;
+
+	bool				close_app;
 
 	Timer					timer;
 	PerfTimer		   perf_timer;

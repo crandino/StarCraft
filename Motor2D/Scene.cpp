@@ -13,7 +13,7 @@
 #include "GuiImage.h"
 #include "GuiLabel.h"
 
-Scene::Scene() : Module()
+Scene::Scene(bool enabled) : Module(enabled)
 {
 	name.assign("scene");
 }
@@ -58,6 +58,8 @@ bool Scene::start()
 // Called each loop iteration
 bool Scene::preUpdate()
 {
+	if (app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		app->game_manager->game_state = QUIT;
 	return true;
 }
 
@@ -116,18 +118,23 @@ bool Scene::postUpdate()
 		app->entity_manager->updateFogOfWar();
 	}
 
-	bool ret = true;
-
-	if(app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
-	return ret;
+	return true;
 }
 
 // Called before quitting
 bool Scene::cleanUp()
 {
 	LOG("Freeing scene");
+
+	// ---- GAME MANAGER ----
+	app->game_manager->stopGame();
+
+
+	// ---- MAPS ----
+	app->map->data.front().layers.front()->properties.setPropertyValue("NoDraw", 1);
+
+
+
 	return true;
 }
 

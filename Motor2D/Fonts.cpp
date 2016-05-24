@@ -9,7 +9,7 @@
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "Motor2D/SDL_ttf/libx86/SDL2_ttf.lib")
 
-Fonts::Fonts() : Module()
+Fonts::Fonts(bool enabled) : Module(enabled)
 {
 	name.assign("fonts");
 }

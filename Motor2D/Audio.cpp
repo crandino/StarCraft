@@ -9,7 +9,7 @@
 
 #pragma comment( lib, "Motor2D/SDL_mixer/libx86/SDL2_mixer.lib" )
 
-Audio::Audio() : Module()
+Audio::Audio(bool enabled) : Module(enabled)
 {
 	music = NULL;
 	name.assign("audio");

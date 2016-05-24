@@ -9,10 +9,10 @@ class Render : public Module
 {
 public:
 
-	Render();
+	Render(bool enabled);
 
 	// Destructor
-	virtual ~Render();
+	~Render();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);
@@ -40,15 +40,11 @@ public:
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool use_camera = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
 	bool DrawCircle(int x1, int y1, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
-	// Transition
-	void start_transition(iPoint dest_pos);
-	bool transitioning();
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
 	//Camera
-	void moveCamera(float dt);
 	void setCameraOnPosition(const iPoint &pos);
 
 public:

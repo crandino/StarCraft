@@ -112,7 +112,7 @@ private:
 
 public:
 
-	GameManager();
+	GameManager(bool enabled);
 
 	bool awake(pugi::xml_node &node);
 
@@ -137,7 +137,7 @@ public:
 
 	// Setting, resetting or getting game conditions
 	void startGame();
-	void endGame();
+	void stopGame();
 	void initiateGame();
 	void restartGame();
 	bool isGameStarted() const;

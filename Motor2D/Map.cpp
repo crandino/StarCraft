@@ -9,7 +9,7 @@
 #include <math.h>
 #include <string>
 
-Map::Map() : Module(), map_loaded(false)
+Map::Map(bool enabled) : Module(enabled), map_loaded(false)
 {
 	name.assign("map");
 }

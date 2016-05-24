@@ -13,10 +13,10 @@ class Textures : public Module
 {
 public:
 
-	Textures();
+	Textures(bool enabled);
 
 	// Destructor
-	virtual ~Textures();
+	~Textures();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);

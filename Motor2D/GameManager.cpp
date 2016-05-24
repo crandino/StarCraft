@@ -13,6 +13,8 @@
 #include "map.h"
 #include <map>
 #include "Entity.h"
+#include "Scene.h"
+#include "MenuScene.h"
 #include "Bomb.h"
 #include "Unit.h"
 #include "GuiMinimap.h"
@@ -67,7 +69,7 @@ enum bomb_position_enum
 
 // ---- GAME MANAGER -----
 
-GameManager::GameManager()
+GameManager::GameManager(bool enabled) : Module(enabled)
 {
 	name.assign("game_manager");
 }
@@ -526,15 +528,14 @@ bool GameManager::update(float dt)
 	}
 	case(HOLD) :
 	{
-		/*start_screen->draw_element = false;
-		start_button->disable_element();
-		close_button->disable_element();*/
-		//start_game = true;
+		//Do nothing. Game cycle frozen.
 		break;
 	}	
-	case(QUIT): //When close button is pressed
+	case(QUIT): 
 	{
-		return false;
+		// Game is stopped and we return to the initial screen.
+		if(!app->fade_to_black->isFading())
+			app->fade_to_black->fadeToBlack(app->scene, app->menu, 1.0f);
 		break;
 	}
 	}
@@ -600,7 +601,6 @@ bool GameManager::update(float dt)
 
 int GameManager::incrementPhase2WavePower()
 {
-	
 	waves2_info[0]->zergling_quantity += 2;
 	
 	if((current_wave + 1) % multiplier_hydra == 0)
@@ -852,9 +852,11 @@ void GameManager::startGame()
 	timer_between_waves.start();
 }
 
-void GameManager::endGame()
+void GameManager::stopGame()
 {
-	game_state = QUIT;
+	game_state = HOLD; // Cycle of game_manager is frozen...
+	start_game = false;
+	restartGame();	   // Reset all values to a possible new game.
 }
 
 void GameManager::initiateGame()

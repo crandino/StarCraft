@@ -11,7 +11,7 @@
 #include "GameManager.h"
 #include "FadeToBlack.h"
 
-MenuScene::MenuScene()
+MenuScene::MenuScene(bool enabled) : Module(enabled)
 {
 	name.assign("menu_scene");
 }
@@ -110,7 +110,7 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 			break;
 		case(MOUSE_LCLICK_UP) :
 			close_button->setSection({ 339, 229, 145, 40 });
-			app->game_manager->endGame();
+			app->closeApp();
 			break;
 		}
 	}

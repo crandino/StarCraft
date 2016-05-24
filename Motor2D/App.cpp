@@ -32,25 +32,26 @@
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	want_to_save = want_to_load = false;
+	close_app = false;
 
-	input = new Input();
-	win = new Window();
-	render = new Render();
-	tex = new Textures();
-	audio = new Audio();
-	scene = new Scene();
-	fs = new FileSystem();
-	path = new PathFinding();
-	map = new Map();
-	fonts = new Fonts();
-	gui = new Gui();
-	entity_manager = new EntityManager();
-	collision = new Collision();
-	game_manager = new GameManager();
-	fog_of_war = new FogOfWar();
-	particle = new ParticleManager();
-	menu = new MenuScene();
-	fade_to_black = new FadeToBlack();
+	input = new Input(true);
+	win = new Window(true);
+	render = new Render(true);
+	tex = new Textures(true);
+	audio = new Audio(true);
+	scene = new Scene(false);
+	fs = new FileSystem(true);
+	path = new PathFinding(true);
+	map = new Map(true);
+	fonts = new Fonts(true);
+	gui = new Gui(true);
+	entity_manager = new EntityManager(true);
+	collision = new Collision(true);
+	game_manager = new GameManager(true);
+	fog_of_war = new FogOfWar(true);
+	particle = new ParticleManager(true);
+	menu = new MenuScene(true);
+	fade_to_black = new FadeToBlack(true);
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
 	addModule(fs);
@@ -151,10 +152,6 @@ bool App::start()
 
 	total_time.start();
 
-	// -------------------------
-
-	scene->disable();
-
 	bool ret = true;
 	list<Module*>::iterator item = modules.begin(); 
 	while(item != modules.end() && ret == true)
@@ -185,7 +182,8 @@ bool App::update()
 		ret = postUpdate();
 
 	finishUpdate();
-	return ret;
+
+	return !close_app;
 }
 
 // ---------------------------------------------
@@ -443,4 +441,9 @@ uint App::getFrameRate() const
 float App::getDt() const
 {
 	return dt;
+}
+
+void App::closeApp()
+{
+	close_app = true;
 }

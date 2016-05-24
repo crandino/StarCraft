@@ -138,7 +138,6 @@ int main(int argc, char *argv[])
 			break;
 
 		case(CLEAN) :
-
 			LOG("======> Clean Step...");
 			if (app->cleanUp() != true)
 				state = FAIL;

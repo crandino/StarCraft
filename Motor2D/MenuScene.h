@@ -13,10 +13,10 @@ class MenuScene : public Module
 {
 public:
 
-	MenuScene();
+	MenuScene(bool enabled);
 
 	// Destructor
-	virtual ~MenuScene();
+	~MenuScene();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);

@@ -11,7 +11,7 @@ class FileSystem : public Module
 {
 public:
 
-	FileSystem();
+	FileSystem(bool enabled);
 	~FileSystem();
 
 

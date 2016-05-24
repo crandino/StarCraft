@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "p2Log.h"
 
-Collision::Collision() : Module()
+Collision::Collision(bool enabled) : Module(enabled)
 {
 	name.assign("collision");
 

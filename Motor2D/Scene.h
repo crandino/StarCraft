@@ -14,10 +14,10 @@ class Scene : public Module
 {
 public:
 
-	Scene();
+	Scene(bool enabled);
 
 	// Destructor
-	virtual ~Scene();
+	~Scene();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);

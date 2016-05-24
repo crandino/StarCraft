@@ -32,7 +32,7 @@
 #include <sstream>
 using namespace std;
 
-EntityManager::EntityManager() : Module()
+EntityManager::EntityManager(bool enabled) : Module(enabled)
 {
 	name.assign("entity_manager");
 }

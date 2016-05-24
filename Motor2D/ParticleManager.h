@@ -19,7 +19,7 @@ class BurstEmisor;
 class ParticleManager : public Module
 {
 public:
-	ParticleManager();
+	ParticleManager(bool enabled);
 	~ParticleManager();
 
 	bool awake(pugi::xml_node &node);

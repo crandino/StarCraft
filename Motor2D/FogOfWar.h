@@ -51,7 +51,7 @@ class FogOfWar : public Module
 {
 public:
 
-	FogOfWar();
+	FogOfWar(bool enabled);
 
 	// Destructor
 	~FogOfWar();
