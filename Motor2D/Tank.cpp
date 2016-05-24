@@ -398,11 +398,6 @@ bool Tank::update(float dt)
 	setParticleBehaviour();
 	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 
-	//if (app->input->getKey(SDL_SCANCODE_Q) == KEY_DOWN)
-	//	siegeMode(true);
-	//if (app->input->getKey(SDL_SCANCODE_A) == KEY_DOWN)
-	//	siegeMode(false);
-
 	switch (state)
 	{
 	case IDLE:

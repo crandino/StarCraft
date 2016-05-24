@@ -76,6 +76,9 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
+	bool load(pugi::xml_node &node);
+	bool save(pugi::xml_node &node) const;
+
 	// Gui creation functions
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
@@ -86,11 +89,8 @@ public:
 	GuiInfo* createInfo(iPoint pos, const char *tex_path);
 	GuiResources* createResourceInfo(const char* _entity_name, int _mineral, int _gas,iPoint pos,bool draw_element = false);
 
-
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
-
-	SDL_Rect mouseQuad(iPoint init_mouse);
 
 	void onGui(GuiElements* ui, GUI_EVENTS event);
 
@@ -126,9 +126,7 @@ public:
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
 	GuiImage* ui_create_bunker = nullptr;
-	//GuiImage* ui_create_turrets = nullptr;
 	GuiImage* ui_create_factory = nullptr;
-	//GuiImage* ui_create_starport = nullptr;
 	GuiImage* ui_create_barraks = nullptr;
 
 	//Control Barracks and Factories
@@ -145,7 +143,6 @@ public:
 	GuiImage* ui_create_tank = nullptr;
 	GuiImage* ui_normal_tank = nullptr;
 	GuiImage* ui_siege_tank = nullptr;
-	bool siegeMode = false;
 
 	bool buildingMenuOpened = false;
 	bool commandCenterOpened = false;
@@ -242,11 +239,10 @@ public:
 	SDL_Rect	 green_life;
 	SDL_Rect	 yellow_life;
 	SDL_Rect	 red_life;
-	SDL_Rect     white_life;
-	
+	SDL_Rect     white_life;	
 
 private:
-		
+
 	bool debug = false;
 	list<GuiElements*> elements;
 	const GuiElements* focus = nullptr;

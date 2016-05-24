@@ -703,7 +703,6 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 					if (it->second->specialization == TANK)
 						((Tank*)it->second)->siegeMode(true);
 				}
-				siegeMode = true;
 			break;
 			}
 		}
@@ -721,7 +720,6 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 					if (it->second->specialization == TANK)
 						((Tank*)it->second)->siegeMode(false);
 				}
-				siegeMode = false;
 			break;
 			}
 		}
@@ -1735,16 +1733,6 @@ GuiCursor* Gui::createCursor(const SDL_Texture* texture){
 	return ret;
 }
 
-//
-SDL_Rect Gui::mouseQuad(iPoint init_mouse)
-{
-	iPoint current_mouse;
-	app->input->getMousePosition(current_mouse);
-	SDL_Rect rect = { init_mouse.x, init_mouse.y, current_mouse.x - init_mouse.x, current_mouse.y - init_mouse.y };
-	app->render->DrawQuad(rect, 65, 105, 225, 100, true, false);
-	return rect;
-}
-
 // Called after all Updates
 const GuiElements* Gui::findMouseHover()
 {
@@ -1923,4 +1911,29 @@ bool Gui::findBunkerToLeave(Bunker* bunker)
 			ret = true;
 	}
 	return ret;
+}
+
+bool Gui::load(pugi::xml_node &node)
+{
+	bunker_to_leave.clear();
+	bool barrackAlive = false;
+	bool factoryAlive = false;
+	bool buildingMenuOpened = false;
+	bool commandCenterOpened = false;
+	bool barrackMenuOpened = false;
+	bool factoryMenuOpened = false;
+
+	return true;
+}
+
+bool Gui::save(pugi::xml_node &node) const
+{
+	pugi::xml_node gui_status = node.append_child("gui_status");
+	gui_status.append_attribute("buildingMenuOpened") = buildingMenuOpened;
+	gui_status.append_attribute("commandCenterOpened") = commandCenterOpened;
+	gui_status.append_attribute("barrackMenuOpened") = barrackMenuOpened;
+	gui_status.append_attribute("barrackAlive") = barrackAlive;
+	gui_status.append_attribute("factoryAlive") = factoryMenuOpened;
+
+	return true;
 }
