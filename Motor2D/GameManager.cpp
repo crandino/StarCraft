@@ -174,24 +174,6 @@ bool GameManager::start()
 	//Backgorund audio (DEBUG include)
 	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
 
-	/*defeat_atlas = app->tex->loadTexture("UI/Screens/Defeat_Screen_Atlas.png");
-
-	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
-	defeat_screen->center();
-	defeat_screen->setLocalPos(defeat_screen->getLocalPos().x, defeat_screen->getLocalPos().y - 70);
-	defeat_screen->draw_element = false;
-	is_defeat_screen_on = false;
-
-	jim_dead = app->gui->createImage(defeat_atlas, { 384, 140, 224, 28});
-	jim_dead->parent = defeat_screen;
-	jim_dead->setLocalPos(6, 222);
-	jim_dead->draw_element = false;
-
-	base_destroyed = app->gui->createImage(defeat_atlas, { 384, 111, 224, 28 });
-	base_destroyed->parent = defeat_screen;
-	base_destroyed->setLocalPos(6, 222);
-	base_destroyed->draw_element = false;*/
-
 	SDL_Texture *win_image = app->tex->loadTexture("UI/Screens/Win_Starcraft.png");
 	is_victory_screen_on = false;
 	victory_screen = app->gui->createImage(win_image, { 0, 0, 296, 225 });
@@ -207,8 +189,8 @@ bool GameManager::start()
 	ok_win_button->can_focus = false;
 	ok_win_button->setListener(this);
 
-	SDL_Texture *jim_screen = app->tex->loadTexture("UI/Screens/LoseJimRaynor_Starcraft.png");
-	SDL_Texture *command_screen = app->tex->loadTexture("UI/Screens/LoseCommandCenter_Starcraft.png");
+	SDL_Texture *jim_screen = app->tex->loadTexture("UI/Screens/Lose_JimRaynor_Starcraft.png");
+	SDL_Texture *command_screen = app->tex->loadTexture("UI/Screens/Lose_CommandCenter_Starcraft.png");
 	is_defeat_screen_on = false;
 
 	defeat_by_jim_screen = app->gui->createImage(jim_screen, { 0, 0, 296, 225 });
@@ -834,10 +816,10 @@ void GameManager::startGame()
 	defeat_by_command_screen->disable_element();
 	is_defeat_screen_on = false;
 
-	victory_screen->enable_element();
+	victory_screen->disable_element();
 	is_victory_screen_on = false;
 
-	ok_win_button->enable_element();
+	ok_win_button->disable_element();
 	ok_lose_button->disable_element();
 
 	unsigned int size_marines_x = initial_size.marines_quantityX * 2;
