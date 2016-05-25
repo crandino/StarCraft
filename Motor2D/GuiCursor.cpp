@@ -138,3 +138,8 @@ void GuiCursor::debugDraw() const
 	SDL_Rect r = getScreenRect();
 	app->render->DrawQuad({ r.x, r.y, r.w, r.h }, 255, (have_focus) ? 255 : 0, 0, 255, false, false);
 }
+
+void GuiCursor::backToIdle()
+{
+	current_animation = &idle;
+}

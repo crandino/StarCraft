@@ -43,12 +43,7 @@ private:
 
 	bool debug = false;
 
-	SDL_Texture* start_image = nullptr;
-
-	GuiImage* background = nullptr;
-	GuiImage* start_button = nullptr;
 	GuiImage* controls_button = nullptr;
-	GuiImage* close_button = nullptr;
 
 };
 

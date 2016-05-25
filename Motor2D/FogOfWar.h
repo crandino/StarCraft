@@ -58,6 +58,8 @@ public:
 
 	bool cleanUp();
 
+	bool start();
+
 	//Create & Initialize the fog maps
 	bool setUp(uint graphicalW, uint graphicalH, uint tileW = 32, uint tileH = 32, uint nMaps = 1);
 	//Delete the fog maps

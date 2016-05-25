@@ -24,6 +24,7 @@
 #include "GuiImage.h"
 #include "GuiInfo.h"
 #include "GuiTimer.h"
+#include "GuiCursor.h"
 
 #include <sstream>
 using namespace std;
@@ -913,8 +914,10 @@ void GameManager::restartGame()
 	waves3_info[0]->mutalisk_quantity = num_mutalisk;
 	waves3_info[0]->ultralisk_quantity = num_ultralisk;
 
+	// GUI information reset
 	info_message->unload();
 	graphic_wave_timer->deactivate();	
+	app->gui->cursor->backToIdle();
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.

@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "Window.h"
 #include "Textures.h"
+#include "MenuScene.h"
 
 #include "GuiImage.h"
 #include "GuiCursor.h"
@@ -240,8 +241,7 @@ bool Gui::start()
 	number_of_gass->setLocalPos(568, 4);
 	number_of_gass->interactive = false;
 
-	//HUD Info SCV and Bunker------------------------------------------------
-
+	//HUD Info about cost production ------------------------------------
 	info_bunker2 = app->gui->createResourceInfo("Bunker", app->entity_manager->bunker_mineral_cost, app->entity_manager->bunker_gas_cost, { 505, 290 });
 	info_bunker2->interactive = false;
 	info_bunker2->draw_element = false;
@@ -372,6 +372,24 @@ bool Gui::start()
 	barrackName->setLocalPos(280, 391);
 	barrackName->disable_element();
 	barrackName->can_focus = false;
+
+	// UI interface for Scene Menu
+	background = app->gui->createImage("UI/Screens/menu_image.png");
+	background->center();
+
+	SDL_Texture *start_image = app->tex->loadTexture("UI/Screens/Start_Image.png");
+
+	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
+	start_button->parent = background;
+	start_button->setLocalPos(50, 200);
+	start_button->can_focus = true;
+	start_button->setListener(app->menu);
+
+	close_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
+	close_button->parent = background;
+	close_button->setLocalPos(50, 250);
+	close_button->can_focus = true;
+	close_button->setListener(app->menu);
 
 	return true;
 }

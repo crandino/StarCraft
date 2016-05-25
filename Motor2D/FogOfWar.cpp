@@ -1,6 +1,7 @@
 #include "FogOfWar.h"
 #include "App.h"
 #include "Render.h"
+#include "Map.h"
 #include "Textures.h"
 #include "p2Log.h"
 
@@ -207,6 +208,12 @@ FogOfWar::FogOfWar(bool enabled) : Module(enabled)
 FogOfWar::~FogOfWar()
 {}
 
+bool FogOfWar::start()
+{
+	return setUp(app->map->data.front().tile_width * app->map->data.front().width,
+		app->map->data.front().tile_height * app->map->data.front().height, 32, 32, 1);
+}
+
 
 bool FogOfWar::cleanUp()
 {
@@ -267,29 +274,27 @@ void FogOfWar::draw()
 	//Next function enables the blending of the texture
 	//SDL_SetTextureBlendMode(fow, SDL_BLENDMODE_BLEND);
 
-	//Drawing all fog maps
-	for (vector<FogMap*>::reverse_iterator currentMap = maps.rbegin(); currentMap != maps.rend(); ++currentMap)
+	//Drawing our only fog of war map
+	FogMap *current_map = maps.front();
+	if (current_map->draw)
 	{
-		if ((*currentMap)->draw)
+		//Soften the fog edges of the section we'll render
+		current_map->softenSection(startX, startY, endX, endY);
+		for (int y = startY; y <= endY && y < max_map_height; ++y)
 		{
-			//Soften the fog edges of the section we'll render
-			(*currentMap)->softenSection(startX, startY, endX, endY);
-			for (int y = startY; y <= endY && y < max_map_height; ++y)
+			for (int x = startX; x <= endX && x < max_map_width; ++x)
 			{
-				for (int x = startX; x <= endX && x < max_map_width; ++x)
-				{
-					//Now the fog is just black rectangles with diferents alphas. Diferent methods will be explained.
-					//This other, changes its alpha
-					SDL_SetTextureAlphaMod(fow, (*currentMap)->map[x][y]);
+				//Now the fog is just black rectangles with diferents alphas. Diferent methods will be explained.
+				//This other, changes its alpha
+				SDL_SetTextureAlphaMod(fow, current_map->map[x][y]);
 
-					//Finally, blit can run correctly with the suitable alpha texture
-					app->render->blit(fow, x * tileW, y * tileH, &r);
+				//Finally, blit can run correctly with the suitable alpha texture
+				app->render->blit(fow, x * tileW, y * tileH, &r);
 
-					/*
-					Another option would be:
-					App->render->AddRect({ x * tileW, y * tileH, tileW, tileH }, true, 0, 0, 0, (*currentMap)->map[x][y]);
-					*/
-				}
+				/*
+				Another option would be:
+				App->render->AddRect({ x * tileW, y * tileH, tileW, tileH }, true, 0, 0, 0, (*currentMap)->map[x][y]);
+				*/
 			}
 		}
 	}

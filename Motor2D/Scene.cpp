@@ -48,8 +48,8 @@ bool Scene::start()
 		app->path->setMap(w, h, buffer);
 
 	// ---- FOG OF WAR ----
-	app->fog_of_war->setUp(app->map->data.front().tile_width * app->map->data.front().width,
-						   app->map->data.front().tile_height * app->map->data.front().height, 32, 32, 1);
+	//app->fog_of_war->setUp(app->map->data.front().tile_width * app->map->data.front().width,
+						   //app->map->data.front().tile_height * app->map->data.front().height, 32, 32, 1);
 	fog_of_war_timer.start();
 
 	return true;
@@ -100,8 +100,9 @@ bool Scene::update(float dt)
 		app->entity_manager->updateFogOfWar();
 		app->fog_of_war->draw();
 	}
+	/*}
 	else
-		app->fog_of_war->maps.back()->setAll(true);
+		app->fog_of_war->maps.back()->setAll(true);*/
 
 	return true;
 }
@@ -115,7 +116,6 @@ bool Scene::postUpdate()
 	{
 		fog_of_war_timer.start();
 		app->fog_of_war->clearMap(0);
-		app->entity_manager->updateFogOfWar();
 	}
 
 	return true;
@@ -129,11 +129,8 @@ bool Scene::cleanUp()
 	// ---- GAME MANAGER ----
 	app->game_manager->stopGame();
 
-
 	// ---- MAPS ----
 	app->map->data.front().layers.front()->properties.setPropertyValue("NoDraw", 1);
-
-
 
 	return true;
 }

@@ -86,9 +86,7 @@ private:
 	pugi::xml_node loadConfig(pugi::xml_document&) const;
 
 	bool saveGameNow() const;
-	bool loadGameNow();
-
-	
+	bool loadGameNow();	
 
 public:
 

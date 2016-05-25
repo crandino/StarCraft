@@ -13,6 +13,7 @@ public:
 	void update();
 	void draw() const;
 	void debugDraw() const;
+	void backToIdle();
 
 	const SDL_Texture* texture = nullptr;
 	Animation* current_animation;

@@ -120,8 +120,7 @@ public:
 	GuiImage* rectangle_command_7 = nullptr;
 	GuiImage* rectangle_command_8 = nullptr;
 	GuiImage* rectangle_command_9 = nullptr;
-
-
+	
 	//Command Center HUD--------------------
 	GuiImage* ui_create_bot = nullptr;
 	GuiImage* ui_create_builds = nullptr;
@@ -183,7 +182,6 @@ public:
 	//Raynor
 	GuiImage* raynorWireframe = nullptr;
 
-
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
 	list<Bunker*> bunker_to_leave;
@@ -218,6 +216,9 @@ public:
 
 	//Raynor indicator Image
 	GuiImage* raynor_indicator = nullptr;
+
+	// HUD Menu Scene
+	GuiImage *background, *start_button, *close_button;
 
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling
