@@ -324,7 +324,7 @@ bool GameManager::update(float dt)
 		//BOMB CREATION GOES HERE
 		if(!info_message->isLoaded())
 		{
-			info_message->newInfo("The BOMB is here! Find it and use against these fucking bastards!", (gameInfo.time_while_bomb_landing * 1000) / 3);
+			info_message->newInfo("The BOMB is here! Find it and use against these fucking bastards!", (gameInfo.time_while_bomb_landing * 1000) / 3, true);
 			info_message->newInfo("Pick it up with Jim...", (gameInfo.time_while_bomb_landing * 1000) / 3);
 			info_message->newInfo("...and return to the base to activate it!", (gameInfo.time_while_bomb_landing * 1000) / 3);
 
@@ -422,7 +422,7 @@ bool GameManager::update(float dt)
 		//BOMB CREATION GOES HERE
 		info_message->unload();
 		app->audio->stopMusic();
-		info_message->newInfo("The bomb is activated!", (gameInfo.time_while_bomb_landing * 1000) / 2);
+		info_message->newInfo("The bomb is activated!", (gameInfo.time_while_bomb_landing * 1000) / 2, true);
 		info_message->newInfo("Resist Commander, we almost got it!", (gameInfo.time_while_bomb_landing * 1000) / 2);
 		info_message->newInfo("Next wave\n", 2500);
 		info_message->newInfo("Next wave ---\n", 1000);
@@ -473,8 +473,7 @@ bool GameManager::update(float dt)
 			createWave(waves3_info[0], { 3557, 905 });
 			createWave(waves3_info[0], { 911, 3021 });
 			createWave(waves3_info[0], { 2606, 3056 });
-
-
+			
 			app->gui->mini_map->activePing(wave_pos);
 			wave3_power_counter += incrementPhase3WavePower();
 			wave_state = MIDDLE_WAVE;
@@ -650,16 +649,10 @@ void GameManager::checkingGameConditions()
 	}
 
 	if (command_center_destroyed || jim_raynor_dead)
-	{
 		game_state = LOSE;
-		start_game = false;	
-	}
 
 	if (game_state == FINAL_PHASE && timer_between_game_states.readSec() > gameInfo.time_bomb_detonation)
-	{
 		game_state = WIN;
-		start_game = false;
-	}
 }
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
@@ -908,6 +901,8 @@ void GameManager::restartGame()
 		it->second->coll->to_delete = true;
 		it->second->to_delete = true;
 	}
+
+	start_game = false;
 
 	waves3_info[0]->zergling_quantity = num_zergling;
 	waves3_info[0]->hydralisk_quantity = num_hydralisk;

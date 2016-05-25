@@ -19,13 +19,7 @@
   </render>
 
   <file_system>
-    <path>data.zip</path>
-    <!--<path>Zerg.zip</path>
-    <path>Terran.zip</path>
-    <path>UI.zip</path>
-    <path>Audio.zip</path>
-    <path>Particles.zip</path>-->
-	    
+    <path>data.zip</path>	    
   </file_system>
 
   <entity_manager>
@@ -62,9 +56,9 @@
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "8"/>
-    <timeBeforeGameStarts value ="6.0f"/>
-    <timeBetweenWavesPhase1 value = "20.0f"/>
+    <totalWaves value = "1"/>
+    <timeBeforeGameStarts value ="1.0f"/>
+    <timeBetweenWavesPhase1 value = "5.0f"/>
     <timeBetweenWavesPhase2 value = "20.0f"/>
     <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
@@ -88,13 +82,7 @@
     <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/> 
     <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="0"/>
 
-
-
-
     <SizeWave2 zerglings ="10" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
-    
-    
-    
     
     <SizeWave3 zerglings ="0" hydralisks ="0" mutalisks ="10" ultralisks="5"/>
     
@@ -116,9 +104,7 @@
     <powerHydra value = "1" />
     <powerMuta value = "1" />
     <powerUltra value = "1" />
-    
-    
-    
+       
   </game_manager>
 
   <fonts>

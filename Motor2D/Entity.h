@@ -110,7 +110,7 @@ public:
 	virtual ~Entity()
 	{ }
 
-	virtual bool update(float dt)
+	virtual bool update(float)
 	{
  		return true;
 	}

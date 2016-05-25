@@ -374,20 +374,20 @@ bool Gui::start()
 	barrackName->can_focus = false;
 
 	// UI interface for Scene Menu
-	background = app->gui->createImage("UI/Screens/menu_image.png");
-	background->center();
+	SDL_Texture *initial_menu = app->tex->loadTexture("UI/Screens/Menu_Starcraft.png");
+	
+	background = app->gui->createImage(initial_menu, { 0, 0, 641, 480 });
+	background->center();	
 
-	SDL_Texture *start_image = app->tex->loadTexture("UI/Screens/Start_Image.png");
-
-	start_button = app->gui->createImage(start_image, { 339, 164, 141, 39 });
+	start_button = app->gui->createImage(initial_menu, { 45, 507, 143, 41 });
 	start_button->parent = background;
-	start_button->setLocalPos(50, 200);
+	start_button->setLocalPos(248, 315);
 	start_button->can_focus = true;
 	start_button->setListener(app->menu);
 
-	close_button = app->gui->createImage(start_image, { 339, 229, 141, 39 });
+	close_button = app->gui->createImage(initial_menu, { 45, 573, 143, 41 });
 	close_button->parent = background;
-	close_button->setLocalPos(50, 250);
+	close_button->setLocalPos(248, 370);
 	close_button->can_focus = true;
 	close_button->setListener(app->menu);
 

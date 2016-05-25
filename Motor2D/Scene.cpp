@@ -66,8 +66,6 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
-	float cam_speed = 1.0f;
-
 	if (app->input->getKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->loadGame("save_game.xml");
 
@@ -100,9 +98,8 @@ bool Scene::update(float dt)
 		app->entity_manager->updateFogOfWar();
 		app->fog_of_war->draw();
 	}
-	/*}
 	else
-		app->fog_of_war->maps.back()->setAll(true);*/
+		app->fog_of_war->maps.front()->setAll(true);
 
 	return true;
 }

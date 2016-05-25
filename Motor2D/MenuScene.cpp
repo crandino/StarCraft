@@ -72,12 +72,17 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
-			case(MOUSE_LCLICK_DOWN) :
-			app->gui->start_button->setSection({ 339, 103, 141, 38 });
+		case(MOUSE_ENTERS) :
+			app->gui->start_button->setSection({ 416, 507, 143, 41 });
 			break;
-
+		case(MOUSE_LEAVES) :
+			app->gui->start_button->setSection({ 45, 507, 143, 41 });
+			break;
+		case(MOUSE_LCLICK_DOWN) :
+			app->gui->start_button->setSection({ 233, 507, 143, 41 });
+			break;
 		case(MOUSE_LCLICK_UP) :
-			app->gui->start_button->setSection({ 339, 164, 141, 39 });
+			app->gui->start_button->setSection({ 45, 507, 143, 41 });
 			app->fade_to_black->fadeToBlack(this, (Module*)app->scene, 3.0f);
 			break;
 		}
@@ -87,12 +92,17 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+		case(MOUSE_ENTERS) :
+			app->gui->close_button->setSection({ 416, 573, 143, 41 });
+			break;
+		case(MOUSE_LEAVES) :
+			app->gui->close_button->setSection({ 45, 573, 143, 41 });
+			break;
 		case(MOUSE_LCLICK_DOWN) :
-			//app->audio->playFx(fx_click, 0);
-			app->gui->close_button->setSection({ 339, 278, 145, 40 });
+			app->gui->close_button->setSection({ 233, 573, 143, 41});
 			break;
 		case(MOUSE_LCLICK_UP) :
-			app->gui->close_button->setSection({ 339, 229, 145, 40 });
+			app->gui->close_button->setSection({ 45, 573, 143, 41 });
 			app->closeApp();
 			break;
 		}

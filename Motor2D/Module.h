@@ -25,7 +25,7 @@ public:
 	{}
 
 	// Called before render is available
-	virtual bool awake(pugi::xml_node &node)
+	virtual bool awake(pugi::xml_node&)
 	{
 		return true;
 	}
@@ -43,7 +43,7 @@ public:
 	}
 
 	// Called each loop iteration
-	virtual bool update(float dt)
+	virtual bool update(float)
 	{
 		return true;
 	}
@@ -71,10 +71,10 @@ public:
 		return true;
 	}
 
-	virtual void onGui(GuiElements* ui, GUI_EVENTS event)
+	virtual void onGui(GuiElements*, GUI_EVENTS)
 	{}
 
-	virtual void onCollision(Collider* c1, Collider* c2)
+	virtual void onCollision(Collider*, Collider*)
 	{}
 
 	void enable()
@@ -103,7 +103,7 @@ public:
 public:
 
 	std::string	    name;
-	bool		active = true;
+	bool			active;
 };
 
 #endif // __MODULE_H__
