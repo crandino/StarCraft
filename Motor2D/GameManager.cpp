@@ -174,7 +174,7 @@ bool GameManager::start()
 	//Backgorund audio (DEBUG include)
 	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
 
-	defeat_atlas = app->tex->loadTexture("UI/Screens/Defeat_Screen_Atlas.png");
+	/*defeat_atlas = app->tex->loadTexture("UI/Screens/Defeat_Screen_Atlas.png");
 
 	defeat_screen = app->gui->createImage(defeat_atlas, { 0, 0, 384, 256 });
 	defeat_screen->center();
@@ -190,30 +190,44 @@ bool GameManager::start()
 	base_destroyed = app->gui->createImage(defeat_atlas, { 384, 111, 224, 28 });
 	base_destroyed->parent = defeat_screen;
 	base_destroyed->setLocalPos(6, 222);
-	base_destroyed->draw_element = false;
+	base_destroyed->draw_element = false;*/
 
-	victory_atlas = app->tex->loadTexture("UI/Screens/Victory_Screen_Atlas.png");
-	victory_screen = app->gui->createImage(victory_atlas, { 0, 0, 384, 256 });
+	SDL_Texture *win_image = app->tex->loadTexture("UI/Screens/Win_Starcraft.png");
+	is_victory_screen_on = false;
+	victory_screen = app->gui->createImage(win_image, { 0, 0, 296, 225 });
 	victory_screen->center();
 	victory_screen->setLocalPos(victory_screen->getLocalPos().x, victory_screen->getLocalPos().y - 70);
-	victory_screen->draw_element = false;
-	is_victory_screen_on = false;
+	victory_screen->draw_element = false;	
 
-	retry_button = app->gui->createImage(defeat_atlas, { 384, 0, 104, 28 });
-	retry_button->parent = victory_screen;
-	retry_button->setLocalPos(265, 150);
-	retry_button->draw_element = false;
-	retry_button->interactive = false;
-	retry_button->can_focus = false;
-	retry_button->setListener(this);
+	ok_win_button = app->gui->createImage(win_image, { 37, 242, 62, 19 });
+	ok_win_button->parent = victory_screen;
+	ok_win_button->setLocalPos(119, 214);
+	ok_win_button->draw_element = false;
+	ok_win_button->interactive = false;
+	ok_win_button->can_focus = false;
+	ok_win_button->setListener(this);
 
-	exit_button = app->gui->createImage(defeat_atlas, { 384, 28, 104, 28 });
-	exit_button->parent = victory_screen;
-	exit_button->setLocalPos(265, 190);
-	exit_button->draw_element = false;
-	exit_button->interactive = false;
-	exit_button->can_focus = false;
-	exit_button->setListener(this);
+	SDL_Texture *jim_screen = app->tex->loadTexture("UI/Screens/LoseJimRaynor_Starcraft.png");
+	SDL_Texture *command_screen = app->tex->loadTexture("UI/Screens/LoseCommandCenter_Starcraft.png");
+	is_defeat_screen_on = false;
+
+	defeat_by_jim_screen = app->gui->createImage(jim_screen, { 0, 0, 296, 225 });
+	defeat_by_jim_screen->center();
+	defeat_by_jim_screen->setLocalPos(defeat_by_jim_screen->getLocalPos().x, defeat_by_jim_screen->getLocalPos().y - 70);
+	defeat_by_jim_screen->draw_element = false;
+
+	defeat_by_command_screen = app->gui->createImage(command_screen, { 0, 0, 296, 225 });
+	defeat_by_command_screen->center();
+	defeat_by_command_screen->setLocalPos(defeat_by_command_screen->getLocalPos().x, defeat_by_command_screen->getLocalPos().y - 70);
+	defeat_by_command_screen->draw_element = false;
+
+	ok_lose_button = app->gui->createImage(jim_screen, { 30, 241, 65, 19 });
+	ok_lose_button->parent = defeat_by_jim_screen;
+	ok_lose_button->setLocalPos(119, 214);
+	ok_lose_button->draw_element = false;
+	ok_lose_button->interactive = false;
+	ok_lose_button->can_focus = false;
+	ok_lose_button->setListener(this);
 
 	// GUI
 	// Create Graphic Timers
@@ -816,16 +830,15 @@ void GameManager::startGame()
 
 	start_game = true;
 
-	defeat_screen->draw_element = false;
-	jim_dead->draw_element = false;
-	base_destroyed->draw_element = false;
+	defeat_by_jim_screen->disable_element();
+	defeat_by_command_screen->disable_element();
 	is_defeat_screen_on = false;
 
-	victory_screen->draw_element = false;
+	victory_screen->enable_element();
 	is_victory_screen_on = false;
 
-	retry_button->disable_element();
-	exit_button->disable_element();
+	ok_win_button->enable_element();
+	ok_lose_button->disable_element();
 
 	unsigned int size_marines_x = initial_size.marines_quantityX * 2;
 	unsigned int size_marines_y = initial_size.marines_quantityY ;
@@ -861,33 +874,53 @@ void GameManager::initiateGame()
 
 void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 {
-	if (ui == exit_button)
+	if (ui == ok_win_button)
 	{
 		switch (event)
 		{
+		case(MOUSE_ENTERS) :
+			ok_win_button->setSection({ 198, 242, 62, 19 });
+			break;
+		case(MOUSE_LEAVES) :			
+			ok_win_button->setSection({ 37, 242, 62, 19 });
+			break;
 		case(MOUSE_LCLICK_DOWN) :
-			app->audio->playFx(fx_click, 0);
-			exit_button->setSection({ 384, 84, 104, 28 });
+			ok_win_button->setSection({ 120, 242, 62, 19 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			exit_button->setSection({ 384, 28, 104, 28 });
+			app->audio->playFx(fx_click, 0);
+			ok_win_button->setSection({ 37, 242, 62, 19 });
 			game_state = QUIT;
+
+			ok_win_button->disable_element();
+			victory_screen->disable_element();
 			break;
 		}
 	}
 
-	if (ui == retry_button)
+	if (ui == ok_lose_button)
 	{
 		switch (event)
 		{
+		case(MOUSE_ENTERS) :
+			ok_lose_button->setSection({ 200, 241, 65, 19 });
+			break;
+		case(MOUSE_LEAVES) :
+			ok_lose_button->setSection({ 30, 241, 65, 19 });
+			break;
 		case(MOUSE_LCLICK_DOWN) :
-			app->audio->playFx(fx_click, 0);
-			retry_button->setSection({ 384, 56, 104, 28 });
+			ok_lose_button->setSection({ 117, 241, 65, 19 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			retry_button->setSection({ 384, 0, 104, 28 });
+			app->audio->playFx(fx_click, 0);
+			ok_win_button->setSection({ 30, 241, 65, 19 });
 			app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
-			startGame();
+			game_state = QUIT;
+
+			ok_lose_button->disable_element();
+			defeat_by_command_screen->disable_element();
+			defeat_by_jim_screen->disable_element();
+
 			break;
 		}
 	}
@@ -935,24 +968,20 @@ void GameManager::displayVictoryScreen()
 	is_victory_screen_on = true;
 	victory_screen->draw_element = true;
 
-	retry_button->enable_element();
-	exit_button->enable_element();
+	ok_win_button->enable_element();
 }
 
 void GameManager::displayDefeatScreen()
 {
-	defeat_screen->draw_element = true;
 	is_defeat_screen_on = true;
-	if (jim_raynor_dead == true)
-	{
-		jim_dead->draw_element = true;
+
+	if (jim_raynor_dead)
+		defeat_by_jim_screen->draw_element = true;
+
+	if (command_center_destroyed)	{
+		defeat_by_command_screen->draw_element = true;
 	}
-	if (command_center_destroyed == true)
-	{
-		base_destroyed->draw_element = true;
-	}
-	retry_button->enable_element();
-	exit_button->enable_element();
+	ok_lose_button->enable_element();
 }
 
 bool GameManager::isGameStarted() const

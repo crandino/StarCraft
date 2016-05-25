@@ -256,27 +256,18 @@ private:
 	bombPosition   bomb_position;
 
 	// ----------- GUI -------------------
-	//Start/Exit Button
-	SDL_Texture* start_image = nullptr;
-	GuiImage* start_screen = nullptr;
-	GuiImage* start_button = nullptr;
-	GuiImage* close_button = nullptr;
-
+	//OK Buttons	
+	GuiImage* ok_win_button = nullptr;
+	GuiImage* ok_lose_button = nullptr;
+	
 	//Victory Screen
-	SDL_Texture* victory_atlas = nullptr;
 	GuiImage* victory_screen = nullptr;
 	bool is_victory_screen_on = false;
 
 	//Defeat Screen
-	GuiImage* defeat_screen = nullptr;
-	GuiImage* jim_dead = nullptr;
-	GuiImage* base_destroyed = nullptr;
-	SDL_Texture* defeat_atlas = nullptr;
+	GuiImage* defeat_by_jim_screen = nullptr;
+	GuiImage* defeat_by_command_screen = nullptr;
 	bool is_defeat_screen_on = false;
-
-	//Ending Buttons
-	GuiImage* retry_button = nullptr;
-	GuiImage* exit_button = nullptr;
 
 	// Info Message
 	GuiInfo		*info_message;
