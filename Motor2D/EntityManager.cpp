@@ -1231,7 +1231,7 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second->type == UNIT && it->second->state != DYING && it->second->to_delete == true && 
+		if (it->second->type == UNIT && it->second->state != DYING && it->second->to_delete == false && 
 			it->second->state != SIEGE_MODE_OFF && it->second->state != IDLE_SIEGE_MODE && it->second->state != ATTACK_SIEGE_MODE)
 		{
 			Unit *unit = (Unit*)it->second;
