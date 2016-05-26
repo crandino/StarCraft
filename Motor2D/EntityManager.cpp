@@ -822,6 +822,8 @@ void EntityManager::handleSelection()
 				{
 					if (((Tank*)unit)->siege_mode)
 						continue;
+					else if (it->second->state == SIEGE_MODE_OFF)
+						continue;
 				}
 
 				if (selection.size() == 1)
@@ -1229,7 +1231,8 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
-		if (it->second->type == UNIT && it->second->state != SIEGE_MODE_OFF && it->second->state != IDLE_SIEGE_MODE && it->second->state != ATTACK_SIEGE_MODE)
+		if (it->second->type == UNIT && it->second->state != DYING && it->second->to_delete == true && 
+			it->second->state != SIEGE_MODE_OFF && it->second->state != IDLE_SIEGE_MODE && it->second->state != ATTACK_SIEGE_MODE)
 		{
 			Unit *unit = (Unit*)it->second;
 			if (!unit->flying)
@@ -1247,14 +1250,6 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 				}
 				else if (walkable == false)
 				{
-					if (it->second->specialization == TANK && it->second->state == SIEGE_MODE_ON && !app->map->isAreaWalkable(it->second->coll->rect))
-					{
-						((Tank*)unit)->siege_mode = false;
-						if (unit->path.size() > 0 && app->path->isWalkable(unit->path.back()))
-								unit->state = MOVE;
-						else
-							unit->state = IDLE;
-					}
 					if (unit->path.size() > 0)
 					{
 						if (!app->path->isWalkable(unit->path.back()))//if the origin and the destination isn't walkable
