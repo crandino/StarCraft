@@ -202,7 +202,8 @@ public:
 
 	void showWireframesSelection();
 	void wireframeType(SPECIALIZATION type, uint position);
-	
+	void enableWireframesSelection(bool active);
+
 	//List of wireframes for selection
 	list<GuiImage*> selection_wireframes;
 

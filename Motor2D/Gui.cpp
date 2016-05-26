@@ -863,6 +863,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  barrackName->disable_element();
 			  }
 			  
+		//	  enableWireframesSelection(false);
+
 		      break;
 			  
 		  case (BUNKER) :
@@ -918,6 +920,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
+			//  enableWireframesSelection(false);
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -979,6 +982,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->enable_element();
 			  barrackName->enable_element();
 
+			//  enableWireframesSelection(false);
+
 			  break;
 
 		  case (FACTORY) :
@@ -1037,6 +1042,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
+		//	  enableWireframesSelection(false);
+
 			  break;
 
 		  case (MARINE) :
@@ -1090,6 +1097,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackWireframe->disable_element();
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
+
+			//  enableWireframesSelection(false);
 
 			  break;
 			  
@@ -1145,6 +1154,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
+			//  enableWireframesSelection(false);
+
 			  break;
 
 		  case (FIREBAT) :
@@ -1198,6 +1209,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackWireframe->disable_element();
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
+
+		//	  enableWireframesSelection(false);
 
 			  break;
 
@@ -1268,6 +1281,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
+			 // enableWireframesSelection(false);
+
 			  break;
 
 		  case (JIM_RAYNOR) :
@@ -1321,6 +1336,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackWireframe->disable_element();
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
+
+			  //enableWireframesSelection(false);
 
 			  break;
 
@@ -1379,6 +1396,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				barrackInfo->disable_element();
 				barrackName->disable_element();
 
+				//enableWireframesSelection(false);
+
 				break;
 
 		  case (NOTYPE) :
@@ -1426,6 +1445,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  barrackWireframe->disable_element();
 				  barrackInfo->disable_element();
 				  barrackName->disable_element();
+
+				  //enableWireframesSelection(true);
 
 			  break;
 	}
@@ -1574,6 +1595,9 @@ bool Gui::update(float dt)
 
 	//Icons Control 
 	controlIconsSprite();
+
+	//wireframes selection
+	//showWireframesSelection();
 
 	return true;
 }
@@ -2148,6 +2172,31 @@ void Gui::wireframeType(SPECIALIZATION type, uint position)
 		break;
 	}
 
+	wire->disable_element();
 	selection_wireframes.push_back(wire);
+}
+
+void Gui::enableWireframesSelection(bool active)
+{
+	if (active)
+	{
+		if (!selection_wireframes.empty())
+		{
+			for (list<GuiImage*>::iterator it = selection_wireframes.begin(); it != selection_wireframes.end(); ++it)
+			{
+				it._Ptr->_Myval->enable_element();
+			}
+		}
+	}
+	else if (!active)
+	{
+		if (!selection_wireframes.empty())
+		{
+			for (list<GuiImage*>::iterator it = selection_wireframes.begin(); it != selection_wireframes.end(); ++it)
+			{
+				it._Ptr->_Myval->disable_element();
+			}
+		}
+	}
 }
 */
