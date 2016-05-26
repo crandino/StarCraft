@@ -399,6 +399,11 @@ bool Gui::start()
 	smallRaynorWireframe->setLocalPos(0, 0);
 	smallRaynorWireframe->can_focus = false;
 	smallRaynorWireframe->disable_element();
+	//SCV
+	smallScvWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
+	smallScvWireframe->setLocalPos(0, 0);
+	smallScvWireframe->can_focus = false;
+	smallScvWireframe->disable_element();
 	//------------------------------------------------------------------------
 
 	// UI interface for Scene Menu
@@ -1744,6 +1749,16 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 
 	return ret;
 }
+
+// Create a simple image
+GuiImage* Gui::createImage(GuiImage* image, iPoint position)
+{
+	GuiImage* ret = NULL;
+	ret = new GuiImage(image, position);
+	elements.push_back(ret);
+
+	return ret;
+}
 // Create a simple label
 /*GuiLabel* Gui::createLabel(const char* text, const int x, const int y)
 {
@@ -2005,10 +2020,35 @@ void Gui::showWireframesSelection()
 				//Draw 14 wireframes for every type of unit
 				for (; it != app->entity_manager->selection.end(); ++it)
 				{
-
+					switch (it->second->specialization)
+					{
+					case MARINE:
+						wireframeType(MARINE);
+						break;
+					case MEDIC:
+						wireframeType(MEDIC);
+						break;
+					case FIREBAT:
+						wireframeType(FIREBAT);
+						break;
+					case TANK:
+						wireframeType(TANK);
+						break;
+					case JIM_RAYNOR:
+						wireframeType(JIM_RAYNOR);
+						break;
+					case SCV:
+						wireframeType(SCV);
+						break;
+					}
 				}
 			}
 		}
 	}
+}
+
+void Gui::wireframeType(SPECIALIZATION type)
+{
+
 }
 */

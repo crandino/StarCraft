@@ -9,6 +9,7 @@ public:
 
 	GuiImage(const SDL_Texture* texture);
 	GuiImage(const SDL_Texture* texture, const SDL_Rect& section);
+	GuiImage(GuiImage* image, iPoint position);
 	~GuiImage();
 
 	void setSection(const SDL_Rect& section);

@@ -82,6 +82,7 @@ public:
 	// Gui creation functions
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
+	GuiImage* createImage(GuiImage* image, iPoint position);
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
@@ -181,6 +182,8 @@ public:
 	GuiImage* tankWireframe = nullptr;
 	//Raynor
 	GuiImage* raynorWireframe = nullptr;
+	//SCV
+	GuiImage* scvWireframe = nullptr;
 
 	//Small Wireframes
 	//Marine
@@ -193,8 +196,14 @@ public:
 	GuiImage* smallTankWireframe = nullptr;
 	//Raynor
 	GuiImage* smallRaynorWireframe = nullptr;
+	//SCV
+	GuiImage* smallScvWireframe = nullptr;
 
 	void showWireframesSelection();
+	void wireframeType(SPECIALIZATION type);
+	
+	//List of wireframes for selection
+	list<GuiImage*> selection_wireframes;
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;

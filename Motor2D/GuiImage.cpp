@@ -17,6 +17,11 @@ GuiImage::GuiImage(const SDL_Texture* texture, const SDL_Rect& section) : GuiEle
 	setSize(section.w, section.h);
 }
 
+GuiImage::GuiImage(GuiImage* image, iPoint position) : GuiElements()
+{
+	
+}
+
 // --------------------------
 GuiImage::~GuiImage()
 {}
