@@ -544,14 +544,11 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
-
 		case(MOUSE_ENTERS) :
-			//info_bunker->draw_element = true;
 			info_bunker2->draw_element = true;
 			break;
 
 		case(MOUSE_LEAVES) :
-			//info_bunker->draw_element = false;
 			info_bunker2->draw_element = false;
 			break;
 
@@ -560,10 +557,6 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 			app->audio->playFx(fx_click_1, 0);
 			info_bunker2->draw_element = false;
 			break;
-
-				/*case(MOUSE_LCLICK_DOWN_REPEAT) :
-				app->entity_manager->create_bunker = true;
-				break;*/
 		}
 	}
 
@@ -1964,6 +1957,51 @@ bool Gui::findBunkerToLeave(Bunker* bunker)
 			ret = true;
 	}
 	return ret;
+}
+
+void Gui::disableHUDelements()
+{
+	barrackAlive = false;
+	factoryAlive = false;
+	buildingMenuOpened = false;
+	commandCenterOpened = false;
+	barrackMenuOpened = false;
+	factoryMenuOpened = false;
+
+	info_bunker2->draw_element = false;
+	info_barraks->draw_element = false;
+	info_factory->draw_element = false;
+	info_scv2->draw_element = false;
+	info_marine->draw_element = false;
+	info_firebat->draw_element = false;
+	info_medic->draw_element = false;
+	info_tank->draw_element = false;
+
+	rectangle_command->draw_element = true;
+	rectangle_command_2->draw_element = true;
+	rectangle_command_3->draw_element = true;
+	rectangle_command_4->draw_element = true;
+	rectangle_command_5->draw_element = true;
+	rectangle_command_6->draw_element = true;
+	rectangle_command_7->draw_element = true;
+	rectangle_command_8->draw_element = true;
+	rectangle_command_9->draw_element = true;
+
+	ui_leave_bunker->disable_element();
+	raynor_indicator->disable_element();
+
+	ui_create_bot->disable_element();
+	ui_create_builds->disable_element();
+	ui_create_builds->setSection({ 298, 28, 37, 34 });  // Very wierd but necessary because the element also use the cancel symbol... :(
+	ui_create_bunker->disable_element();
+	ui_create_barraks->disable_element();
+	ui_create_factory->disable_element();
+	ui_create_marine->disable_element();
+	ui_create_firebat->disable_element();
+	ui_create_medic->disable_element();
+	ui_create_tank->disable_element();
+	ui_normal_tank->disable_element();
+	ui_siege_tank->disable_element();
 }
 
 bool Gui::load(pugi::xml_node &node)

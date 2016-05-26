@@ -928,6 +928,7 @@ void GameManager::restartGame()
 	info_message->unload();
 	graphic_wave_timer->deactivate();	
 	app->gui->cursor->backToIdle();
+	app->gui->disableHUDelements();
 }
 
 //unsigned int is intended ask me WHY I do it instead of uint.

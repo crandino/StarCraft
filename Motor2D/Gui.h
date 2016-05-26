@@ -79,6 +79,8 @@ public:
 	bool load(pugi::xml_node &node);
 	bool save(pugi::xml_node &node) const;
 
+	void disableHUDelements();
+
 	// Gui creation functions
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
@@ -159,7 +161,6 @@ public:
 	GuiLabel* bunkerName = nullptr;
 	GuiImage* bunkerWireframe = nullptr;
 	GuiLabel* bunkerInfo = nullptr;
-	GuiLabel* bunkerInfo2 = nullptr;
 	//Command Center
 	GuiLabel* commandCenterName = nullptr;
 	GuiImage* commandCenterWireframe = nullptr;
