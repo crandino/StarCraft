@@ -84,7 +84,7 @@ public:
 	// Gui creation functions
 	GuiImage* createImage(const char* filename);
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
-	GuiImage* createImage(GuiImage* image, iPoint position);
+	GuiImage createImage(GuiImage* image, iPoint position);
 	GuiCursor* createCursor(const SDL_Texture* texture);
 	GuiLabel* createLabel(const char* text, int kind_of_font);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
@@ -205,7 +205,7 @@ public:
 	void enableWireframesSelection(bool active);
 
 	//List of wireframes for selection
-	list<GuiImage*> selection_wireframes;
+	list<GuiImage> selection_wireframes;
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;

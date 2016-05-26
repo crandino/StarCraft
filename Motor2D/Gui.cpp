@@ -863,7 +863,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  barrackName->disable_element();
 			  }
 			  
-		//	  enableWireframesSelection(false);
+			  enableWireframesSelection(false);
 
 		      break;
 			  
@@ -920,7 +920,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-			//  enableWireframesSelection(false);
+			  enableWireframesSelection(false);
 
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
@@ -982,7 +982,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->enable_element();
 			  barrackName->enable_element();
 
-			//  enableWireframesSelection(false);
+			  enableWireframesSelection(false);
 
 			  break;
 
@@ -1042,7 +1042,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-		//	  enableWireframesSelection(false);
+			  enableWireframesSelection(false);
 
 			  break;
 
@@ -1098,7 +1098,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-			//  enableWireframesSelection(false);
+			  enableWireframesSelection(true);
 
 			  break;
 			  
@@ -1154,7 +1154,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-			//  enableWireframesSelection(false);
+			  enableWireframesSelection(true);
 
 			  break;
 
@@ -1210,7 +1210,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-		//	  enableWireframesSelection(false);
+			  enableWireframesSelection(true);
 
 			  break;
 
@@ -1281,7 +1281,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-			 // enableWireframesSelection(false);
+			  enableWireframesSelection(true);
 
 			  break;
 
@@ -1337,7 +1337,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackInfo->disable_element();
 			  barrackName->disable_element();
 
-			  //enableWireframesSelection(false);
+			  enableWireframesSelection(true);
 
 			  break;
 
@@ -1396,7 +1396,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				barrackInfo->disable_element();
 				barrackName->disable_element();
 
-				//enableWireframesSelection(false);
+				enableWireframesSelection(true);
 
 				break;
 
@@ -1597,7 +1597,7 @@ bool Gui::update(float dt)
 	controlIconsSprite();
 
 	//wireframes selection
-	//showWireframesSelection();
+	showWireframesSelection();
 
 	return true;
 }
@@ -1694,6 +1694,15 @@ bool Gui::postUpdate()
 		if (debug == true && gui->draw_element == true)
 			gui->debugDraw();
 	}
+
+	for (list<GuiImage>::iterator item = selection_wireframes.begin(); item != selection_wireframes.end(); item++)
+	{
+		GuiImage gui = *item;
+		if (gui.draw_element == true)
+		{
+			gui.draw();
+		}
+	}
 	
 	cursor->draw();
 
@@ -1728,6 +1737,7 @@ bool Gui::cleanUp()
 		RELEASE(*item);
 
 	elements.clear();
+	selection_wireframes.clear();
 
 	return true;
 }
@@ -1762,11 +1772,10 @@ GuiImage* Gui::createImage(const SDL_Texture* texture, const SDL_Rect& section)
 }
 
 // Create a simple image
-GuiImage* Gui::createImage(GuiImage* image, iPoint position)
+GuiImage Gui::createImage(GuiImage* image, iPoint position)
 {
-	GuiImage* ret = NULL;
-	ret = new GuiImage(image, position);
-	elements.push_back(ret);
+	GuiImage ret = NULL;
+	ret = GuiImage(image, position);
 
 	return ret;
 }
@@ -2054,9 +2063,10 @@ bool Gui::save(pugi::xml_node &node) const
 	return true;
 }
 
-/*
+
 void Gui::showWireframesSelection()
 {
+	enableWireframesSelection(false);
 	if (!app->entity_manager->selection.empty())
 	{
 		map<uint, Entity*>::iterator it = app->entity_manager->selection.begin();
@@ -2074,7 +2084,7 @@ void Gui::showWireframesSelection()
 			else if (app->entity_manager->selection.size() <= 12)
 			{
 				//Draw 14 wireframes for every type of unit
-				for (uint i = 0; it != app->entity_manager->selection.end(); ++it, ++i)
+				for (uint i = 1; it != app->entity_manager->selection.end(); ++it, ++i)
 				{
 					switch (it->second->specialization)
 					{
@@ -2148,31 +2158,31 @@ void Gui::wireframeType(SPECIALIZATION type, uint position)
 		break;
 	}
 
-	GuiImage* wire = nullptr;
+	GuiImage wire = nullptr;
 
 	switch (type)
 	{
 	case MARINE:
-		wire = app->gui->createImage(smallMarineWireframe, coords);
+		wire = createImage(smallMarineWireframe, coords);
 		break;
 	case MEDIC:
-		wire = app->gui->createImage(smallMedicWireframe, coords);
+		wire = createImage(smallMedicWireframe, coords);
 		break;
 	case FIREBAT:
-		wire = app->gui->createImage(smallFirebatWireframe, coords);
+		wire = createImage(smallFirebatWireframe, coords);
 		break;
 	case TANK:
-		wire = app->gui->createImage(smallTankWireframe, coords);
+		wire = createImage(smallTankWireframe, coords);
 		break;
 	case JIM_RAYNOR:
-		wire = app->gui->createImage(smallRaynorWireframe, coords);
+		wire = createImage(smallRaynorWireframe, coords);
 		break;
 	case SCV:
-		wire = app->gui->createImage(smallScvWireframe, coords);
+		wire = createImage(smallScvWireframe, coords);
 		break;
 	}
 
-	wire->disable_element();
+	wire.disable_element();
 	selection_wireframes.push_back(wire);
 }
 
@@ -2182,9 +2192,9 @@ void Gui::enableWireframesSelection(bool active)
 	{
 		if (!selection_wireframes.empty())
 		{
-			for (list<GuiImage*>::iterator it = selection_wireframes.begin(); it != selection_wireframes.end(); ++it)
+			for (list<GuiImage>::iterator it = selection_wireframes.begin(); it != selection_wireframes.end(); ++it)
 			{
-				it._Ptr->_Myval->enable_element();
+				it._Ptr->_Myval.enable_element();
 			}
 		}
 	}
@@ -2192,11 +2202,11 @@ void Gui::enableWireframesSelection(bool active)
 	{
 		if (!selection_wireframes.empty())
 		{
-			for (list<GuiImage*>::iterator it = selection_wireframes.begin(); it != selection_wireframes.end(); ++it)
+			for (list<GuiImage>::iterator it = selection_wireframes.begin(); it != selection_wireframes.end(); ++it)
 			{
-				it._Ptr->_Myval->disable_element();
+				it._Ptr->_Myval.disable_element();
 			}
+		selection_wireframes.clear();
 		}
 	}
 }
-*/
