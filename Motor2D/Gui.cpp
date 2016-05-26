@@ -379,7 +379,7 @@ bool Gui::start()
 	smallMarineWireframe->can_focus = false;
 	smallMarineWireframe->disable_element();
 	//Medic
-	smallMedicWireframe = app->gui->createImage(atlas_wireframes, { 255, 444, 29, 31 });
+	smallMedicWireframe = app->gui->createImage(atlas_wireframes, { 336, 444, 29, 31 });
 	smallMedicWireframe->can_focus = false;
 	smallMedicWireframe->disable_element();
 	//Firebat
@@ -387,7 +387,7 @@ bool Gui::start()
 	smallFirebatWireframe->can_focus = false;
 	smallFirebatWireframe->disable_element();
 	//Tank
-	smallTankWireframe = app->gui->createImage(atlas_wireframes, { 336, 444, 29, 31 });
+	smallTankWireframe = app->gui->createImage(atlas_wireframes, { 376, 444, 29, 31 });
 	smallTankWireframe->can_focus = false;
 	smallTankWireframe->disable_element();
 	//Raynor
@@ -395,7 +395,7 @@ bool Gui::start()
 	smallRaynorWireframe->can_focus = false;
 	smallRaynorWireframe->disable_element();
 	//SCV
-	smallScvWireframe = app->gui->createImage(atlas_wireframes, { 255, 444, 29, 31 });
+	smallScvWireframe = app->gui->createImage(atlas_wireframes, { 225, 444, 29, 31 });
 	smallScvWireframe->can_focus = false;
 	smallScvWireframe->disable_element();
 	//------------------------------------------------------------------------
