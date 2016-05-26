@@ -447,6 +447,8 @@ bool Tank::update(float dt)
 	case MOVE:
 		if (has_target)
 			move(dt);
+		if (siege_mode)
+			siege_mode = false;
 		break;
 	case MOVE_ALERT:
 		if (timer_to_check.read() >= TIME_TO_CHECK)
@@ -672,6 +674,8 @@ void Tank::siegeMode(bool siege_mode_flag)
 			current_animation = &siege_mode_on;
 			current_animation_turret = &siege_mode_on_turret;
 			state = SIEGE_MODE_ON;
+			has_target = false;
+			path.clear();
 		}
 		else
 		{

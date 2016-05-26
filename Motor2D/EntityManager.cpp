@@ -922,7 +922,7 @@ void EntityManager::handleSelection()
 	// The logic is modified to not walk over building.
 	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		if (app->map->isAreaWalkable(building_to_place->coll->rect))
+		if (app->map->isAreaWalkable(building_to_place->coll->rect, true))
 		{
 			building_to_place->id = ++next_ID;
 			building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
@@ -1256,6 +1256,11 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 						{
 							unit->path.clear();
 							unit->path.push_back(app->path->findNearestWalkableTile(unit->tile_pos, app->game_manager->command_center_position, 50));
+							unit->has_target = true;
+							unit->state = MOVE;
+						}
+						else if (it->second->state != MOVE || it->second->state != MOVE_ALERT || it->second->state != MOVE_ALERT_TO_ATTACK)
+						{
 							unit->has_target = true;
 							unit->state = MOVE;
 						}
