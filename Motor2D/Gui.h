@@ -200,7 +200,7 @@ public:
 	GuiImage* smallScvWireframe = nullptr;
 
 	void showWireframesSelection();
-	void wireframeType(SPECIALIZATION type);
+	void wireframeType(SPECIALIZATION type, uint position);
 	
 	//List of wireframes for selection
 	list<GuiImage*> selection_wireframes;

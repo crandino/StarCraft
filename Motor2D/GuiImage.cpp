@@ -19,7 +19,9 @@ GuiImage::GuiImage(const SDL_Texture* texture, const SDL_Rect& section) : GuiEle
 
 GuiImage::GuiImage(GuiImage* image, iPoint position) : GuiElements()
 {
-	
+	texture = image->texture;
+	section = image->section;
+	this->setLocalPos(position.x, position.y);
 }
 
 // --------------------------

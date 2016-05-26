@@ -375,33 +375,27 @@ bool Gui::start()
 
 	//Small Wireframes for Selection------------------------------------------
 	//Marine
-	smallMarineWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
-	smallMarineWireframe->setLocalPos(0, 0);
+	smallMarineWireframe = app->gui->createImage(atlas_wireframes, { 261, 444, 29, 31 });
 	smallMarineWireframe->can_focus = false;
 	smallMarineWireframe->disable_element();
 	//Medic
-	smallMedicWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
-	smallMedicWireframe->setLocalPos(0, 0);
+	smallMedicWireframe = app->gui->createImage(atlas_wireframes, { 255, 444, 29, 31 });
 	smallMedicWireframe->can_focus = false;
 	smallMedicWireframe->disable_element();
 	//Firebat
-	smallFirebatWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
-	smallFirebatWireframe->setLocalPos(0, 0);
+	smallFirebatWireframe = app->gui->createImage(atlas_wireframes, { 297, 444, 29, 31 });
 	smallFirebatWireframe->can_focus = false;
 	smallFirebatWireframe->disable_element();
 	//Tank
-	smallTankWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
-	smallTankWireframe->setLocalPos(0, 0);
+	smallTankWireframe = app->gui->createImage(atlas_wireframes, { 336, 444, 29, 31 });
 	smallTankWireframe->can_focus = false;
 	smallTankWireframe->disable_element();
 	//Raynor
-	smallRaynorWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
-	smallRaynorWireframe->setLocalPos(0, 0);
+	smallRaynorWireframe = app->gui->createImage(atlas_wireframes, { 376, 444, 29, 31 });
 	smallRaynorWireframe->can_focus = false;
 	smallRaynorWireframe->disable_element();
 	//SCV
-	smallScvWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
-	smallScvWireframe->setLocalPos(0, 0);
+	smallScvWireframe = app->gui->createImage(atlas_wireframes, { 255, 444, 29, 31 });
 	smallScvWireframe->can_focus = false;
 	smallScvWireframe->disable_element();
 	//------------------------------------------------------------------------
@@ -2007,7 +2001,7 @@ void Gui::showWireframesSelection()
 
 		if (it->second->type != BUILDING)
 		{
-			if (app->entity_manager->selection.size() > 14)
+			if (app->entity_manager->selection.size() > 12)
 			{
 				//Draw a single wireframe with a side number that shows type of unit u have
 				for (; it != app->entity_manager->selection.end(); ++it)
@@ -2015,30 +2009,30 @@ void Gui::showWireframesSelection()
 
 				}
 			}
-			else if (app->entity_manager->selection.size() <= 14)
+			else if (app->entity_manager->selection.size() <= 12)
 			{
 				//Draw 14 wireframes for every type of unit
-				for (; it != app->entity_manager->selection.end(); ++it)
+				for (uint i = 0; it != app->entity_manager->selection.end(); ++it, ++i)
 				{
 					switch (it->second->specialization)
 					{
 					case MARINE:
-						wireframeType(MARINE);
+						wireframeType(MARINE, i);
 						break;
 					case MEDIC:
-						wireframeType(MEDIC);
+						wireframeType(MEDIC, i);
 						break;
 					case FIREBAT:
-						wireframeType(FIREBAT);
+						wireframeType(FIREBAT, i);
 						break;
 					case TANK:
-						wireframeType(TANK);
+						wireframeType(TANK, i);
 						break;
 					case JIM_RAYNOR:
-						wireframeType(JIM_RAYNOR);
+						wireframeType(JIM_RAYNOR, i);
 						break;
 					case SCV:
-						wireframeType(SCV);
+						wireframeType(SCV, i);
 						break;
 					}
 				}
@@ -2047,8 +2041,75 @@ void Gui::showWireframesSelection()
 	}
 }
 
-void Gui::wireframeType(SPECIALIZATION type)
+void Gui::wireframeType(SPECIALIZATION type, uint position)
 {
+	iPoint coords;
+	coords.setZero();
 
+	switch (position)
+	{
+	case 1:
+		coords.set(161, 397);
+		break;
+	case 2:
+		coords.set(200, 397);
+		break;
+	case 3:
+		coords.set(239, 397);
+		break;
+	case 4:
+		coords.set(278, 397);
+		break;
+	case 5:
+		coords.set(317, 397);
+		break;
+	case 6:
+		coords.set(356, 397);
+		break;
+	case 7:
+		coords.set(161, 436);
+		break;
+	case 8:
+		coords.set(200, 436);
+		break;
+	case 9:
+		coords.set(239, 436);
+		break;
+	case 10:
+		coords.set(278, 436);
+		break;
+	case 11:
+		coords.set(317, 436);
+		break;
+	case 12:
+		coords.set(356, 436);
+		break;
+	}
+
+	GuiImage* wire = nullptr;
+
+	switch (type)
+	{
+	case MARINE:
+		wire = app->gui->createImage(smallMarineWireframe, coords);
+		break;
+	case MEDIC:
+		wire = app->gui->createImage(smallMedicWireframe, coords);
+		break;
+	case FIREBAT:
+		wire = app->gui->createImage(smallFirebatWireframe, coords);
+		break;
+	case TANK:
+		wire = app->gui->createImage(smallTankWireframe, coords);
+		break;
+	case JIM_RAYNOR:
+		wire = app->gui->createImage(smallRaynorWireframe, coords);
+		break;
+	case SCV:
+		wire = app->gui->createImage(smallScvWireframe, coords);
+		break;
+	}
+
+	selection_wireframes.push_back(wire);
 }
 */
