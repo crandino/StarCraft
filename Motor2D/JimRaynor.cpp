@@ -500,7 +500,7 @@ void JimRaynor::move(float dt)
 					else if (bomb_activated)
 					{
 						// Last phase of the game
-						app->game_manager->game_state = BOMB_ACTIVATION;
+						app->game_manager->game_state = PRE_BOMB_ACTIVATION;
 						bomb_taken = false;
 					}
 					else if (bunker_to_fill != NULL)

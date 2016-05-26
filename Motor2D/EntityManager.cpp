@@ -1031,10 +1031,7 @@ void EntityManager::deletionManager()
 		loading_game = false;
 }
 
-
 /*------------------WAVE RELATED METHODS--------------------------*/
-
-
 Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
 {
 	Entity* ret = NULL;

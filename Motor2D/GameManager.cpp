@@ -171,9 +171,6 @@ bool GameManager::start()
 	fx_click = app->audio->loadFx("Audio/FX/UI/Click_2.wav");
 	fx_wave_incoming = app->audio->loadFx("Audio/FX/InoffVoice/Wave_incoming.wav");
 
-	//Backgorund audio (DEBUG include)
-	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
-
 	SDL_Texture *win_image = app->tex->loadTexture("UI/Screens/Win_Starcraft.png");
 	is_victory_screen_on = false;
 	victory_screen = app->gui->createImage(win_image, { 0, 0, 296, 225 });
@@ -413,29 +410,40 @@ bool GameManager::update(float dt)
 		break;
 	}
 
-	case(BOMB_ACTIVATION) :
+	case(PRE_BOMB_ACTIVATION) :
 	{
-		//BOMB CREATION GOES HERE
+		timer_between_game_states.start();
+		game_state = BOMB_ACTIVATION;
+
 		info_message->unload();
 		app->audio->stopMusic();
 		info_message->newInfo("The bomb is activated!", (gameInfo.time_while_bomb_landing * 1000) / 2, true);
-		info_message->newInfo("Resist Commander, we almost got it!", (gameInfo.time_while_bomb_landing * 1000) / 2);
+		info_message->newInfo("Commander, we almost got it!", (gameInfo.time_while_bomb_landing * 1000) / 2);
 		info_message->newInfo("Next wave\n", 2500);
 		info_message->newInfo("Next wave ---\n", 1000);
 		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)", 3000);
 		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n---", 500);
 		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------", 500);
 		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------Ultralisks=", 3000);
-		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------Ultralisks=\n9999999999....", 10000);
+		info_message->newInfo("Next wave ---\nError\n(SIGNAL_LOST)\n-------Ultralisks=\n9999999999....", 8000);
+		break;
+	}
 
-		graphic_wave_timer->changeTimer(timer_between_game_states, gameInfo.time_bomb_detonation * 1000);
-		graphic_wave_timer->initiate();
-		timer_between_game_states.start();
+	case(BOMB_ACTIVATION) :
+	{
+		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing + 15)  // This 10 synchronize the final wave with the last message
+		{
+			info_message->newInfo("Something BIGGER is approaching!", 5000);
+			info_message->newInfo("Resist! One minute to detonation!", 10000);
+			graphic_wave_timer->changeTimer(timer_between_game_states, gameInfo.time_bomb_detonation * 1000);
+			graphic_wave_timer->initiate();
+			timer_between_game_states.start();
 
-		app->gui->mini_map->activePing(command_center_position, 8000, BOMB);
-		game_state = FINAL_PHASE;
-		timer_between_waves.start();
-		
+			app->gui->mini_map->activePing(command_center_position, 8000, BOMB);
+			game_state = FINAL_PHASE;
+			wave_state = BEGINNING_WAVE;
+			timer_between_waves.start();
+		}		
 		break;
 	}
 
@@ -445,22 +453,22 @@ bool GameManager::update(float dt)
 		switch (wave_state)
 		{
 
-		case(WAITING_FOR_WAVE_TO_START) :
+		/*case(WAITING_FOR_WAVE_TO_START) :
 		{
 			LOG("WAITING WAVE TO START - PHASE 3");
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase3)
 				wave_state = BEGINNING_WAVE;
 			break;
-		}
+		}*/
 
 		case(BEGINNING_WAVE):
 		{
 			LOG("BEGINNING WAVE - PHASE 3 !!!");
-			if (final_music == false)
-			{
+			/*if (final_music == false)
+			{*/
 				app->audio->playMusic("Audio/Music/Our_Last_Hope.mp3");
-				final_music = true;
-			}
+				//final_music = true;
+			//}
 			int random = rand() % 4;
 			wave_pos = positionRandomizerWave(random, wave_pos);
 			app->audio->playFx(fx_wave_incoming, 0);
@@ -483,15 +491,15 @@ bool GameManager::update(float dt)
 			{
 				LOG("WAVE CLEARED - PHASE 3!!!");
 				wave_state = END_WAVE;
+				current_wave++;
 			}
 			break;
 		}
 		case(END_WAVE) :
 		{
-			LOG("WAVE FINISHED - PHASE 3");
-			current_wave++;
-			wave_state = WAITING_FOR_WAVE_TO_START;
-			timer_between_waves.start();
+			LOG("FINAL WAVE FINISHED");
+			//wave_state = WAITING_FOR_WAVE_TO_START;
+			//timer_between_waves.start();
 			break;
 		}
 		}
@@ -800,9 +808,9 @@ bool GameManager::cleanUp()
 void GameManager::startGame()
 {
 	wave_state = WAITING_FOR_WAVE_TO_START;
-	//game_state = FIRST_PHASE;
-
 	game_state = PREPARATION;
+
+	app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
 
 	app->entity_manager->addEntity(command_center_position, COMMANDCENTER);
 	app->entity_manager->addEntity(factory_position, FACTORY);
@@ -836,13 +844,14 @@ void GameManager::startGame()
 	current_wave = 0;
 	mineral_resources = 0;
 	gas_resources = 0;
-	final_music = false;
+	//final_music = false;
 
 	timer_between_waves.start();
 }
 
 void GameManager::stopGame()
 {
+	app->audio->stopMusic();
 	game_state = HOLD; // Cycle of game_manager is frozen...
 	start_game = false;
 	restartGame();	   // Reset all values to a possible new game.

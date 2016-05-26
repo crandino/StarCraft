@@ -32,6 +32,7 @@ enum GAME_STATE
 	FIRST_PHASE,
 	BOMB_LANDING,
 	SECOND_PHASE,
+	PRE_BOMB_ACTIVATION,
 	BOMB_ACTIVATION,
 	FINAL_PHASE,
 
@@ -231,7 +232,7 @@ private:
 	Timer				 timer_between_game_states;
 
 	bool				 start_game = false;
-	bool				 final_music = false;
+//	bool				 final_music = false;
 
 
 	unsigned int		 size_marines_x = SIZEMARINESX;
