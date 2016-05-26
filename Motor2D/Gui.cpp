@@ -373,6 +373,34 @@ bool Gui::start()
 	barrackName->disable_element();
 	barrackName->can_focus = false;
 
+	//Small Wireframes for Selection------------------------------------------
+	//Marine
+	smallMarineWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
+	smallMarineWireframe->setLocalPos(0, 0);
+	smallMarineWireframe->can_focus = false;
+	smallMarineWireframe->disable_element();
+	//Medic
+	smallMedicWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
+	smallMedicWireframe->setLocalPos(0, 0);
+	smallMedicWireframe->can_focus = false;
+	smallMedicWireframe->disable_element();
+	//Firebat
+	smallFirebatWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
+	smallFirebatWireframe->setLocalPos(0, 0);
+	smallFirebatWireframe->can_focus = false;
+	smallFirebatWireframe->disable_element();
+	//Tank
+	smallTankWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
+	smallTankWireframe->setLocalPos(0, 0);
+	smallTankWireframe->can_focus = false;
+	smallTankWireframe->disable_element();
+	//Raynor
+	smallRaynorWireframe = app->gui->createImage(atlas_wireframes, { 0, 0, 0, 0 });
+	smallRaynorWireframe->setLocalPos(0, 0);
+	smallRaynorWireframe->can_focus = false;
+	smallRaynorWireframe->disable_element();
+	//------------------------------------------------------------------------
+
 	// UI interface for Scene Menu
 	SDL_Texture *initial_menu = app->tex->loadTexture("UI/Screens/Menu_Starcraft.png");
 	
@@ -1954,3 +1982,33 @@ bool Gui::save(pugi::xml_node &node) const
 
 	return true;
 }
+
+/*
+void Gui::showWireframesSelection()
+{
+	if (!app->entity_manager->selection.empty())
+	{
+		map<uint, Entity*>::iterator it = app->entity_manager->selection.begin();
+
+		if (it->second->type != BUILDING)
+		{
+			if (app->entity_manager->selection.size() > 14)
+			{
+				//Draw a single wireframe with a side number that shows type of unit u have
+				for (; it != app->entity_manager->selection.end(); ++it)
+				{
+
+				}
+			}
+			else if (app->entity_manager->selection.size() <= 14)
+			{
+				//Draw 14 wireframes for every type of unit
+				for (; it != app->entity_manager->selection.end(); ++it)
+				{
+
+				}
+			}
+		}
+	}
+}
+*/

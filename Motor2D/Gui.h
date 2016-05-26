@@ -182,6 +182,20 @@ public:
 	//Raynor
 	GuiImage* raynorWireframe = nullptr;
 
+	//Small Wireframes
+	//Marine
+	GuiImage* smallMarineWireframe = nullptr;
+	//Medic
+	GuiImage* smallMedicWireframe = nullptr;
+	//Firebat
+	GuiImage* smallFirebatWireframe = nullptr;
+	//Tank
+	GuiImage* smallTankWireframe = nullptr;
+	//Raynor
+	GuiImage* smallRaynorWireframe = nullptr;
+
+	void showWireframesSelection();
+
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;
 	list<Bunker*> bunker_to_leave;
