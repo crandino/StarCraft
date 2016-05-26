@@ -124,24 +124,24 @@ bool GameManager::awake(pugi::xml_node &node)
 	/*Wave2 Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave2"); tempNode; tempNode = tempNode.next_sibling("SizeWave2"))
 	{
-		original_zergling_num = tempNode.attribute("zerglings").as_uint();
-		original_hydra_num = tempNode.attribute("hydralisks").as_uint();
-		original_muta_num = tempNode.attribute("mutalisks").as_uint();
-		original_ultra_num = tempNode.attribute("ultralisks").as_uint();
+		original_zergling_num_phase2 = tempNode.attribute("zerglings").as_uint();
+		original_hydra_num_phase2 = tempNode.attribute("hydralisks").as_uint();
+		original_muta_num_phase2 = tempNode.attribute("mutalisks").as_uint();
+		original_ultra_num_phase2 = tempNode.attribute("ultralisks").as_uint();
 
-		SizeWave* wave = new SizeWave(original_zergling_num, original_hydra_num, original_muta_num, original_ultra_num);
+		SizeWave* wave = new SizeWave(original_zergling_num_phase2, original_hydra_num_phase2, original_muta_num_phase2, original_ultra_num_phase2);
 		waves2_info.push_back(wave);
 	}
 
 	/*Wave3 Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave3"); tempNode; tempNode = tempNode.next_sibling("SizeWave3"))
 	{
-		original_zergling_num = tempNode.attribute("zerglings").as_uint();
-		original_hydra_num = tempNode.attribute("hydralisks").as_uint();
-		original_muta_num = tempNode.attribute("mutalisks").as_uint();
-		original_ultra_num = tempNode.attribute("ultralisks").as_uint();
+		original_zergling_num_phase3 = tempNode.attribute("zerglings").as_uint();
+		original_hydra_num_phase3 = tempNode.attribute("hydralisks").as_uint();
+		original_muta_num_phase3 = tempNode.attribute("mutalisks").as_uint();
+		original_ultra_num_phase3 = tempNode.attribute("ultralisks").as_uint();
 
-		SizeWave* wave = new SizeWave(original_zergling_num, original_hydra_num, original_muta_num, original_ultra_num);
+		SizeWave* wave = new SizeWave(original_zergling_num_phase3, original_hydra_num_phase3, original_muta_num_phase3, original_ultra_num_phase3);
 		waves3_info.push_back(wave);
 	}
 
@@ -927,6 +927,13 @@ void GameManager::restartGame()
 	}
 
 	start_game = false;
+
+	waves2_info[0]->zergling_quantity = original_zergling_num_phase2;
+	waves2_info[0]->hydralisk_quantity = original_hydra_num_phase2;
+	waves2_info[0]->mutalisk_quantity = original_muta_num_phase2;
+	waves2_info[0]->ultralisk_quantity = original_ultra_num_phase2;
+
+
 
 	waves3_info[0]->zergling_quantity = num_zergling;
 	waves3_info[0]->hydralisk_quantity = num_hydralisk;

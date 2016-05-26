@@ -27,9 +27,9 @@
       bunker_mineral_cost = "100"
       bunker_gas_cost = "0"
       barrack_mineral_cost = "150"
-      barrack_gas_cost = "0" 
+      barrack_gas_cost = "0"
       factory_mineral_cost = "200"
-      factory_gas_cost = "100" 
+      factory_gas_cost = "100"
       
       marine_mineral_cost = "50"
       marine_gas_cost = "0"
@@ -38,18 +38,21 @@
       scv_mineral_cost = "50"
       scv_gas_cost = "0"
       medic_mineral_cost = "50"
-      medic_gas_cost = "25"     
+      medic_gas_cost = "25"
       tank_mineral_cost = "250"
-      tank_gas_cost = "100" 
+      tank_gas_cost = "100"
       
       zergling_mineral_cost = "50"
-      zergling_gas_cost = "10" 
+      zergling_gas_cost = "10"
       hydralisk_mineral_cost = "75"
-      hydralisk_gas_cost = "25" 
+      hydralisk_gas_cost = "25"
       ultralisk_mineral_cost = "200"
-      ultralisk_gas_cost = "200" 
+      ultralisk_gas_cost = "200"
       mutalisk_mineral_cost = "100"
-      mutalisk_gas_cost = "50"       
+      mutalisk_gas_cost = "50"
+
+
+    
   />    
   </entity_manager>
   

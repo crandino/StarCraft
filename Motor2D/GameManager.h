@@ -191,10 +191,15 @@ public:
 	uint num_mutalisk;
 	uint num_ultralisk;
 
-	uint original_zergling_num;
-	uint original_hydra_num;
-	uint original_muta_num;
-	uint original_ultra_num;
+	uint original_zergling_num_phase2;
+	uint original_hydra_num_phase2;
+	uint original_muta_num_phase2;
+	uint original_ultra_num_phase2;
+
+	uint original_zergling_num_phase3;
+	uint original_hydra_num_phase3;
+	uint original_muta_num_phase3;
+	uint original_ultra_num_phase3;
 
 	//Multipliers
 	uint multiplier_hydra;
