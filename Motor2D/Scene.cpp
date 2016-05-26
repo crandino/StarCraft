@@ -46,6 +46,7 @@ bool Scene::start()
 	uchar *buffer = NULL;
 	if (app->map->createWalkabilityMap(w, h, &buffer))
 		app->path->setMap(w, h, buffer);
+	RELEASE_ARRAY(buffer);
 
 	// ---- FOG OF WAR ----
 	//app->fog_of_war->setUp(app->map->data.front().tile_width * app->map->data.front().width,

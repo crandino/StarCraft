@@ -246,13 +246,10 @@ bool App::preUpdate()
 
 	while (item != modules.end() && ret == true)
 	{
-		if ((*item)->active == false)
+		if ((*item)->active == true)
 		{
-			++item;
-			continue;
+			ret = (*item)->preUpdate();
 		}
-
-		ret = (*item)->preUpdate();
 		++item;
 	}
 
@@ -366,7 +363,7 @@ bool App::loadGameNow()
 		pugi::xml_node		root;
 
 		pugi::xml_parse_result result = data.load_buffer(buffer, size);
-		RELEASE(buffer);
+		RELEASE_ARRAY(buffer);
 
 		if (result != NULL)
 		{
