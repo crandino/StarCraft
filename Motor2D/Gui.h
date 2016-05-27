@@ -212,9 +212,10 @@ public:
 
 	//Portraits----------------------------
 	GuiImage* hide_portrait = nullptr;
+	//Portrait Marine----------------------
+	SDL_Texture* marine_portrait_tex = nullptr;
 	GuiPortrait* marine_portrait = nullptr;
 	Animation marine_portrait_anim;
-	vector<Animation*>   marine_portrait_anim_pack;
 	//-------------------------------------
 
 	//Bunkers HUD---------------------------

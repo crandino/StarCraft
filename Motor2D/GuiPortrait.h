@@ -22,6 +22,10 @@ private:
 	Animation anim;
 	SDL_Rect section;
 	const SDL_Texture* texture = nullptr;
+	
+public:
+
+	Animation* current_animation;
 
 };
 

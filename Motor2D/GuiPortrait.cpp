@@ -25,17 +25,7 @@ void GuiPortrait::setSection(const SDL_Rect& section)
 // --------------------------
 void GuiPortrait::draw() const
 {
-	iPoint p = getScreenPos();
-	if (parent && parent->cut_childs)
-	{
-		SDL_Rect r = parent->getScreenRect();
-		app->render->SetViewPort({ r.x, r.y, r.w, r.h });
-		p = getLocalPos();
-	}
-	app->render->blit(texture, p.x, p.y, (SDL_Rect*)&section, 0.0f);
-
-	if (parent && parent->cut_childs)
-		app->render->ResetViewPort();
+	app->render->blit(texture, rect.x, rect.y, &(current_animation->getCurrentFrame()));
 }
 
 void GuiPortrait::draw_static() const
