@@ -71,6 +71,15 @@ bool EntityManager::awake(pugi::xml_node &node)
 	ultralisk_mineral_cost = node.child("costs").attribute("ultralisk_mineral_cost").as_int();
 	ultralisk_gas_cost = node.child("costs").attribute("ultralisk_gas_cost").as_int();
 
+	zergling_mineral_cost_phase2 = node.child("costs").attribute("zergling_mineral_cost_phase2").as_int();
+	zergling_gas_cost_phase2 = node.child("costs").attribute("zergling_gas_cost_phase2").as_int();
+	hydralisk_mineral_cost_phase2 = node.child("costs").attribute("hydralisk_mineral_cost_phase2").as_int();
+	hydralisk_gas_cost_phase2 = node.child("costs").attribute("hydralisk_gas_cost_phase2").as_int();
+	mutalisk_mineral_cost_phase2 = node.child("costs").attribute("mutalisk_mineral_cost_phase2").as_int();
+	mutalisk_gas_cost_phase2 = node.child("costs").attribute("mutalisk_gas_cost_phase2").as_int();
+	ultralisk_mineral_cost_phase2 = node.child("costs").attribute("ultralisk_mineral_cost_phase2").as_int();
+	ultralisk_gas_cost_phase2 = node.child("costs").attribute("ultralisk_gas_cost_phase2").as_int();
+
 	return true;
 }
 

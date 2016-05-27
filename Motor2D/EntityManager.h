@@ -183,6 +183,15 @@ public:
 	int ultralisk_mineral_cost;
 	int ultralisk_gas_cost;
 
+	int zergling_mineral_cost_phase2;
+	int zergling_gas_cost_phase2;
+	int hydralisk_mineral_cost_phase2;
+	int hydralisk_gas_cost_phase2;
+	int mutalisk_mineral_cost_phase2;
+	int mutalisk_gas_cost_phase2;
+	int ultralisk_mineral_cost_phase2;
+	int ultralisk_gas_cost_phase2;
+
 	// ---------- Entity Textures ---------------
 	//   Terran
 	SDL_Texture *marine_tex;

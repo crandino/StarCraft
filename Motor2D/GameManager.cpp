@@ -109,6 +109,8 @@ bool GameManager::awake(pugi::xml_node &node)
 	ultralisk_score = node.child("UltraliskScore").attribute("value").as_uint();
 
 
+
+
 	/*Wave Info Load*/
 	for (pugi::xml_node tempNode = node.child("SizeWave"); tempNode; tempNode = tempNode.next_sibling("SizeWave"))
 	{
@@ -435,7 +437,7 @@ bool GameManager::update(float dt)
 		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing + 15)  // This 10 synchronize the final wave with the last message
 		{
 			info_message->newInfo("Something BIGGER is approaching!", 5000);
-			info_message->newInfo("Resist! One minute to detonation!", 10000);
+			info_message->newInfo("Resist! Three minutes to detonation!", 10000);
 			graphic_wave_timer->changeTimer(timer_between_game_states, gameInfo.time_bomb_detonation * 1000);
 			graphic_wave_timer->initiate();
 			timer_between_game_states.start();
@@ -1004,7 +1006,11 @@ void GameManager::eraseEnemiesIfKilled()
 		{
 			if (it2->second->to_delete == true)
 			{
-				AddPointsEnemy(it2->second);
+				if (game_state == FIRST_PHASE)
+					AddPointsEnemy(it2->second);
+				else if (game_state == SECOND_PHASE || game_state == FINAL_PHASE)
+					AddPointsEnemyPhase2(it2->second);
+
 				it2 = current_wave_entities.erase(it2);
 				//Score is added up when an enemy is killed
 				
@@ -1037,6 +1043,32 @@ void GameManager::AddPointsEnemy(Entity* e)
 		break;
 	}
 }
+
+void GameManager::AddPointsEnemyPhase2(Entity* e)
+{
+
+	switch (e->specialization)
+	{
+	case(ZERGLING) :
+		updateResources(app->entity_manager->zergling_mineral_cost_phase2, app->entity_manager->zergling_gas_cost_phase2);
+		break;
+	case(HYDRALISK) :
+		updateResources(app->entity_manager->hydralisk_mineral_cost_phase2, app->entity_manager->hydralisk_gas_cost_phase2);
+		break;
+	case(MUTALISK) :
+		updateResources(app->entity_manager->mutalisk_mineral_cost_phase2, app->entity_manager->mutalisk_gas_cost_phase2);
+		break;
+	case(ULTRALISK) :
+		updateResources(app->entity_manager->ultralisk_mineral_cost_phase2, app->entity_manager->ultralisk_gas_cost_phase2);
+		break;
+	}
+}
+
+
+
+
+
+
 
 void GameManager::updateResources(int mineral, int gas)
 {

@@ -151,6 +151,7 @@ public:
 	void eraseEnemiesIfKilled();
 
 	void AddPointsEnemy(Entity* e);
+	void AddPointsEnemyPhase2(Entity* e);
 
 public:
 	
@@ -183,6 +184,8 @@ public:
 	uint hydralisk_score;
 	uint mutalisk_score;
 	uint ultralisk_score;
+
+
 
 	GameInformation gameInfo;
 
