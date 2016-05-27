@@ -1675,6 +1675,18 @@ bool Gui::update(float dt)
 	//wireframes selection
 	showWireframesSelection();
 
+	//Clean Hud when buildings are destroyed
+	if (!barrackAlive)
+	{
+		info_marine->draw_element = false;
+		info_medic->draw_element = false;
+		info_firebat->draw_element = false;
+	}
+
+	if (!factoryAlive)
+	{
+		info_tank->draw_element = false;
+	}
 	return true;
 }
 
