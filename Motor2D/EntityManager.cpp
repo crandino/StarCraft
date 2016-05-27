@@ -1505,12 +1505,38 @@ bool EntityManager::load(pugi::xml_node &node)
 		uint id = tmp.attribute("id").as_uint();
 		iPoint pos = { tmp.attribute("pos_x").as_int(), tmp.attribute("pos_y").as_int() };
 		SPECIALIZATION spec = (SPECIALIZATION)tmp.attribute("type").as_int();
-		bool to_delete = tmp.attribute("to_delete").as_bool();
-		float current_hp = tmp.attribute("current_hp").as_float();
 
 		Entity *reload_entity = addEntity(pos, spec, true, id);
-		reload_entity->current_hp = current_hp;
-		reload_entity->to_delete = to_delete;
+		reload_entity->current_hp = tmp.attribute("current_hp").as_float();
+		reload_entity->to_delete = tmp.attribute("to_delete").as_bool();
+		reload_entity->state = (STATE)tmp.attribute("state").as_int();
+		reload_entity->damage = tmp.attribute("damage").as_float();
+		reload_entity->damage_multiplier = tmp.attribute("damage_multiplier").as_float();
+		reload_entity->speed_multiplier = tmp.attribute("speed_multiplier").as_float();
+
+		if (reload_entity->type == UNIT)
+		{
+			Unit* u = (Unit*)reload_entity;
+			u->flying = tmp.attribute("flying").as_bool();
+			u->target_pos.x = tmp.attribute("target_pos_x").as_int();
+			u->target_pos.y = tmp.attribute("target_pos_y").as_int();
+		}
+		
+		// Loading special variables according its state.
+		switch (reload_entity->state)
+		{
+		case(MOVE):
+		case(MOVE_ALERT):
+		{
+			Unit* u = (Unit*)reload_entity;
+			u->has_target = tmp.attribute("has_target").as_bool();
+			u->grouped = tmp.attribute("grouped").as_bool();
+			u->group_speed = tmp.attribute("group_speed").as_float();
+			for (pugi::xml_node pos = tmp.child("position_to_move"); pos; pos = pos.next_sibling("position_to_move"))
+				u->path.push_back({ pos.attribute("x").as_int(), pos.attribute("y").as_int() });
+			break;
+		}
+		}
 
 		// Loading special attributes for some units : bunker, jim_raynor, tank...
 		switch (spec)
@@ -1606,7 +1632,40 @@ bool EntityManager::save(pugi::xml_node &node) const
 		e.append_attribute("type") = it->second->specialization;
 		e.append_attribute("current_hp") = it->second->current_hp;
 		e.append_attribute("to_delete") = it->second->to_delete;
+		e.append_attribute("state") = it->second->state;
+		e.append_attribute("damage") = it->second->damage;
+		e.append_attribute("damage_multiplier") = it->second->damage_multiplier;
+		e.append_attribute("speed_multiplier") = it->second->speed_multiplier;
 
+		if (it->second->type == UNIT)
+		{
+			Unit *u = (Unit*)it->second;
+			e.append_attribute("flying") = u->flying;
+			e.append_attribute("target_pos_x") = u->target_pos.x;
+			e.append_attribute("target_pos_y") = u->target_pos.y;
+		}
+
+		// Saving the necessary variables according to the tropezientos mil states that exists...:(
+		switch (it->second->state)
+		{
+		case(MOVE) :
+		case(MOVE_ALERT) :
+		{
+			Unit* u = (Unit*)it->second;
+			e.append_attribute("has_target") = u->has_target;
+			e.append_attribute("grouped") = u->grouped;
+			e.append_attribute("group_speed") = u->group_speed;
+			for (uint i = 0; i < u->path.size(); ++i)
+			{
+				pugi::xml_node pos = e.append_child("position_to_move");
+				pos.append_attribute("x") = u->path[i].x;
+				pos.append_attribute("y") = u->path[i].y;
+			}
+			break;
+		}
+		}
+
+		// Special treatment for some entities: bunker, jim_raynor and tank
 		switch (it->second->specialization)
 		{
 		case(BUNKER) :

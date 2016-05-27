@@ -8,10 +8,6 @@ class Building : public Entity
 {
 public:
 
-	queue<Entity*>		queue;
-	Timer				creation_timer;
-	float			    time_to_create;
-
 	Building() 
 	{
 		type = BUILDING;
