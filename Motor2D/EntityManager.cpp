@@ -282,6 +282,12 @@ bool EntityManager::start()
 Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation, uint manual_id)
 {
 	Entity *e = NULL;
+	if (building_mode && !direct_creation)
+	{
+		building_mode = false;
+		building_to_place->coll->to_delete = true;
+		RELEASE(building_to_place);
+	}
 
 	switch (type)
 	{
@@ -625,7 +631,7 @@ bool EntityManager::postUpdate()
 
 	if (building_mode)
 	{
-		if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE || app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE || app->game_manager->game_state == QUIT || app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			building_mode = false;
 			building_to_place->coll->to_delete = true;
