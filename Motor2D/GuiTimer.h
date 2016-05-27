@@ -23,6 +23,11 @@ public:
 
 	//Blitz GuiMinimap
 	void draw() const;
+
+	// Tools
+	bool isActive() const;
+	uint timeElapsed() const;
+	uint totalTime() const;
 	
 private:
 

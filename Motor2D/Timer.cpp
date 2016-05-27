@@ -18,6 +18,11 @@ void Timer::start()
 	started_at = SDL_GetTicks();
 }
 
+void Timer::startWithTimeElapsed(uint time_elapsed)
+{
+	started_at = SDL_GetTicks() - time_elapsed;
+}
+
 // ---------------------------------------------
 uint32 Timer::read() const
 {

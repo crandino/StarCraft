@@ -130,8 +130,6 @@ bool Scene::cleanUp()
 	// ---- MAPS ----
 	app->map->data.front().layers.front()->properties.setPropertyValue("NoDraw", 1);
 
-	// ---- GUI on GAMEMANAGER----
-
 	return true;
 }
 

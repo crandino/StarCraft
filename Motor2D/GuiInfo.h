@@ -24,6 +24,9 @@ struct Message
 class GuiInfo : public GuiElements
 {
 public:
+
+	deque<Message>		  queue_of_messages;
+
 	//Constructor
 	GuiInfo(iPoint pos, const char *tex_path) : GuiElements(), info_tex("O", 0)
 	{
@@ -65,7 +68,7 @@ public:
 			if (timer.read() > m->display_time)
 			{
 				// When the time is over, eliminated this message.
-				queue_of_messages.pop();
+				queue_of_messages.pop_front();
 				new_text = true;
 			}
 		}
@@ -91,7 +94,7 @@ public:
 
 	void newInfo(const char *text, uint _display_time, bool beap_play = false)
 	{
-		queue_of_messages.push(Message(text, _display_time, beap_play));
+		queue_of_messages.push_back(Message(text, _display_time, beap_play));
 		new_text = true;
 		queue_loaded = true;
 	}
@@ -104,8 +107,13 @@ public:
 	void unload()
 	{
 		for (uint i = 0; i < queue_of_messages.size(); ++i)
-			queue_of_messages.pop();
+			queue_of_messages.pop_front();
 		queue_loaded = false;
+	}
+
+	uint timeElapsed() const
+	{
+		return timer.read();
 	}
 
 private:
@@ -123,7 +131,6 @@ private:
 	uint				  text_wrapping;
 	bool				  new_text;
 	bool			      queue_loaded;
-	queue<Message>		  queue_of_messages;
 
 };
 #endif  //__GUIINFO_H__

@@ -65,3 +65,18 @@ void GuiTimer::changeTimer(Timer &timer, uint initial_time)
 	timer_associated = &timer;
 	total_time = initial_time;
 }
+
+bool GuiTimer::isActive() const
+{
+	return active;
+}
+
+uint GuiTimer::timeElapsed() const
+{
+	return timer_associated->read();
+}
+
+uint GuiTimer::totalTime() const
+{
+	return total_time;
+}

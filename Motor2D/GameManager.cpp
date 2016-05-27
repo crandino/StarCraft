@@ -250,6 +250,7 @@ bool GameManager::update(float dt)
 		if (timer_between_waves.readSec() > gameInfo.time_before_game_starts)
 		{
 			game_state = FIRST_PHASE;
+			timer_between_waves.start();
 			info_message->unload();			
 		}
 		break;
@@ -538,8 +539,12 @@ bool GameManager::update(float dt)
 	case(QUIT): 
 	{
 		// Game is stopped and we return to the initial screen.
-		if(!app->fade_to_black->isFading())
+		if (!app->fade_to_black->isFading())
+		{
+			info_message->unload();
+			graphic_wave_timer->deactivate();
 			app->fade_to_black->fadeToBlack(app->scene, app->menu, 1.0f);
+		}			
 		break;
 	}
 	}
@@ -937,8 +942,6 @@ void GameManager::restartGame()
 	waves2_info[0]->mutalisk_quantity = original_muta_num_phase2;
 	waves2_info[0]->ultralisk_quantity = original_ultra_num_phase2;
 
-
-
 	waves3_info[0]->zergling_quantity = num_zergling;
 	waves3_info[0]->hydralisk_quantity = num_hydralisk;
 	waves3_info[0]->mutalisk_quantity = num_mutalisk;
@@ -1133,11 +1136,53 @@ bool GameManager::load(pugi::xml_node &node)
 	current_wave = node.child("phases").attribute("current_wave").as_int();
 	start_game = node.child("phases").attribute("start_game").as_bool();
 
+	timer_between_game_states.startWithTimeElapsed(node.child("phases").attribute("timer_between_game_states").as_uint());
+	timer_between_waves.startWithTimeElapsed(node.child("phases").attribute("timer_between_waves").as_uint());
+
+	// Here I load the ids of the zergs that conforms the current wave. Afterwards, Load on EntityManager will
+	// place the new loaded entities on this wave.
 	list_ids_enemies.clear();
 	istringstream in(string(node.child("list_ids_enemies").attribute("ids").as_string()));
 	uint id;
 	while (in >> id)
 		list_ids_enemies.push_back(id);
+
+	// Now, UI interface for GameManager: GuiInfo and GuiTimer
+	//  GUI Info
+	info_message->unload();
+	uint time_elapsed = node.child("gui_info").attribute("time_elapsed").as_uint();
+	bool first_message = true;
+
+	for (pugi::xml_node tmp = node.child("gui_info").child("message"); tmp; tmp = tmp.next_sibling("message"))
+	{
+		const char *c = tmp.attribute("text").as_string();
+		bool beap = tmp.attribute("beap").as_bool();
+		uint display_time = tmp.attribute("display_time").as_uint();
+
+		if (first_message)
+		{
+			info_message->newInfo(c, display_time - time_elapsed, beap);
+			first_message = false;
+		}
+		else
+			info_message->newInfo(c, display_time, beap);
+	}
+
+	//  GUI Timer
+	graphic_wave_timer->deactivate();
+	if (node.child("gui_timer").attribute("active").as_bool())
+	{
+		uint time_elapsed, total_time;
+		time_elapsed = node.child("gui_timer").attribute("time_elapsed").as_uint();
+		total_time = node.child("gui_timer").attribute("total_time").as_uint();
+
+		if (game_state == BOMB_ACTIVATION)
+			graphic_wave_timer->changeTimer(timer_between_game_states, total_time - time_elapsed);
+		else
+			graphic_wave_timer->changeTimer(timer_between_waves, total_time - time_elapsed);
+
+		graphic_wave_timer->initiate();
+	}
 
 	return true;
 }
@@ -1154,6 +1199,10 @@ bool GameManager::save(pugi::xml_node &node) const
 	phases.append_attribute("current_wave") = current_wave;
 	phases.append_attribute("start_game") = start_game;
 
+	// Timers
+	phases.append_attribute("timer_between_game_states") = timer_between_game_states.read();
+	phases.append_attribute("timer_between_waves") = timer_between_waves.read();
+
 	pugi::xml_node list_ids_enemies = node.append_child("list_ids_enemies");
 	
 	// Here I save the ids of the zergs that conforms the current wave.
@@ -1163,6 +1212,29 @@ bool GameManager::save(pugi::xml_node &node) const
 	string ids;
 	getline(ss, ids);	
 	list_ids_enemies.append_attribute("ids") = ids.data();
+
+	// Now, UI interface for GameManager: GuiInfo and GuiTimer
+	//  GUI Info
+	pugi::xml_node gui_info = node.append_child("gui_info");
+	for (uint i = 0; i < info_message->queue_of_messages.size(); ++i)
+	{
+		if (i == 0)
+			gui_info.append_attribute("time_elapsed") = info_message->timeElapsed();
+
+		pugi::xml_node message = gui_info.append_child("message");
+		message.append_attribute("text") = info_message->queue_of_messages[i].c;
+		message.append_attribute("beap") = info_message->queue_of_messages[i].beap_play;
+		message.append_attribute("display_time") = info_message->queue_of_messages[i].display_time;
+	}
+
+	//  GUI Timer
+	pugi::xml_node gui_timer = node.append_child("gui_timer");
+	if (graphic_wave_timer->isActive())
+	{
+		gui_timer.append_attribute("active") = graphic_wave_timer->isActive();
+		gui_timer.append_attribute("time_elapsed") = graphic_wave_timer->timeElapsed();
+		gui_timer.append_attribute("total_time") = graphic_wave_timer->totalTime();
+	}
 
 	return true;
 }

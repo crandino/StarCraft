@@ -11,6 +11,7 @@ public:
 	Timer();
 
 	void start();
+	void startWithTimeElapsed(uint time_elapsed);
 	uint32 read() const;
 	float readSec() const;
 	bool waitSec(Timer& timer, float secs)const;

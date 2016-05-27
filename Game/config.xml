@@ -50,9 +50,6 @@
       ultralisk_gas_cost = "200"
       mutalisk_mineral_cost = "100"
       mutalisk_gas_cost = "50"
-
-
-    
   />    
   </entity_manager>
   
@@ -60,7 +57,7 @@
 
     <!-- Game Information -->
     <totalWaves value = "1"/>
-    <timeBeforeGameStarts value ="1.0f"/>
+    <timeBeforeGameStarts value ="12.0f"/>
     <timeBetweenWavesPhase1 value = "5.0f"/>
     <timeBetweenWavesPhase2 value = "20.0f"/>
     <timeBetweenWavesPhase3 value = "15.0f"/>
