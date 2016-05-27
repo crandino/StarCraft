@@ -118,6 +118,7 @@
     <ClInclude Include="Motor2D\PathFinding.h" />
     <ClInclude Include="Motor2D\PerfTimer.h" />
     <ClInclude Include="Motor2D\Point2d.h" />
+    <ClInclude Include="Motor2D\GuiPortrait.h" />
     <ClInclude Include="Motor2D\PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="Motor2D\PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Motor2D\Red.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Motor2D\GuiElements.cpp" />
     <ClCompile Include="Motor2D\GuiImage.cpp" />
     <ClCompile Include="Motor2D\GuiLabel.cpp" />
+    <ClCompile Include="Motor2D\GuiPortrait.cpp" />
     <ClCompile Include="Motor2D\GuiResources.cpp" />
     <ClCompile Include="Motor2D\GuiTimer.cpp" />
     <ClCompile Include="Motor2D\Hydralisk.cpp" />

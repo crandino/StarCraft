@@ -14,6 +14,7 @@ class GuiMinimap;
 class GuiInfo;
 class GuiTimer;
 class GuiResources;
+class GuiPortrait;
 using namespace std;
 
 
@@ -44,7 +45,8 @@ enum GUI_TYPES
 	INFO,
 	MINIMAP,
 	TIMER,
-	RESOURCES
+	RESOURCES,
+	PORTRAIT
 
 };
 
@@ -91,6 +93,7 @@ public:
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
 	GuiInfo* createInfo(iPoint pos, const char *tex_path);
 	GuiResources* createResourceInfo(const char* _entity_name, int _mineral, int _gas,iPoint pos,bool draw_element = false);
+	GuiPortrait* createPortrait(const SDL_Texture* texture, Animation animation);
 
 	const GuiElements* findMouseHover();
 	const SDL_Texture* getAtlas() const;
@@ -206,6 +209,13 @@ public:
 
 	//List of wireframes for selection
 	list<GuiImage> selection_wireframes;
+
+	//Portraits----------------------------
+	GuiImage* hide_portrait = nullptr;
+	GuiPortrait* marine_portrait = nullptr;
+	Animation marine_portrait_anim;
+	vector<Animation*>   marine_portrait_anim_pack;
+	//-------------------------------------
 
 	//Bunkers HUD---------------------------
 	GuiImage* ui_leave_bunker = nullptr;

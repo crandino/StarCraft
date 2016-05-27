@@ -13,6 +13,7 @@
 #include "MenuScene.h"
 
 #include "GuiImage.h"
+#include "GuiPortrait.h"
 #include "GuiCursor.h"
 #include "GuiLabel.h"
 #include "GuiMinimap.h"
@@ -57,6 +58,20 @@ bool Gui::start()
 	raynor_indicator = app->gui->createImage("UI/Cursor/raynor_indicator.png");
 	raynor_indicator->disable_element();
 	raynor_indicator->static_image = true;
+
+	//Portraits
+	hide_portrait = app->gui->createImage(NULL, { 544, 166, 58, 50 });
+	hide_portrait->setLocalPos(414, 412);
+	hide_portrait->interactive = false;
+	hide_portrait->can_focus = false;
+	hide_portrait->disable_element();
+
+	//Marine Portrait
+	
+	marine_portrait_anim.speed = 0.005f;
+	marine_portrait_anim_pack.push_back(&marine_portrait_anim);
+
+	marine_portrait = app->gui->createPortrait(NULL, marine_portrait_anim);
 
 	// HUD---------------------------------------------------------------------
 	ui_terran = app->gui->createImage(NULL, { 0, 292, 640, 188 });
@@ -454,6 +469,16 @@ GuiResources* Gui::createResourceInfo(const char* _entity_name, int _mineral, in
 	sprintf_s(gas, 5, "%d", _gas);
 
 	ret = new GuiResources(_entity_name, mineral, gas, pos, draw_element);
+
+	elements.push_back(ret);
+
+	return ret;
+}
+
+GuiPortrait* Gui::createPortrait(const SDL_Texture* texture, Animation animation)
+{
+	GuiPortrait* ret = nullptr;
+	ret = new GuiPortrait(texture, animation);
 
 	elements.push_back(ret);
 
@@ -861,6 +886,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  barrackWireframe->disable_element();
 				  barrackInfo->disable_element();
 				  barrackName->disable_element();
+
+				  //Portraits
+
+				  hide_portrait->enable_element();
 			  }
 			  
 			  enableWireframesSelection(false);
@@ -925,6 +954,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Activate new images
 			  ui_leave_bunker->enable_element();
 
+			  //Portraits
+			  hide_portrait->enable_element();
+
 			  break;
 
 		  case (BARRACK) :
@@ -983,6 +1015,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackName->enable_element();
 
 			  enableWireframesSelection(false);
+
+			  //Portraits
+			  hide_portrait->enable_element();
 
 			  break;
 
@@ -1044,6 +1079,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  enableWireframesSelection(false);
 
+			  //Portraits
+			  hide_portrait->enable_element();
+
 			  break;
 
 		  case (MARINE) :
@@ -1099,6 +1137,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackName->disable_element();
 
 			  enableWireframesSelection(true);
+
+			  //Portraits
+			  hide_portrait->disable_element();
 
 			  break;
 			  
@@ -1156,6 +1197,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  enableWireframesSelection(true);
 
+			  //Portraits
+			  hide_portrait->disable_element();
+
 			  break;
 
 		  case (FIREBAT) :
@@ -1211,6 +1255,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackName->disable_element();
 
 			  enableWireframesSelection(true);
+
+			  //Portraits
+			  hide_portrait->disable_element();
 
 			  break;
 
@@ -1283,6 +1330,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  enableWireframesSelection(true);
 
+			  //Portraits
+			  hide_portrait->disable_element();
+
 			  break;
 
 		  case (JIM_RAYNOR) :
@@ -1338,6 +1388,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  barrackName->disable_element();
 
 			  enableWireframesSelection(true);
+
+			  //Portraits
+			  hide_portrait->disable_element();
 
 			  break;
 
@@ -1398,6 +1451,9 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				enableWireframesSelection(true);
 
+				//Portraits
+				hide_portrait->disable_element();
+
 				break;
 
 		  case (NOTYPE) :
@@ -1446,7 +1502,8 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  barrackInfo->disable_element();
 				  barrackName->disable_element();
 
-				  //enableWireframesSelection(true);
+				  //Portraits
+				  hide_portrait->enable_element();
 
 			  break;
 	}
