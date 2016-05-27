@@ -69,11 +69,11 @@ bool Gui::start()
 	//Marine Portrait
 	marine_portrait_tex = app->tex->loadTexture("UI/TerranConsole/portrait_marine.png");
 	marine_portrait_anim.setAnimations(0, 0, 60, 56, 9, 5, 45);
-	marine_portrait_anim.speed = 0.005f;
+	marine_portrait_anim.speed = 0.002f;
 	marine_portrait_anim.loop = true;
 
 	marine_portrait = app->gui->createPortrait(marine_portrait_tex, marine_portrait_anim);
-	marine_portrait->setLocalPos(402, 410);
+	marine_portrait->setLocalPos(412, 410);
 	marine_portrait->interactive = false;
 	marine_portrait->can_focus = false;
 	marine_portrait->current_animation = &marine_portrait_anim;
