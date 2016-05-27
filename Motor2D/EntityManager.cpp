@@ -430,6 +430,13 @@ bool EntityManager::preUpdate(){
 
 	deletionManager();  // Delete each entity marked to being deleted.
 
+	siege_tanks.clear();
+	for (map<uint, Entity*>::iterator it = active_entities.begin(); it != active_entities.end(); it++)
+	{
+		if (it->second->state == IDLE_SIEGE_MODE || it->second->state == ATTACK_SIEGE_MODE || it->second->state == SIEGE_MODE_OFF)
+			siege_tanks.push_back(it->second->tile_pos);
+	}
+
 	if (app->game_manager->isGameStarted())
 		handleSelection();
 
@@ -924,32 +931,52 @@ void EntityManager::handleSelection()
 	{
 		if (app->map->isAreaWalkable(building_to_place->coll->rect, true))
 		{
-			building_to_place->id = ++next_ID;
-			building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
-			active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
-			building_mode = false;
+			iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y) - (iPoint{ 1, 1 });
+			iPoint last_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x + building_to_place->coll->rect.w, building_to_place->coll->rect.y + building_to_place->coll->rect.h) + (iPoint{ 1, 1 });
+			fPoint point_to_draw;
 
-			switch (building_to_place->specialization)
+			bool tank_in_siege_mode = false;
+			for (int y = first_tile.y; y < last_tile.y; ++y)
 			{
-			case(BUNKER) :
+				for (int x = first_tile.x; x < last_tile.x; ++x)
+				{
+					point_to_draw = app->map->mapToWorld(app->map->data.back(), x, y);
+					for (list<iPoint>::iterator it = siege_tanks.begin(); it != siege_tanks.end(); it++)
+					{
+						if (it._Ptr->_Myval == iPoint{ x, y })
+							tank_in_siege_mode = true;
+					}
+				}
+			}
+			if (!tank_in_siege_mode)
 			{
-				app->game_manager->updateResources(-bunker_mineral_cost, -bunker_gas_cost);
-				break;
-			}
-			case(BARRACK) :
-			{
-				app->game_manager->updateResources(-barrack_mineral_cost, -barrack_gas_cost);
-				break;
-			}
-			case(FACTORY) :
-			{
-				app->game_manager->updateResources(-factory_mineral_cost, -factory_gas_cost);
-				break;
-			}
-			}
+				building_to_place->id = ++next_ID;
+				building_to_place->tile_pos = app->map->worldToMap(app->map->data.back(), building_to_place->center.x, building_to_place->center.y);
+				active_entities.insert(pair<uint, Entity*>(next_ID, building_to_place));
+				building_mode = false;
 
-			app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-			recalculatePaths(building_to_place->coll->rect, false);
+				switch (building_to_place->specialization)
+				{
+				case(BUNKER) :
+				{
+					app->game_manager->updateResources(-bunker_mineral_cost, -bunker_gas_cost);
+					break;
+				}
+				case(BARRACK) :
+				{
+					app->game_manager->updateResources(-barrack_mineral_cost, -barrack_gas_cost);
+					break;
+				}
+				case(FACTORY) :
+				{
+					app->game_manager->updateResources(-factory_mineral_cost, -factory_gas_cost);
+					break;
+				}
+				}
+
+				app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
+				recalculatePaths(building_to_place->coll->rect, false);
+			}
 		}
 	}
 }
@@ -1196,7 +1223,13 @@ void EntityManager::choosePlaceForBuilding()
 		for (int x = first_tile.x; x < last_tile.x; ++x)
 		{
 			point_to_draw = app->map->mapToWorld(app->map->data.back(), x, y);
-			if (app->path->isWalkable({ x, y }))
+			bool tank_in_siege_mode = false;
+			for (list<iPoint>::iterator it = siege_tanks.begin(); it != siege_tanks.end(); it++)
+			{
+				if (it._Ptr->_Myval == iPoint{ x, y })
+					tank_in_siege_mode = true;
+			}
+			if (app->path->isWalkable({ x, y }) && !tank_in_siege_mode)
 			{
 				SDL_Rect r = { 0, 0, 16, 16 };
 				app->render->blit(building_tile, point_to_draw.x, point_to_draw.y, &r);

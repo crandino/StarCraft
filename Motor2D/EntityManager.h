@@ -384,6 +384,8 @@ private:
 	uint			 next_ID;
 	bool			 debug = false;
 
+	list<iPoint>	siege_tanks;
+
 	// CRZ -> Variables to build buildings.
 	bool			building_mode;
 	Building*		building_to_place;
