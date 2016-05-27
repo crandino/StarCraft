@@ -135,6 +135,8 @@ public:
 	map<uint, Entity*>                  selection; 
 	map<uint, Entity*>					active_entities;
 
+	list<iPoint>	siege_tanks;
+
 	//GUI
 	bool	create_bunker = false;
 	bool	create_SCV = false;
@@ -383,8 +385,6 @@ private:
 	
 	uint			 next_ID;
 	bool			 debug = false;
-
-	list<iPoint>	siege_tanks;
 
 	// CRZ -> Variables to build buildings.
 	bool			building_mode;

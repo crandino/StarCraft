@@ -565,6 +565,8 @@ bool Tank::update(float dt)
 				app->path->erase(id);
 				range_to_attack *= 1.71f;
 				attack_frequency *= 2.0f;
+
+				app->entity_manager->siege_tanks.push_back(tile_pos);
 			}
 		}
 
@@ -591,6 +593,8 @@ bool Tank::update(float dt)
 				damage /= 2.3f;// = 45 without buff
 				range_to_attack /= 1.71f;
 				attack_frequency /= 2.0f;
+
+				app->entity_manager->siege_tanks.remove(tile_pos);
 			}
 		}
 		break;

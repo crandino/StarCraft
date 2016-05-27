@@ -430,13 +430,6 @@ bool EntityManager::preUpdate(){
 
 	deletionManager();  // Delete each entity marked to being deleted.
 
-	siege_tanks.clear();
-	for (map<uint, Entity*>::iterator it = active_entities.begin(); it != active_entities.end(); it++)
-	{
-		if (it->second->state == IDLE_SIEGE_MODE || it->second->state == ATTACK_SIEGE_MODE || it->second->state == SIEGE_MODE_OFF)
-			siege_tanks.push_back(it->second->tile_pos);
-	}
-
 	if (app->game_manager->isGameStarted())
 		handleSelection();
 
@@ -655,6 +648,7 @@ bool EntityManager::cleanUp()
 	}
 	active_entities.clear();
 	selection.clear();
+	siege_tanks.clear();
 
 	SDL_DestroyTexture(marine_tex);
 	SDL_DestroyTexture(scv_tex);
@@ -1007,7 +1001,7 @@ void EntityManager::deletionManager()
 			{
 				if (it->second->specialization == COMMANDCENTER)
 				{
-					if (!loading_game) 
+					if (!loading_game)
 						app->game_manager->command_center_destroyed = true;
 				}
 				else if (it->second->specialization == BUNKER)
@@ -1024,6 +1018,8 @@ void EntityManager::deletionManager()
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
 			}
+			else if (it->second->specialization == TANK)
+				siege_tanks.remove(it->second->tile_pos);
 
 			// Very disgusting code to mantain Marines inside a bunker // CRZ
 			selection.erase(it->first);
