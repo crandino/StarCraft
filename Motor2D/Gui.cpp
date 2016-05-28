@@ -413,7 +413,7 @@ bool Gui::start()
 	smallTankWireframe->can_focus = false;
 	smallTankWireframe->disable_element();
 	//Raynor
-	smallRaynorWireframe = app->gui->createImage(atlas_wireframes, { 376, 444, 29, 31 });
+	smallRaynorWireframe = app->gui->createImage(atlas_wireframes, { 408, 444, 29, 31 });
 	smallRaynorWireframe->can_focus = false;
 	smallRaynorWireframe->disable_element();
 	//SCV
