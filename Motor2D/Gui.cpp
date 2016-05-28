@@ -78,6 +78,63 @@ bool Gui::start()
 	marine_portrait->can_focus = false;
 	marine_portrait->current_animation = &marine_portrait_anim;
 	marine_portrait->disable_element();
+
+	//Medic Portrait
+
+	medic_portrait_tex = app->tex->loadTexture("UI/TerranConsole/portrait_medic.png");
+	medic_portrait_anim.setAnimations(0, 0, 60, 56, 9, 5, 45);
+	medic_portrait_anim.speed = 0.002f;
+	medic_portrait_anim.loop = true;
+
+	medic_portrait = app->gui->createPortrait(medic_portrait_tex, medic_portrait_anim);
+	medic_portrait->setLocalPos(412, 410);
+	medic_portrait->interactive = false;
+	medic_portrait->can_focus = false;
+	medic_portrait->current_animation = &medic_portrait_anim;
+	medic_portrait->disable_element();
+
+	//Firebat Portrait
+
+	firebat_portrait_tex = app->tex->loadTexture("UI/TerranConsole/portrait_firebat.png");
+	firebat_portrait_anim.setAnimations(0, 0, 60, 56, 9, 5, 45);
+	firebat_portrait_anim.speed = 0.002f;
+	firebat_portrait_anim.loop = true;
+	
+	firebat_portrait = app->gui->createPortrait(firebat_portrait_tex, firebat_portrait_anim);
+	firebat_portrait->setLocalPos(412, 410);
+	firebat_portrait->interactive = false;
+	firebat_portrait->can_focus = false;
+	firebat_portrait->current_animation = &firebat_portrait_anim;
+	firebat_portrait->disable_element();
+
+	//SCV Portrait
+
+	scv_portrait_tex = app->tex->loadTexture("UI/TerranConsole/portrait_SCV.png");
+	scv_portrait_anim.setAnimations(0, 0, 60, 56, 9, 5, 45);
+	scv_portrait_anim.speed = 0.002f;
+	scv_portrait_anim.loop = true;
+	
+	scv_portrait = app->gui->createPortrait(scv_portrait_tex, scv_portrait_anim);
+	scv_portrait->setLocalPos(412, 410);
+	scv_portrait->interactive = false;
+	scv_portrait->can_focus = false;
+	scv_portrait->current_animation = &scv_portrait_anim;
+	scv_portrait->disable_element();
+
+	//Tank Portrait
+
+	tank_portrait_tex = app->tex->loadTexture("UI/TerranConsole/portrait_tank.png");
+	tank_portrait_anim.setAnimations(0, 0, 60, 56, 9, 5, 45);
+	tank_portrait_anim.speed = 0.002f;
+	tank_portrait_anim.loop = true;
+	
+	tank_portrait = app->gui->createPortrait(tank_portrait_tex, tank_portrait_anim);
+	tank_portrait->setLocalPos(412, 410);
+	tank_portrait->interactive = false;
+	tank_portrait->can_focus = false;
+	tank_portrait->current_animation = &tank_portrait_anim;
+	tank_portrait->disable_element();
+
 	
 	
 	// HUD---------------------------------------------------------------------
@@ -898,6 +955,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 				  hide_portrait->enable_element();
 				  marine_portrait->disable_element();
+				  medic_portrait->disable_element();
+				  firebat_portrait->disable_element();
+				  scv_portrait->disable_element();
+				  tank_portrait->disable_element();
 			  }
 			  
 			  enableWireframesSelection(false);
@@ -965,6 +1026,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->enable_element();
 			  marine_portrait->disable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 
 			  break;
@@ -1029,6 +1094,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->enable_element();
 			  marine_portrait->disable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 			  break;
 
@@ -1093,6 +1162,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->enable_element();
 			  marine_portrait->disable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 			  break;
 
@@ -1153,6 +1226,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->disable_element();
 			  marine_portrait->enable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 			  break;
 			  
@@ -1213,6 +1290,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->disable_element();
 			  marine_portrait->disable_element();
+			  medic_portrait->enable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 			  break;
 
@@ -1273,6 +1354,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->disable_element();
 			  marine_portrait->disable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->enable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 			  break;
 
@@ -1348,6 +1433,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Portraits
 			  hide_portrait->disable_element();
 			  marine_portrait->disable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->enable_element();
 
 			  break;
 
@@ -1407,7 +1496,11 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 
 			  //Portraits
 			  hide_portrait->disable_element();
-			  marine_portrait->disable_element();
+			  marine_portrait->enable_element();
+			  medic_portrait->disable_element();
+			  firebat_portrait->disable_element();
+			  scv_portrait->disable_element();
+			  tank_portrait->disable_element();
 
 			  break;
 
@@ -1471,6 +1564,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				//Portraits
 				hide_portrait->disable_element();
 				marine_portrait->disable_element();
+				medic_portrait->disable_element();
+				firebat_portrait->disable_element();
+				scv_portrait->enable_element();
+				tank_portrait->disable_element();
 
 				break;
 
@@ -1523,6 +1620,10 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Portraits
 				  hide_portrait->enable_element();
 				  marine_portrait->disable_element();
+				  medic_portrait->disable_element();
+				  firebat_portrait->disable_element();
+				  scv_portrait->disable_element();
+				  tank_portrait->disable_element();
 
 			  break;
 	}

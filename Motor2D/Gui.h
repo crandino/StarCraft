@@ -216,6 +216,22 @@ public:
 	SDL_Texture* marine_portrait_tex = nullptr;
 	GuiPortrait* marine_portrait = nullptr;
 	Animation marine_portrait_anim;
+	//Portrait Medic----------------------
+	SDL_Texture* medic_portrait_tex = nullptr;
+	GuiPortrait* medic_portrait = nullptr;
+	Animation medic_portrait_anim;
+	//Portrait Firebat----------------------
+	SDL_Texture* firebat_portrait_tex = nullptr;
+	GuiPortrait* firebat_portrait = nullptr;
+	Animation firebat_portrait_anim;
+	//Portrait SCV----------------------
+	SDL_Texture* scv_portrait_tex = nullptr;
+	GuiPortrait* scv_portrait = nullptr;
+	Animation scv_portrait_anim;
+	//Portrait Tank----------------------
+	SDL_Texture* tank_portrait_tex = nullptr;
+	GuiPortrait* tank_portrait = nullptr;
+	Animation tank_portrait_anim;
 	//-------------------------------------
 
 	//Bunkers HUD---------------------------
