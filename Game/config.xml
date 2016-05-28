@@ -54,11 +54,11 @@
       zergling_mineral_cost_phase2 = "25"
       zergling_gas_cost_phase2 = "5"
       hydralisk_mineral_phase2 = "30"
-      hydralisk_gas_cost_phase2 = "14"
+      hydralisk_gas_cost_phase2 = "10"
       ultralisk_mineral_cost_phase2 = "100"
       ultralisk_gas_cost_phase2 = "100"
       mutalisk_mineral_cost_phase2 = "50"
-      mutalisk_gas_cost_phase2 = "25"
+      mutalisk_gas_cost_phase2 = "20"
       
   />    
   </entity_manager>
@@ -73,7 +73,7 @@
     <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "10.0f"/>
-    <timeBomb value = "180.0f" />
+    <timeBomb value = "120.0f" />
     
     <!--Debug-->
     <hold value ="false" />

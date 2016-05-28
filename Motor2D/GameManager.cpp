@@ -501,8 +501,8 @@ bool GameManager::update(float dt)
 		case(END_WAVE) :
 		{
 			LOG("FINAL WAVE FINISHED");
-			//wave_state = WAITING_FOR_WAVE_TO_START;
-			//timer_between_waves.start();
+			wave_state = WAITING_FOR_WAVE_TO_START;
+			timer_between_waves.start();
 			break;
 		}
 		}
