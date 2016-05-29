@@ -270,7 +270,7 @@ public:
 	GuiImage* raynor_indicator = nullptr;
 
 	// HUD Menu Scene
-	GuiImage *background, *start_button, *close_button;
+	GuiImage *background, *start_button, *close_button, *ok_controls_button, *controls_button, *controls_panel;
 
 	//Variables for CircleSelection. There are 10 size selection
 	/*W_22 = { 3, 4, 22, 13 }; Marine, Zergling

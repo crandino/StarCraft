@@ -842,6 +842,8 @@ void EntityManager::handleSelection()
 						continue;
 				}
 
+
+
 				if (selection.size() == 1)
 				{
 					if (unit->flying)

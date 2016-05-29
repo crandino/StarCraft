@@ -69,6 +69,11 @@ public:
 	//Refresh commands once have been changed
 	void changeShortcutCommand(ShortCut* shortcut);
 
+	bool isCommandActive(const char *command_to_check);
+
+	void showShortcuts();
+	void hideShortcuts();
+
 	// Only active when controls menu is displayed
 	bool			change_on_command;
 	const char*     new_command = NULL;

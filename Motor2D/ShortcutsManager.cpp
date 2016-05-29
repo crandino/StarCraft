@@ -1,6 +1,7 @@
 #include "ShortcutsManager.h"
 #include "Gui.h"
 #include "GuiLabel.h"
+#include "GuiImage.h"
 #include "App.h"
 #include "Input.h"
 
@@ -46,18 +47,21 @@ bool ShortcutsManager::awake(pugi::xml_node& node)
 bool ShortcutsManager::start()
 {
 	// Now, render is loaded.
-	iPoint pos = { 0, 0 };
+	iPoint pos = { 20, 20 };
 	for (list<ShortCut*>::iterator it = shortcuts_list.begin(); it != shortcuts_list.end(); ++it)
 	{
-		/*(*it)->command_label = app->gui->createLabel((*it)->command.data(), 2);
-		(*it)->command_label->setLocalPos(pos.x + 175, pos.y);
-		(*it)->command_label->enable_element();
+		(*it)->shortcut_label = app->gui->createLabel((*it)->name.data(), 2);
+		(*it)->shortcut_label->parent = app->gui->controls_panel;
+		(*it)->shortcut_label->setLocalPos(pos.x, pos.y);
+		(*it)->shortcut_label->disable_element();
+
+		(*it)->command_label = app->gui->createLabel((*it)->command.data(), 2);
+		(*it)->command_label->parent = app->gui->controls_panel;
+		(*it)->command_label->setLocalPos(pos.x + 200, pos.y);
+		(*it)->command_label->disable_element();
 		(*it)->command_label->setListener(this);
 
-		(*it)->shortcut_label = app->gui->createLabel((*it)->name.data(), 2);
-		(*it)->shortcut_label->setLocalPos(pos.x, pos.y);
-
-		pos.y += 30;*/
+		pos.y += 20;
 	}	
 
 	return true;
@@ -180,4 +184,33 @@ void ShortcutsManager::changeShortcutCommand(ShortCut* shortcut)
 {
 	shortcut->command_label->setText(shortcut->command.c_str(), 2);
 	shortcut->ready_to_change = true;
+}
+
+bool ShortcutsManager::isCommandActive(const char *command_to_check)
+{
+	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
+	{
+		if ((*sc)->name == command_to_check && (*sc)->active)
+			return true;
+	}
+		
+	return false;
+}
+
+void ShortcutsManager::showShortcuts()
+{
+	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
+	{
+		(*sc)->command_label->enable_element();
+		(*sc)->shortcut_label->enable_element();
+	}
+}
+
+void ShortcutsManager::hideShortcuts()
+{
+	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
+	{
+		(*sc)->command_label->disable_element();
+		(*sc)->shortcut_label->disable_element();
+	}
 }

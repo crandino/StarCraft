@@ -485,17 +485,34 @@ bool Gui::start()
 	background = app->gui->createImage(initial_menu, { 0, 0, 641, 480 });
 	background->center();	
 
-	start_button = app->gui->createImage(initial_menu, { 45, 507, 143, 41 });
+	start_button = app->gui->createImage(initial_menu, { 35, 493, 166, 43 });
 	start_button->parent = background;
-	start_button->setLocalPos(248, 315);
+	start_button->setLocalPos(240, 315);
 	start_button->can_focus = true;
 	start_button->setListener(app->menu);
 
-	close_button = app->gui->createImage(initial_menu, { 45, 573, 143, 41 });
+	close_button = app->gui->createImage(initial_menu, { 35, 593, 166, 43 });
 	close_button->parent = background;
-	close_button->setLocalPos(248, 370);
+	close_button->setLocalPos(240, 415);
 	close_button->can_focus = true;
 	close_button->setListener(app->menu);
+
+	controls_button = app->gui->createImage(initial_menu, { 35, 543, 166, 43 });
+	controls_button->parent = background;
+	controls_button->setLocalPos(240, 365);
+	controls_button->can_focus = true;
+	controls_button->setListener(app->menu);
+
+	controls_panel = app->gui->createImage(initial_menu, { 753, 68, 344, 262 });
+	controls_panel->center();
+	controls_panel->setLocalPos(controls_panel->getLocalPos().x, controls_panel->getLocalPos().y - 65);
+
+	ok_controls_button = app->gui->createImage(initial_menu, { 665, 369, 143, 41 });
+	ok_controls_button->parent = controls_panel;
+	ok_controls_button->center();
+	ok_controls_button->setLocalPos(ok_controls_button->getLocalPos().x, ok_controls_button->getLocalPos().y + 130);
+	ok_controls_button->can_focus = true;
+	ok_controls_button->setListener(app->menu);
 
 	return true;
 }

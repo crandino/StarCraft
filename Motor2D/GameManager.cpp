@@ -15,6 +15,7 @@
 #include "Entity.h"
 #include "Scene.h"
 #include "MenuScene.h"
+#include "ShortcutsManager.h"
 #include "Bomb.h"
 #include "Unit.h"
 #include "GuiMinimap.h"
@@ -589,7 +590,8 @@ bool GameManager::update(float dt)
 	}
 
 	//Find Jim
-	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+
+	if (app->shortcuts->isCommandActive("Locate Jim Raynor"))
 	{
 		if (jim_raynor != NULL)
 		{
