@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "App.h"
 #include "Input.h"
+#include "ShortcutsManager.h"
 #include "Window.h"
 #include "SDL/include/SDL.h"
 
@@ -133,13 +134,20 @@ bool Input::preUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
+		{
 			int scale = app->win->getScale();
 			mouse_motion_x = event.motion.xrel / scale;
 			mouse_motion_y = event.motion.yrel / scale;
 			mouse_x = event.motion.x / scale;
 			mouse_y = event.motion.y / scale;
 			//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
-			break;		
+			break;
+		}			
+
+		case SDL_KEYDOWN:
+			if (app->shortcuts->change_on_command)
+				app->shortcuts->new_command = (SDL_GetScancodeName(event.key.keysym.scancode));
+			break;
 		}
 	}
 

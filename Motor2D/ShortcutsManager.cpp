@@ -7,6 +7,7 @@
 ShortcutsManager::ShortcutsManager(bool enabled) : Module(enabled)
 {
 	name.append("shortcuts_manager");
+	change_on_command = false;
 }
 
 // Destructor
@@ -35,7 +36,6 @@ bool ShortcutsManager::awake(pugi::xml_node& node)
 		shortcut->command = node.child("command").attribute("value").as_string();
 
 		shortcut->active = false;
-
 		shortcuts_list.push_back(shortcut);
 	}
 
@@ -46,20 +46,25 @@ bool ShortcutsManager::awake(pugi::xml_node& node)
 bool ShortcutsManager::start()
 {
 	// Now, render is loaded.
-/*	iPoint pos = { 0, 0 };
+	iPoint pos = { 0, 0 };
 	for (list<ShortCut*>::iterator it = shortcuts_list.begin(); it != shortcuts_list.end(); ++it)
 	{
 		(*it)->command_label = app->gui->createLabel((*it)->command.data(), 2);
-		(*it)->command_label->setLocalPos(pos.x, pos.y);
+		(*it)->command_label->setLocalPos(pos.x + 175, pos.y);
+		(*it)->command_label->enable_element();
+		(*it)->command_label->setListener(this);
+
 		(*it)->shortcut_label = app->gui->createLabel((*it)->name.data(), 2);
-		(*it)->shortcut_label->setLocalPos(pos.x += 20, pos.y += 20);
-	}*/	
+		(*it)->shortcut_label->setLocalPos(pos.x, pos.y);
+
+		pos.y += 30;
+	}	
 
 	return true;
 
 	//TODO 4: Uncomment this to complete TODO 4
-	/*pop_up = App->ui->CreateImage({ 0, 0, 220, 250 }, 100, 100, App->input_manager);
-*/
+	/*pop_up = App->ui->CreateImage({ 0, 0, 220, 250 }, 100, 100, App->input_manager);*/
+
 }
 
 // Called before all Updates
@@ -105,26 +110,22 @@ bool ShortcutsManager::update(float dt)
 
 	bool ret = true;
 
-	list<ShortCut*>::iterator it = shortcuts_list.begin();
-	while (it != shortcuts_list.end())
+	if (change_on_command)
 	{
-		if ((*it)->ready_to_change)
+		for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
 		{
-			static SDL_Event event;
-
-			SDL_WaitEvent(&event);
-
-			if (event.type == SDL_KEYDOWN)
+			if ((*sc)->ready_to_change && new_command != NULL)
 			{
-				//NO ES COMPROBA SI M'ÉS D'UN SHORTCUT TENEN EL MATEIX COMMAND!!
-				(*it)->command = SDL_GetScancodeName(event.key.keysym.scancode);
-				changeShortcutCommand((*it));
-				(*it)->ready_to_change = false;
+				// Check repeated commands.
+				(*sc)->command = new_command;
+				changeShortcutCommand((*sc));
+				(*sc)->ready_to_change = false;
+				change_on_command = false;
+				new_command = NULL;
+				
 			}
 		}
-
-		++it;
-	}
+	}	
 
 	return ret;
 }
@@ -158,20 +159,21 @@ void ShortcutsManager::onGui(GuiElements* gui, GUI_EVENTS event)
 	//	- Which label we are on
 	//	- Left mouse button is down (use event as MOUSE_BUTTON_LEFT_DOWN)
 	//Once is checked, set this shortcut to ready to change
-	/*if (gui->type == LABEL)
+	
+	switch (event)
 	{
-		list<ShortCut*>::iterator it = shortcuts_list.begin();
-
-		while (it != shortcuts_list.end())
+	case(MOUSE_LCLICK_DOWN) :
+		for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
 		{
-			if (gui == (*it)->command_label && event == MOUSE_BUTTON_LEFT_DOWN)
+			(*sc)->ready_to_change = false;   // We avoid change a previous clicked command
+			if ((*sc)->command_label == gui)
 			{
-				(*it)->ready_to_change = true;
+				(*sc)->ready_to_change = true;
+				change_on_command = true;
 			}
-			++it;
 		}
-
-	}*/
+		break;
+	}
 }
 
 void ShortcutsManager::changeShortcutCommand(ShortCut* shortcut)

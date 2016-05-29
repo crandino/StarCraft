@@ -1064,12 +1064,6 @@ void GameManager::AddPointsEnemyPhase2(Entity* e)
 	}
 }
 
-
-
-
-
-
-
 void GameManager::updateResources(int mineral, int gas)
 {
 	mineral_resources += mineral;
