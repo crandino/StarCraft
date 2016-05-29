@@ -124,18 +124,19 @@ bool ShortcutsManager::update(float dt)
 		{
 			if ((*sc)->ready_to_change && new_command != NULL)
 			{
-				// Check repeated commands? Not done!
-				ACTIONS act = (*sc)->action;
-				key_to_action.erase((*sc)->command);
+				// Check repeated commands? Done!
+				if (key_to_action.find(new_command) == key_to_action.end())
+				{
+					ACTIONS act = (*sc)->action;
+					key_to_action.erase((*sc)->command);
 
-				(*sc)->command = new_command;
-				changeShortcutCommand((*sc));
+					(*sc)->command = new_command;
+					changeShortcutCommand((*sc));
 
-				key_to_action.insert(pair<string, ACTIONS>((*sc)->command, act));
-
-				change_on_command = false;
+					key_to_action.insert(pair<string, ACTIONS>((*sc)->command, act));
+					change_on_command = false;
+				}				
 				new_command = NULL;
-				
 			}
 		}
 	}	
