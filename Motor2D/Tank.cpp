@@ -483,12 +483,12 @@ bool Tank::update(float dt)
 			app->audio->playFx(app->entity_manager->fx_tank_missile_none_siege, 0);
 			if (area_attack)
 			{
-				list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
+		/*		list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
 				while (targets.begin() != targets.end())
 				{
 					attackWithoutRange(targets.front());
 					targets.pop_front();
-				}
+				}*/
 				if (!attack(target_to_attack))
 				{
 					state = IDLE;
@@ -678,6 +678,7 @@ void Tank::siegeMode(bool siege_mode_flag)
 			current_animation = &siege_mode_on;
 			current_animation_turret = &siege_mode_on_turret;
 			state = SIEGE_MODE_ON;
+			siege_mode = true;
 			has_target = false;
 			path.clear();
 		}
@@ -689,6 +690,7 @@ void Tank::siegeMode(bool siege_mode_flag)
 			current_animation = &siege_mode_off;
 			current_animation_turret = &siege_mode_off_turret;
 			state = SIEGE_MODE_OFF;
+			siege_mode = false;
 		}
 		siege_mode = siege_mode_flag;
 	}
@@ -1157,12 +1159,15 @@ bool Tank::attack(Entity* target_to_attack, float min_range)
 		if (d > min_range && d <= range_to_attack)
 		{
 			ret = true;
-			list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false, false);
-			while (targets.begin() != targets.end())
+			if (area_attack)
 			{
-				if (targets.front() != this)
-					attackWithoutRange(targets.front());
-				targets.pop_front();
+				list<Entity*> targets = searchEnemiesInRange(target_to_attack, area_range, false);
+				while (targets.begin() != targets.end())
+				{
+					if (targets.front() != this)
+						attackWithoutRange(targets.front());
+					targets.pop_front();
+				}
 			}
 			if ((target_to_attack->current_hp -= (damage * damage_multiplier)) <= 0.0f)
 			{

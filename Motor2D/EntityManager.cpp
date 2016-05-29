@@ -1133,6 +1133,40 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 	return ret;
 }
 
+list<Entity*> EntityManager::searchEnemiesInRange(Entity* e, float range, bool can_attack_to_flying)
+{
+
+	list<Entity*> ret;
+	if (e != NULL)
+	{
+		float value = range;
+		if (value == -1.0f)
+			value = e->range_of_vision;
+		map<uint, Entity*>::iterator it = active_entities.begin();
+		for (; it != active_entities.end(); ++it)
+		{
+			if (it->second != e && it->second->state != DYING && it->second->faction == COMPUTER && it->second->specialization != BOMB)
+			{
+				if (!can_attack_to_flying)
+				{
+					if (it->second->type == UNIT && ((Unit*)it->second)->flying)
+					{
+						continue;
+					}
+				}
+				float d = abs(e->center.x - it->second->center.x) + abs(e->center.y - it->second->center.y);
+				d -= ((e->coll->rect.w / 2 + e->coll->rect.h / 2) / 2 + (it->second->coll->rect.w / 2 + it->second->coll->rect.h / 2) / 2);
+				if (d <= value)
+				{
+					ret.push_back(it->second);
+				}
+			}
+		}
+	}
+	return ret;
+}
+
+
 bool EntityManager::checkFocus(Unit* e)
 {
 	bool ret = false;

@@ -135,6 +135,11 @@ public:
 		return app->entity_manager->searchEntitiesInRange(origin, search_only_in_same_faction, area_range, can_attack_to_flying);
 	}
 
+	virtual list<Entity*> searchEnemiesInRange(Entity* origin, float area_range, bool can_attack_to_flying = true)
+	{
+		return app->entity_manager->searchEnemiesInRange(origin, area_range, can_attack_to_flying);
+	}
+
 	virtual Entity* searchEnemy()
 	{
 		return app->entity_manager->searchEnemyToAttack(this);

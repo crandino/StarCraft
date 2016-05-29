@@ -114,6 +114,7 @@ public:
 	void				SetEnemyToPos(Entity* e, iPoint pos);
 	Entity*				searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f);
 	list<Entity*>		searchEntitiesInRange(Entity* e, bool search_only_in_same_faction = false, float range = -1.0f, bool can_attack_to_flying = true);
+	list<Entity*>		searchEnemiesInRange(Entity* e, float range = -1.0f, bool can_attack_to_flying = true);
 	bool				checkFocus(Unit* e);
 	Entity*				searchEnemyToAttack(Entity* e, bool can_attack_to_flying = true, float min_area_range = -999.0f);
 	Entity*				searchAllyToHeal(Entity* e, bool search_only_buildings = false);
