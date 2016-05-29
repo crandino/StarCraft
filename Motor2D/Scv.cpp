@@ -175,7 +175,7 @@ bool Scv::update(float dt)
 	setParticleBehaviour();
 	coll->setPos(center.x + collider_offset.x, center.y + collider_offset.y);
 	followEntity();
-	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE)
+	if (app->game_manager->game_state == WIN || app->game_manager->game_state == LOSE || app->game_manager->game_state == QUIT)
 	{
 		resetParticle();
 		resetSpark();
