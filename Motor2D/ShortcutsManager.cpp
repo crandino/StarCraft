@@ -49,7 +49,7 @@ bool ShortcutsManager::start()
 	iPoint pos = { 0, 0 };
 	for (list<ShortCut*>::iterator it = shortcuts_list.begin(); it != shortcuts_list.end(); ++it)
 	{
-		(*it)->command_label = app->gui->createLabel((*it)->command.data(), 2);
+		/*(*it)->command_label = app->gui->createLabel((*it)->command.data(), 2);
 		(*it)->command_label->setLocalPos(pos.x + 175, pos.y);
 		(*it)->command_label->enable_element();
 		(*it)->command_label->setListener(this);
@@ -57,7 +57,7 @@ bool ShortcutsManager::start()
 		(*it)->shortcut_label = app->gui->createLabel((*it)->name.data(), 2);
 		(*it)->shortcut_label->setLocalPos(pos.x, pos.y);
 
-		pos.y += 30;
+		pos.y += 30;*/
 	}	
 
 	return true;
