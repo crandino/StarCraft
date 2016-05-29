@@ -93,6 +93,7 @@ public:
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
 	GuiInfo* createInfo(iPoint pos, const char *tex_path);
 	GuiResources* createResourceInfo(const char* _entity_name, int _mineral, int _gas,iPoint pos,bool draw_element = false);
+	GuiResources* createResourceInfo(const char* _entity_name, iPoint pos, bool only_info, bool draw_element = false);
 	GuiPortrait* createPortrait(const SDL_Texture* texture, Animation animation);
 
 	const GuiElements* findMouseHover();
@@ -259,6 +260,10 @@ public:
 	GuiResources* info_medic = nullptr;
 	GuiResources* info_tank = nullptr;
 
+	GuiResources* info_building_menu = nullptr;
+	GuiResources* info_close_building_menu = nullptr;
+	GuiResources* info_tank_to_siege = nullptr;
+	GuiResources* info_tank_to_move = nullptr;
 
 	// HUD Graphic Timers
 	GuiTimer *wave_timer;

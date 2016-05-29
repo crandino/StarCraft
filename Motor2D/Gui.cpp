@@ -353,6 +353,20 @@ bool Gui::start()
 	info_tank = app->gui->createResourceInfo("Tank", app->entity_manager->tank_mineral_cost, app->entity_manager->tank_gas_cost, { 505, 290 });
 	info_tank->interactive = false;
 	info_tank->draw_element = false;
+
+	//Buttons info
+
+	info_building_menu = app->gui->createResourceInfo("Open buildings menu", { 505, 290 }, true);
+	info_building_menu->disable_element();
+
+	info_close_building_menu = app->gui->createResourceInfo("Close buildings menu", { 505, 290 }, true);
+	info_close_building_menu->disable_element();
+
+	info_tank_to_siege = app->gui->createResourceInfo("Enable siege mode", { 505, 290 }, true);
+	info_tank_to_siege->disable_element();
+
+	info_tank_to_move = app->gui->createResourceInfo("Disable siege mode", { 505, 290 }, true);
+	info_tank_to_move->disable_element();
 	
 	// CURSOR-----------------------------------------------------------------
 	SDL_ShowCursor(SDL_DISABLE);
@@ -557,6 +571,17 @@ GuiResources* Gui::createResourceInfo(const char* _entity_name, int _mineral, in
 	return ret;
 }
 
+GuiResources* Gui::createResourceInfo(const char* _entity_name, iPoint pos, bool only_info, bool draw_element)
+{
+	GuiResources* ret = nullptr;
+
+	ret = new GuiResources(_entity_name, pos, only_info, draw_element);
+
+	elements.push_back(ret);
+
+	return ret;
+}
+
 GuiPortrait* Gui::createPortrait(const SDL_Texture* texture, Animation animation)
 {
 	GuiPortrait* ret = nullptr;
@@ -596,6 +621,18 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 	{	
 		switch (event)
 		{
+
+		case(MOUSE_ENTERS) :
+			if (ui_create_builds->getLocalPos().x == 505 && ui_create_builds->getLocalPos().y == 398)
+				info_close_building_menu->draw_element = true;
+			else 
+				info_building_menu->draw_element = true;
+			break;
+
+		case(MOUSE_LEAVES) :
+			info_building_menu->draw_element = false;
+			info_close_building_menu->draw_element = false;
+			break;
 
 		case(MOUSE_LCLICK_DOWN) :
 			app->audio->playFx(fx_click_1, 0);
@@ -841,14 +878,26 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+			case(MOUSE_ENTERS) :
+				info_tank_to_siege->draw_element = true;
+				break;
+
+			case(MOUSE_LEAVES) :
+				info_tank_to_siege->draw_element = false;
+				break;
+
 			case(MOUSE_LCLICK_DOWN) :
 			{
 				for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 				{
 					if (it->second->specialization == TANK)
+					{
 						((Tank*)it->second)->siegeMode(true);
+						info_tank_to_siege->draw_element = false;
+					}
+						
 				}
-			break;
+				break;
 			}
 		}
 
@@ -858,12 +907,23 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 	{
 		switch (event)
 		{
+			case(MOUSE_ENTERS) :
+				info_tank_to_move->draw_element = true;
+				break;
+
+			case(MOUSE_LEAVES) :
+				info_tank_to_move->draw_element = false;
+				break;
 			case(MOUSE_LCLICK_DOWN) :
 			{
 				for (map<uint, Entity*>::iterator it = app->entity_manager->selection.begin(); it != app->entity_manager->selection.end(); ++it)
 				{
 					if (it->second->specialization == TANK)
+					{
 						((Tank*)it->second)->siegeMode(false);
+						info_tank_to_move->draw_element = false;
+					}
+						
 				}
 			break;
 			}
@@ -920,6 +980,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 		commandCenterOpened = true;
 		barrackMenuOpened = false;
 		factoryMenuOpened = false;
+
 			  if(!buildingMenuOpened)
 			  {
 				  //Desactivate quad background

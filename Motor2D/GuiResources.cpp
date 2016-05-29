@@ -37,10 +37,28 @@ GuiResources::GuiResources(const char* _entity_name, const char* _mineral, const
 	gas->draw_element = draw_element;
 }
 
+GuiResources::GuiResources(const char* _entity_name, iPoint pos, bool only_info, bool draw_element)
+{
+	//Only shows info
+	type = RESOURCES;
+	entity_name = app->gui->createLabel("0", 2);
+
+	window = app->gui->createImage(NULL, { 440, 43, 126, 33 });
+	window->setLocalPos(pos.x, pos.y);
+	window->draw_element = draw_element;
+
+	entity_name->setText(_entity_name, 2);
+	entity_name->parent = window;
+	entity_name->setLocalPos(5, 2);
+	entity_name->draw_element = draw_element;
+
+	this->only_info = only_info;
+}
+
 
 void GuiResources::draw() const
 {
-	if (draw_element)
+	if (draw_element && !only_info)
 	{
 		entity_name->draw();
 		mineral->draw();
@@ -49,6 +67,11 @@ void GuiResources::draw() const
 		window->draw();
 		mineral_image->draw();
 		gas_image->draw();
+	}
+	else
+	{
+		entity_name->draw();
+		window->draw();
 	}
 }
 
