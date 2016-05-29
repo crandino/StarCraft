@@ -1030,6 +1030,25 @@ void EntityManager::deletionManager()
 						else
 							itb++;
 					}
+
+					for (map<uint, Entity*>::iterator it2 = active_entities.begin(); it2 != active_entities.end(); ++it2)
+					{
+						if (it2->second->specialization == MARINE)
+						{
+							if (!((Marine*)it2->second)->inside_bunker)
+								((Marine*)it2->second)->bunker_to_fill == NULL;
+						}
+						else if (it2->second->specialization == FIREBAT)
+						{
+							if (!((Firebat*)it2->second)->inside_bunker)
+								((Firebat*)it2->second)->bunker_to_fill == NULL;
+						}
+						else if (it2->second->specialization == JIM_RAYNOR)
+						{
+							if (!((JimRaynor*)it2->second)->inside_bunker)
+								((JimRaynor*)it2->second)->bunker_to_fill == NULL;
+						}
+					}
 				}
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
 				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
