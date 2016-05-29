@@ -481,26 +481,11 @@ bool Tank::update(float dt)
 		if (timer_attack.read() >= (attack_frequency * attack_frequency_multiplier))
 		{
 			app->audio->playFx(app->entity_manager->fx_tank_missile_none_siege, 0);
-			if (area_attack)
+			if (!attack(target_to_attack))
 			{
-		/*		list<Entity*> targets = searchEntitiesInRange(target_to_attack, area_range, false);
-				while (targets.begin() != targets.end())
-				{
-					attackWithoutRange(targets.front());
-					targets.pop_front();
-				}*/
-				if (!attack(target_to_attack))
-				{
-					state = IDLE;
-					target_to_attack = NULL;
-				}
+				state = IDLE;
+				target_to_attack = NULL;
 			}
-			else
-				if (!attack(target_to_attack))
-				{
-					state = IDLE;
-					target_to_attack = NULL;
-				}
 			timer_attack.start();
 
 			Entity* target = target_to_attack;
