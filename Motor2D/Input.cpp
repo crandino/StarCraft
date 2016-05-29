@@ -52,19 +52,34 @@ bool Input::preUpdate()
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 	mouse_motion_x = mouse_motion_y = 0;
 
+	// Cleaning shortcuts...
+	down_shortcuts.clear();
+	up_shortcuts.clear();
+	repeat_shortcuts.clear();
+
 	for (int i = 0; i < MAX_KEYS; i++)
 	{
 		if (keys[i] == 1)
 		{
 			if (keyboard[i] == KEY_IDLE)
+			{
 				keyboard[i] = KEY_DOWN;
+				down_shortcuts.push_back(SDL_GetScancodeName((SDL_Scancode)i));
+			}
 			else
+			{
 				keyboard[i] = KEY_REPEAT;
+				repeat_shortcuts.push_back(SDL_GetScancodeName((SDL_Scancode)i));
+			}
+				
 		}
 		else
 		{
 			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			{
 				keyboard[i] = KEY_UP;
+				up_shortcuts.push_back(SDL_GetScancodeName((SDL_Scancode)i));
+			}				
 			else
 				keyboard[i] = KEY_IDLE;
 		}
@@ -135,6 +150,11 @@ bool Input::preUpdate()
 bool Input::cleanUp()
 {
 	LOG("Quitting SDL event subsystem");
+
+	down_shortcuts.clear();
+	up_shortcuts.clear();
+	repeat_shortcuts.clear();
+
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

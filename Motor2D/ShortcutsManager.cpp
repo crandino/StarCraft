@@ -1,6 +1,8 @@
 #include "ShortcutsManager.h"
 #include "Gui.h"
 #include "GuiLabel.h"
+#include "App.h"
+#include "Input.h"
 
 ShortcutsManager::ShortcutsManager(bool enabled) : Module(enabled)
 {
@@ -72,54 +74,28 @@ bool ShortcutsManager::preUpdate()
 	//	- Check each queue element with our shortcuts list (check shortcut command and type)
 	//	- If this checks are true turn the right shortcut active = true
 
-	//DOWN
-	//Code with down queues here
-	//if (!App->input->down_queue.empty())
-	//{
-	//	for (int i = 0; i < App->input->down_queue.size(); i++)
-	//	{
-	//		list<ShortCut*>::iterator it = shortcuts_list.begin();
-	//		while (it != shortcuts_list.end())
-	//		{
-	//			if (App->input->down_queue.front() + i == (*it)->command && (*it)->type == DOWN)
-	//				(*it)->active = true;
-	//			++it;
-	//		}
-	//	}
-	//}
+	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
+	{
+		vector<const char*>::iterator sc_input;
+		for (sc_input = app->input->down_shortcuts.begin(); sc_input != app->input->down_shortcuts.end(); ++sc_input)
+		{
+			if ((*sc)->type == DOWN && (*sc)->command == (*sc_input))
+				(*sc)->active = true;
+		}
 
-	////UP
-	////Code with up queues here
-	//if (!App->input->up_queue.empty())
-	//{
-	//	for (int i = 0; i < App->input->up_queue.size(); i++)
-	//	{
-	//		list<ShortCut*>::iterator it = shortcuts_list.begin();
-	//		while (it != shortcuts_list.end())
-	//		{
-	//			if (App->input->up_queue.front() + i == (*it)->command && (*it)->type == UP)
-	//				(*it)->active = true;
-	//			++it;
-	//		}
-	//	}
-	//}
+		for (sc_input = app->input->repeat_shortcuts.begin(); sc_input != app->input->repeat_shortcuts.end(); ++sc_input)
+		{
+			if ((*sc)->type == REPEAT && (*sc)->command == (*sc_input))
+				(*sc)->active = true;
+		}
 
-	////REPEAT
-	////Code with repeat queues here
-	//if (!App->input->repeat_queue.empty())
-	//{
-	//	for (int i = 0; i < App->input->repeat_queue.size(); i++)
-	//	{
-	//		list<ShortCut*>::iterator it = shortcuts_list.begin();
-	//		while (it != shortcuts_list.end())
-	//		{
-	//			if (App->input->repeat_queue.front() + i == (*it)->command && (*it)->type == REPEAT)
-	//				(*it)->active = true;
-	//			++it;
-	//		}
-	//	}
-	//}
-
+		for (sc_input = app->input->up_shortcuts.begin(); sc_input != app->input->up_shortcuts.end(); ++sc_input)
+		{
+			if ((*sc)->type == UP && (*sc)->command == (*sc_input))
+				(*sc)->active = true;
+		}
+	}
+	
 	return ret;
 }
 
@@ -129,26 +105,26 @@ bool ShortcutsManager::update(float dt)
 
 	bool ret = true;
 
-	//list<ShortCut*>::iterator it = shortcuts_list.begin();
-	//while (it != shortcuts_list.end())
-	//{
-	//	if ((*it)->ready_to_change)
-	//	{
-	//		static SDL_Event event;
+	list<ShortCut*>::iterator it = shortcuts_list.begin();
+	while (it != shortcuts_list.end())
+	{
+		if ((*it)->ready_to_change)
+		{
+			static SDL_Event event;
 
-	//		SDL_WaitEvent(&event);
+			SDL_WaitEvent(&event);
 
-	//		if (event.type == SDL_KEYDOWN)
-	//		{
-	//			//NO ES COMPROBA SI M'ÉS D'UN SHORTCUT TENEN EL MATEIX COMMAND!!
-	//			(*it)->command = SDL_GetScancodeName(event.key.keysym.scancode);
-	//			ChangeShortcutCommand((*it));
-	//			(*it)->ready_to_change = false;
-	//		}
-	//	}
+			if (event.type == SDL_KEYDOWN)
+			{
+				//NO ES COMPROBA SI M'ÉS D'UN SHORTCUT TENEN EL MATEIX COMMAND!!
+				(*it)->command = SDL_GetScancodeName(event.key.keysym.scancode);
+				changeShortcutCommand((*it));
+				(*it)->ready_to_change = false;
+			}
+		}
 
-	//	++it;
-	//}
+		++it;
+	}
 
 	return ret;
 }
@@ -158,16 +134,9 @@ bool ShortcutsManager::postUpdate()
 {
 	bool ret = true;
 
-	//TODO 2: We must turn down all activity shortcuts again to reset their state
-	list<ShortCut*>::iterator it = shortcuts_list.begin();
-
-	while (it != shortcuts_list.end())
-	{
-		if ((*it)->active)
-			(*it)->active = false;
-
-		++it;
-	}
+	//We must turn down all activity shortcuts again to reset their state
+	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
+		(*sc)->active = false;
 
 	return ret;
 }
@@ -207,9 +176,6 @@ void ShortcutsManager::onGui(GuiElements* gui, GUI_EVENTS event)
 
 void ShortcutsManager::changeShortcutCommand(ShortCut* shortcut)
 {
-	/*char n[20];
-	sprintf_s(n, 20, "%c", shortcut->command);
-	shortcut->command_label->SetText(n);
-
-	shortcut->ready_to_change = true;*/
+	shortcut->command_label->setText(shortcut->command.c_str(), 2);
+	shortcut->ready_to_change = true;
 }

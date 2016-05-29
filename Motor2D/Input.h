@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Point2d.h"
+#include <vector>
 
 #define NUM_MOUSE_BUTTONS 5
 
@@ -67,6 +68,11 @@ public:
 	// Get mouse / axis position
 	void getMousePosition(iPoint &p) const;
 	iPoint getMouseMotion();
+
+	// For Shortcuts Mamanger
+	vector<const char*>		down_shortcuts;
+	vector<const char*>		up_shortcuts;
+	vector<const char*>		repeat_shortcuts;
 
 private:
 
