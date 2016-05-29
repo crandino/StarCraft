@@ -16,8 +16,19 @@ video
     border-color: blue;
     display: block;
     margin: 0 auto;
+    margin-left: -100px;
 }
 
+#mainText
+{
+    font-size: 18px;
+}
+
+#lastHopeTitle
+{
+    margin-top: -250px;
+    margin-bottom: -300px;
+}
 
 
 a {
@@ -68,7 +79,7 @@ a {
   color: #fff;
   text-align: center;
   background-color: grey; #3B3B3B
-  background-image: linear-gradient(120deg, #464646, #4B4B4B); }
+  background-image: linear-gradient(120deg, #3B3B3B, #3B3B3B); }
 
 @media screen and (min-width: 64em) {
   .page-header {
