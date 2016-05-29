@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <string>
 #include <list>
+#include <map>
 
 using namespace std;
 
@@ -16,6 +17,16 @@ enum INPUT_TYPE
 	DOWN,
 	UP,
 	REPEAT
+};
+
+enum ACTIONS
+{
+	FOCUS_ATTACK,
+	LOCATE_JIM_RAYNOR,
+	LOCATE_COMMAND_CENTER,
+	LOCATE_LAST_ATTACK_POSITION,
+	SAVE_GAME,
+	LOAD_GAME
 };
 
 struct ShortCut
@@ -31,10 +42,11 @@ struct ShortCut
 	}
 
 	INPUT_TYPE	 type;
+	ACTIONS		 action;
 	bool		 active;
 	bool		 ready_to_change = false;
 	string		 name;
-	string		 command;
+	string		 command;	
 
 	GuiLabel*	 command_label = nullptr;
 	GuiLabel*	 shortcut_label = nullptr;
@@ -69,7 +81,7 @@ public:
 	//Refresh commands once have been changed
 	void changeShortcutCommand(ShortCut* shortcut);
 
-	bool isCommandActive(const char *command_to_check);
+	bool isCommandActive(ACTIONS action);
 
 	void showShortcuts();
 	void hideShortcuts();
@@ -79,6 +91,10 @@ public:
 	const char*     new_command = NULL;
 	
 public:
+
+	map<string, ACTIONS>    action_resolver;
+	map<string, INPUT_TYPE> input_type_resolver;
+	map<string, ACTIONS>    key_to_action;
 
 	//Shortcuts list
 	list<ShortCut*>			shortcuts_list;

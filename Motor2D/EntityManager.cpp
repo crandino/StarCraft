@@ -1,5 +1,6 @@
 #include "App.h"
 #include "EntityManager.h"
+#include "ShortcutsManager.h"
 #include "Input.h"
 #include "Window.h"
 #include "p2Log.h"
@@ -842,8 +843,6 @@ void EntityManager::handleSelection()
 						continue;
 				}
 
-
-
 				if (selection.size() == 1)
 				{
 					if (unit->flying)
@@ -851,14 +850,14 @@ void EntityManager::handleSelection()
 						unit->path.clear();
 						unit->path.push_back(target_position);
 						unit->has_target = true;
-						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+						if (app->shortcuts->isCommandActive(FOCUS_ATTACK))
 							unit->state = MOVE_ALERT;
 						else
 							unit->state = MOVE;
 					}
 					else if (app->path->createPath(unit->tile_pos, target_position, unit->id) != -1)
 					{
-						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+						if (app->shortcuts->isCommandActive(FOCUS_ATTACK))
 							unit->state = WAITING_PATH_MOVE_ALERT;
 						else
 							unit->state = WAITING_PATH_MOVE;
@@ -872,14 +871,14 @@ void EntityManager::handleSelection()
 						unit->path.clear();
 						unit->path.push_back(target);
 						unit->has_target = true;
-						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+						if (app->shortcuts->isCommandActive(FOCUS_ATTACK))
 							unit->state = MOVE_ALERT;
 						else
 							unit->state = MOVE;
 					}
 					else if (app->path->createPath(unit->tile_pos, target, unit->id) != -1)
 					{
-						if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+						if (app->shortcuts->isCommandActive(FOCUS_ATTACK))
 							unit->state = WAITING_PATH_MOVE_ALERT;
 						else
 							unit->state = WAITING_PATH_MOVE;

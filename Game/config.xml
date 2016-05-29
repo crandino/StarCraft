@@ -123,29 +123,24 @@
   </game_manager>
 
   <shortcuts_manager>
-    <shortcut>
-      <TYPE value = "REPEAT"/>
-      <name value ="Focus Attack"/>
-      <command value ="A"/>
-    </shortcut>
-
-    <shortcut>
-      <TYPE value = "DOWN"/>
-      <name value ="Locate Jim Raynor"/>
-      <command value ="T"/>
-    </shortcut>
-
-    <shortcut>
-      <TYPE value = "DOWN"/>
-      <name value ="Locate Command Center"/>
-      <command value ="Y"/>
-    </shortcut>
-
-    <shortcut>
-      <TYPE value = "DOWN"/>
-      <name value ="Locate Last Attack Position"/>
-      <command value ="Space"/>
-    </shortcut>    
+    
+    <!-- ENUM availables:
+    FOCUS_ATTACK
+    LOCATE_JIM_RAYNOR
+    LOCATE_COMMAND_CENTER
+    LOCATE_LAST_ATTACK_POSITION
+    SAVE_GAME
+    LOAD_GAME
+    
+    // Check this names with the ACTION enum on ShortcutsMamanger. They should be identical!
+    -->
+    <shortcut type="REPEAT" action="FOCUS_ATTACK" name_action="Focus Attack" key_associated="A" />
+    <shortcut type="DOWN" action="LOCATE_COMMAND_CENTER" name_action="Locate Command Center" key_associated="Y" />
+    <shortcut type="DOWN" action="LOCATE_JIM_RAYNOR" name_action="Locate Jim Raynor" key_associated="T" />
+    <shortcut type="DOWN" action="LOCATE_LAST_ATTACK_POSITION" name_action="Locate Last Attack Position" key_associated="Space" />
+    <shortcut type="DOWN" action="SAVE_GAME" name_action="Save Game" key_associated="F5" />
+    <shortcut type="DOWN" action="LOAD_GAME" name_action="Load Game" key_associated="F6" />
+    
   </shortcuts_manager>
 
   <fonts>

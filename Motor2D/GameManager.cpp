@@ -591,7 +591,7 @@ bool GameManager::update(float dt)
 
 	//Find Jim
 
-	if (app->shortcuts->isCommandActive("Locate Jim Raynor"))
+	if (app->shortcuts->isCommandActive(LOCATE_JIM_RAYNOR))
 	{
 		if (jim_raynor != NULL)
 		{
@@ -603,7 +603,7 @@ bool GameManager::update(float dt)
 	}
 
 	//Find COMMANDCENTER
-	if (app->input->getKey(SDL_SCANCODE_Y) == KEY_DOWN)
+	if (app->shortcuts->isCommandActive(LOCATE_COMMAND_CENTER))
 	{
 		app->render->camera.x = -command_center_position.x + (app->render->camera.w / 2);
 		app->render->camera.y = -command_center_position.y + (app->render->camera.h / 2);

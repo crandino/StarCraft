@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "Gui.h"
 #include "Map.h"
+#include "ShortcutsManager.h"
 #include "Window.h"
 #include "Textures.h"
 #include "MenuScene.h"
@@ -1659,7 +1660,7 @@ bool Gui::update(float dt)
 
 	if (app->game_manager->isGameStarted())
 	{
-		if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (app->shortcuts->isCommandActive(LOCATE_LAST_ATTACK_POSITION))
 		{
 			if (lasts_attack_position.size() > 0)
 				last_attack_position = lasts_attack_position.back();

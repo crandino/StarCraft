@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "GameManager.h"
 #include "PathFinding.h"
+#include "ShortcutsManager.h"
 #include "Scene.h"
 #include "FogOfWar.h"
 
@@ -67,10 +68,10 @@ bool Scene::preUpdate()
 // Called each loop iteration
 bool Scene::update(float dt)
 {
-	if (app->input->getKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (app->shortcuts->isCommandActive(LOAD_GAME))
 		app->loadGame("save_game.xml");
 
-	if (app->input->getKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (app->shortcuts->isCommandActive(SAVE_GAME))
 		app->saveGame("save_game.xml");
 
 	if (app->input->getKey(SDL_SCANCODE_KP_PLUS) == KEY_UP)

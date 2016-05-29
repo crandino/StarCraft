@@ -57,6 +57,7 @@ bool Input::preUpdate()
 	down_shortcuts.clear();
 	up_shortcuts.clear();
 	repeat_shortcuts.clear();
+	map<string, ACTIONS>::iterator k2a_iterator;
 
 	for (int i = 0; i < MAX_KEYS; i++)
 	{
@@ -65,12 +66,16 @@ bool Input::preUpdate()
 			if (keyboard[i] == KEY_IDLE)
 			{
 				keyboard[i] = KEY_DOWN;
-				down_shortcuts.push_back(SDL_GetScancodeName((SDL_Scancode)i));
+				k2a_iterator = app->shortcuts->key_to_action.find(SDL_GetScancodeName((SDL_Scancode)i));
+				if (k2a_iterator != app->shortcuts->key_to_action.end())
+					down_shortcuts.push_back(k2a_iterator->second);
 			}
 			else
 			{
 				keyboard[i] = KEY_REPEAT;
-				repeat_shortcuts.push_back(SDL_GetScancodeName((SDL_Scancode)i));
+				k2a_iterator = app->shortcuts->key_to_action.find(SDL_GetScancodeName((SDL_Scancode)i));
+				if (k2a_iterator != app->shortcuts->key_to_action.end())
+					repeat_shortcuts.push_back(k2a_iterator->second);
 			}
 				
 		}
@@ -79,7 +84,9 @@ bool Input::preUpdate()
 			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
 			{
 				keyboard[i] = KEY_UP;
-				up_shortcuts.push_back(SDL_GetScancodeName((SDL_Scancode)i));
+				k2a_iterator = app->shortcuts->key_to_action.find(SDL_GetScancodeName((SDL_Scancode)i));
+				if (k2a_iterator != app->shortcuts->key_to_action.end())
+					up_shortcuts.push_back(k2a_iterator->second);
 			}				
 			else
 				keyboard[i] = KEY_IDLE;

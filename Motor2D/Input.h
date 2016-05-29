@@ -8,6 +8,7 @@
 #define NUM_MOUSE_BUTTONS 5
 
 struct SDL_Rect;
+enum ACTIONS;
 
 enum EventWindow
 {
@@ -70,9 +71,9 @@ public:
 	iPoint getMouseMotion();
 
 	// For Shortcuts Mamanger
-	vector<const char*>		down_shortcuts;
-	vector<const char*>		up_shortcuts;
-	vector<const char*>		repeat_shortcuts;
+	vector<ACTIONS>		down_shortcuts;
+	vector<ACTIONS>		up_shortcuts;
+	vector<ACTIONS>		repeat_shortcuts;
 
 private:
 

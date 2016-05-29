@@ -20,21 +20,29 @@ bool ShortcutsManager::awake(pugi::xml_node& node)
 {
 	bool ret = true;
 
+	// Resolvers:
+	action_resolver.insert(pair<string, ACTIONS>("FOCUS_ATTACK", FOCUS_ATTACK));
+	action_resolver.insert(pair<string, ACTIONS>("LOCATE_JIM_RAYNOR", LOCATE_JIM_RAYNOR));
+	action_resolver.insert(pair<string, ACTIONS>("LOCATE_COMMAND_CENTER", LOCATE_COMMAND_CENTER));
+	action_resolver.insert(pair<string, ACTIONS>("LOCATE_LAST_ATTACK_POSITION", LOCATE_LAST_ATTACK_POSITION));
+	action_resolver.insert(pair<string, ACTIONS>("SAVE_GAME", SAVE_GAME));
+	action_resolver.insert(pair<string, ACTIONS>("LOAD_GAME", LOAD_GAME));
+
+	input_type_resolver.insert(pair<string, INPUT_TYPE>("DOWN", DOWN));
+	input_type_resolver.insert(pair<string, INPUT_TYPE>("UP", UP));
+	input_type_resolver.insert(pair<string, INPUT_TYPE>("REPEAT", REPEAT));
+
 	//Loading shortcuts path xml
 	for (node = node.child("shortcut"); node && ret; node = node.next_sibling("shortcut"))
 	{
 		ShortCut* shortcut = new ShortCut();
+		shortcut->type = input_type_resolver.at(node.attribute("type").as_string());
+		shortcut->action = action_resolver.at(node.attribute("action").as_string());
+		
+		shortcut->name = node.attribute("name_action").as_string();
+		shortcut->command = node.attribute("key_associated").as_string();
 
-		string type_tmp = node.child("TYPE").attribute("value").as_string();
-		if (type_tmp == "UP")
-			shortcut->type = UP;
-		if (type_tmp == "DOWN")
-			shortcut->type = DOWN;
-		if (type_tmp == "REPEAT")
-			shortcut->type = REPEAT;
-
-		shortcut->name = node.child("name").attribute("value").as_string();
-		shortcut->command = node.child("command").attribute("value").as_string();
+		key_to_action.insert(pair<string, ACTIONS>(shortcut->command, shortcut->action));
 
 		shortcut->active = false;
 		shortcuts_list.push_back(shortcut);
@@ -65,10 +73,6 @@ bool ShortcutsManager::start()
 	}	
 
 	return true;
-
-	//TODO 4: Uncomment this to complete TODO 4
-	/*pop_up = App->ui->CreateImage({ 0, 0, 220, 250 }, 100, 100, App->input_manager);*/
-
 }
 
 // Called before all Updates
@@ -85,22 +89,22 @@ bool ShortcutsManager::preUpdate()
 
 	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
 	{
-		vector<const char*>::iterator sc_input;
+		vector<ACTIONS>::iterator sc_input;
 		for (sc_input = app->input->down_shortcuts.begin(); sc_input != app->input->down_shortcuts.end(); ++sc_input)
 		{
-			if ((*sc)->type == DOWN && (*sc)->command == (*sc_input))
+			if ((*sc)->type == DOWN && (*sc)->action == *sc_input)
 				(*sc)->active = true;
 		}
 
 		for (sc_input = app->input->repeat_shortcuts.begin(); sc_input != app->input->repeat_shortcuts.end(); ++sc_input)
 		{
-			if ((*sc)->type == REPEAT && (*sc)->command == (*sc_input))
+			if ((*sc)->type == REPEAT && (*sc)->action == *sc_input)
 				(*sc)->active = true;
 		}
 
 		for (sc_input = app->input->up_shortcuts.begin(); sc_input != app->input->up_shortcuts.end(); ++sc_input)
 		{
-			if ((*sc)->type == UP && (*sc)->command == (*sc_input))
+			if ((*sc)->type == UP && (*sc)->action == *sc_input)
 				(*sc)->active = true;
 		}
 	}
@@ -120,10 +124,15 @@ bool ShortcutsManager::update(float dt)
 		{
 			if ((*sc)->ready_to_change && new_command != NULL)
 			{
-				// Check repeated commands.
+				// Check repeated commands? Not done!
+				ACTIONS act = (*sc)->action;
+				key_to_action.erase((*sc)->command);
+
 				(*sc)->command = new_command;
 				changeShortcutCommand((*sc));
-				(*sc)->ready_to_change = false;
+
+				key_to_action.insert(pair<string, ACTIONS>((*sc)->command, act));
+
 				change_on_command = false;
 				new_command = NULL;
 				
@@ -183,14 +192,14 @@ void ShortcutsManager::onGui(GuiElements* gui, GUI_EVENTS event)
 void ShortcutsManager::changeShortcutCommand(ShortCut* shortcut)
 {
 	shortcut->command_label->setText(shortcut->command.c_str(), 2);
-	shortcut->ready_to_change = true;
+	shortcut->ready_to_change = false;
 }
 
-bool ShortcutsManager::isCommandActive(const char *command_to_check)
+bool ShortcutsManager::isCommandActive(ACTIONS action)
 {
 	for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
 	{
-		if ((*sc)->name == command_to_check && (*sc)->active)
+		if ((*sc)->active && (*sc)->action == action)
 			return true;
 	}
 		
