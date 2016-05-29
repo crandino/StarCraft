@@ -13,6 +13,7 @@ using namespace std;
 // Modules
 class Window;
 class Input;
+class ShortcutsManager;
 class Render;
 class Textures;
 class Audio;
@@ -96,6 +97,7 @@ public:
 	// Modules
 	Window*				win;
 	Input*				input;
+	ShortcutsManager*   shortcuts;
 	Render*				render;
 	Textures*			tex;
 	Audio*				audio;

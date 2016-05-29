@@ -122,6 +122,32 @@
        
   </game_manager>
 
+  <shortcuts_manager>
+    <shortcut>
+      <TYPE value = "REPEAT"/>
+      <name value ="Focus Attack"/>
+      <command value ="A"/>
+    </shortcut>
+
+    <shortcut>
+      <TYPE value = "DOWN"/>
+      <name value ="Locate Jim Raynor"/>
+      <command value ="T"/>
+    </shortcut>
+
+    <shortcut>
+      <TYPE value = "DOWN"/>
+      <name value ="Locate Command Center"/>
+      <command value ="Y"/>
+    </shortcut>
+
+    <shortcut>
+      <TYPE value = "DOWN"/>
+      <name value ="Locate Last Attack Position"/>
+      <command value ="Space"/>
+    </shortcut>    
+  </shortcuts_manager>
+
   <fonts>
     <default_font size="24" file="UI/Font/Starcraft_Normal.ttf"/>
     <resources_font size="12" file="UI/Font/OpenSans-Regular.ttf"/>

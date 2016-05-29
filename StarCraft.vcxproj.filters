@@ -155,6 +155,9 @@
     <ClCompile Include="Motor2D\GuiPortrait.cpp">
       <Filter>UI_elements</Filter>
     </ClCompile>
+    <ClCompile Include="Motor2D\ShortcutsManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Motor2D\Timer.h">
@@ -339,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="Motor2D\GuiPortrait.h">
       <Filter>UI_elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Motor2D\ShortcutsManager.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

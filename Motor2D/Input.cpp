@@ -14,9 +14,7 @@ Input::Input(bool enabled) : Module(enabled)
 	keyboard = new KeyState[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
-
 }
-
 
 // Destructor
 Input::~Input()

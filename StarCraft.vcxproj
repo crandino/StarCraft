@@ -126,6 +126,7 @@
     <ClInclude Include="Motor2D\Scene.h" />
     <ClInclude Include="Motor2D\Gui.h" />
     <ClInclude Include="Motor2D\Scv.h" />
+    <ClInclude Include="Motor2D\ShortcutsManager.h" />
     <ClInclude Include="Motor2D\Tank.h" />
     <ClInclude Include="Motor2D\Textures.h" />
     <ClInclude Include="Motor2D\Timer.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Motor2D\Scene.cpp" />
     <ClCompile Include="Motor2D\Gui.cpp" />
     <ClCompile Include="Motor2D\Scv.cpp" />
+    <ClCompile Include="Motor2D\ShortcutsManager.cpp" />
     <ClCompile Include="Motor2D\Tank.cpp" />
     <ClCompile Include="Motor2D\Textures.cpp" />
     <ClCompile Include="Motor2D\Timer.cpp" />

@@ -4,6 +4,7 @@
 #include "EntityManager.h"
 #include "Window.h"
 #include "Input.h"
+#include "ShortcutsManager.h"
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -35,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	close_app = false;
 
 	input = new Input(true);
+	shortcuts = new ShortcutsManager(true);
 	win = new Window(true);
 	render = new Render(true);
 	tex = new Textures(true);
@@ -63,6 +65,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(path);
 	addModule(fonts);
 	addModule(gui);
+	addModule(shortcuts);
 	addModule(game_manager);
 	addModule(entity_manager);
 	addModule(collision);
@@ -130,7 +133,6 @@ bool App::awake()
 	{
 		ret = (*item)->awake(config_node.child((*item)->name.data()));
 		item++;
-		
 	}
 
 	return ret;
