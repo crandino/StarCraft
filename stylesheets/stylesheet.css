@@ -28,8 +28,14 @@ video
 {
     margin-top: -250px;
     margin-bottom: -300px;
+    margin-right: 50px;
 }
 
+#starcraft 
+{
+    display: block;
+    margin: 0 auto;
+}
 
 a {
   color: #1e6bb8;
