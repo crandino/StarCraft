@@ -82,10 +82,12 @@ a {
       margin-left: 0; } }
 
 .page-header {
+  background-image: url("StarcraftLastHope7.png"); 
   color: #fff;
   text-align: center;
-  background-color: grey; #3B3B3B
-  background-image: linear-gradient(120deg, #3B3B3B, #3B3B3B); }
+  background-color: grey; 
+  
+}
 
 @media screen and (min-width: 64em) {
   .page-header {
