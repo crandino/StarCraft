@@ -82,7 +82,8 @@ a {
       margin-left: 0; } }
 
 .page-header {
-  background-image: url("StarcraftLastHope7.png"); 
+  background-image: url("fb.jpg");
+  background-position-y: -300px, 50px;
   color: #fff;
   text-align: center;
   background-color: grey; 
