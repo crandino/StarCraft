@@ -129,7 +129,7 @@ public:
 	/*---Utilities---*/ //Move to Globals when we have more time so it can be used by other modules
 	iPoint EntityManager::changeSign(iPoint point);
 
-	void recalculatePaths(const SDL_Rect &rect, bool walkable);//recalculate the paths and move out entities inside the rect
+	void recalculatePaths(bool walkable);//recalculate the paths and move out entities inside the rect
 	
 
 public:

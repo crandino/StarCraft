@@ -417,7 +417,7 @@ Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool di
 		if (e->type == BUILDING)
 		{
  			app->map->changeLogic(e->coll->rect, NO_WALKABLE);
-			recalculatePaths(e->coll->rect, false);
+			recalculatePaths(false);
 		}
 	}
 
@@ -989,7 +989,7 @@ void EntityManager::handleSelection()
 				}
 
 				app->map->changeLogic(building_to_place->coll->rect, NO_WALKABLE);
-				recalculatePaths(building_to_place->coll->rect, false);
+				recalculatePaths(false);
 			}
 		}
 	}
@@ -998,6 +998,7 @@ void EntityManager::handleSelection()
 // We delete the entities marked with to_delete
 void EntityManager::deletionManager()
 { BROFILER_CATEGORY("EntityManager::deletionManager", Profiler::Color::Green)
+	bool need_recalculatePath = false;
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end();)
 	{
@@ -1055,7 +1056,7 @@ void EntityManager::deletionManager()
 					}
 				}
 				app->map->changeLogic(it->second->coll->rect, LOW_GROUND);
-				app->entity_manager->recalculatePaths(it->second->coll->rect, true);
+				need_recalculatePath = true;
 			}
 			else if (it->second->specialization == TANK)
 				siege_tanks.remove(it->second->tile_pos);
@@ -1089,6 +1090,11 @@ void EntityManager::deletionManager()
 		}
 		else
 			++it;
+	}
+
+	if (need_recalculatePath)
+	{
+		app->entity_manager->recalculatePaths(true);
 	}
 
 	if (loading_game)
@@ -1326,7 +1332,7 @@ void EntityManager::choosePlaceForBuilding()
 	app->render->blit(tex, building_to_place->pos.x, building_to_place->pos.y, &building_to_place->current_animation->getCurrentFrame());
 }
 
-void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
+void EntityManager::recalculatePaths(bool walkable)
 { BROFILER_CATEGORY("EntityManager::recalculatePaths", Profiler::Color::Green)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
