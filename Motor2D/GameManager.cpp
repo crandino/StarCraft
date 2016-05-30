@@ -438,10 +438,10 @@ bool GameManager::update(float dt)
 
 	case(BOMB_ACTIVATION) :
 	{
-		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing + 15)  // This 10 synchronize the final wave with the last message
+		if (timer_between_game_states.readSec() > gameInfo.time_while_bomb_landing + 10)  // This 10 synchronize the final wave with the last message
 		{
 			info_message->newInfo("Something BIGGER is approaching!", 5000);
-			info_message->newInfo("Resist! Three minutes to detonation!", 10000);
+			info_message->newInfo("Resist! Two minutes to detonation!", 10000);
 			graphic_wave_timer->changeTimer(timer_between_game_states, gameInfo.time_bomb_detonation * 1000);
 			graphic_wave_timer->initiate();
 			timer_between_game_states.start();
@@ -1167,6 +1167,44 @@ bool GameManager::load(pugi::xml_node &node)
 	current_wave = node.child("phases").attribute("current_wave").as_int();
 	start_game = node.child("phases").attribute("start_game").as_bool();
 
+	jim_raynor_dead = node.child("phases").attribute("jim_raynor_dead").as_bool();
+	command_center_destroyed = node.child("phases").attribute("command_center_destroyed").as_bool();
+	is_victory_screen_on = node.child("phases").attribute("is_victory_screen_on").as_bool();
+	is_defeat_screen_on = node.child("phases").attribute("is_defeat_screen_on").as_bool();
+
+	if (is_victory_screen_on)
+	{
+		victory_screen->draw_element = true;
+		ok_win_button->enable_element();
+	}
+	else
+	{
+		victory_screen->draw_element = false;
+		ok_win_button->disable_element();
+	}
+
+	if (is_defeat_screen_on)
+	{
+		if (jim_raynor_dead)
+			defeat_by_jim_screen->draw_element = true;
+
+		if (command_center_destroyed)	
+			defeat_by_command_screen->draw_element = true;
+
+		ok_lose_button->enable_element();
+	}
+	else
+	{
+		defeat_by_jim_screen->draw_element = false;
+		defeat_by_command_screen->draw_element = false;
+		ok_lose_button->disable_element();
+	}
+
+	waves2_info[0]->zergling_quantity = node.child("waves").attribute("zerglings_phase2").as_int();
+	waves2_info[0]->hydralisk_quantity = node.child("waves").attribute("hydralisk_phase2").as_int();
+	waves2_info[0]->mutalisk_quantity = node.child("waves").attribute("mutalisk_phase2").as_int();
+	waves2_info[0]->ultralisk_quantity = node.child("waves").attribute("ultralisk_phase2").as_int();
+
 	timer_between_game_states.startWithTimeElapsed(node.child("phases").attribute("timer_between_game_states").as_uint());
 	timer_between_waves.startWithTimeElapsed(node.child("phases").attribute("timer_between_waves").as_uint());
 
@@ -1229,6 +1267,16 @@ bool GameManager::save(pugi::xml_node &node) const
 	phases.append_attribute("wave_phase") = wave_state;
 	phases.append_attribute("current_wave") = current_wave;
 	phases.append_attribute("start_game") = start_game;
+	phases.append_attribute("jim_raynor_dead") = jim_raynor_dead;
+	phases.append_attribute("command_center_destroyed") = command_center_destroyed;
+	phases.append_attribute("is_victory_screen_on") = is_victory_screen_on;
+	phases.append_attribute("is_defeat_screen_on") = is_defeat_screen_on;
+
+	pugi::xml_node waves = node.append_child("waves");
+	waves.append_attribute("zerglings_phase2") = waves2_info[0]->zergling_quantity;
+	waves.append_attribute("hydralisk_phase2") = waves2_info[0]->hydralisk_quantity;
+	waves.append_attribute("mutalisk_phase2") = waves2_info[0]->mutalisk_quantity;
+	waves.append_attribute("ultralisk_phase2") = waves2_info[0]->ultralisk_quantity;
 
 	// Timers
 	phases.append_attribute("timer_between_game_states") = timer_between_game_states.read();
