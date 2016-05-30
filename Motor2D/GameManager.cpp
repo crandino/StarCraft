@@ -33,19 +33,6 @@
 
 using namespace std;
 
-//Author: RIE code.
-
-/*
-//Number to change the number of waves
-#define TOTALWAVES 2
-#define WAVETIME1 5//120 = 2 minutes per wave in the future or some other game designish number // 5 was the original value! CRZ
-#define WAVETIME2 10
-#define	SIZE1 5 // Changes number of zerglings per wave //IPL: CHANGED FOR RELEASE 0.4
-#define TOTALUNITSALLWAVES SIZE1*TOTALWAVES
-#define ZERGLINGSCORE 20
-#define COMMANDCENTERPOSITION {1500, 2250}
-*/
-
 /*To Put into xml*/
 struct wave_position
 {
