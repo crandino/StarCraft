@@ -39,7 +39,7 @@ void GuiMinimap::update()
 		iPoint mouse_pos;
 		app->input->getMousePosition(mouse_pos);
 
-		if (mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
+		if (!app->entity_manager->selector_init && mouse_pos.x < rect.x + rect.w && mouse_pos.x > rect.x && mouse_pos.y < rect.y + rect.h && mouse_pos.y > rect.y)
 			app->render->setCameraOnPosition(minimapToWorld({ mouse_pos.x, mouse_pos.y }));
 	}
 	
