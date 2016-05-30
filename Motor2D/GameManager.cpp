@@ -468,11 +468,14 @@ bool GameManager::update(float dt)
 			app->audio->playFx(fx_wave_incoming, 0);
 			
 			createWave(waves3_info[0], { 877, 716 });
+			app->gui->mini_map->activePing({ 877, 716 });
 			createWave(waves3_info[0], { 3557, 905 });
+			app->gui->mini_map->activePing({ 3557, 905 });
 			createWave(waves3_info[0], { 911, 3021 });
+			app->gui->mini_map->activePing({ 911, 3021 });
 			createWave(waves3_info[0], { 2606, 3056 });
+			app->gui->mini_map->activePing({ 2606, 3056 });
 			
-			app->gui->mini_map->activePing(wave_pos);
 			wave3_power_counter += incrementPhase3WavePower();
 			wave_state = MIDDLE_WAVE;
 			break;

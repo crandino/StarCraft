@@ -28,6 +28,11 @@ public:
 	Animation(const Animation& a) : frames(a.frames), speed(a.speed), current_frame(0), loop(a.loop), loops(0), paused(false)
 	{ }
 
+	~Animation()
+	{ 
+		frames.clear();
+	}
+
 	SDL_Rect& getCurrentFrame()
 	{
 		if (!paused)

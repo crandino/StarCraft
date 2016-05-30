@@ -2333,6 +2333,13 @@ void Gui::disableHUDelements()
 	ui_create_tank->disable_element();
 	ui_normal_tank->disable_element();
 	ui_siege_tank->disable_element();
+
+	smallMarineWireframe->disable_element();
+	smallMedicWireframe->disable_element();
+	smallFirebatWireframe->disable_element();
+	smallTankWireframe->disable_element();
+	smallRaynorWireframe->disable_element();
+	smallScvWireframe->disable_element();
 }
 
 bool Gui::load(pugi::xml_node &node)
