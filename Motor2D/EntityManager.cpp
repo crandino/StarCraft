@@ -1562,6 +1562,7 @@ bool EntityManager::load(pugi::xml_node &node)
 
 		Entity *reload_entity = addEntity(pos, spec, true, id);
 		reload_entity->current_hp = tmp.attribute("current_hp").as_float();
+		reload_entity->tile_pos = {tmp.attribute("tile_pos_x").as_int(), tmp.attribute("tile_pos_y").as_int() };
 		reload_entity->to_delete = tmp.attribute("to_delete").as_bool();
 		reload_entity->state = (STATE)tmp.attribute("state").as_int();
 		reload_entity->damage = tmp.attribute("damage").as_float();
@@ -1607,15 +1608,26 @@ bool EntityManager::load(pugi::xml_node &node)
 				uint id = units_bunker.attribute("id").as_uint();
 				iPoint pos = { units_bunker.attribute("pos_x").as_int(), units_bunker.attribute("pos_y").as_int() };
 				SPECIALIZATION spec = (SPECIALIZATION)units_bunker.attribute("type").as_int();
-				bool to_delete = units_bunker.attribute("to_delete").as_bool();
-				float current_hp = units_bunker.attribute("current_hp").as_float();
 
 				Entity *reload_entity = addEntity(pos, spec, true, id);
-				reload_entity->current_hp = current_hp;
-				reload_entity->to_delete = to_delete;
-				((Marine*)reload_entity)->inside_bunker = true;  // This work for all three types of units inside a bunker
-				reload_entity->coll->disable();
+				reload_entity->tile_pos = { units_bunker.attribute("tile_pos_x").as_int(), units_bunker.attribute("tile_pos_y").as_int() };
+				reload_entity->current_hp = units_bunker.attribute("current_hp").as_float();
+				reload_entity->to_delete = units_bunker.attribute("to_delete").as_bool();
 
+				switch (reload_entity->specialization)
+				{
+				case(MARINE):
+					((Marine*)reload_entity)->inside_bunker = true; 
+					break;
+				case(FIREBAT):
+					((Firebat*)reload_entity)->inside_bunker = true;
+					break;
+				case(JIM_RAYNOR):
+					((JimRaynor*)reload_entity)->inside_bunker = true;
+					break;
+				}
+				
+				reload_entity->coll->disable();
 				b->units_inside.insert(pair<uint, Unit*>(id, (Unit*)reload_entity));
 			}
 			break;
@@ -1683,6 +1695,8 @@ bool EntityManager::save(pugi::xml_node &node) const
 		e.append_attribute("id") = it->second->id;
 		e.append_attribute("pos_x") = it->second->center.x;
 		e.append_attribute("pos_y") = it->second->center.y;
+		e.append_attribute("tile_pos_x") = it->second->tile_pos.x;
+		e.append_attribute("tile_pos_y") = it->second->tile_pos.y;
 		e.append_attribute("type") = it->second->specialization;
 		e.append_attribute("current_hp") = it->second->current_hp;
 		e.append_attribute("to_delete") = it->second->to_delete;
@@ -1732,6 +1746,8 @@ bool EntityManager::save(pugi::xml_node &node) const
 				node_unit.append_attribute("id") = inside->second->id;
 				node_unit.append_attribute("pos_x") = inside->second->pos.x;
 				node_unit.append_attribute("pos_y") = inside->second->pos.y;
+				node_unit.append_attribute("tile_pos_x") = inside->second->tile_pos.x;
+				node_unit.append_attribute("tile_pos_y") = inside->second->tile_pos.y;
 				node_unit.append_attribute("type") = inside->second->specialization;
 				node_unit.append_attribute("current_hp") = inside->second->current_hp;
 				node_unit.append_attribute("to_delete") = inside->second->to_delete;
