@@ -28,6 +28,9 @@
 #include "GuiCursor.h"
 
 #include <sstream>
+
+#include "Brofiler.h"
+
 using namespace std;
 
 //Author: RIE code.
@@ -164,7 +167,7 @@ bool GameManager::awake(pugi::xml_node &node)
 }
 
 bool GameManager::start()
-{
+{ BROFILER_CATEGORY("GameManager::start", Profiler::Color::Yellow)
 	bool ret = true;
 
 	LOG("LAST HOPE GAME STARTS!");
@@ -227,7 +230,7 @@ bool GameManager::preUpdate()
 }
 
 bool GameManager::update(float dt)
-{
+{ BROFILER_CATEGORY("GameManager::update", Profiler::Color::Yellow)
 	bool ret = true;
 	iPoint wave_pos;	
 
@@ -669,7 +672,7 @@ void GameManager::checkingGameConditions()
 }
 
 void GameManager::createWave(SizeWave* wave, iPoint position)
-{
+{ BROFILER_CATEGORY("GameManager::createWave", Profiler::Color::Yellow)
 	float speed = 20.0f;
 	Entity *entity_to_add;
 	for (uint i = 0; i < wave->zergling_quantity; i++)
@@ -782,7 +785,7 @@ void GameManager::createWave(SizeWave* wave, iPoint position)
 }
 
 void GameManager::createWaveInfo(SizeWave* wave, uint display_time)
-{
+{ BROFILER_CATEGORY("GameManager::createWaveInfo", Profiler::Color::Yellow)
 	char c[200];
 	sprintf_s(c, "Next wave!\n  Zerglings = %d\n  Hydralisks = %d\n  Mutalisks = %d\n  Ultralisks = %d\n",
 		wave->zergling_quantity, wave->hydralisk_quantity, wave->mutalisk_quantity, wave->ultralisk_quantity);
@@ -819,7 +822,7 @@ bool GameManager::cleanUp()
 }
 
 void GameManager::startGame()
-{
+{ BROFILER_CATEGORY("GameManager::startGame", Profiler::Color::Yellow)
 	wave_state = WAITING_FOR_WAVE_TO_START;
 	game_state = PREPARATION;
 
@@ -931,7 +934,7 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 }
 
 void GameManager::restartGame()
-{
+{ BROFILER_CATEGORY("GameManager::restartGame", Profiler::Color::Yellow)
 	map<uint, Entity*>::iterator it = app->entity_manager->active_entities.begin();
 	for (; it != app->entity_manager->active_entities.end(); ++it)
 	{
@@ -1097,7 +1100,7 @@ iPoint GameManager::positionRandomizerBomb(int random, iPoint bomb_pos)
 }
 
 void GameManager::createEnemiesBombPhase()
-{
+{ BROFILER_CATEGORY("GameManager::createEnemiesBombPhase", Profiler::Color::Yellow)
 	Unit* entity_added;
 	entity_added = (Unit*)app->entity_manager->addEntity(bomb_position.north_east, HYDRALISK);
 	entity_added->target_pos = bomb_position.north_east;

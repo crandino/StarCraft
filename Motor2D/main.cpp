@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
 	while (state != EXIT)
 	{
-		//BROFILER_FRAME("Main Thread");
+		BROFILER_FRAME("Starcraft: Last Hope");
 		switch (state)
 		{
 		case(CREATE) :

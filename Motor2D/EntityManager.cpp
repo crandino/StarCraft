@@ -31,6 +31,9 @@
 #include "GuiMinimap.h"
 
 #include <sstream>
+
+#include "Brofiler.h"
+
 using namespace std;
 
 EntityManager::EntityManager(bool enabled) : Module(enabled)
@@ -290,7 +293,7 @@ bool EntityManager::start()
 }
 
 Entity* const EntityManager::addEntity(iPoint &pos, SPECIALIZATION type, bool direct_creation, uint manual_id)
-{
+{ BROFILER_CATEGORY("EntityManager::addEntity", Profiler::Color::Green)
 	Entity *e = NULL;
 	if (building_mode && !direct_creation)
 	{
@@ -442,7 +445,8 @@ void EntityManager::SetEnemyToPos(Entity* e, iPoint pos)
 }
 
 // Called each loop iteration
-bool EntityManager::preUpdate(){
+bool EntityManager::preUpdate()
+{ BROFILER_CATEGORY("EntityManager::preUpdate", Profiler::Color::Green)
 
 	deletionManager();  // Delete each entity marked to being deleted.
 
@@ -618,7 +622,7 @@ bool EntityManager::preUpdate(){
 
 // Called each loop iteration
 bool EntityManager::update(float dt)
-{
+{BROFILER_CATEGORY("EntityManager::update", Profiler::Color::Green)
 	// Debug ---
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
@@ -632,7 +636,7 @@ bool EntityManager::update(float dt)
 
 // Called each loop iteration
 bool EntityManager::postUpdate()
-{	
+{BROFILER_CATEGORY("EntityManager::postUpdate", Profiler::Color::Green)
 	// Entities Drawing
 	// Look on Gui postUpdate()!
 
@@ -724,7 +728,7 @@ void EntityManager::calculateSelector()
 }
 
 void EntityManager::handleSelection()
-{
+{ BROFILER_CATEGORY("EntityManager::handleSelection", Profiler::Color::Green)
 	// Clicking and holding left button, starts a selection
 	if (!building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -993,7 +997,7 @@ void EntityManager::handleSelection()
 
 // We delete the entities marked with to_delete
 void EntityManager::deletionManager()
-{
+{ BROFILER_CATEGORY("EntityManager::deletionManager", Profiler::Color::Green)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end();)
 	{
@@ -1093,7 +1097,7 @@ void EntityManager::deletionManager()
 
 /*------------------WAVE RELATED METHODS--------------------------*/
 Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in_same_faction, float range) //The method ONLY search and return the nearest entity
-{
+{ BROFILER_CATEGORY("EntityManager::searchNearestEntityInRange", Profiler::Color::Green)
 	Entity* ret = NULL;
 	if (e != NULL)
 	{
@@ -1120,7 +1124,7 @@ Entity* EntityManager::searchNearestEntityInRange(Entity* e, bool search_only_in
 }
 
 list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_in_same_faction, float range, bool can_attack_to_flying) //The method search and return the entity in the area
-{
+{ BROFILER_CATEGORY("EntityManager::searchEntitiesInRange", Profiler::Color::Green)
 	list<Entity*> ret;
 	if (e != NULL)
 	{
@@ -1152,8 +1156,7 @@ list<Entity*> EntityManager::searchEntitiesInRange(Entity* e, bool search_only_i
 }
 
 list<Entity*> EntityManager::searchEnemiesInRange(Entity* e, float range, bool can_attack_to_flying)
-{
-
+{ BROFILER_CATEGORY("EntityManager::searchEnemiesInRange", Profiler::Color::Green)
 	list<Entity*> ret;
 	if (e != NULL)
 	{
@@ -1184,9 +1187,8 @@ list<Entity*> EntityManager::searchEnemiesInRange(Entity* e, float range, bool c
 	return ret;
 }
 
-
 bool EntityManager::checkFocus(Unit* e)
-{
+{ BROFILER_CATEGORY("EntityManager::checkFocus", Profiler::Color::Green)
 	bool ret = false;
 	if (e->target_to_attack != NULL && e->target_to_attack->state != DYING)
 	{
@@ -1198,7 +1200,7 @@ bool EntityManager::checkFocus(Unit* e)
 }
 
 Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying, float min_area_range)
-{
+{ BROFILER_CATEGORY("EntityManager::searchEnemyToAttack", Profiler::Color::Green)
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
@@ -1241,7 +1243,7 @@ Entity* EntityManager::searchEnemyToAttack(Entity* e, bool can_attack_to_flying,
 }
 
 Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
-{
+{ BROFILER_CATEGORY("EntityManager::searchAllyToHeal", Profiler::Color::Green)
 	Entity* ret = NULL;
 	float value = e->range_of_vision;
 	map<uint, Entity*>::iterator it = active_entities.begin();
@@ -1269,7 +1271,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 }
 
 void EntityManager::choosePlaceForBuilding()
-{
+{ BROFILER_CATEGORY("EntityManager::choosePlaceForBuilding", Profiler::Color::Green)
 	iPoint p; app->input->getMousePosition(p);
 	iPoint pos = app->render->screenToWorld( p.x - building_to_place->tex_width / 2, p.y - building_to_place->tex_height / 2 );
 	building_to_place->pos = { (float)pos.x, (float)pos.y };
@@ -1325,7 +1327,7 @@ void EntityManager::choosePlaceForBuilding()
 }
 
 void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
-{
+{ BROFILER_CATEGORY("EntityManager::recalculatePaths", Profiler::Color::Green)
 	map<uint, Entity*>::iterator it = active_entities.begin();
 	for (; it != active_entities.end(); ++it)
 	{
@@ -1376,7 +1378,7 @@ void EntityManager::recalculatePaths(const SDL_Rect &rect, bool walkable)
 }
 
 void EntityManager::onCollision(Collider* c1, Collider* c2)
-{
+{ BROFILER_CATEGORY("EntityManager::onCollision", Profiler::Color::Green)
 	Entity *e1, *e2;
 	e1 = e2 = NULL;
 
@@ -1523,7 +1525,7 @@ void EntityManager::entityManualCreation()
 }
 
 void EntityManager::updateFogOfWar()
-{
+{ BROFILER_CATEGORY("EntityManager::updateFogOfWar", Profiler::Color::Green)
 	//FOG_OF_WAR 2 - "Update Fog of War" function. Called once every frame.
 	//Drawing all a circle on the map for each allied unit and building
 	

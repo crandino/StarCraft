@@ -7,6 +7,8 @@
 #include "Vector2D.h"
 #include "p2Log.h"
 
+#include "Brofiler.h"
+
 
 // Two interesting links about PathFinding
 // Introduction: http://www.raywenderlich.com/4946/introduction-to-a-pathfinding
@@ -84,7 +86,7 @@ uint pathNode::findAdjacents(pathList& list_to_fill, bool diagonals) const
 }
 
 uint pathNode::findWalkableAdjacents(pathList& list_to_fill, bool diagonals) const
-{
+{ BROFILER_CATEGORY("Pathfinding::findWalkableAdjacents", Profiler::Color::Blue)
 	uint items_before = list_to_fill.list_of_nodes.size();
 	iPoint new_pos;
 	uint items_added = 0;
@@ -178,7 +180,7 @@ int pathNode::score() const
 }
 
 int pathNode::calculateF(const iPoint& destination)
-{
+{ BROFILER_CATEGORY("Pathfinding::calculateF", Profiler::Color::Blue)
 	g = parent->g + 1;
 	h = pos.distanceNoSqrt(destination);
 	return g + h;
@@ -268,7 +270,7 @@ int PathFinding::createPath(const iPoint& origin, const iPoint& destination, uin
 }
 
 bool PathFinding::postUpdate()
-{
+{ BROFILER_CATEGORY("Pathfinding::postUpdate", Profiler::Color::Blue)
 	if (paths_to_find.size() > 0)
 	{
 		time_to_search.start();
@@ -360,7 +362,7 @@ bool PathFinding::postUpdate()
 }
 
 int PathFinding::createPathNow(const iPoint& origin, const iPoint& destination)
-{
+{ BROFILER_CATEGORY("Pathfinding::createPathNow", Profiler::Color::Blue)
 	// Origin are walkable?
 	if (!isWalkable(origin))
 		return -1;
@@ -442,7 +444,7 @@ int PathFinding::createPathNow(const iPoint& origin, const iPoint& destination)
 }
 
 int PathFinding::createPathToAdjacent(const iPoint& origin, uint distance)
-{
+{ BROFILER_CATEGORY("Pathfinding::createPathToAdjacent", Profiler::Color::Blue)
 	// Origin are walkable?
 	if (!isWalkable(origin))
 		return -1;
@@ -469,7 +471,7 @@ int PathFinding::createPathToAdjacent(const iPoint& origin, uint distance)
 }
 
 iPoint PathFinding::findNearestWalkableTile(const iPoint &origin, const iPoint &destination, uint radius) const
-{
+{ BROFILER_CATEGORY("Pathfinding::findNearestWalkableTile", Profiler::Color::Blue)
 	pathList open_list;
 	open_list.list_of_nodes.push_back(pathNode(0, 0, origin, NULL));
 	list<pathNode>::iterator pnode = open_list.list_of_nodes.begin();
