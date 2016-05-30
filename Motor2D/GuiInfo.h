@@ -106,7 +106,8 @@ public:
 
 	void unload()
 	{
-		for (uint i = 0; i < queue_of_messages.size(); ++i)
+		uint size = queue_of_messages.size();
+		for (uint i = 0; i < size; ++i)
 			queue_of_messages.pop_front();
 		queue_loaded = false;
 	}
