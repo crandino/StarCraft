@@ -1279,7 +1279,7 @@ Entity* EntityManager::searchAllyToHeal(Entity* e, bool search_only_buildings)
 void EntityManager::choosePlaceForBuilding()
 { BROFILER_CATEGORY("EntityManager::choosePlaceForBuilding", Profiler::Color::Green)
 	iPoint p; app->input->getMousePosition(p);
-	iPoint pos = app->render->screenToWorld( p.x - building_to_place->tex_width / 2, p.y - building_to_place->tex_height / 2 );
+	iPoint pos = app->render->screenToWorld( p.x - (building_to_place->tex_width / 2), p.y - (building_to_place->tex_height / 2));
 	building_to_place->pos = { (float)pos.x, (float)pos.y };
 	
 	iPoint center = app->render->screenToWorld(p.x, p.y);

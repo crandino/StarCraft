@@ -8,7 +8,7 @@ Bomb::Bomb(iPoint &p)
 	// Positions and information
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
 	center = { (float)p.x, (float)p.y };
-	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 	// Animations and FX
 	idle.frames.push_back({ 8, 10, 47, 90 });

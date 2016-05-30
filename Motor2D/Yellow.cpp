@@ -10,7 +10,7 @@ Yellow::Yellow(iPoint &p)
 	tex_height = 145;
 	collider_offset.set(25, 86);
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
-	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 	// Animations and FX
 	tex = app->tex->loadTexture("Building/Yellow.png"); //Sprites/Animations etc..

@@ -14,7 +14,7 @@ Bunker::Bunker(iPoint &p)
 	tex_height = 128;
 	collider_offset.set(0, 36);
 	pos = { (float)p.x - (tex_width / 2), (float)p.y - (tex_height / 2) };
-	tile_pos = app->map->worldToMap(app->map->data.front(), center.x, center.y);
+	tile_pos = app->map->worldToMap(app->map->data.back(), center.x, center.y);
 
 	// Animations and FX
 	fx_attack = app->audio->loadFx("Audio/FX/Buildings/BunkerAttack.wav");
