@@ -8,7 +8,9 @@ Unit::Unit()
 };
 
 Unit::~Unit()
-{ }
+{
+	path.clear();
+}
 
 void Unit::calculePos()
 {

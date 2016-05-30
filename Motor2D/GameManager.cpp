@@ -410,6 +410,7 @@ bool GameManager::update(float dt)
 		game_state = BOMB_ACTIVATION;
 
 		info_message->unload();
+		graphic_wave_timer->deactivate();
 		app->audio->stopMusic();
 		info_message->newInfo("The bomb is activated!", (gameInfo.time_while_bomb_landing * 1000) / 2, true);
 		info_message->newInfo("Commander, we almost got it!", (gameInfo.time_while_bomb_landing * 1000) / 2);
@@ -911,7 +912,6 @@ void GameManager::onGui(GuiElements* ui, GUI_EVENTS event)
 		case(MOUSE_LCLICK_UP) :
 			app->audio->playFx(fx_click, 0);
 			ok_win_button->setSection({ 30, 241, 65, 19 });
-			app->audio->playMusic("Audio/Music/Background_Music.mp3", 0.f);
 			game_state = QUIT;
 
 			ok_lose_button->disable_element();
