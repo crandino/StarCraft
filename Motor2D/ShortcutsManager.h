@@ -86,6 +86,10 @@ public:
 	void showShortcuts();
 	void hideShortcuts();
 
+	// Load/Save
+	bool save(pugi::xml_node&) const;
+	bool load(pugi::xml_node&);
+
 	// Only active when controls menu is displayed
 	bool			change_on_command;
 	const char*     new_command = NULL;

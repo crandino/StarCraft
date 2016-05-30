@@ -224,3 +224,37 @@ void ShortcutsManager::hideShortcuts()
 		(*sc)->shortcut_label->disable_element();
 	}
 }
+
+// Load / Save
+bool ShortcutsManager::load(pugi::xml_node &node)
+{
+	key_to_action.clear();
+	for (pugi::xml_node tmp = node.child("shortcuts").child("shortcut"); tmp; tmp = tmp.next_sibling("shortcut"))
+	{
+		key_to_action.insert(pair<string, ACTIONS>(tmp.attribute("key_associated").as_string(), (ACTIONS)tmp.attribute("action").as_int()));
+
+		for (list<ShortCut*>::iterator sc = shortcuts_list.begin(); sc != shortcuts_list.end(); ++sc)
+		{
+			if ((*sc)->action == (ACTIONS)tmp.attribute("action").as_int())
+			{
+				(*sc)->command = tmp.attribute("key_associated").as_string();
+				changeShortcutCommand((*sc));
+			}				
+		}
+	}	
+
+	return true;
+}
+
+bool ShortcutsManager::save(pugi::xml_node &node) const
+{ 
+	pugi::xml_node shorts = node.append_child("shortcuts");
+	for (map<string, ACTIONS>::const_iterator it = key_to_action.begin(); it != key_to_action.end(); ++it)
+	{
+		pugi::xml_node s = shorts.append_child("shortcut");
+		s.append_attribute("key_associated") = it->first.c_str();
+		s.append_attribute("action") = it->second;
+	}
+
+	return true;
+}
