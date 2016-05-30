@@ -433,7 +433,7 @@ bool GameManager::update(float dt)
 			graphic_wave_timer->initiate();
 			timer_between_game_states.start();
 
-			app->gui->mini_map->activePing(command_center_position, 8000, BOMB);
+			//app->gui->mini_map->activePing(command_center_position, 8000, BOMB);
 			game_state = FINAL_PHASE;
 			wave_state = BEGINNING_WAVE;
 			timer_between_waves.start();
@@ -939,10 +939,10 @@ void GameManager::restartGame()
 	waves2_info[0]->mutalisk_quantity = original_muta_num_phase2;
 	waves2_info[0]->ultralisk_quantity = original_ultra_num_phase2;
 
-	waves3_info[0]->zergling_quantity = num_zergling;
-	waves3_info[0]->hydralisk_quantity = num_hydralisk;
-	waves3_info[0]->mutalisk_quantity = num_mutalisk;
-	waves3_info[0]->ultralisk_quantity = num_ultralisk;
+	waves3_info[0]->zergling_quantity = original_zergling_num_phase3;
+	waves3_info[0]->hydralisk_quantity = original_hydra_num_phase3;
+	waves3_info[0]->mutalisk_quantity = original_muta_num_phase3;
+	waves3_info[0]->ultralisk_quantity = original_ultra_num_phase3;
 
 	// GUI information reset
 	info_message->unload();

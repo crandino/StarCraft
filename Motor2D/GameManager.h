@@ -185,8 +185,6 @@ public:
 	uint mutalisk_score;
 	uint ultralisk_score;
 
-
-
 	GameInformation gameInfo;
 
 	uint num_zergling;
