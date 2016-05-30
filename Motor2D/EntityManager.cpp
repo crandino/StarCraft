@@ -29,6 +29,7 @@
 #include "Yellow.h"
 #include "Red.h"
 #include "GuiMinimap.h"
+#include "GuiImage.h"
 
 #include <sstream>
 
@@ -1609,6 +1610,11 @@ bool EntityManager::load(pugi::xml_node &node)
 		{
 			Bunker* b = (Bunker*)reload_entity;
 			b->raynor_inside = tmp.attribute("raynor_inside").as_bool();
+			if (b->raynor_inside)
+			{
+				app->gui->raynor_indicator->setLocalPos(b->center.x - 16, b->pos.y);
+				app->gui->raynor_indicator->enable_element();
+			}
 			app->gui->bunker_to_leave.push_back(b);
 
 			for (pugi::xml_node units_bunker = tmp.child("unit_inside_bunker"); units_bunker; units_bunker = units_bunker.next_sibling("unit_inside_bunker"))
