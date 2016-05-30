@@ -37,8 +37,7 @@ Factory::Factory(iPoint &p)
 	offset_life = { -60, 57 };
 
 	// Lifes attributes
-	max_hp = 1000;
-	current_hp = 1000;
+	max_hp = current_hp = 1000;
 	max_hp_bars = 30;
 	range_of_vision = 300;
 	app->gui->factoryAlive = true;
@@ -50,7 +49,7 @@ Factory::~Factory()
 bool Factory::update(float dt)
 {
 
-	sprintf_s(factory_info, 20, "%u / 1000", current_hp);
+	sprintf_s(factory_info, INFO_STRING_LENTGH, "%d / %d", current_hp, max_hp);
 	app->gui->factoryInfo->setText(factory_info, 1);
 	setParticleBehaviour();
 

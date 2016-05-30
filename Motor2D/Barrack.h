@@ -12,7 +12,7 @@ public:
 	Particle	explosion;
 
 	//Barrack Info
-	char barrack_info[20];
+	char barrack_info[INFO_STRING_LENTGH];
 
 public:
 

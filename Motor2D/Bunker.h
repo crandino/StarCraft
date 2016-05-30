@@ -47,7 +47,7 @@ public:
 	bool raynor_inside = false;
 
 	//Bunker Info
-	char bunker_info[16];
+	char bunker_info[INFO_STRING_LENTGH];
 
 };
 

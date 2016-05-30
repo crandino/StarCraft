@@ -12,7 +12,7 @@ public:
 	Particle	explosion;
 
 	//Factory Info
-	char factory_info[20];
+	char factory_info[INFO_STRING_LENTGH];
 
 public:
 

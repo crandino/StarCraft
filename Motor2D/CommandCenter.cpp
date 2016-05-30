@@ -36,8 +36,7 @@ CommandCenter::CommandCenter(iPoint &p)
 	offset_life = { -80, 57 };
 
 	// Lifes attributes
-	max_hp = 1500;
-	current_hp = 1500;
+	max_hp = current_hp = 1500;
 	max_hp_bars = 36;
 
 	range_of_vision = 300;
@@ -48,7 +47,7 @@ CommandCenter::~CommandCenter()
 
 bool CommandCenter::update(float dt)
 {
-	sprintf_s(commandCenter_info, 20, "%u / 1500", current_hp);
+	sprintf_s(commandCenter_info, INFO_STRING_LENTGH, "%d / %d", current_hp, max_hp);
 	app->gui->commandCenterInfo->setText(commandCenter_info, 1);
 	setParticleBehaviour();
 

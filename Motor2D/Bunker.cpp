@@ -74,9 +74,7 @@ Bunker::Bunker(iPoint &p)
 
 	// Another stuff
 	specialization = BUNKER;
-	max_hp = 200;
-
-	current_hp = 200.0f;
+	max_hp = current_hp = 200;
 	max_hp_bars = 10;
 	offset_life = { -23, 35 };
 	max_capacity = 4;
@@ -107,9 +105,9 @@ bool Bunker::update(float dt)
 		{
 			if (it->second == this)
 			{
-				sprintf_s(bunker_info, 16, "Soldiers: %u / 4", units_inside.size());
+				sprintf_s(bunker_info, INFO_STRING_LENTGH, "Soldiers: %d / %d", units_inside.size(), max_capacity);
 				app->gui->bunkerInfo->setText(bunker_info, 1);
-				sprintf_s(bunker_info, 16, "%u / %u", current_hp, max_hp);
+				sprintf_s(bunker_info, INFO_STRING_LENTGH, "%d / %d", current_hp, max_hp);
 				app->gui->bunkerInfo2->setText(bunker_info, 1);
 				
 			}

@@ -13,7 +13,7 @@ public:
 	Particle	 explosion;
 
 	//Command Center Info
-	char commandCenter_info[20];
+	char commandCenter_info[INFO_STRING_LENTGH];
 
 public:
 

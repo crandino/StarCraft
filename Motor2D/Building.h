@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "queue"
 
+#define INFO_STRING_LENTGH 256
+
 class Building : public Entity
 {
 public:
