@@ -931,10 +931,11 @@ void Gui::onGui(GuiElements* ui, GUI_EVENTS event)
 					if (it->second->specialization == TANK)
 					{
 						((Tank*)it->second)->siegeMode(false);
-						info_tank_to_move->draw_element = false;
+						
 					}
 						
 				}
+				info_tank_to_move->draw_element = false;
 			break;
 			}
 		}
