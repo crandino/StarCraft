@@ -2294,6 +2294,7 @@ void Gui::disableHUDelements()
 	ui_create_bot->disable_element();
 	ui_create_builds->disable_element();
 	ui_create_builds->setSection({ 298, 28, 37, 34 });  // Very wierd but necessary because the element also use the cancel symbol... :(
+	ui_create_builds->setLocalPos(551, 358);
 	ui_create_bunker->disable_element();
 	ui_create_barraks->disable_element();
 	ui_create_factory->disable_element();
