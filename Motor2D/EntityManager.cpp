@@ -1637,6 +1637,7 @@ bool EntityManager::load(pugi::xml_node &node)
 		case(JIM_RAYNOR) :
 		{
 			JimRaynor* j = (JimRaynor*)reload_entity;
+			app->game_manager->jim_raynor = j;
 			j->bomb_activated = tmp.attribute("bomb_activated").as_bool();
 			j->bomb_taken = tmp.attribute("bomb_taken").as_bool();
 			app->game_manager->jim_raynor = j;
