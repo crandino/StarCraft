@@ -5,7 +5,7 @@
 GuiTimer::GuiTimer(iPoint pos, const char *tex_path) : crono("00 : 00", 0)
 {
 	setLocalPos(pos.x, pos.y);
-	crono.setLocalPos(pos.x + 50, pos.y + 25);
+	crono.setLocalPos(pos.x + 62, pos.y + 18);
 	type = TIMER;
 	active = false;
 	seconds = minutes = 0;
@@ -28,7 +28,7 @@ void GuiTimer::update()
 
 			char c[15];
 			sprintf_s(c, "%.2d : %.2d", minutes, seconds);
-			crono.setText(c, 0);
+			crono.setText(c, 2);
 		}
 		else
 			active = false;		

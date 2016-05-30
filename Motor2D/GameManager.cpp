@@ -557,19 +557,19 @@ bool GameManager::update(float dt)
 	//Change the number of WAVE HUD ingame-----------------------
 	char n[20];
 	sprintf_s(n, 20, "%d", current_wave + 1);
-	app->gui->number_of_wave->setText(n, 1);
+	app->gui->number_of_wave->setText(n);
 
 
 	//Change the number of RESOURCES HUD ingame-----------------------
 	char n2[20];
 	sprintf_s(n2, 20, "%i", mineral_resources);
-	app->gui->number_of_minerals->setText(n2, 3);
+	app->gui->number_of_minerals->setText(n2, 1);
 
 
 	//Change the number of RESOURCES HUD ingame-----------------------
 	char n3[20];
 	sprintf_s(n3, 20, "%i", gas_resources);
-	app->gui->number_of_gass->setText(n3, 3);
+	app->gui->number_of_gass->setText(n3, 1);
 
 	// Debug ---
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)

@@ -266,7 +266,7 @@ bool Gui::start()
 	ui_leave_bunker->draw_element = false;
 
 	//HUD Label---------------------------------------------------------------
-	number_of_wave = app->gui->createLabel("0", 1);
+	number_of_wave = app->gui->createLabel("0");
 	number_of_wave->center();
 	number_of_wave->setLocalPos(number_of_wave->getScreenPos().x, number_of_wave->getScreenPos().y - 220);
 	number_of_wave->interactive = false;
@@ -308,7 +308,7 @@ bool Gui::start()
 	ui_mineral->setLocalPos(490, 6);
 
 	//Number of minerals
-	number_of_minerals = app->gui->createLabel("0", 3);
+	number_of_minerals = app->gui->createLabel("0", 1);
 	number_of_minerals->setLocalPos(508, 4);
 	number_of_minerals->interactive = false;
 	
@@ -317,7 +317,7 @@ bool Gui::start()
 	ui_gas->setLocalPos(550, 6);
 
 	//Label gass
-	number_of_gass = app->gui->createLabel("0", 3);
+	number_of_gass = app->gui->createLabel("0", 1);
 	number_of_gass->setLocalPos(568, 4);
 	number_of_gass->interactive = false;
 
@@ -409,12 +409,12 @@ bool Gui::start()
 	bunkerWireframe->can_focus = false;
 	bunkerWireframe->disable_element();
 	//Info 
-	bunkerInfo = app->gui->createLabel("a", 3);
+	bunkerInfo = app->gui->createLabel("a", 1);
 	bunkerInfo->setLocalPos(280, 417);
 	bunkerInfo->disable_element();
 	bunkerInfo->can_focus = false;
 	//Name
-	bunkerName = app->gui->createLabel("Bunker", 3);
+	bunkerName = app->gui->createLabel("Bunker", 1);
 	bunkerName->setLocalPos(280, 391);
 	bunkerName->disable_element();
 	bunkerName->can_focus = false;
@@ -425,12 +425,12 @@ bool Gui::start()
 	commandCenterWireframe->can_focus = false;
 	commandCenterWireframe->disable_element();
 	//Info
-	commandCenterInfo = app->gui->createLabel("a", 3);
+	commandCenterInfo = app->gui->createLabel("a", 1);
 	commandCenterInfo->setLocalPos(190, 455);
 	commandCenterInfo->disable_element();
 	commandCenterInfo->can_focus = false;
 	//Name
-	commandCenterName = app->gui->createLabel("Command Center", 3);
+	commandCenterName = app->gui->createLabel("Command Center", 1);
 	commandCenterName->setLocalPos(265, 391);
 	commandCenterName->disable_element();
 	commandCenterName->can_focus = false;
@@ -441,12 +441,12 @@ bool Gui::start()
 	factoryWireframe->can_focus = false;
 	factoryWireframe->disable_element();
 	//Info
-	factoryInfo = app->gui->createLabel("a", 3);
+	factoryInfo = app->gui->createLabel("a", 1);
 	factoryInfo->setLocalPos(190, 455);
 	factoryInfo->disable_element();
 	factoryInfo->can_focus = false;
 	//Name
-	factoryName = app->gui->createLabel("Factory", 3);
+	factoryName = app->gui->createLabel("Factory", 1);
 	factoryName->setLocalPos(280, 391);
 	factoryName->disable_element();
 	factoryName->can_focus = false;
@@ -457,12 +457,12 @@ bool Gui::start()
 	barrackWireframe->can_focus = false;
 	barrackWireframe->disable_element();
 	//Info
-	barrackInfo = app->gui->createLabel("a", 3);
+	barrackInfo = app->gui->createLabel("a", 1);
 	barrackInfo->setLocalPos(190, 455);
 	barrackInfo->disable_element();
 	barrackInfo->can_focus = false;
 	//Name
-	barrackName = app->gui->createLabel("Barrack", 3);
+	barrackName = app->gui->createLabel("Barrack", 1);
 	barrackName->setLocalPos(280, 391);
 	barrackName->disable_element();
 	barrackName->can_focus = false;
@@ -2294,7 +2294,7 @@ void Gui::disableHUDelements()
 	ui_create_bot->disable_element();
 	ui_create_builds->disable_element();
 	ui_create_builds->setSection({ 298, 28, 37, 34 });  // Very wierd but necessary because the element also use the cancel symbol... :(
-	ui_create_builds->setLocalPos(551, 358);
+	ui_create_builds->setLocalPos(551, 358);			// UI element very versatile!!
 	ui_create_bunker->disable_element();
 	ui_create_barraks->disable_element();
 	ui_create_factory->disable_element();

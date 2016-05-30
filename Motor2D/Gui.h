@@ -88,7 +88,7 @@ public:
 	GuiImage* createImage(const SDL_Texture* texture, const SDL_Rect& atlas_section);
 	GuiImage createImage(GuiImage* image, iPoint position);
 	GuiCursor* createCursor(const SDL_Texture* texture);
-	GuiLabel* createLabel(const char* text, int kind_of_font);
+	GuiLabel* createLabel(const char* text, int num_of_font = 0);
 	GuiMinimap* createMinimap(SDL_Rect rect, const char *pathTex);
 	GuiTimer* createTimer(iPoint pos, const char *pathTex, Timer &timer_associated);
 	GuiInfo* createInfo(iPoint pos, const char *tex_path);

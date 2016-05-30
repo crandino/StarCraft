@@ -19,7 +19,7 @@ Fonts::~Fonts()
 {}
 
 // Called before render is available
-bool Fonts::awake(pugi::xml_node& conf)
+bool Fonts::awake(pugi::xml_node& node)
 {
 	LOG("Init True Type Font library");
 	bool ret = true;
@@ -31,20 +31,16 @@ bool Fonts::awake(pugi::xml_node& conf)
 	}
 	else
 	{
-		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
-		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
+		const char* path = node.child("default_font").attribute("file").as_string(DEFAULT_FONT);
+		int size = node.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
 		default = load(path, size);
 
-		pugi::xml_node		node = conf.child("default_font");
-		node = node.next_sibling("default_font");
-
-		const char* path3 = node.attribute("file").as_string(DEFAULT_FONT);
-		int size3 = node.attribute("size").as_int(DEFAULT_FONT_SIZE);
-		default_3 = load(path3, size3);
-
-		const char* path2 = conf.child("resources_font").attribute("file").as_string(DEFAULT_FONT);
-		int size2 = conf.child("resources_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
-		default_2 = load(path2, size2);
+		for (pugi::xml_node tmp = node.child("font"); tmp; tmp = tmp.next_sibling("font"))
+		{
+			path = tmp.attribute("file").as_string();
+			size = tmp.attribute("size").as_int();
+			load(path, size);
+		}
 	}
 
 	return ret;
@@ -58,7 +54,7 @@ bool Fonts::cleanUp()
 
 	LOG("Freeing True Type fonts and library");
 
-	list<TTF_Font*>::iterator i = fonts.begin();
+	vector<TTF_Font*>::iterator i = fonts.begin();
 
 	while (i != fonts.end())
 	{
@@ -90,18 +86,13 @@ TTF_Font* const Fonts::load(const char* path, int size)
 }
 
 // Print text using font
-SDL_Texture* Fonts::print(const char* text, SDL_Color color, int kind_of_font, uint max_wrapping, TTF_Font* font)
+SDL_Texture* Fonts::print(const char* text, SDL_Color color, uint max_wrapping, int num_of_font)
 {
 	SDL_Texture* ret = NULL;
 	SDL_Surface* surface;
 
-	if (kind_of_font == 1)
-		surface = TTF_RenderText_Blended_Wrapped(default, text, color, max_wrapping);
-	else if (kind_of_font == 2)
-		surface = TTF_RenderText_Blended_Wrapped(default_2, text, color, max_wrapping);
-	else
-		surface = TTF_RenderText_Blended_Wrapped(default_3, text, color, max_wrapping);
-
+	surface = TTF_RenderText_Blended_Wrapped(fonts[num_of_font], text, color, max_wrapping);
+	
 	if (surface == NULL)
 	{
 		LOG("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());

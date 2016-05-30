@@ -51,7 +51,7 @@ bool Factory::update(float dt)
 {
 
 	sprintf_s(factory_info, 20, "%u / 1000", current_hp);
-	app->gui->factoryInfo->setText(factory_info, 3);
+	app->gui->factoryInfo->setText(factory_info, 1);
 	setParticleBehaviour();
 
 	switch (state)

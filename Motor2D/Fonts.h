@@ -2,7 +2,7 @@
 #define __FONTS_H__
 
 #include "Module.h"
-#include <list>
+#include <vector>
 #include "SDL\include\SDL_pixels.h"
 
 #define DEFAULT_FONT "Starcraft_font.ttf"
@@ -30,16 +30,14 @@ public:
 	_TTF_Font* const load(const char* path, int size = 12);
 
 	// Create a surface from text
-	SDL_Texture* print(const char* text, SDL_Color color, int kind_of_font, uint max_wrapping, _TTF_Font* font = NULL);
+	SDL_Texture* print(const char* text, SDL_Color color, uint max_wrapping, int num_of_font = 0);
 
 	bool calcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 
 public:
 
-	list<_TTF_Font*>	fonts;
+	vector<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
-	_TTF_Font*			default_2;
-	_TTF_Font*			default_3;
 };
 
 

@@ -65,11 +65,11 @@ bool ShortcutsManager::start()
 
 		(*it)->command_label = app->gui->createLabel((*it)->command.data(), 2);
 		(*it)->command_label->parent = app->gui->controls_panel;
-		(*it)->command_label->setLocalPos(pos.x + 200, pos.y);
+		(*it)->command_label->setLocalPos(pos.x + 230, pos.y);
 		(*it)->command_label->disable_element();
 		(*it)->command_label->setListener(this);
 
-		pos.y += 20;
+		pos.y += 24;
 	}	
 
 	return true;

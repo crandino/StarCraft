@@ -36,7 +36,7 @@ public:
 		info_tex.setLocalPos(28,38);
 
 		text_wrapping = 100;
-		info_tex.setText("O", 0, text_wrapping);
+		info_tex.setText("O", 1, text_wrapping);
 
 		monitor = app->tex->loadTexture(tex_path);
 		no_highlighted = { 0, 0, 204, 144 };
@@ -59,7 +59,7 @@ public:
 			{
 				// Text creation
 				timer.start();
-				info_tex.setText(m->c, 0, text_wrapping);
+				info_tex.setText(m->c, 1, text_wrapping);
 				new_text = false;
 				if (m->beap_play)
 					app->audio->playFx(transmission_fx);

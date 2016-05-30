@@ -1644,6 +1644,12 @@ bool EntityManager::load(pugi::xml_node &node)
 		{
 			Tank* t = (Tank*)reload_entity;
 			t->siege_mode = tmp.attribute("siege_mode").as_bool();
+			if (t->siege_mode)
+			{
+				t->siege_mode_on.current_frame = t->siege_mode_on.frames.size() - 1;
+				t->current_animation = &t->siege_mode_on;
+			}
+				
 			break;
 		}
 		}
