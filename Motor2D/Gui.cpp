@@ -530,9 +530,9 @@ bool Gui::start()
 
 	controls_panel = app->gui->createImage(initial_menu, { 753, 68, 344, 262 });
 	controls_panel->center();
-	controls_panel->setLocalPos(controls_panel->getLocalPos().x, controls_panel->getLocalPos().y - 65);
+	controls_panel->setLocalPos(controls_panel->getLocalPos().x, controls_panel->getLocalPos().y - 90);
 
-	ok_controls_button = app->gui->createImage(initial_menu, { 665, 369, 143, 41 });
+	ok_controls_button = app->gui->createImage(initial_menu, { 665, 369, 141, 41 });
 	ok_controls_button->parent = controls_panel;
 	ok_controls_button->center();
 	ok_controls_button->setLocalPos(ok_controls_button->getLocalPos().x, ok_controls_button->getLocalPos().y + 130);

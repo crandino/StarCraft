@@ -146,16 +146,16 @@ void MenuScene::onGui(GuiElements* ui, GUI_EVENTS event)
 		switch (event)
 		{
 		case(MOUSE_ENTERS) :
-			app->gui->ok_controls_button->setSection({ 859, 369, 143, 41 });
+			app->gui->ok_controls_button->setSection({ 859, 369, 141, 41 });
 			break;
 		case(MOUSE_LEAVES) :
-			app->gui->ok_controls_button->setSection({ 665, 369, 143, 41 });
+			app->gui->ok_controls_button->setSection({ 665, 369, 141, 41 });
 			break;
 		case(MOUSE_LCLICK_DOWN) :
-			app->gui->ok_controls_button->setSection({ 1052, 369, 143, 41 });
+			app->gui->ok_controls_button->setSection({ 1052, 369, 141, 41 });
 			break;
 		case(MOUSE_LCLICK_UP) :
-			app->gui->ok_controls_button->setSection({ 665, 369, 143, 41 });
+			app->gui->ok_controls_button->setSection({ 665, 369, 141, 41 });
 			app->gui->ok_controls_button->disable_element();
 			app->gui->controls_panel->disable_element();
 			app->shortcuts->hideShortcuts();
