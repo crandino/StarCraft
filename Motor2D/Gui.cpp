@@ -403,6 +403,11 @@ bool Gui::start()
 	//Wireframes and Info-------------------------------------------------------------------
 	atlas_wireframes = app->tex->loadTexture("UI/TerranConsole/wireframes.png");
 
+	// Bomb wireframe
+	bomb_wireframe = app->gui->createImage(atlas_wireframes, { 853, 342, 61, 96 });
+	bomb_wireframe->can_focus = false;
+	bomb_wireframe->setLocalPos(570, 35);
+
 	//Bunker Wireframe-----------------------
 	bunkerWireframe = app->gui->createImage(atlas_wireframes, { 796, 222, 66, 45 });
 	bunkerWireframe->setLocalPos(186, 407);
@@ -413,6 +418,11 @@ bool Gui::start()
 	bunkerInfo->setLocalPos(280, 417);
 	bunkerInfo->disable_element();
 	bunkerInfo->can_focus = false;
+	//Info 
+	bunkerInfo2 = app->gui->createLabel("a", 1);
+	bunkerInfo2->setLocalPos(194, 455);
+	bunkerInfo2->disable_element();
+	bunkerInfo2->can_focus = false;
 	//Name
 	bunkerName = app->gui->createLabel("Bunker", 1);
 	bunkerName->setLocalPos(280, 391);
@@ -1016,6 +1026,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Wireframes
 				  bunkerWireframe->disable_element();
 				  bunkerInfo->disable_element();
+				  bunkerInfo2->disable_element();
 				  bunkerName->disable_element();
 
 				  commandCenterWireframe->enable_element();
@@ -1083,6 +1094,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframe 
 			  bunkerWireframe->enable_element();
 			  bunkerInfo->enable_element();
+			  bunkerInfo2->enable_element();
 			  bunkerName->enable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1154,6 +1166,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1222,6 +1235,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1286,6 +1300,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1350,6 +1365,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1414,6 +1430,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1493,6 +1510,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1557,6 +1575,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 			  //Wireframes
 			  bunkerWireframe->disable_element();
 			  bunkerInfo->disable_element();
+			  bunkerInfo2->disable_element();
 			  bunkerName->disable_element();
 
 			  commandCenterWireframe->disable_element();
@@ -1624,6 +1643,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				//Wireframes
 				bunkerWireframe->disable_element();
 				bunkerInfo->disable_element();
+				bunkerInfo2->disable_element();
 				bunkerName->disable_element();
 
 				commandCenterWireframe->disable_element();
@@ -1682,6 +1702,7 @@ void Gui::drawHudSelection(SPECIALIZATION  selection)
 				  //Wireframes
 				  bunkerWireframe->disable_element();
 				  bunkerInfo->disable_element();
+				  bunkerInfo2->disable_element();
 				  bunkerName->disable_element();
 
 				  commandCenterWireframe->disable_element();
@@ -1867,6 +1888,12 @@ bool Gui::update(float dt)
 	{
 		info_tank->draw_element = false;
 	}
+
+	if (show_wireframe_bomb)
+		bomb_wireframe->enable_element();
+	else
+		bomb_wireframe->disable_element();
+
 	return true;
 }
 
@@ -2268,6 +2295,7 @@ void Gui::disableHUDelements()
 	commandCenterOpened = false;
 	barrackMenuOpened = false;
 	factoryMenuOpened = false;
+	show_wireframe_bomb = false;
 
 	info_bunker2->draw_element = false;
 	info_barraks->draw_element = false;
@@ -2315,6 +2343,7 @@ bool Gui::load(pugi::xml_node &node)
 	commandCenterOpened = node.child("gui_status").attribute("commandCenterOpened").as_bool();
 	barrackMenuOpened = node.child("gui_status").attribute("barrackMenuOpeneed").as_bool();
 	factoryMenuOpened = node.child("gui_status").attribute("factoryMenuOpened").as_bool();
+	show_wireframe_bomb = node.child("gui_status").attribute("show_wireframe_bomb").as_bool();
 
 	return true;
 }
@@ -2328,6 +2357,7 @@ bool Gui::save(pugi::xml_node &node) const
 	gui_status.append_attribute("factoryMenuOpened") = factoryMenuOpened;
 	gui_status.append_attribute("barrackAlive") = barrackAlive;
 	gui_status.append_attribute("factoryAlive") = factoryAlive;
+	gui_status.append_attribute("show_wireframe_bomb") = show_wireframe_bomb;
 
 	return true;
 }

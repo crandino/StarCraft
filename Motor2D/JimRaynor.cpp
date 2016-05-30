@@ -495,12 +495,14 @@ void JimRaynor::move(float dt)
 						bomb->coll->to_delete = true;
 						bomb = NULL;
 						bomb_taken = true;
+						app->gui->show_wireframe_bomb = true;
 					
 					}
 					else if (bomb_activated)
 					{
 						// Last phase of the game
 						app->game_manager->game_state = PRE_BOMB_ACTIVATION;
+						app->gui->show_wireframe_bomb = false;
 						bomb_taken = false;
 					}
 					else if (bunker_to_fill != NULL)

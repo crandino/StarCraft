@@ -109,6 +109,9 @@ bool Bunker::update(float dt)
 			{
 				sprintf_s(bunker_info, 16, "Soldiers: %u / 4", units_inside.size());
 				app->gui->bunkerInfo->setText(bunker_info, 1);
+				sprintf_s(bunker_info, 16, "%u / %u", current_hp, max_hp);
+				app->gui->bunkerInfo2->setText(bunker_info, 1);
+				
 			}
 		}
 	}

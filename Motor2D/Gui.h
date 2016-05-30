@@ -154,6 +154,7 @@ public:
 	bool commandCenterOpened = false;
 	bool barrackMenuOpened = false;
 	bool factoryMenuOpened = false;
+	bool show_wireframe_bomb = false;
 
 	void openBuildingMenu();
 	void controlIconsSprite();
@@ -161,10 +162,15 @@ public:
 	//Wireframes and Info
 	//Wireframes
 	SDL_Texture* atlas_wireframes = nullptr;
+
+	// Bomb Wireframe
+	GuiImage* bomb_wireframe = nullptr;
+
 	//Bunkers
 	GuiLabel* bunkerName = nullptr;
 	GuiImage* bunkerWireframe = nullptr;
 	GuiLabel* bunkerInfo = nullptr;
+	GuiLabel* bunkerInfo2 = nullptr;
 	//Command Center
 	GuiLabel* commandCenterName = nullptr;
 	GuiImage* commandCenterWireframe = nullptr;
