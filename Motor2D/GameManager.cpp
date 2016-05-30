@@ -447,13 +447,13 @@ bool GameManager::update(float dt)
 		switch (wave_state)
 		{
 
-		/*case(WAITING_FOR_WAVE_TO_START) :
+		case(WAITING_FOR_WAVE_TO_START) :
 		{
 			LOG("WAITING WAVE TO START - PHASE 3");
 			if (timer_between_waves.readSec() > gameInfo.time_before_waves_phase3)
 				wave_state = BEGINNING_WAVE;
 			break;
-		}*/
+		}
 
 		case(BEGINNING_WAVE):
 		{
