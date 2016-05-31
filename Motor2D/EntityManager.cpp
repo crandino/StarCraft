@@ -944,7 +944,7 @@ void EntityManager::handleSelection()
 	// The logic is modified to not walk over building.
 	if (building_mode && app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		if (app->map->isAreaWalkable(building_to_place->coll->rect, true))
+		if (app->map->isAreaWalkable(building_to_place->coll->rect, true) && (!app->fog_of_war->isEnabled() || app->fog_of_war->isVisible(building_to_place->pos.x, building_to_place->pos.y)))
 		{
 			iPoint first_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x, building_to_place->coll->rect.y) - (iPoint{ 1, 1 });
 			iPoint last_tile = app->map->worldToMap(app->map->data.back(), building_to_place->coll->rect.x + building_to_place->coll->rect.w, building_to_place->coll->rect.y + building_to_place->coll->rect.h) + (iPoint{ 1, 1 });
@@ -1303,7 +1303,7 @@ void EntityManager::choosePlaceForBuilding()
 				if (it._Ptr->_Myval == iPoint{ x, y })
 					tank_in_siege_mode = true;
 			}
-			if (app->path->isWalkable({ x, y }) && !tank_in_siege_mode)
+			if (app->path->isWalkable({ x, y }) && !tank_in_siege_mode && (!app->fog_of_war->isEnabled() || app->fog_of_war->isVisible(building_to_place->pos.x, building_to_place->pos.y)))
 			{
 				SDL_Rect r = { 0, 0, 16, 16 };
 				app->render->blit(building_tile, point_to_draw.x, point_to_draw.y, &r);
