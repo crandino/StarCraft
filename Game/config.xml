@@ -4,12 +4,12 @@
 
   <!-- App Configuration -->
   <app framerate="0" />
-  
+
   <!-- Each module has its own node. Separate configuration -->
   <window>
     <resolution width="640" height="480" scale="1"  />
     <properties borderless='false'
-                fullscreen='false' 
+                fullscreen='true'
                 resizable='false'
                 windowed='false' />
     <name>StarCraft</name>
@@ -19,7 +19,7 @@
   </render>
 
   <file_system>
-    <path>data.zip</path>	    
+    <path>data.zip</path>
   </file_system>
 
   <entity_manager>
@@ -60,28 +60,28 @@
       mutalisk_mineral_cost_phase2 = "50"
       mutalisk_gas_cost_phase2 = "20"
       
-  />    
+  />
   </entity_manager>
-  
+
   <game_manager>
 
     <!-- Game Information -->
-    <totalWaves value = "1"/>
+    <totalWaves value = "8"/>
     <timeBeforeGameStarts value ="12.0f"/>
     <timeBetweenWavesPhase1 value = "5.0f"/>
     <timeBetweenWavesPhase2 value = "20.0f"/>
     <timeBetweenWavesPhase3 value = "15.0f"/>
     <timeBeforeWhileBombLanding value ="10.0f"/>
     <timeBeforeEnd value = "10.0f"/>
-    <timeBomb value = "120.0f" />
-    
+    <timeBomb value = "50.0f" />
+
     <!--Debug-->
     <hold value ="false" />
-    
+
     <!--<phase1 value ="false"/>
     <phase2 value ="false"/>
-    <phase3 value ="false"/> -->   
-    
+    <phase3 value ="false"/> -->
+
     <!-- Wave Information  -->
     <SizeWave zerglings ="5" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="0" ultralisks ="0"/>
@@ -89,18 +89,18 @@
     <SizeWave zerglings ="5" hydralisks ="1" mutalisks ="1" ultralisks ="0"/>
     <SizeWave zerglings ="5" hydralisks ="2" mutalisks ="2" ultralisks ="0"/>
     <SizeWave zerglings ="8" hydralisks ="2" mutalisks ="3" ultralisks ="0"/>
-    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/> 
+    <SizeWave zerglings ="10" hydralisks ="4" mutalisks ="4" ultralisks ="0"/>
     <SizeWave zerglings ="20" hydralisks ="4" mutalisks ="5" ultralisks ="0"/>
 
     <SizeWave2 zerglings ="10" hydralisks ="0" mutalisks ="0" ultralisks ="0"/>
-    
-    <SizeWave3 zerglings ="0" hydralisks ="0" mutalisks ="10" ultralisks="5"/>
-    
+
+    <SizeWave3 zerglings ="6" hydralisks ="6" mutalisks ="6" ultralisks="4"/>
+
     <!-- Player Units -->
     <InitialSizePlayer marinesX="1" marinesY="1" medic ="0" scv ="0"/>
-    <CommandCenterPosition coordx="2000" coordy= "2150"/>    
-    
-    <!-- Score--> 
+    <CommandCenterPosition coordx="2000" coordy= "2150"/>
+
+    <!-- Score-->
     <ZerglingScore value = "5" />
     <HydraliskScore value = "15" />
     <MutaliskScore value = "15" />
@@ -114,16 +114,16 @@
     <multiplierHydra value ="2" />
     <multiplierMuta value ="3" />
     <multiplierUltra value ="4" />
-    
+
     <!-- Difficulty -->
     <powerHydra value = "1" />
     <powerMuta value = "1" />
     <powerUltra value = "1" />
-       
+
   </game_manager>
 
   <shortcuts_manager>
-    
+
     <!-- ENUM availables:
     FOCUS_ATTACK
     LOCATE_JIM_RAYNOR
@@ -140,7 +140,7 @@
     <shortcut type="DOWN" action="LOCATE_LAST_ATTACK_POSITION" name_action="Locate Last Attack Position" key_associated="Space" />
     <shortcut type="DOWN" action="SAVE_GAME" name_action="Save Game" key_associated="F5" />
     <shortcut type="DOWN" action="LOAD_GAME" name_action="Load Game" key_associated="F6" />
-    
+
   </shortcuts_manager>
 
   <fonts>
@@ -155,14 +155,14 @@
     <resources_font size="12" file="UI/Font/OpenSans-Regular.ttf"/>
     <default_font size="12" file="UI/Font/OpenSans-Regular.ttf"/>
   </fonts -->
-  
+
   <map>
     <folder>maps/</folder>
   </map>
 
- <gui>
+  <gui>
     <atlas file="UI/TerranConsole/UI_Panel_Terran2.png"/>
- </gui>
-  
-  
+  </gui>
+
+
 </config>
